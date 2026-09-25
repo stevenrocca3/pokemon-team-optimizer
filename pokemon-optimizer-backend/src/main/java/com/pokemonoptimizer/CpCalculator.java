@@ -1,4 +1,6 @@
 package com.pokemonoptimizer;
+import java.util.Arrays;
+import java.util.HashMap;
 public class CpCalculator {
     public static final double[] CPM_TABLE = new double[103];
     
@@ -169,15 +171,16 @@ public class CpCalculator {
         double index = CPM_TABLE[(int)(level * 2)];
         double effectiveAttack = attack * index;
         double effectiveDefense = defense * index;
-        double effectiveStamina = stamina * index;
+        double effectiveStamina = Math.floor(stamina * index);;
         double statProduct = effectiveAttack * effectiveDefense * effectiveStamina;
         return new IvResult(atkIV, defIV, staIV, level, effectiveAttack, statProduct);
     }
 
-    public static RankedIvResult rankAllCombos(int baseAtk, int baseDef, int baseSta,
+    public static RankedIvResult[] rankAllCombos(int baseAtk, int baseDef, int baseSta,
                                  boolean hasCap, int cap, boolean hasBestBuddy)
-    {
+    { 
         IvResult[] results = new IvResult[4096];
+        RankedIvResult[] rankedIvResult = new RankedIvResult[4096];
 
         for (int atkIV = 0; atkIV < 16; atkIV++)
         {
@@ -185,36 +188,62 @@ public class CpCalculator {
             {
                 for (int staIV = 0; staIV < 16; staIV++)
                 {
+
                     double maxLevel = findMaxLevel(baseAtk, baseDef, baseSta, atkIV, defIV, staIV, hasCap, cap, hasBestBuddy);
                     IvResult ivResult = calculateStatProduct(baseAtk, baseDef, baseSta, atkIV, defIV, staIV, maxLevel);
                     int index = (int)(atkIV * Math.pow(16,2) + defIV * Math.pow(16, 1) + staIV * Math.pow(16, 0));
-                    results[index] = ivResult; //Here's what I'm working on, committing this still with the bugs
-                    // because didn't have time to finish
-                    // must return of type RankedIvResult
+                    results[index] = ivResult; 
                 }
+                    
             }
         }
+
+        IvResult[] byStatProduct = results.clone();
+        Arrays.sort(byStatProduct, (a,b) -> Double.compare(b.statProduct(), a.statProduct()));
+        IvResult[] byEffectiveAttack = results.clone();
+        Arrays.sort(byEffectiveAttack, (a,b) -> {
+            int p = Double.compare(b.effectiveAttack(), a.effectiveAttack());
+            if (p != 0)
+            {
+                return p;
+            }
+            return Double.compare(b.statProduct(), a.statProduct());
+            });
+
+        HashMap<IvResult, Integer> rankByStatProduct = new HashMap<>();
+        HashMap<IvResult, Integer> rankByEffectiveAttack = new HashMap<>();
+        for (int i = 0; i < 4096; i++)
+        {
+            rankByStatProduct.put(byStatProduct[i], i+1);
+            rankByEffectiveAttack.put(byEffectiveAttack[i], i + 1);
+        }
+        for (int i = 0; i < results.length; i++)
+        {
+            int statProductRank = rankByStatProduct.get(results[i]);
+            int mirrorRank = rankByEffectiveAttack.get(results[i]);
+            RankedIvResult rankedIv= new RankedIvResult(results[i], statProductRank, mirrorRank);
+            rankedIvResult[i] = rankedIv;
+        }
+        return rankedIvResult;
     }
+        
+        
 
     
     public static void main(String[] args)
     {
 
-    // Sweep atk IV 0-15 holding def/sta at the rank 1 values, to see the level curve
-    // for (int atk = 0; atk <= 15; atk++) {
-    // double level = findMaxLevel(118, 111, 128, atk, atk, atk, true, 1500, false); //Holding Sta/Def constant iterate attack
-    // double level1 = findMaxLevel(118, 111, 128, atk, atk, atk, true, 500, false);
-    // System.out.println("ATK/DEF/STA IV " + atk + " (cap 1500) -> max level " + level);
-    // System.out.println("ATK/DEF/STA IV " + atk + " (cap 500) -> max level " + level1);
-    // }
-    //Tests the cp boundary is handling query right, result prints 19.5 = 489, 20 = 501
-    // System.out.println(calculateCP(118, 111, 128, 0, 0, 0, 19.5)); // should be <= 500
-    // System.out.println(calculateCP(118, 111, 128, 0, 0, 0, 20.0)); // should be > 500
+   //  double level14 = findMaxLevel(152, 194, 200, 14, 15, 15, true, 2500, true);
+// System.out.println("atkIV=14 max level: " + level14);
 
-    //Test Case of Cradily Max Attack Stat + Max Stat Product, should be 104.8 after truncating
-    IvResult result = calculateStatProduct(152, 194, 200, 2, 13, 13, 26);
-    System.out.println(result.effectiveAttack()); //104.8993946 pass
-    System.out.println(result.statProduct()); //
+// IvResult result14 = calculateStatProduct(152, 194, 200, 14, 15, 15, level14);
+// System.out.println("atkIV=14 stat product: " + result14.statProduct());
+
+// double level13 = findMaxLevel(152, 194, 200, 13, 15, 15, true, 2500, true);
+// System.out.println("atkIV=13 max level: " + level13);
+
+// IvResult result13 = calculateStatProduct(152, 194, 200, 13, 15, 15, level13);
+// System.out.println("atkIV=13 stat product: " + result13.statProduct());
     
     }
 }
