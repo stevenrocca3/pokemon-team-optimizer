@@ -1,14 +1,8 @@
 package com.pokemonoptimizer.pokemon_optimizer_backend;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
-import com.pokemonoptimizer.CpCalculator;
-import com.pokemonoptimizer.RankedIvResult;
-
-@SpringBootTest 
 public class CpCalculatorTest {
 
     // Sweep atk IV 0-15 holding def/sta at the rank 1 values, to see the level curve
@@ -34,6 +28,18 @@ public class CpCalculatorTest {
     {
         int cp = CpCalculator.calculateCP(118, 111, 128, 15, 15, 15, 50);
         assertEquals(1260, cp);
+    }
+
+    @Test 
+    public void testCalculateCP_boundary_test()
+    {
+        int cp1 = CpCalculator.calculateCP(118, 111, 128, 0, 0, 0, 19.5);
+        int cp2 = CpCalculator.calculateCP(118, 111, 128, 0, 0, 0, 20);
+        assertEquals(489, cp1);
+        assertEquals(501, cp2);
+        double lvl = CpCalculator.findMaxLevel(118, 111, 128, 0, 0, 0, true, 500, false);
+        assertEquals(19.5, lvl, 0.01);
+
     }
     //Test Case of Cradily Max Attack Stat + Max Stat Product, should be 104.8 after truncating
     //IvResult result = calculateStatProduct(152, 194, 200, 2, 13, 13, 26);
