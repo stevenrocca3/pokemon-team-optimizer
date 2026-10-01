@@ -63,7 +63,6 @@ dex_number,name,form,hp,attack,defense
 49,Venomoth,,172,179,143
 50,Diglett,,67,109,78
 50,Diglett,Alola,67,108,81
-51,Dugtrio,,111,167,134
 51,Dugtrio,,111,167,136
 51,Dugtrio,Alola,111,201,142
 52,Meowth,,120,92,78
@@ -476,6 +475,7 @@ dex_number,name,form,hp,attack,defense
 396,Starly,,120,101,58
 397,Staravia,,146,142,94
 398,Staraptor,,198,234,140
+398,Staraptor,Mega,198,278,207
 399,Bidoof,,153,80,73
 400,Bibarel,,188,162,119
 401,Kricketot,,114,45,74
@@ -705,6 +705,7 @@ dex_number,name,form,hp,attack,defense
 607,Litwick,,137,108,98
 608,Lampent,,155,169,115
 609,Chandelure,,155,271,182
+609,Chandelure,Mega,155,335,227
 610,Axew,,130,154,101
 611,Fraxure,,165,212,123
 612,Haxorus,,183,284,172
@@ -812,7 +813,9 @@ dex_number,name,form,hp,attack,defense
 703,Carbink,,137,95,285
 704,Goomy,,128,101,112
 705,Sliggoo,,169,159,176
+705,Sliggoo,Hisuian,151,153,190
 706,Goodra,,207,220,242
+706,Goodra,Hisuian,190,211,255
 707,Klefki,,149,160,179
 708,Phantump,,125,125,103
 709,Trevenant,,198,201,154
@@ -1034,6 +1037,8 @@ dex_number,name,form,hp,attack,defense
 899,Wyrdeer,,230,206,145
 900,Kleavor,,172,253,174
 901,Ursaluna,,277,243,181
+902,Basculegion,Male,260,217,144
+902,Basculegion,Female,260,199,144
 903,Sneasler,,190,259,158
 904,Overqwil,,198,222,171
 905,Enamorus,,179,281,162
