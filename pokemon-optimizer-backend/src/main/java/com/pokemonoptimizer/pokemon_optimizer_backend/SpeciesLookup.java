@@ -1,15 +1,20 @@
 package com.pokemonoptimizer.pokemon_optimizer_backend;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
+import org.springframework.stereotype.Component;
 
 import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Optional;
+import java.util.List;
 
+@Component
 public class SpeciesLookup
 {
-    public HashMap<String, SpeciesType> loadSpecies() 
+    private final HashMap<String, SpeciesType> speciesById;
+    private HashMap<String, SpeciesType> loadSpecies() 
     {
         HashMap<String, SpeciesType> data = new HashMap<>();
         String speciesCSV = "/pokemon_base_stats_all.csv";
@@ -49,6 +54,22 @@ public class SpeciesLookup
             throw new IllegalStateException("The species data couldn't be loaded", e);
         }
         
+    }
+
+    public Optional<SpeciesType> findById(String id)
+    {
+        return Optional.ofNullable(speciesById.get(id));
+        
+    }
+
+    public List<SpeciesType> findAll()
+    {
+        return List.copyOf(speciesById.values());
+    }
+
+    public SpeciesLookup()
+    {
+        speciesById = loadSpecies();
     }
 
     public String getId(int dexNumber, String form)
