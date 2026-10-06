@@ -1,4 +1,4 @@
-# Pokémon PvP Optimizer
+# DexPresso
 
 Helps a player judge how good their caught Pokémon's IVs are for Pokémon GO PvP, and which stat values they should look for.
 
