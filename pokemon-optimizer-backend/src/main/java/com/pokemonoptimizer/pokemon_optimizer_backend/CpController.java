@@ -5,7 +5,6 @@ import org.springframework.web.server.*;
 import org.springframework.http.HttpStatus;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:5173")
 @RequestMapping("/api")
 public class CpController 
 {
