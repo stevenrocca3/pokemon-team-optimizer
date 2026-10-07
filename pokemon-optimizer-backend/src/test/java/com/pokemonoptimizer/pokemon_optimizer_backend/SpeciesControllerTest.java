@@ -2,9 +2,11 @@ package com.pokemonoptimizer.pokemon_optimizer_backend;
 import java.util.HashSet;
 import java.util.List;
 import org.junit.jupiter.api.Test;
+import org.springframework.web.server.ResponseStatusException;   
 import static org.junit.jupiter.api.Assertions.assertEquals; 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import java.util.Optional;
 
 public class SpeciesControllerTest {
@@ -53,7 +55,6 @@ public class SpeciesControllerTest {
                 target = option;
             }
         }
-        assertNotNull(target, "Goodra missing from options");
         assertEquals("Goodra", target.name());
         assertEquals("", target.form());
         assertEquals("706", target.id());
@@ -68,6 +69,22 @@ public class SpeciesControllerTest {
             Optional<SpeciesType> opt = (sl.findById(option.id()));
             assertTrue(opt.isPresent(), "findById couldn't find " + option.id());
         }
+    }
+
+    @Test
+    public void speciesByIdReturnsStats()
+    {
+        SpeciesDetail goodra = sc.speciesById("706");
+        //706,Goodra,,207,220,242
+        assertEquals(207, goodra.baseSta());
+        assertEquals(220, goodra.baseAtk());
+        assertEquals(242, goodra.baseDef());
+    }
+
+    @Test 
+    public void speciesByIdUnknownIs404()
+    {
+        assertThrows(ResponseStatusException.class, () -> sc.speciesById("9999"));
     }
     
 }

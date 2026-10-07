@@ -28,3 +28,13 @@ export interface RankedIvResult
     statProductRank : number;
     mirrorRank : number;
 }
+export interface SpeciesDetail
+{
+    //public record SpeciesDetail(String id, String name, String form, int baseAtk, int baseDef, int baseSta){};
+    id : string;
+    name : string;
+    form : string;
+    baseAtk : number;
+    baseDef : number;
+    baseSta : number;
+}

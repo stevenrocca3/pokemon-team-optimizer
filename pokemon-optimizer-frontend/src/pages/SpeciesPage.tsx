@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useParams, useSearchParams } from 'react-router'
-import { getRank } from '../api'
-import type { RankedIvResult, SpeciesOption } from '../types'
+import { getRank, getSpeciesDetail } from '../api'
+import type { RankedIvResult, SpeciesDetail, SpeciesOption } from '../types'
 import { useSpecies } from '../species/species-context'
 import { PokemonArt } from '../components/PokemonArt'
 import { displayName, formatDex } from '../lib/species'
@@ -34,6 +34,22 @@ function SpeciesView({ id, option }: { id: string; option?: SpeciesOption }) {
   const [result, setResult] = useState<RankingResult | null>(null)
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE)
   const [myIvs, setMyIvs] = useState({ atk: 0, def: 15, sta: 15 })
+  const [detail, setDetail] = useState<SpeciesDetail | 'error' | null>(null)
+
+  // SpeciesView is keyed by id, so this runs once per species
+  useEffect(() => {
+    let cancelled = false
+    getSpeciesDetail(id)
+      .then((d) => {
+        if (!cancelled) setDetail(d)
+      })
+      .catch(() => {
+        if (!cancelled) setDetail('error')
+      })
+    return () => {
+      cancelled = true
+    }
+  }, [id])
 
   const requestKey = `${id}|${league.key}|${bestBuddy}`
 
@@ -96,6 +112,8 @@ function SpeciesView({ id, option }: { id: string; option?: SpeciesOption }) {
                 <span className="rounded bg-brand px-2 py-0.5 text-base font-bold tracking-normal text-black">{option.form}</span>
               )}
             </h1>
+
+            <BaseStats detail={detail} />
 
             <div className="mt-6 flex flex-wrap items-center gap-4">
               <div role="tablist" aria-label="League" className="inline-flex rounded-lg bg-zinc-900 p-1 ring-1 ring-zinc-800">
@@ -268,6 +286,40 @@ function IvTriple({ atk, def, sta, large = false }: { atk: number; def: number; 
         </div>
       ))}
     </div>
+  )
+}
+
+// bars are scaled against this; only a handful of species exceed it
+const STAT_BAR_MAX = 350
+
+function BaseStats({ detail }: { detail: SpeciesDetail | 'error' | null }) {
+  if (detail === 'error') {
+    return <p className="mt-4 text-sm text-zinc-500">Base stats unavailable.</p>
+  }
+
+  const stats = [
+    { label: 'Attack', value: detail?.baseAtk },
+    { label: 'Defense', value: detail?.baseDef },
+    { label: 'Stamina', value: detail?.baseSta },
+  ]
+
+  return (
+    <dl className="mt-4 grid max-w-md gap-2">
+      {stats.map(({ label, value }) => (
+        <div key={label} className="grid grid-cols-[4.5rem_2.5rem_1fr] items-center gap-3 text-sm">
+          <dt className="text-zinc-400">{label}</dt>
+          <dd className="text-right font-semibold tabular-nums">{value ?? '–'}</dd>
+          <div className="h-2 rounded-full bg-zinc-800" aria-hidden="true">
+            {value !== undefined && (
+              <div
+                className="h-2 rounded-full bg-brand"
+                style={{ width: `${Math.min(value / STAT_BAR_MAX, 1) * 100}%` }}
+              />
+            )}
+          </div>
+        </div>
+      ))}
+    </dl>
   )
 }
 
