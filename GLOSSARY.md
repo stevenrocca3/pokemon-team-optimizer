@@ -32,6 +32,17 @@ _Avoid_: HP (when you mean the base stat or IV)
 **HP**:
 A Pokémon's actual hit points at a given level, derived from Stamina.
 
+**Shadow**:
+A Caught Pokémon that deals more and takes more damage in battle than a regular one, while its CP stays the same; Shadow is a property of the individual, not a Form.
+_Avoid_: Shadow form
+
+**Purified**:
+A former Shadow Pokémon returned to normal battle strength.
+
+**Level**:
+How far a Pokémon has been powered up, from 1 to its Max Level in half-level steps; it can only go up.
+_Avoid_: Power level
+
 **Best Buddy**:
 Buddy status that raises a Pokémon's Max Level by one.
 
@@ -42,8 +53,22 @@ _Avoid_: Level cap
 **XL Candy**:
 The resource required to power a Pokémon above level 40.
 
+**Fast Move**:
+A move used every turn it is selected, dealing small damage and building energy.
+
+**Charged Move**:
+A move that spends built-up energy for a large effect; a Pokémon knows one or two.
+
 **Moveset**:
-A Pokémon's one fast move and one or two charged moves.
+A Pokémon's one Fast Move and one or two Charged Moves.
+
+**Learnset**:
+The Fast Moves and Charged Moves a Species can know, including its Legacy Moves.
+_Avoid_: Move pool, movelist
+
+**Legacy Move**:
+A move a Species can no longer learn normally but that some Caught Pokémon still know, e.g. from a past event or an Elite TM.
+_Avoid_: Elite move, exclusive move
 
 ### Players
 
@@ -51,11 +76,19 @@ A Pokémon's one fast move and one or two charged moves.
 A person using the app, identified by their login.
 _Avoid_: User, account, player (in the glossary sense)
 
+**Visitor**:
+A person using the app without logging in; they can see rankings but have no Collection or Teams.
+_Avoid_: Guest, anonymous user
+
 **Trainer Level**:
 A Trainer's in-game level, which limits how far their Pokémon can be powered up.
 
+**Caught Pokémon**:
+One individual Pokémon a Trainer has saved in the app, with its Species, IV Spread, Level, Moveset, Best Buddy status and whether it is Shadow or Purified.
+_Avoid_: Pokémon (on its own), entry, instance
+
 **Collection**:
-The Pokémon a Trainer has caught and saved in the app, each with its Species, IV Spread, Moveset and Best Buddy status.
+All the Caught Pokémon belonging to one Trainer.
 _Avoid_: Box, storage, inventory
 
 ### Leagues, Cups and ranking
@@ -80,7 +113,7 @@ Whether a Species may enter a given Cup; it belongs to the Cup, never to the Spe
 _Avoid_: Legal, banned (on its own), PvP-eligible
 
 **Stat Product**:
-Attack × Defense × HP of an IV Spread at the highest level it can reach under the League's CP Cap; the standard measure of overall PvP strength.
+Attack × Defense × HP of an IV Spread at the highest Level it can reach under both the League's CP Cap and a Max Level (the Trainer's own, or the highest possible for a Visitor); the standard measure of overall PvP strength.
 
 **Stat Product Rank**:
 An IV Spread's position among all spreads of its Species in a League, ordered by Stat Product; equal Stat Products are ordered by Mirror Rank.
@@ -92,6 +125,10 @@ _Avoid_: Attack rank, CMP rank
 
 **Meta**:
 The set of Species commonly used in a Cup, which the Pokémon is checked against.
+
+**Cup Ranking**:
+The Species eligible for a Cup, ordered by how well they perform against its Meta.
+_Avoid_: Tier list, PvP rankings, rank (on its own)
 
 **Mirror Match**:
 A battle between two Pokémon of the same Species.
