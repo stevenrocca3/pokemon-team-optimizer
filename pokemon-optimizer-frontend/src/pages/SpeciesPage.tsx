@@ -5,7 +5,7 @@ import type { RankedIvResult, SpeciesDetail, SpeciesOption } from '../types'
 import { useSpecies } from '../species/species-context'
 import { PokemonArt } from '../components/PokemonArt'
 import { displayName, formatDex } from '../lib/species'
-import { LEAGUES, leagueFromKey, type League } from '../lib/leagues'
+import { DEFAULT_LEAGUE, LEAGUES, leagueFromKey, type League } from '../lib/leagues'
 import { NotFoundPage } from './NotFoundPage'
 
 const PAGE_SIZE = 50
@@ -84,7 +84,7 @@ function SpeciesView({ id, option }: { id: string; option?: SpeciesOption }) {
     const params = new URLSearchParams(searchParams)
     const nextLeague = next.league ?? league
     const nextBuddy = next.bestBuddy ?? bestBuddy
-    if (nextLeague.key === 'great') params.delete('league')
+    if (nextLeague === DEFAULT_LEAGUE) params.delete('league')
     else params.set('league', nextLeague.key)
     if (nextBuddy) params.set('bb', '1')
     else params.delete('bb')

@@ -10,6 +10,10 @@ Helps a player judge how good their caught Pokémon's IVs are for Pokémon GO Pv
 A kind of Pokémon, identified by its Pokédex number and Form (e.g. Galarian Stunfisk is distinct from Stunfisk).
 _Avoid_: Pokémon (when you mean the kind rather than an individual)
 
+**Form**:
+A variant of a Pokémon with its own Base Stats, such as a regional form (Hisuian, Galarian, Alolan) or a Mega Evolution; each Form is its own Species.
+_Avoid_: Variant
+
 **Base Stats**:
 The fixed Attack, Defense and Stamina values of a Species.
 
@@ -54,14 +58,26 @@ A Trainer's in-game level, which limits how far their Pokémon can be powered up
 The Pokémon a Trainer has caught and saved in the app, each with its Species, IV Spread, Moveset and Best Buddy status.
 _Avoid_: Box, storage, inventory
 
-### Leagues and ranking
+### Leagues, Cups and ranking
 
 **League**:
-A PvP format that limits which Pokémon may enter, usually by a CP Cap (Great 1500, Ultra 2500, Master none).
-_Avoid_: Cap (on its own)
+A CP tier of PvP, defined only by its CP Cap: Little (500), Great (1500), Ultra (2500) or Master (none).
+_Avoid_: Cap (on its own), format
 
 **CP Cap**:
 The highest CP a Pokémon may have to enter a League.
+
+**Cup**:
+A PvP format played under exactly one League's CP Cap, with its own entry rules (e.g. allowed types, banned Species, whether Mega Evolutions may enter).
+_Avoid_: Format, mode, event
+
+**Standard Cup**:
+The everyday Cup for a League (e.g. standard Great League), whose entry rules can change from season to season.
+_Avoid_: Open League, default League
+
+**Eligibility**:
+Whether a Species may enter a given Cup; it belongs to the Cup, never to the Species alone.
+_Avoid_: Legal, banned (on its own), PvP-eligible
 
 **Stat Product**:
 Attack × Defense × HP of an IV Spread at the highest level it can reach under the League's CP Cap; the standard measure of overall PvP strength.
@@ -75,7 +91,7 @@ An IV Spread's position among all spreads of its Species in a League, ordered by
 _Avoid_: Attack rank, CMP rank
 
 **Meta**:
-The set of Species commonly used in a League, which the Pokémon is checked against.
+The set of Species commonly used in a Cup, which the Pokémon is checked against.
 
 **Mirror Match**:
 A battle between two Pokémon of the same Species.
@@ -83,7 +99,7 @@ A battle between two Pokémon of the same Species.
 ### Teams
 
 **Team**:
-The three Pokémon a player brings to a standard 3v3 League battle, all of which can be used.
+The three Pokémon a player brings to a 3v3 battle in a Cup, all of which can be used.
 _Avoid_: Roster, party
 
 **Role**:

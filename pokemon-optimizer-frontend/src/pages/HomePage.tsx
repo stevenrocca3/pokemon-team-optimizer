@@ -32,7 +32,7 @@ export function HomePage() {
           <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-brand">Pokémon GO PvP</p>
           <h1 className="text-4xl font-black tracking-tight sm:text-5xl">Find the best IVs for every league</h1>
           <p className="mx-auto mt-4 max-w-xl text-zinc-400">
-            Every one of a species' 4,096 IV spreads, ranked for Great, Ultra and Master League.
+            Every one of a species' 4,096 IV spreads, ranked for Little, Great, Ultra and Master League.
           </p>
           <div className="mx-auto mt-8 max-w-2xl text-left">
             <SearchBar size="large" autoFocus />
