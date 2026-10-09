@@ -2,15 +2,16 @@ import { useState } from 'react'
 import { artworkUrl } from '../lib/species'
 
 interface Props {
-  id: string
+  /** Pokédex number; undefined while the species list is still loading. */
+  dex?: number
   alt: string
   className?: string
 }
 
-export function PokemonArt({ id, alt, className = '' }: Props) {
-  const [failedId, setFailedId] = useState<string | null>(null)
+export function PokemonArt({ dex, alt, className = '' }: Props) {
+  const [failedDex, setFailedDex] = useState<number | null>(null)
 
-  if (failedId === id) {
+  if (dex === undefined || failedDex === dex) {
     return (
       <div className={`grid place-items-center text-zinc-600 ${className}`} aria-hidden="true">
         <svg viewBox="0 0 24 24" className="h-1/2 w-1/2" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -24,10 +25,10 @@ export function PokemonArt({ id, alt, className = '' }: Props) {
 
   return (
     <img
-      src={artworkUrl(id)}
+      src={artworkUrl(dex)}
       alt={alt}
       loading="lazy"
-      onError={() => setFailedId(id)}
+      onError={() => setFailedDex(dex)}
       className={`object-contain ${className}`}
     />
   )

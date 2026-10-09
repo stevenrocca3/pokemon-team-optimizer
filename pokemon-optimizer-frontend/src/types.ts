@@ -2,7 +2,7 @@ export interface SpeciesOption
 {
     id : string;
     name : string;
-    form : string;
+    dex : number;
 }
 export interface RankRequest
 {
@@ -33,7 +33,7 @@ export interface SpeciesDetail
     //public record SpeciesDetail(String id, String name, String form, int baseAtk, int baseDef, int baseSta){};
     id : string;
     name : string;
-    form : string;
+    dex : number;
     baseAtk : number;
     baseDef : number;
     baseSta : number;

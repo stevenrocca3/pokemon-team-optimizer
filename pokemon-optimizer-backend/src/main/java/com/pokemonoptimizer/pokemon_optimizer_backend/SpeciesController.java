@@ -24,7 +24,7 @@ public class SpeciesController
         ArrayList<SpeciesOption> speciesOptionList = new ArrayList<>();
         for (SpeciesType species : speciesLookup.findAll())
         {
-            SpeciesOption speciesOption = new SpeciesOption(speciesLookup.getId(species.dexNumber(), species.form()),species.name(), species.form());
+            SpeciesOption speciesOption = new SpeciesOption(species.speciesId(),species.speciesName(), species.dex());
             speciesOptionList.add(speciesOption);
             
         }
@@ -35,8 +35,8 @@ public class SpeciesController
     {
         SpeciesType speciesType = speciesLookup.findById(id).orElseThrow(() 
         -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Species: " + id + " Not Found."));
-        SpeciesDetail speciesDetail = new SpeciesDetail(speciesLookup.getId(speciesType.dexNumber(), speciesType.form()), 
-                                                        speciesType.name(), speciesType.form(), 
+        SpeciesDetail speciesDetail = new SpeciesDetail(speciesType.speciesId(), 
+                                                        speciesType.speciesName(), speciesType.dex(), 
                                                         speciesType.baseAtk(), speciesType.baseDef(), 
                                                         speciesType.baseSta());
         return speciesDetail;

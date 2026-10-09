@@ -4,7 +4,7 @@ import { getRank, getSpeciesDetail } from '../api'
 import type { RankedIvResult, SpeciesDetail, SpeciesOption } from '../types'
 import { useSpecies } from '../species/species-context'
 import { PokemonArt } from '../components/PokemonArt'
-import { displayName, formatDex } from '../lib/species'
+import { formatDex } from '../lib/species'
 import { DEFAULT_LEAGUE, LEAGUES, leagueFromKey, type League } from '../lib/leagues'
 import { NotFoundPage } from './NotFoundPage'
 
@@ -102,15 +102,12 @@ function SpeciesView({ id, option }: { id: string; option?: SpeciesOption }) {
       <section className="border-b border-zinc-800 bg-gradient-to-b from-zinc-900 to-zinc-950">
         <div className="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-8 sm:flex-row sm:items-center sm:py-10">
           <div className="mx-auto aspect-square w-48 shrink-0 rounded-xl bg-zinc-800/60 p-4 ring-1 ring-zinc-700 sm:mx-0 sm:w-56">
-            <PokemonArt id={id} alt={option ? displayName(option) : ''} className="h-full w-full" />
+            <PokemonArt dex={option?.dex} alt={option?.name ?? ''} className="h-full w-full" />
           </div>
           <div className="min-w-0 flex-1">
-            <div className="text-sm text-zinc-500">{formatDex(id)}</div>
+            <div className="text-sm text-zinc-500">{option ? formatDex(option.dex) : '\u00a0'}</div>
             <h1 className="mt-1 flex flex-wrap items-baseline gap-3 text-4xl font-black tracking-tight sm:text-5xl">
               {title}
-              {option?.form && (
-                <span className="rounded bg-brand px-2 py-0.5 text-base font-bold tracking-normal text-black">{option.form}</span>
-              )}
             </h1>
 
             <BaseStats detail={detail} />

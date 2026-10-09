@@ -2,10 +2,10 @@ import { Link } from 'react-router'
 import { SearchBar } from '../components/SearchBar'
 import { PokemonArt } from '../components/PokemonArt'
 import { useSpecies } from '../species/species-context'
-import { displayName, formatDex } from '../lib/species'
+import { formatDex } from '../lib/species'
 
 // Staples of GO Battle League — quick ways into the app
-const POPULAR_IDS = ['308', '184', '379', '227', '334', '709', '108', '487']
+const POPULAR_IDS = ['medicham', 'azumarill', 'registeel', 'skarmory', 'altaria', 'trevenant', 'lickitung', 'giratina_altered']
 
 const EXPLAINERS = [
   {
@@ -60,11 +60,11 @@ export function HomePage() {
                 className="group overflow-hidden rounded-lg bg-zinc-900 ring-1 ring-zinc-800 transition hover:ring-brand"
               >
                 <div className="aspect-square bg-zinc-800/50 p-4">
-                  <PokemonArt id={id} alt={option ? displayName(option) : ''} className="h-full w-full transition group-hover:scale-105" />
+                  <PokemonArt dex={option?.dex} alt={option?.name ?? ''} className="h-full w-full transition group-hover:scale-105" />
                 </div>
                 <div className="p-3">
-                  <div className="text-xs text-zinc-500">{formatDex(id)}</div>
-                  <div className="truncate font-semibold">{option ? displayName(option) : '…'}</div>
+                  <div className="text-xs text-zinc-500">{option ? formatDex(option.dex) : '\u00a0'}</div>
+                  <div className="truncate font-semibold">{option?.name ?? '…'}</div>
                 </div>
               </Link>
             )

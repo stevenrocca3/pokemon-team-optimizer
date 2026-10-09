@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.web.server.ResponseStatusException;   
 import static org.junit.jupiter.api.Assertions.assertEquals; 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import java.util.Optional;
@@ -32,15 +33,14 @@ public class SpeciesControllerTest {
         SpeciesOption target = null;
         for (SpeciesOption option: options)
         {
-            if (option.id().equals("706-hisuian"))
+            if (option.id().equals("typhlosion_hisuian"))
             {
                 target = option;
             }
         }
-        assertNotNull(target, "Hisuian Goodra missing from options");
-        assertEquals("Goodra", target.name());
-        assertEquals("Hisuian", target.form());
-        assertEquals("706-hisuian", target.id());
+        assertNotNull(target, "Hisuian Typhlosion missing from options");
+        assertEquals("Typhlosion (Hisuian)", target.name());
+        assertEquals("typhlosion_hisuian", target.id());
     }
 
     @Test
@@ -50,14 +50,14 @@ public class SpeciesControllerTest {
         SpeciesOption target = null;
         for (SpeciesOption option: options)
         {
-            if (option.id().equals("706"))
+            if (option.id().equals("typhlosion"))
             {
                 target = option;
             }
         }
-        assertEquals("Goodra", target.name());
-        assertEquals("", target.form());
-        assertEquals("706", target.id());
+        assertNotNull(target, "Typhlosion missing from options");
+        assertEquals("Typhlosion", target.name());
+        assertEquals("typhlosion", target.id());
     }
 
     @Test
@@ -74,17 +74,24 @@ public class SpeciesControllerTest {
     @Test
     public void speciesByIdReturnsStats()
     {
-        SpeciesDetail goodra = sc.speciesById("706");
-        //706,Goodra,,207,220,242
-        assertEquals(207, goodra.baseSta());
-        assertEquals(220, goodra.baseAtk());
-        assertEquals(242, goodra.baseDef());
+        SpeciesDetail typhlosion = sc.speciesById("typhlosion");
+        
+        assertEquals(186, typhlosion.baseSta());
+        assertEquals(223, typhlosion.baseAtk());
+        assertEquals(173, typhlosion.baseDef());
     }
 
     @Test 
     public void speciesByIdUnknownIs404()
     {
         assertThrows(ResponseStatusException.class, () -> sc.speciesById("9999"));
+    }
+    
+    @Test 
+    public void speciesPresentShadowNot()
+    {
+        Optional<SpeciesType> opt = (sl.findById("bulbasaur_shadow"));
+        assertTrue(opt.isEmpty(), "findById found: " + opt);
     }
     
 }

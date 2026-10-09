@@ -54,7 +54,7 @@ export function SearchBar({ size = 'compact', autoFocus = false }: Props) {
       ? 'Loading species…'
       : species.status === 'error'
         ? 'Species unavailable — is the backend running?'
-        : 'Search 1,100+ Pokémon by name, form or dex #'
+        : 'Search 1,100+ Pokémon by name or dex #'
 
   const large = size === 'large'
 
@@ -119,13 +119,12 @@ export function SearchBar({ size = 'compact', autoFocus = false }: Props) {
                   index === activeIndex ? 'bg-zinc-800' : ''
                 }`}
               >
-                <PokemonArt id={option.id} alt="" className="h-10 w-10 shrink-0" />
+                <PokemonArt dex={option.dex} alt="" className="h-10 w-10 shrink-0" />
                 <div className="min-w-0">
                   <div className="truncate font-medium text-zinc-100">
                     {option.name}
-                    {option.form && <span className="ml-2 text-sm font-normal text-brand">{option.form}</span>}
                   </div>
-                  <div className="text-xs text-zinc-500">{formatDex(option.id)}</div>
+                  <div className="text-xs text-zinc-500">{formatDex(option.dex)}</div>
                 </div>
               </li>
             ))
