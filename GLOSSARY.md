@@ -63,12 +63,16 @@ A move that spends built-up energy for a large effect; a Pokémon knows one or t
 A Pokémon's one Fast Move and one or two Charged Moves.
 
 **Learnset**:
-The Fast Moves and Charged Moves a Species can know, including its Legacy Moves.
+The Fast Moves and Charged Moves a Species can know, including its Elite Moves.
 _Avoid_: Move pool, movelist
 
-**Legacy Move**:
+**Elite Move**:
 A move a Species can no longer learn normally but that some Caught Pokémon still know, e.g. from a past event or an Elite TM.
-_Avoid_: Elite move, exclusive move
+_Avoid_: Legacy move, Elite TM move, exclusive move
+
+**Elite TM**:
+An item that teaches a Caught Pokémon one of its Species' Elite Moves.
+_Avoid_: ETM
 
 ### Players
 

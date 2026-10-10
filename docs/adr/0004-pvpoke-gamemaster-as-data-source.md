@@ -1,6 +1,6 @@
 # Species and move data come from a snapshot of PvPoke's gamemaster
 
-Caught Pokémon need Movesets chosen from real Learnsets, including Legacy Moves, and the battle simulator is checked against PvPoke (ADR 0002). We therefore replace our own species CSV with a snapshot of PvPoke's MIT-licensed `gamemaster.json`, committed to the repo with its license, as the single source of Base Stats, moves and Learnsets, and we adopt PvPoke's `speciesId` (e.g. `goodra_hisuian`) as our Species ID. The loader translates the file into our model: it skips Shadow entries, because Shadow is a property of a Caught Pokémon rather than a Form, and skips Species that are not yet released.
+Caught Pokémon need Movesets chosen from real Learnsets, including Elite Moves, and the battle simulator is checked against PvPoke (ADR 0002). We therefore replace our own species CSV with a snapshot of PvPoke's MIT-licensed `gamemaster.json`, committed to the repo with its license, as the single source of Base Stats, moves and Learnsets, and we adopt PvPoke's `speciesId` (e.g. `goodra_hisuian`) as our Species ID. The loader translates the file into our model: it skips Shadow entries, because Shadow is a property of a Caught Pokémon rather than a Form, and skips Species that are not yet released.
 
 ## Considered Options
 

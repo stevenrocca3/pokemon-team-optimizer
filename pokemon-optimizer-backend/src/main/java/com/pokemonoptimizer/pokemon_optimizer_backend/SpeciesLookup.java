@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Optional;
 import java.util.List; 
+import java.util.HashSet;
+import java.util.Set;
 
 @Component
 public class SpeciesLookup
@@ -28,7 +30,7 @@ public class SpeciesLookup
             Gamemaster gamemaster = mapper.readValue(is, Gamemaster.class); 
             for (GamemasterPokemon pokemon : gamemaster.pokemon())
                 {
-                    if (!pokemon.released() || (pokemon.tags() != null && pokemon.tags().contains("shadow")))
+                    if (!pokemon.released() || (pokemon.tags().contains("shadow")))
                     {
                         continue;
                     }
@@ -39,7 +41,13 @@ public class SpeciesLookup
                     int baseSta = pokemon.baseStats().hp();
                     int baseAtk = pokemon.baseStats().atk();
                     int baseDef = pokemon.baseStats().def();
-                    SpeciesType species = new SpeciesType(dex, speciesName, speciesId, baseSta, baseAtk, baseDef);
+                    //pvpoke splits these into legacy and elite moves, we do just elite moves
+                    HashSet<String> eliteMoves = new HashSet<>();
+                    eliteMoves.addAll(pokemon.legacyMoves());
+                    eliteMoves.addAll(pokemon.eliteMoves());
+                    Set<String> finalEliteMoves = Set.copyOf(eliteMoves);
+                    Learnset learnset = new Learnset(pokemon.fastMoves(), pokemon.chargedMoves(), finalEliteMoves);
+                    SpeciesType species = new SpeciesType(dex, speciesName, speciesId, baseSta, baseAtk, baseDef, learnset);
                     if (!data.containsKey(speciesId))
                     {
                         data.put(speciesId, species);

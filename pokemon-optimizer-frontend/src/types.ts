@@ -28,6 +28,12 @@ export interface RankedIvResult
     statProductRank : number;
     mirrorRank : number;
 }
+export interface Learnset
+{
+    fastMoves : string[];
+    chargedMoves : string[];
+    eliteMoves : string[];
+}
 export interface SpeciesDetail
 {
     //public record SpeciesDetail(String id, String name, String form, int baseAtk, int baseDef, int baseSta){};
@@ -37,4 +43,5 @@ export interface SpeciesDetail
     baseAtk : number;
     baseDef : number;
     baseSta : number;
+    learnset : Learnset;
 }

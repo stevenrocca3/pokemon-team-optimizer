@@ -1,8 +1,14 @@
 package com.pokemonoptimizer.pokemon_optimizer_backend;
 
-import static org.junit.jupiter.api.Assertions.assertEquals; 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;  
+
 
 import org.junit.jupiter.api.Test;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Set;
+import java.util.HashSet;
 
 public class SpeciesLookupTest 
 {
@@ -30,7 +36,7 @@ public class SpeciesLookupTest
     {
         String key = "typhlosion"; 
         String key2 = "typhlosion_hisuian";
-        SpeciesType typhlosion = sl.findById(key).orElseThrow(); //checking lookups ignore case
+        SpeciesType typhlosion = sl.findById(key).orElseThrow(); 
         SpeciesType typhlosion_hisuian = sl.findById(key2).orElseThrow();
      
         assertEquals(177, typhlosion_hisuian.baseSta()); // making sure bsts are different from hisuian vs reg form
@@ -40,6 +46,47 @@ public class SpeciesLookupTest
         assertEquals(223, typhlosion.baseAtk());
         assertEquals(173, typhlosion.baseDef());
 
+    }
+
+    @Test 
+    public void testFastMoves()
+    {
+        String key = "medicham"; 
+        SpeciesType medicham = sl.findById(key).orElseThrow();
+        List<String> expected = new ArrayList<>();
+        expected.add("COUNTER");
+        expected.add("PSYCHO_CUT");
+
+        assertEquals(expected, medicham.learnset().fastMoves());
+    }
+
+    @Test 
+    public void testChargedMovesAndHasEmpySet()
+    {
+        String key = "medicham"; 
+        SpeciesType medicham = sl.findById(key).orElseThrow();
+        List<String> expected = new ArrayList<>();
+        // DYNAMIC_PUNCH, ICE_PUNCH, PSYCHIC, POWER_UP_PUNCH
+        expected.add("DYNAMIC_PUNCH");
+        expected.add("ICE_PUNCH");
+        expected.add("PSYCHIC");
+        expected.add("POWER_UP_PUNCH");
+
+        assertTrue(medicham.learnset().eliteMoves().isEmpty());
+        assertEquals(expected, medicham.learnset().chargedMoves());
+    }
+
+    @Test 
+    public void testEliteMoves()
+    {
+        String key = "muk"; 
+        SpeciesType muk = sl.findById(key).orElseThrow();
+        HashSet<String> exp = new HashSet<>();
+        //  ACID and LICK
+        exp.add("LICK");
+        exp.add("ACID");
+        Set<String> expected = Set.copyOf(exp);
+        assertEquals(expected, muk.learnset().eliteMoves());
     }
 
 }

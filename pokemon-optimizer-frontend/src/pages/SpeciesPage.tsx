@@ -5,6 +5,7 @@ import type { RankedIvResult, SpeciesDetail, SpeciesOption } from '../types'
 import { useSpecies } from '../species/species-context'
 import { PokemonArt } from '../components/PokemonArt'
 import { formatDex } from '../lib/species'
+import { moveName } from '../lib/moves'
 import { DEFAULT_LEAGUE, LEAGUES, leagueFromKey, type League } from '../lib/leagues'
 import { NotFoundPage } from './NotFoundPage'
 
@@ -144,6 +145,8 @@ function SpeciesView({ id, option }: { id: string; option?: SpeciesOption }) {
           </div>
         </div>
       </section>
+
+      <Moves detail={detail} />
 
       <div className="mx-auto max-w-6xl px-4 py-8">
         {current && 'error' in current ? (
@@ -317,6 +320,58 @@ function BaseStats({ detail }: { detail: SpeciesDetail | 'error' | null }) {
         </div>
       ))}
     </dl>
+  )
+}
+
+function Moves({ detail }: { detail: SpeciesDetail | 'error' | null }) {
+  // BaseStats already reports the failed request
+  if (detail === 'error') return null
+
+  const groups = [
+    { label: 'Fast Moves', moves: detail?.learnset.fastMoves },
+    { label: 'Charged Moves', moves: detail?.learnset.chargedMoves },
+  ]
+  const eliteMoves = detail?.learnset.eliteMoves ?? []
+
+  return (
+    <section className="border-b border-zinc-800">
+      <div className="mx-auto max-w-6xl px-4 py-6">
+        <div className="grid gap-6 sm:grid-cols-2">
+          {groups.map(({ label, moves }) => (
+            <div key={label}>
+              <h2 className="text-sm font-semibold uppercase tracking-wider text-zinc-400">{label}</h2>
+              <ul className="mt-3 flex flex-wrap gap-2">
+                {moves
+                  ? moves.map((move) => {
+                      const elite = eliteMoves.includes(move)
+                      return (
+                        <li
+                          key={move}
+                          className={`rounded-md px-3 py-1.5 text-sm ring-1 ${
+                            elite ? 'bg-brand/10 text-brand ring-brand/60' : 'bg-zinc-900 text-zinc-200 ring-zinc-800'
+                          }`}
+                        >
+                          {moveName(move)}
+                          {elite && <span className="ml-1.5" aria-label="Elite Move" title="Elite Move">★</span>}
+                        </li>
+                      )
+                    })
+                  : Array.from({ length: 3 }, (_, i) => (
+                      <li key={i}>
+                        <Skeleton className="h-8 w-24" />
+                      </li>
+                    ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+        {eliteMoves.length > 0 && (
+          <p className="mt-4 text-xs text-zinc-500">
+            <span className="text-brand">★</span> Elite Move: can't be learned normally; needs an Elite TM or came from a past event.
+          </p>
+        )}
+      </div>
+    </section>
   )
 }
 
