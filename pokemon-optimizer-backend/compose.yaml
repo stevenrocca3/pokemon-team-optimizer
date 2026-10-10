@@ -1,0 +1,20 @@
+# Use postgres/example user/password credentials
+
+services:
+
+  db:
+    image: postgres:17
+    volumes: 
+      - dexpresso-data:/var/lib/postgresql/data
+    restart: always
+    # set shared memory limit when using docker compose
+    shm_size: 128mb
+    environment:
+      POSTGRES_DB : dexpresso
+      POSTGRES_USER : ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - 5432:5432
+volumes:
+  dexpresso-data:
+    
