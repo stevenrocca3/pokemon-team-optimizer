@@ -45,3 +45,8 @@ export interface SpeciesDetail
     baseSta : number;
     learnset : Learnset;
 }
+export interface Move
+{
+    moveId : string;
+    name : string;
+}

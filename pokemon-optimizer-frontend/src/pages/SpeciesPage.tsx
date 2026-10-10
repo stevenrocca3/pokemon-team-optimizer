@@ -5,7 +5,7 @@ import type { RankedIvResult, SpeciesDetail, SpeciesOption } from '../types'
 import { useSpecies } from '../species/species-context'
 import { PokemonArt } from '../components/PokemonArt'
 import { formatDex } from '../lib/species'
-import { moveName } from '../lib/moves'
+import { useMoves } from '../moves/moves-context'
 import { DEFAULT_LEAGUE, LEAGUES, leagueFromKey, type League } from '../lib/leagues'
 import { NotFoundPage } from './NotFoundPage'
 
@@ -324,6 +324,8 @@ function BaseStats({ detail }: { detail: SpeciesDetail | 'error' | null }) {
 }
 
 function Moves({ detail }: { detail: SpeciesDetail | 'error' | null }) {
+  const moveList = useMoves()
+
   // BaseStats already reports the failed request
   if (detail === 'error') return null
 
@@ -332,6 +334,8 @@ function Moves({ detail }: { detail: SpeciesDetail | 'error' | null }) {
     { label: 'Charged Moves', moves: detail?.learnset.chargedMoves },
   ]
   const eliteMoves = detail?.learnset.eliteMoves ?? []
+  // fall back to the raw ID if the move list failed to load or lacks this move
+  const nameOf = (id: string) => (moveList.status === 'ready' ? moveList.byId.get(id)?.name : undefined) ?? id
 
   return (
     <section className="border-b border-zinc-800">
@@ -341,7 +345,7 @@ function Moves({ detail }: { detail: SpeciesDetail | 'error' | null }) {
             <div key={label}>
               <h2 className="text-sm font-semibold uppercase tracking-wider text-zinc-400">{label}</h2>
               <ul className="mt-3 flex flex-wrap gap-2">
-                {moves
+                {moves && moveList.status !== 'loading'
                   ? moves.map((move) => {
                       const elite = eliteMoves.includes(move)
                       return (
@@ -351,7 +355,7 @@ function Moves({ detail }: { detail: SpeciesDetail | 'error' | null }) {
                             elite ? 'bg-brand/10 text-brand ring-brand/60' : 'bg-zinc-900 text-zinc-200 ring-zinc-800'
                           }`}
                         >
-                          {moveName(move)}
+                          {nameOf(move)}
                           {elite && <span className="ml-1.5" aria-label="Elite Move" title="Elite Move">★</span>}
                         </li>
                       )

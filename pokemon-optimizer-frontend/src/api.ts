@@ -1,4 +1,4 @@
-import type {SpeciesOption, RankRequest, RankedIvResult, SpeciesDetail} from './types'
+import type {SpeciesOption, RankRequest, RankedIvResult, SpeciesDetail, Move} from './types'
 
 export async function getSpecies(): Promise<SpeciesOption[]>
 {
@@ -40,4 +40,14 @@ export async function getSpeciesDetail(id: string): Promise<SpeciesDetail>
     }
     return await response.json();
 }
-
+export async function getMoves(): Promise<Move[]>
+{
+    const url = '/api/moves';
+    
+    const response = await fetch(url);
+    if (!response.ok)
+    {
+        throw new Error(`Response Status:  ${response.status}`);
+    }
+    return await response.json();
+}
