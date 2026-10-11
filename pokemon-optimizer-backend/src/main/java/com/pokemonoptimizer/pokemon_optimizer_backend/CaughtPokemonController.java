@@ -2,6 +2,7 @@ package com.pokemonoptimizer.pokemon_optimizer_backend;
 
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.data.jpa.repository.JpaRepository; 
 import org.springframework.http.HttpStatus;
 import java.util.List;
 import jakarta.validation.Valid;
@@ -41,5 +42,16 @@ public class CaughtPokemonController
         }
         CaughtPokemon cp = new CaughtPokemon(request.speciesId(), request.atkIv(), request.defIv(), request.staIv(), request.level());
         return caughtPokemonRepository.save(cp);
+    }
+
+    @DeleteMapping("/collection/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void removeFromCollection(@PathVariable Long id)
+    {
+        if (!caughtPokemonRepository.existsById(id)) 
+        {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Caught Pokemon: " + id + " Not Found.");
+        }
+        caughtPokemonRepository.deleteById(id);
     }
 }
