@@ -50,3 +50,26 @@ export interface Move
     moveId : string;
     name : string;
 }
+// public CaughtPokemon(String speciesId, int atkIv, int defIv, int staIv, double level) this.speciesId = speciesId; this.atkIv = atkIv;
+// this.defIv = defIv; this.staIv = staIv; this.level = level;
+
+export interface CaughtPokemon
+{
+    id : number; //fine bc IDs are sequential so precision loss won't happen for this scale
+    speciesId : string;
+    atkIv : number;
+    defIv : number;
+    staIv : number;
+    level : number;
+}
+
+export interface CaughtPokemonRequest
+{
+    // public record CaughtPokemonRequest(@NotBlank String speciesId, @Min(0) @Max(15) int atkIv, @Min(0) @Max(15) int defIv, 
+    //@Min(0) @Max(15) int staIv, @DecimalMin("1") @DecimalMax("51") double level)
+    speciesId : string;
+    atkIv : number;
+    defIv : number;
+    staIv : number;
+    level : number;
+}

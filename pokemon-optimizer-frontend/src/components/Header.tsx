@@ -1,4 +1,4 @@
-import { Link, useLocation } from 'react-router'
+import { Link, NavLink, useLocation } from 'react-router'
 import { SearchBar } from './SearchBar'
 
 export function Header() {
@@ -17,6 +17,16 @@ export function Header() {
             <SearchBar />
           </div>
         )}
+        <NavLink
+          to="/collection"
+          className={({ isActive }) =>
+            `shrink-0 text-sm font-semibold transition ${onHome ? 'ml-auto' : ''} ${
+              isActive ? 'text-brand' : 'text-zinc-300 hover:text-zinc-100'
+            }`
+          }
+        >
+          Collection
+        </NavLink>
       </div>
     </header>
   )

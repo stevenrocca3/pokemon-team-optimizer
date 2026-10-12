@@ -1,4 +1,4 @@
-import type {SpeciesOption, RankRequest, RankedIvResult, SpeciesDetail, Move} from './types'
+import type {SpeciesOption, RankRequest, RankedIvResult, SpeciesDetail, Move, CaughtPokemon, CaughtPokemonRequest} from './types'
 
 export async function getSpecies(): Promise<SpeciesOption[]>
 {
@@ -50,4 +50,48 @@ export async function getMoves(): Promise<Move[]>
         throw new Error(`Response Status:  ${response.status}`);
     }
     return await response.json();
+}
+export async function getCollection(): Promise<CaughtPokemon[]>
+{
+    const url = '/api/collection';
+    
+    const response = await fetch(url);
+    if (!response.ok)
+    {
+        throw new Error(`Response Status:  ${response.status}`);
+    }
+    return await response.json();
+}
+
+export async function addToCollection(request: CaughtPokemonRequest): Promise<CaughtPokemon>
+{
+    const url = '/api/collection';
+   
+    const response = await fetch(url, 
+    {
+        method: 'POST',
+        headers: { 'Content-Type' : 'application/json' },
+        body: JSON.stringify(request)
+    }
+    );
+    if (!response.ok)
+    {
+        throw new Error(`Response Status: ${response.status}`);
+    }
+    return await response.json();
+
+}
+
+export async function removeFromCollection(id : number): Promise<void>
+{
+    const url = `/api/collection/${id}`;
+
+    const response = await fetch(url, 
+    {
+        method: 'DELETE',
+    })
+    if (!response.ok)
+    {
+        throw new Error(`Response Status:  ${response.status}`);
+    }
 }

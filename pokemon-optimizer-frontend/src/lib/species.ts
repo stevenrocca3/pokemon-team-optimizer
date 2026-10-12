@@ -5,6 +5,10 @@ export function artworkUrl(dex: number): string {
   return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${dex}.png`
 }
 
+export function formatLevel(level: number): string {
+  return Number.isInteger(level) ? String(level) : level.toFixed(1)
+}
+
 export function formatDex(dex: number): string {
   return `#${String(dex).padStart(4, '0')}`
 }

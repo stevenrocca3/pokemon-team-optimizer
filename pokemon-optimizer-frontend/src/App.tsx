@@ -4,6 +4,7 @@ import { SpeciesProvider } from './species/SpeciesProvider'
 import { MovesProvider } from './moves/MovesProvider'
 import { HomePage } from './pages/HomePage'
 import { SpeciesPage } from './pages/SpeciesPage'
+import { CollectionPage } from './pages/CollectionPage'
 import { NotFoundPage } from './pages/NotFoundPage'
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/species/:id" element={<SpeciesPage />} />
+              <Route path="/collection" element={<CollectionPage />} />
               <Route path="*" element={<NotFoundPage />} />
             </Routes>
           </main>

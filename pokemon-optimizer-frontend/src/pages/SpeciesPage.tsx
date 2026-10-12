@@ -4,7 +4,9 @@ import { getRank, getSpeciesDetail } from '../api'
 import type { RankedIvResult, SpeciesDetail, SpeciesOption } from '../types'
 import { useSpecies } from '../species/species-context'
 import { PokemonArt } from '../components/PokemonArt'
-import { formatDex } from '../lib/species'
+import { IvTriple } from '../components/IvTriple'
+import { AddToCollection } from '../components/AddToCollection'
+import { formatDex, formatLevel } from '../lib/species'
 import { useMoves } from '../moves/moves-context'
 import { DEFAULT_LEAGUE, LEAGUES, leagueFromKey, type League } from '../lib/leagues'
 import { NotFoundPage } from './NotFoundPage'
@@ -200,6 +202,7 @@ function SpeciesView({ id, option }: { id: string; option?: SpeciesOption }) {
                     <Skeleton className="ml-auto h-10 w-48" />
                   )}
                 </div>
+                <AddToCollection speciesId={id} ivs={myIvs} />
               </div>
             </div>
 
@@ -266,25 +269,6 @@ function SpeciesView({ id, option }: { id: string; option?: SpeciesOption }) {
           </>
         )}
       </div>
-    </div>
-  )
-}
-
-function IvTriple({ atk, def, sta, large = false }: { atk: number; def: number; sta: number; large?: boolean }) {
-  return (
-    <div className="flex items-center gap-3">
-      {[
-        ['Atk', atk],
-        ['Def', def],
-        ['Sta', sta],
-      ].map(([label, value]) => (
-        <div key={label} className={large ? 'w-14' : 'w-12'} title={`${label} ${value}`}>
-          <div className={`font-semibold tabular-nums ${large ? 'text-2xl' : ''}`}>{value}</div>
-          <div className="mt-1 h-1 rounded-full bg-zinc-800">
-            <div className="h-1 rounded-full bg-brand" style={{ width: `${(Number(value) / 15) * 100}%` }} />
-          </div>
-        </div>
-      ))}
     </div>
   )
 }
@@ -394,10 +378,6 @@ function Skeleton({ className = '' }: { className?: string }) {
 
 function ivKey(atk: number, def: number, sta: number) {
   return `${atk}-${def}-${sta}`
-}
-
-function formatLevel(level: number) {
-  return Number.isInteger(level) ? String(level) : level.toFixed(1)
 }
 
 function formatInt(n: number) {
