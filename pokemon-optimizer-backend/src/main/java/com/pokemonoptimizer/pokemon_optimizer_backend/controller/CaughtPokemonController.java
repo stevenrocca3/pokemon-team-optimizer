@@ -1,10 +1,22 @@
-package com.pokemonoptimizer.pokemon_optimizer_backend;
-
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
-import org.springframework.data.jpa.repository.JpaRepository; 
-import org.springframework.http.HttpStatus;
+package com.pokemonoptimizer.pokemon_optimizer_backend.controller;
 import java.util.List;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
+
+import com.pokemonoptimizer.pokemon_optimizer_backend.dto.CaughtPokemonRequest;
+import com.pokemonoptimizer.pokemon_optimizer_backend.gamemaster.SpeciesLookup;
+import com.pokemonoptimizer.pokemon_optimizer_backend.persistence.CaughtPokemon;
+import com.pokemonoptimizer.pokemon_optimizer_backend.persistence.CaughtPokemonRepository;
+
 import jakarta.validation.Valid;
 
 

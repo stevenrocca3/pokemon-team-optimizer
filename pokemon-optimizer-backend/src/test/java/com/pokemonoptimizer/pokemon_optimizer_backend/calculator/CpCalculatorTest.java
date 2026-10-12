@@ -1,4 +1,4 @@
-package com.pokemonoptimizer.pokemon_optimizer_backend;
+package com.pokemonoptimizer.pokemon_optimizer_backend.calculator;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;

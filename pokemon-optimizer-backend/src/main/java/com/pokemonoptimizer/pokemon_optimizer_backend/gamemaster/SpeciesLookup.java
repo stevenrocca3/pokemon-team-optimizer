@@ -1,4 +1,4 @@
-package com.pokemonoptimizer.pokemon_optimizer_backend;
+package com.pokemonoptimizer.pokemon_optimizer_backend.gamemaster;
 import org.springframework.stereotype.Component;
 import tools.jackson.databind.json.JsonMapper;
 import tools.jackson.core.JacksonException;

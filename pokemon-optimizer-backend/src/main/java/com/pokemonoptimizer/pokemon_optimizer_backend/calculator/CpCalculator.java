@@ -1,4 +1,4 @@
-package com.pokemonoptimizer.pokemon_optimizer_backend;
+package com.pokemonoptimizer.pokemon_optimizer_backend.calculator;
 import java.util.Arrays;
 import java.util.HashMap;
 public class CpCalculator {

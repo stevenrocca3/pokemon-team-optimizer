@@ -1,4 +1,4 @@
-package com.pokemonoptimizer.pokemon_optimizer_backend;
+package com.pokemonoptimizer.pokemon_optimizer_backend.dto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Max;

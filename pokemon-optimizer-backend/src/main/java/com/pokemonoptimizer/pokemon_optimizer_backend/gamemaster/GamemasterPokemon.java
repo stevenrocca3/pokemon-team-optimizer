@@ -1,4 +1,4 @@
-package com.pokemonoptimizer.pokemon_optimizer_backend;
+package com.pokemonoptimizer.pokemon_optimizer_backend.gamemaster;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.List;
 

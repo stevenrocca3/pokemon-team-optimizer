@@ -1,11 +1,18 @@
-package com.pokemonoptimizer.pokemon_optimizer_backend;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
-
+package com.pokemonoptimizer.pokemon_optimizer_backend.controller;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
+
+import com.pokemonoptimizer.pokemon_optimizer_backend.dto.SpeciesDetail;
+import com.pokemonoptimizer.pokemon_optimizer_backend.dto.SpeciesOption;
+import com.pokemonoptimizer.pokemon_optimizer_backend.gamemaster.SpeciesLookup;
+import com.pokemonoptimizer.pokemon_optimizer_backend.gamemaster.SpeciesType;
 
 
 @RestController 

@@ -1,8 +1,16 @@
-package com.pokemonoptimizer.pokemon_optimizer_backend;
-
-import org.springframework.web.bind.annotation.*; 
-import org.springframework.web.server.*;
+package com.pokemonoptimizer.pokemon_optimizer_backend.controller;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
+
+import com.pokemonoptimizer.pokemon_optimizer_backend.calculator.CpCalculator;
+import com.pokemonoptimizer.pokemon_optimizer_backend.calculator.RankedIvResult;
+import com.pokemonoptimizer.pokemon_optimizer_backend.dto.RankRequest;
+import com.pokemonoptimizer.pokemon_optimizer_backend.gamemaster.SpeciesLookup;
+import com.pokemonoptimizer.pokemon_optimizer_backend.gamemaster.SpeciesType;
 
 @RestController
 @RequestMapping("/api")

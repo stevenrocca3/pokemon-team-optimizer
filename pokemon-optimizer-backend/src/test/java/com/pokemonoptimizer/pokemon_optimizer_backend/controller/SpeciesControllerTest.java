@@ -1,13 +1,20 @@
-package com.pokemonoptimizer.pokemon_optimizer_backend;
+package com.pokemonoptimizer.pokemon_optimizer_backend.controller;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.HashSet;
 import java.util.List;
-import org.junit.jupiter.api.Test;
-import org.springframework.web.server.ResponseStatusException;   
-import static org.junit.jupiter.api.Assertions.assertEquals; 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import java.util.Optional;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.web.server.ResponseStatusException;
+
+import com.pokemonoptimizer.pokemon_optimizer_backend.dto.SpeciesDetail;
+import com.pokemonoptimizer.pokemon_optimizer_backend.dto.SpeciesOption;
+import com.pokemonoptimizer.pokemon_optimizer_backend.gamemaster.SpeciesLookup;
+import com.pokemonoptimizer.pokemon_optimizer_backend.gamemaster.SpeciesType;
 
 public class SpeciesControllerTest {
     private static final SpeciesLookup sl = new SpeciesLookup();
