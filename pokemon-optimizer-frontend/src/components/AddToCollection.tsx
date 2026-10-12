@@ -6,7 +6,8 @@ import { formatLevel } from '../lib/species'
 // 1, 1.5, 2 … 51: the backend only accepts whole and half levels
 const LEVELS = Array.from({ length: 101 }, (_, i) => 1 + i / 2)
 
-type Status = { kind: 'idle' } | { kind: 'saving' } | { kind: 'saved' } | { kind: 'error'; message: string }
+// `saved` remembers what was saved, so the same Pokémon can't be re-added by a second click
+type Status = { kind: 'idle' } | { kind: 'saving' } | { kind: 'saved'; key: string } | { kind: 'error'; message: string }
 
 interface Props {
   speciesId: string
@@ -16,12 +17,14 @@ interface Props {
 export function AddToCollection({ speciesId, ivs }: Props) {
   const [level, setLevel] = useState(20)
   const [status, setStatus] = useState<Status>({ kind: 'idle' })
+  const key = `${speciesId}|${ivs.atk}|${ivs.def}|${ivs.sta}|${level}`
+  const saved = status.kind === 'saved' && status.key === key
 
   async function save() {
     setStatus({ kind: 'saving' })
     try {
       await addToCollection({ speciesId, atkIv: ivs.atk, defIv: ivs.def, staIv: ivs.sta, level })
-      setStatus({ kind: 'saved' })
+      setStatus({ kind: 'saved', key })
     } catch (error: unknown) {
       setStatus({ kind: 'error', message: error instanceof Error ? error.message : String(error) })
     }
@@ -48,13 +51,13 @@ export function AddToCollection({ speciesId, ivs }: Props) {
       </label>
       <button
         onClick={save}
-        disabled={status.kind === 'saving'}
+        disabled={status.kind === 'saving' || saved}
         className="rounded-md bg-brand px-4 py-2 text-sm font-bold text-on-brand transition hover:brightness-110 disabled:opacity-50"
       >
-        {status.kind === 'saving' ? 'Adding…' : 'Add to Collection'}
+        {status.kind === 'saving' ? 'Adding…' : saved ? 'Added ✓' : 'Add to Collection'}
       </button>
       <p role="status" className="text-sm">
-        {status.kind === 'saved' && (
+        {saved && (
           <span className="text-ink-soft">
             Added.{' '}
             <Link to="/collection" className="text-brand underline">

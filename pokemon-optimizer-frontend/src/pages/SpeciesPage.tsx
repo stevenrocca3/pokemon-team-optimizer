@@ -168,6 +168,8 @@ function SpeciesView({ id, option }: { id: string; option?: SpeciesOption }) {
                     <Stat label="Level" value={formatLevel(best.ivResult.level)} />
                     <Stat label="Stat Product" value={formatInt(best.ivResult.statProduct)} />
                   </div>
+                ) : rows ? (
+                  <p className="mt-3 text-sm text-subtle">No IV spreads for this league.</p>
                 ) : (
                   <Skeleton className="mt-3 h-12 w-3/4" />
                 )}
@@ -199,7 +201,7 @@ function SpeciesView({ id, option }: { id: string; option?: SpeciesOption }) {
                       <Stat label="Mirror" value={`#${mine.mirrorRank}`} />
                     </div>
                   ) : (
-                    <Skeleton className="ml-auto h-10 w-48" />
+                    !rows && <Skeleton className="ml-auto h-10 w-48" />
                   )}
                 </div>
                 <AddToCollection speciesId={id} ivs={myIvs} />
@@ -245,7 +247,15 @@ function SpeciesView({ id, option }: { id: string; option?: SpeciesOption }) {
                           </tr>
                         )
                       })
-                    : Array.from({ length: 10 }, (_, i) => (
+                    : rows
+                      ? (
+                          <tr>
+                            <td colSpan={6} className="px-4 py-8 text-center text-muted">
+                              No IV spreads returned for {league.label}.
+                            </td>
+                          </tr>
+                        )
+                      : Array.from({ length: 10 }, (_, i) => (
                         <tr key={i}>
                           <td colSpan={6} className="px-4 py-3">
                             <Skeleton className="h-5 w-full" />
