@@ -37,7 +37,7 @@ export function CollectionPage() {
       <h1 className="flex items-baseline gap-3 text-4xl font-black tracking-tight">
         Collection
         {state.status === 'ready' && (
-          <span className="text-base font-normal text-zinc-500">
+          <span className="text-base font-normal text-subtle">
             {state.list.length} Pokémon
           </span>
         )}
@@ -55,16 +55,16 @@ export function CollectionPage() {
       {state.status === 'loading' && (
         <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {Array.from({ length: 3 }, (_, i) => (
-            <div key={i} className="h-32 animate-pulse rounded-lg bg-zinc-900 ring-1 ring-zinc-800" />
+            <div key={i} className="h-32 animate-pulse rounded-lg bg-surface ring-1 ring-line" />
           ))}
         </div>
       )}
 
       {state.status === 'ready' && state.list.length === 0 && (
         <div className="mt-10 max-w-xl">
-          <p className="text-zinc-300">Your Collection is empty.</p>
-          <p className="mt-1 text-sm text-zinc-500">
-            Find a Pokémon, set its IVs and level, then press <span className="text-zinc-300">Add to Collection</span>.
+          <p className="text-ink-soft">Your Collection is empty.</p>
+          <p className="mt-1 text-sm text-subtle">
+            Find a Pokémon, set its IVs and level, then press <span className="text-ink-soft">Add to Collection</span>.
           </p>
           <div className="mt-6">
             <SearchBar size="large" />
@@ -102,21 +102,21 @@ function CaughtCard({ pokemon, onRemoved }: { pokemon: CaughtPokemon; onRemoved:
   }
 
   return (
-    <li className="flex gap-4 rounded-lg bg-zinc-900 p-4 ring-1 ring-zinc-800">
+    <li className="flex gap-4 rounded-lg bg-surface p-4 ring-1 ring-line">
       <Link to={`/species/${pokemon.speciesId}`} className="shrink-0" aria-label={option?.name ?? pokemon.speciesId}>
-        <div className="h-20 w-20 rounded-md bg-zinc-800/60 p-2">
+        <div className="h-20 w-20 rounded-md bg-raised/60 p-2">
           <PokemonArt dex={option?.dex} alt="" className="h-full w-full" />
         </div>
       </Link>
       <div className="min-w-0 flex-1">
-        <div className="text-xs text-zinc-500">{option ? formatDex(option.dex) : ' '}</div>
+        <div className="text-xs text-subtle">{option ? formatDex(option.dex) : ' '}</div>
         <Link to={`/species/${pokemon.speciesId}`} className="block truncate font-semibold hover:text-brand">
           {option?.name ?? pokemon.speciesId}
         </Link>
         <div className="mt-2 flex items-end justify-between gap-3">
           <IvTriple atk={pokemon.atkIv} def={pokemon.defIv} sta={pokemon.staIv} />
           <div className="text-right">
-            <div className="text-xs uppercase text-zinc-500">Level</div>
+            <div className="text-xs uppercase text-subtle">Level</div>
             <div className="font-semibold tabular-nums">{formatLevel(pokemon.level)}</div>
           </div>
         </div>
@@ -124,7 +124,7 @@ function CaughtCard({ pokemon, onRemoved }: { pokemon: CaughtPokemon; onRemoved:
           <button
             onClick={remove}
             disabled={removing}
-            className="text-xs text-zinc-400 underline-offset-2 hover:text-red-400 hover:underline disabled:opacity-50"
+            className="text-xs text-muted underline-offset-2 hover:text-red-400 hover:underline disabled:opacity-50"
           >
             {removing ? 'Removing…' : 'Remove'}
           </button>

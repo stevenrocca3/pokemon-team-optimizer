@@ -28,8 +28,8 @@ export function AddToCollection({ speciesId, ivs }: Props) {
   }
 
   return (
-    <div className="mt-4 flex flex-wrap items-end gap-3 border-t border-zinc-800 pt-4">
-      <label className="text-xs uppercase text-zinc-500">
+    <div className="mt-4 flex flex-wrap items-end gap-3 border-t border-line pt-4">
+      <label className="text-xs uppercase text-subtle">
         Level
         <select
           value={level}
@@ -37,7 +37,7 @@ export function AddToCollection({ speciesId, ivs }: Props) {
             setLevel(Number(e.target.value))
             setStatus({ kind: 'idle' })
           }}
-          className="mt-1 block w-20 rounded-md bg-zinc-800 px-2 py-1.5 text-base text-zinc-100 ring-1 ring-zinc-700 focus:outline-none focus:ring-brand"
+          className="mt-1 block w-20 rounded-md bg-raised px-2 py-1.5 text-base text-ink ring-1 ring-line-strong focus:outline-none focus:ring-brand"
         >
           {LEVELS.map((l) => (
             <option key={l} value={l}>
@@ -49,13 +49,13 @@ export function AddToCollection({ speciesId, ivs }: Props) {
       <button
         onClick={save}
         disabled={status.kind === 'saving'}
-        className="rounded-md bg-brand px-4 py-2 text-sm font-bold text-black transition hover:brightness-110 disabled:opacity-50"
+        className="rounded-md bg-brand px-4 py-2 text-sm font-bold text-on-brand transition hover:brightness-110 disabled:opacity-50"
       >
         {status.kind === 'saving' ? 'Adding…' : 'Add to Collection'}
       </button>
       <p role="status" className="text-sm">
         {status.kind === 'saved' && (
-          <span className="text-zinc-300">
+          <span className="text-ink-soft">
             Added.{' '}
             <Link to="/collection" className="text-brand underline">
               View Collection

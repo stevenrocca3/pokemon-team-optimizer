@@ -13,7 +13,7 @@ export function PokemonArt({ dex, alt, className = '' }: Props) {
 
   if (dex === undefined || failedDex === dex) {
     return (
-      <div className={`grid place-items-center text-zinc-600 ${className}`} aria-hidden="true">
+      <div className={`grid place-items-center text-faint ${className}`} aria-hidden="true">
         <svg viewBox="0 0 24 24" className="h-1/2 w-1/2" fill="none" stroke="currentColor" strokeWidth="1.5">
           <circle cx="12" cy="12" r="9" />
           <path d="M3 12h18" />

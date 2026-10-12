@@ -21,7 +21,7 @@ function App() {
               <Route path="*" element={<NotFoundPage />} />
             </Routes>
           </main>
-          <footer className="border-t border-zinc-800 py-6 text-center text-xs text-zinc-500">
+          <footer className="border-t border-line py-6 text-center text-xs text-subtle">
             Artwork from PokéAPI · Not affiliated with Niantic or The Pokémon Company
           </footer>
         </div>

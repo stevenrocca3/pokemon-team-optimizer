@@ -27,11 +27,11 @@ export function HomePage() {
 
   return (
     <div>
-      <section className="border-b border-zinc-800 bg-gradient-to-b from-zinc-900 to-zinc-950">
+      <section className="border-b border-line bg-gradient-to-b from-surface to-canvas">
         <div className="mx-auto max-w-3xl px-4 py-16 text-center sm:py-24">
           <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-brand">Pokémon GO PvP</p>
           <h1 className="text-4xl font-black tracking-tight sm:text-5xl">Find the best IVs for every league</h1>
-          <p className="mx-auto mt-4 max-w-xl text-zinc-400">
+          <p className="mx-auto mt-4 max-w-xl text-muted">
             Every one of a species' 4,096 IV spreads, ranked for Little, Great, Ultra and Master League.
           </p>
           <div className="mx-auto mt-8 max-w-2xl text-left">
@@ -57,13 +57,13 @@ export function HomePage() {
               <Link
                 key={id}
                 to={`/species/${id}`}
-                className="group overflow-hidden rounded-lg bg-zinc-900 ring-1 ring-zinc-800 transition hover:ring-brand"
+                className="group overflow-hidden rounded-lg bg-surface ring-1 ring-line transition hover:ring-brand"
               >
-                <div className="aspect-square bg-zinc-800/50 p-4">
+                <div className="aspect-square bg-raised/50 p-4">
                   <PokemonArt dex={option?.dex} alt={option?.name ?? ''} className="h-full w-full transition group-hover:scale-105" />
                 </div>
                 <div className="p-3">
-                  <div className="text-xs text-zinc-500">{option ? formatDex(option.dex) : '\u00a0'}</div>
+                  <div className="text-xs text-subtle">{option ? formatDex(option.dex) : '\u00a0'}</div>
                   <div className="truncate font-semibold">{option?.name ?? '…'}</div>
                 </div>
               </Link>
@@ -75,9 +75,9 @@ export function HomePage() {
       <section className="mx-auto max-w-6xl px-4 pb-16">
         <div className="grid gap-4 sm:grid-cols-3">
           {EXPLAINERS.map((item) => (
-            <div key={item.title} className="rounded-lg bg-zinc-900 p-5 ring-1 ring-zinc-800">
+            <div key={item.title} className="rounded-lg bg-surface p-5 ring-1 ring-line">
               <h3 className="font-bold text-brand">{item.title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-zinc-400">{item.body}</p>
+              <p className="mt-2 text-sm leading-relaxed text-muted">{item.body}</p>
             </div>
           ))}
         </div>

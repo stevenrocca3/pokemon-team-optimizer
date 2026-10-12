@@ -1,8 +1,29 @@
 @import "tailwindcss";
 
+/* Espresso bar theme. Components use these semantic names, never raw palette colors,
+   so a reskin only touches this block. */
 @theme {
-  --color-brand: #f5c518;
-  --color-brand-dark: #d9ad0f;
+  --color-brand: #e0a458; /* crema */
+  --color-brand-dark: #c88a3e;
+  --color-on-brand: #15100d;
+
+  --color-canvas: #15100d; /* page background: dark roast */
+  --color-surface: #1f1814; /* cards */
+  --color-raised: #2b211b; /* inputs, hovered rows */
+  --color-raised-strong: #3a2d25;
+  --color-line: #33271f;
+  --color-line-strong: #4a3a2f;
+
+  --color-ink: #f3e9dc; /* cream text */
+  --color-ink-soft: #dccbb7;
+  --color-muted: #b6a08a;
+  --color-subtle: #9a8572;
+  --color-faint: #64524a;
+
+  --color-field: #f3e9dc; /* search input */
+  --color-on-field: #1f1814;
+
+  --font-display: "Fraunces", ui-serif, Georgia, serif;
 }
 
 html {
@@ -10,5 +31,30 @@ html {
 }
 
 body {
-  @apply bg-zinc-950 text-zinc-100 antialiased;
+  @apply bg-canvas text-ink antialiased;
+}
+
+h1 {
+  font-family: var(--font-display);
+}
+
+/* the logo's steam rises when you hover it */
+@keyframes steam-rise {
+  0% { transform: translateY(0); opacity: 1; }
+  50% { transform: translateY(-1.5px); opacity: 0.4; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+.group:hover .steam {
+  animation: steam-rise 1.2s ease-in-out infinite;
+}
+
+.group:hover .steam + .steam {
+  animation-delay: 0.3s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .group:hover .steam {
+    animation: none;
+  }
 }

@@ -8,7 +8,7 @@ export function IvTriple({ atk, def, sta, large = false }: { atk: number; def: n
       ].map(([label, value]) => (
         <div key={label} className={large ? 'w-14' : 'w-12'} title={`${label} ${value}`}>
           <div className={`font-semibold tabular-nums ${large ? 'text-2xl' : ''}`}>{value}</div>
-          <div className="mt-1 h-1 rounded-full bg-zinc-800">
+          <div className="mt-1 h-1 rounded-full bg-raised">
             <div className="h-1 rounded-full bg-brand" style={{ width: `${(Number(value) / 15) * 100}%` }} />
           </div>
         </div>

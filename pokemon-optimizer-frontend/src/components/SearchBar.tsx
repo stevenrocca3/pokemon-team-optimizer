@@ -51,7 +51,7 @@ export function SearchBar({ size = 'compact', autoFocus = false }: Props) {
 
   const placeholder =
     species.status === 'loading'
-      ? 'Loading species…'
+      ? 'Brewing species…'
       : species.status === 'error'
         ? 'Species unavailable — is the backend running?'
         : 'Search 1,100+ Pokémon by name or dex #'
@@ -61,11 +61,11 @@ export function SearchBar({ size = 'compact', autoFocus = false }: Props) {
   return (
     <div className="relative w-full">
       <div
-        className={`flex items-center gap-2 rounded-md bg-white text-zinc-900 ring-brand focus-within:ring-2 ${
+        className={`flex items-center gap-2 rounded-md bg-field text-on-field ring-brand focus-within:ring-2 ${
           large ? 'h-14 px-4' : 'h-10 px-3'
         }`}
       >
-        <svg viewBox="0 0 24 24" className={`shrink-0 text-zinc-500 ${large ? 'h-6 w-6' : 'h-5 w-5'}`} fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+        <svg viewBox="0 0 24 24" className={`shrink-0 text-on-field/60 ${large ? 'h-6 w-6' : 'h-5 w-5'}`} fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
           <circle cx="11" cy="11" r="7" />
           <path d="m20 20-3.5-3.5" />
         </svg>
@@ -90,7 +90,7 @@ export function SearchBar({ size = 'compact', autoFocus = false }: Props) {
           onFocus={() => setOpen(true)}
           onBlur={() => setOpen(false)}
           onKeyDown={onKeyDown}
-          className={`w-full min-w-0 bg-transparent outline-none placeholder:text-zinc-500 disabled:cursor-not-allowed ${
+          className={`w-full min-w-0 bg-transparent outline-none placeholder:text-on-field/60 disabled:cursor-not-allowed ${
             large ? 'text-lg' : 'text-sm'
           }`}
         />
@@ -102,10 +102,10 @@ export function SearchBar({ size = 'compact', autoFocus = false }: Props) {
           role="listbox"
           // keep focus in the input so onBlur doesn't close the list before the click lands
           onMouseDown={(e) => e.preventDefault()}
-          className="absolute z-20 mt-1 w-full overflow-hidden rounded-md border border-zinc-800 bg-zinc-900 shadow-2xl"
+          className="absolute z-20 mt-1 w-full overflow-hidden rounded-md border border-line bg-surface shadow-2xl"
         >
           {results.length === 0 ? (
-            <li className="px-4 py-3 text-sm text-zinc-400">No Pokémon match “{query.trim()}”</li>
+            <li className="px-4 py-3 text-sm text-muted">No Pokémon match “{query.trim()}”</li>
           ) : (
             results.map((option, index) => (
               <li
@@ -116,15 +116,15 @@ export function SearchBar({ size = 'compact', autoFocus = false }: Props) {
                 onMouseEnter={() => setActiveIndex(index)}
                 onClick={() => select(option)}
                 className={`flex cursor-pointer items-center gap-3 px-3 py-2 ${
-                  index === activeIndex ? 'bg-zinc-800' : ''
+                  index === activeIndex ? 'bg-raised' : ''
                 }`}
               >
                 <PokemonArt dex={option.dex} alt="" className="h-10 w-10 shrink-0" />
                 <div className="min-w-0">
-                  <div className="truncate font-medium text-zinc-100">
+                  <div className="truncate font-medium text-ink">
                     {option.name}
                   </div>
-                  <div className="text-xs text-zinc-500">{formatDex(option.dex)}</div>
+                  <div className="text-xs text-subtle">{formatDex(option.dex)}</div>
                 </div>
               </li>
             ))
