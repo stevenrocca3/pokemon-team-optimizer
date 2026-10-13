@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.server.ResponseStatusException;  
 
 import com.pokemonoptimizer.pokemon_optimizer_backend.dto.SpeciesDetail;
 import com.pokemonoptimizer.pokemon_optimizer_backend.dto.SpeciesOption;
@@ -98,6 +98,5 @@ public class SpeciesControllerTest {
     {
         Optional<SpeciesType> opt = (sl.findById("bulbasaur_shadow"));
         assertTrue(opt.isEmpty(), "findById found: " + opt);
-    }
-    
+    }  
 }

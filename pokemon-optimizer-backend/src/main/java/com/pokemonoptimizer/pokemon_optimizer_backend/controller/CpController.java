@@ -28,7 +28,7 @@ public class CpController
     public RankedIvResult[] rank(@RequestBody RankRequest request) 
     {
         SpeciesType speciesType = speciesLookup.findById(request.speciesId()).orElseThrow(() 
-        -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Species: " + request.speciesId() + " Not Found."));
+        -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Species: " + request.speciesId() + " Not Found."));
         return CpCalculator.rankAllCombos(
                     speciesType.baseAtk(), speciesType.baseDef(), speciesType.baseSta(),
                     request.hasCap(), request.cap(), request.hasBestBuddy()

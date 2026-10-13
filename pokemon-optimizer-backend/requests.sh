@@ -32,6 +32,8 @@ function expect_delete()
         echo "FAIL $name (expected $expected, got $status)"
     fi
 }
+
+
 expect "valid" 201 '{"speciesId":"medicham","atkIv":1,"defIv":14,"staIv":15,"level":22.5}' # valid check
 created_id=$(jq -r '.id' "$RESPONSE_FILE")
 expect "invalidAtkIv" 400 '{"speciesId":"medicham","atkIv":16,"defIv":14,"staIv":15,"level":22.5}' # invalid atkIv
@@ -41,6 +43,7 @@ expect "blankId" 400 '{"speciesId":"","atkIv":1,"defIv":14,"staIv":15,"level":22
 expect "invalidId" 400 '{"speciesId":"notapokemon","atkIv":1,"defIv":14,"staIv":15,"level":22.5}' # invalid id
 expect_delete "deleted created" 204 "$created_id"
 expect_delete "deleted failed" 404 "$created_id"
+
 if [ "$failures" -gt 0 ]; then
     echo ""$failures" failures"
     exit 1
