@@ -1,13 +1,13 @@
 import { useState } from 'react'
 import { Link } from 'react-router'
-import { addToCollection } from '../api'
+import { addToCollection, LOGIN_URL, NotLoggedInError } from '../api'
 import { formatLevel } from '../lib/species'
 
 // 1, 1.5, 2 … 51: the backend only accepts whole and half levels
 const LEVELS = Array.from({ length: 101 }, (_, i) => 1 + i / 2)
 
 // `saved` remembers what was saved, so the same Pokémon can't be re-added by a second click
-type Status = { kind: 'idle' } | { kind: 'saving' } | { kind: 'saved'; key: string } | { kind: 'error'; message: string }
+type Status = { kind: 'idle' } | { kind: 'saving' } | { kind: 'saved'; key: string } | { kind: 'logged-out' } | { kind: 'error'; message: string }
 
 interface Props {
   speciesId: string
@@ -26,7 +26,8 @@ export function AddToCollection({ speciesId, ivs }: Props) {
       await addToCollection({ speciesId, atkIv: ivs.atk, defIv: ivs.def, staIv: ivs.sta, level })
       setStatus({ kind: 'saved', key })
     } catch (error: unknown) {
-      setStatus({ kind: 'error', message: error instanceof Error ? error.message : String(error) })
+      if (error instanceof NotLoggedInError) setStatus({ kind: 'logged-out' })
+      else setStatus({ kind: 'error', message: error instanceof Error ? error.message : String(error) })
     }
   }
 
@@ -65,7 +66,15 @@ export function AddToCollection({ speciesId, ivs }: Props) {
             </Link>
           </span>
         )}
-        {status.kind === 'error' && <span className="text-red-400">Couldn't add ({status.message}).</span>}
+        {status.kind === 'logged-out' && (
+          <span className="text-ink-soft">
+            <a href={LOGIN_URL} className="text-brand underline">
+              Log in
+            </a>{' '}
+            to save Pokémon to your Collection.
+          </span>
+        )}
+        {status.kind === 'error' &&<span className="text-red-400">Couldn't add ({status.message}).</span>}
       </p>
     </div>
   )

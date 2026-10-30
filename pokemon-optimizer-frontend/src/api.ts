@@ -21,7 +21,7 @@ export async function getRank(request: RankRequest): Promise<RankedIvResult[]>
     const response = await fetch(url, 
     {
         method: 'POST',
-        headers: { 'Content-Type' : 'application/json' },
+        headers: { 'Content-Type' : 'application/json', ...csrfHeader() },
         body: JSON.stringify(request)
     }
     );
@@ -74,10 +74,11 @@ export async function addToCollection(request: CaughtPokemonRequest): Promise<Ca
     const response = await fetch(url, 
     {
         method: 'POST',
-        headers: { 'Content-Type' : 'application/json' },
+        headers: { 'Content-Type' : 'application/json', ...csrfHeader() },
         body: JSON.stringify(request)
     }
     );
+    if (response.status === 401) throw new NotLoggedInError();
     if (!response.ok)
     {
         throw new Error(`Response Status: ${response.status}`);
@@ -93,9 +94,15 @@ export async function removeFromCollection(id : number): Promise<void>
     const response = await fetch(url, 
     {
         method: 'DELETE',
+        headers: csrfHeader(),
     })
     if (!response.ok)
     {
         throw new Error(`Response Status:  ${response.status}`);
     }
+}
+
+function csrfHeader(): Record<string, string> {
+    const token = document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1]
+    return token ? { 'X-XSRF-TOKEN': decodeURIComponent(token) } : {}
 }
