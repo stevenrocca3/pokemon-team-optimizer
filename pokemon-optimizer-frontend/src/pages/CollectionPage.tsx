@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router'
-import { getCollection, removeFromCollection } from '../api'
+import { getCollection, LOGIN_URL, NotLoggedInError, removeFromCollection } from '../api'
 import type { CaughtPokemon } from '../types'
 import { useSpecies } from '../species/species-context'
 import { PokemonArt } from '../components/PokemonArt'
@@ -8,7 +8,7 @@ import { IvTriple } from '../components/IvTriple'
 import { SearchBar } from '../components/SearchBar'
 import { formatDex, formatLevel } from '../lib/species'
 
-type CollectionState = { status: 'loading' } | { status: 'error'; message: string } | { status: 'ready'; list: CaughtPokemon[] }
+type CollectionState = { status: 'loading' } | { status: 'logged-out' } | { status: 'error'; message: string } | { status: 'ready'; list: CaughtPokemon[] }
 
 export function CollectionPage() {
   const [state, setState] = useState<CollectionState>({ status: 'loading' })
@@ -21,7 +21,9 @@ export function CollectionPage() {
         if (!cancelled) setState({ status: 'ready', list: [...list].sort((a, b) => b.id - a.id) })
       })
       .catch((error: unknown) => {
-        if (!cancelled) setState({ status: 'error', message: error instanceof Error ? error.message : String(error) })
+        if (cancelled) return
+        if (error instanceof NotLoggedInError) setState({ status: 'logged-out' })
+        else setState({ status: 'error', message: error instanceof Error ? error.message : String(error) })
       })
     return () => {
       cancelled = true
@@ -49,6 +51,20 @@ export function CollectionPage() {
           <p className="mt-1 text-sm text-red-300/80">
             {state.message}. Check that the Spring backend and the database are running.
           </p>
+        </div>
+      )}
+
+      {state.status === 'logged-out' && (
+        <div className="mt-10 max-w-xl">
+          <p className="text-ink-soft">Log in to see your Collection.</p>
+          <p className="mt-1 text-sm text-subtle">Each Trainer keeps their own Pokémon.</p>
+          {/* a plain <a>, not <Link>: login leaves the app for Spring and Google */}
+          <a
+            href={LOGIN_URL}
+            className="mt-6 inline-block rounded-md bg-brand px-4 py-2 text-sm font-bold text-on-brand transition hover:brightness-110"
+          >
+            Log in with Google
+          </a>
         </div>
       )}
 

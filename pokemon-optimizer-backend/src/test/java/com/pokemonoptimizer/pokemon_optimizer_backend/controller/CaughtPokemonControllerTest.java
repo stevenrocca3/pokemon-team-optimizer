@@ -1,5 +1,7 @@
 package com.pokemonoptimizer.pokemon_optimizer_backend.controller;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.oidcLogin;
+
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,13 +12,16 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.assertj.MockMvcTester;
 
+
 import com.pokemonoptimizer.pokemon_optimizer_backend.gamemaster.SpeciesLookup;
 import com.pokemonoptimizer.pokemon_optimizer_backend.persistence.CaughtPokemonRepository;
+import com.pokemonoptimizer.pokemon_optimizer_backend.persistence.TrainerRepository;
 import com.pokemonoptimizer.pokemon_optimizer_backend.security.SecurityConfig;
 
 @WebMvcTest(CaughtPokemonController.class)
 @MockitoBean(types = SpeciesLookup.class)
 @MockitoBean(types = CaughtPokemonRepository.class)
+@MockitoBean(types = TrainerRepository.class)
 @Import(SecurityConfig.class)
 public class CaughtPokemonControllerTest {
 
@@ -30,6 +35,7 @@ public class CaughtPokemonControllerTest {
                  {"speciesId":"medicham","atkIv":20,"defIv":14,"staIv":15,"level":22.5}
                 """;
         assertThat(mvc.post().uri("/api/collection")
+            .with(oidcLogin())
             .contentType(MediaType.APPLICATION_JSON)
             .content(body))
             .hasStatus(HttpStatus.BAD_REQUEST)
@@ -43,6 +49,7 @@ public class CaughtPokemonControllerTest {
                  {"speciesId":"medicham","defIv":14,"staIv":15,"level":22.5}
                 """;
         assertThat(mvc.post().uri("/api/collection")
+            .with(oidcLogin())
             .contentType(MediaType.APPLICATION_JSON)
             .content(body))
             .hasStatus(HttpStatus.BAD_REQUEST)
