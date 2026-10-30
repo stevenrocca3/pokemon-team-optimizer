@@ -32,4 +32,17 @@ public class CaughtPokemonControllerTest {
             .hasStatus(HttpStatus.BAD_REQUEST)
             .bodyJson().extractingPath("$.errors[*].field").asArray().contains("atkIv");
     }
+
+    @Test
+    public void missingAtkIvReturns400()
+    {
+        String body = """
+                 {"speciesId":"medicham","defIv":14,"staIv":15,"level":22.5}
+                """;
+        assertThat(mvc.post().uri("/api/collection")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(body))
+            .hasStatus(HttpStatus.BAD_REQUEST)
+            .bodyJson().extractingPath("$.errors[*].field").asArray().contains("atkIv");
+    }
 }
