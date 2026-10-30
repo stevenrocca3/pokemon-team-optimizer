@@ -1,5 +1,8 @@
 import type {SpeciesOption, RankRequest, RankedIvResult, SpeciesDetail, Move, CaughtPokemon, CaughtPokemonRequest} from './types'
 
+export const LOGIN_URL = 'http://localhost:8081/oauth2/authorization/google'
+export class NotLoggedInError extends Error {}
+
 export async function getSpecies(): Promise<SpeciesOption[]>
 {
     const url = '/api/species';
@@ -56,6 +59,7 @@ export async function getCollection(): Promise<CaughtPokemon[]>
     const url = '/api/collection';
     
     const response = await fetch(url);
+    if (response.status === 401) throw new NotLoggedInError()
     if (!response.ok)
     {
         throw new Error(`Response Status:  ${response.status}`);
