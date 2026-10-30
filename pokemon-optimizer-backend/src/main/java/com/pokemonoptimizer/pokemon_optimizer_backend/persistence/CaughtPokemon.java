@@ -3,6 +3,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 
 
 
@@ -16,14 +17,18 @@ public class CaughtPokemon
     private int atkIv, defIv, staIv;
     private double level;
     protected CaughtPokemon(){}
+
+    @ManyToOne(optional = false)
+    private Trainer trainer;
    
-    public CaughtPokemon(String speciesId, int atkIv, int defIv, int staIv, double level)
+    public CaughtPokemon(String speciesId, int atkIv, int defIv, int staIv, double level, Trainer trainer)
     {
        this.speciesId = speciesId;
        this.atkIv = atkIv;
        this.defIv = defIv;
        this.staIv = staIv;
        this.level = level;
+       this.trainer = trainer;
     }
 
     public Long getId()
