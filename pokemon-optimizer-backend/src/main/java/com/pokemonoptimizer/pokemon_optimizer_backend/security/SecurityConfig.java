@@ -6,6 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
+import org.springframework.security.web.csrf.CsrfFilter;
+import org.springframework.security.web.csrf.CsrfToken;
 
 @Configuration
 public class SecurityConfig 
@@ -19,7 +21,11 @@ public class SecurityConfig
             .anyRequest().permitAll())
             .exceptionHandling(e -> e.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
             .oauth2Login(oauth -> oauth.defaultSuccessUrl("http://localhost:5173/", true))
-            .csrf(csrf -> csrf.disable());
+            .csrf(csrf -> csrf.spa())
+            .addFilterAfter((request, response, chain) -> {
+                ((CsrfToken) request.getAttribute(CsrfToken.class.getName())).getToken();
+                chain.doFilter(request, response);
+            }, CsrfFilter.class);
         return http.build();
     }
 }

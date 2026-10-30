@@ -1,7 +1,7 @@
 package com.pokemonoptimizer.pokemon_optimizer_backend.controller;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.oidcLogin;
-
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.assertj.MockMvcTester;
-
 
 import com.pokemonoptimizer.pokemon_optimizer_backend.gamemaster.SpeciesLookup;
 import com.pokemonoptimizer.pokemon_optimizer_backend.persistence.CaughtPokemonRepository;
@@ -35,6 +34,7 @@ public class CaughtPokemonControllerTest {
                  {"speciesId":"medicham","atkIv":20,"defIv":14,"staIv":15,"level":22.5}
                 """;
         assertThat(mvc.post().uri("/api/collection")
+            .with(csrf())
             .with(oidcLogin())
             .contentType(MediaType.APPLICATION_JSON)
             .content(body))
@@ -49,10 +49,24 @@ public class CaughtPokemonControllerTest {
                  {"speciesId":"medicham","defIv":14,"staIv":15,"level":22.5}
                 """;
         assertThat(mvc.post().uri("/api/collection")
+            .with(csrf())
             .with(oidcLogin())
             .contentType(MediaType.APPLICATION_JSON)
             .content(body))
             .hasStatus(HttpStatus.BAD_REQUEST)
             .bodyJson().extractingPath("$.errors[*].field").asArray().contains("atkIv");
+    }
+
+    @Test
+    public void testNotLoggedInThrows403()
+    {
+        String body = """
+                 {"speciesId":"medicham","atkIv":15,"defIv":14,"staIv":15,"level":22.5}
+                """;
+        assertThat(mvc.post().uri("/api/collection")
+            .with(oidcLogin())
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(body))
+            .hasStatus(HttpStatus.FORBIDDEN);
     }
 }
