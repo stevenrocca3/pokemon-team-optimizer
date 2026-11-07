@@ -11,7 +11,11 @@ public record Combatant(SpeciesType species, int atkIv, int defIv, int staIv, do
     { 
         return attack(0);
     }
-
+    // cpm x (base + IV), without Shadow or buffs: what PvPoke compares for CMP ties.
+    public double attackStat()
+    {
+        return cpm() * (species.baseAtk() + atkIv);
+    }
     public double attack(int stage)
     {
         double shadowAtk = shadow ? SHADOW_ATK : 1.0;

@@ -45,6 +45,10 @@ public final class Battle
         Side sideB = new Side(b, movesetB, shields.shieldsB());
 
         int turn = 0;
+
+        boolean usePriority = sideA.pokemon.attackStat() != sideB.pokemon.attackStat();
+        Side first = sideB.pokemon.attackStat() > sideA.pokemon.attackStat() ? sideB : sideA;
+        Side second = (first == sideA) ? sideB : sideA;
         while (sideA.hp > 0 && sideB.hp > 0)
         {
             turn++;
@@ -52,14 +56,13 @@ public final class Battle
             // phase 1: start moves (both sides)
             startMoveIfFree(sideA, turn);
             startMoveIfFree(sideB, turn);
-            if (sideA.throwsCharged && sideB.throwsCharged)
-            {
-                throw new IllegalStateException("CMP ties not implemented yet.");
-            }
 
             // phase 2a: charged moves resolve first
-            resolveCharged(sideA, sideB);
-            resolveCharged(sideB, sideA);
+            resolveCharged(first, second);
+            if (!(usePriority && second.faintedByCharged))
+            {
+                resolveCharged(second, first);
+            }
 
             // phase 2b: fast moves
             resolveIfLanding(sideA, sideB, turn);

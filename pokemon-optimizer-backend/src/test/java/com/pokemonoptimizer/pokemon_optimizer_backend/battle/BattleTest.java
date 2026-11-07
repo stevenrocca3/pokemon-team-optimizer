@@ -28,6 +28,9 @@ public class BattleTest
     private static final Move BUBBLE         = MOVES.findById("BUBBLE").orElseThrow();
     private static final Move RAZOR_SHELL    = MOVES.findById("RAZOR_SHELL").orElseThrow();    // -1 Def opponent, 50%
 
+    private static final Combatant LOWER_ATTACK_MEDICHAM = new Combatant(SPECIES.findById("medicham").orElseThrow(), 3, 14, 9, 20.5, false);
+    private static final Combatant SHADOW_MEDICHAM = new Combatant(SPECIES.findById("medicham").orElseThrow(), 4, 14, 9, 20.5, true);
+
     @Test
     public void fastMoveDamageLandsOnTheMovesLastTurn()
     {   // Counter lands turns 2,4,6...: 34 hits to KO 133 HP -> turn 68.
@@ -161,6 +164,28 @@ public class BattleTest
         assertEquals(35, result.turns());
         assertEquals(72, result.hpA());
         assertEquals(-1, result.defStageB()); // -3 if it applied every time, -2 if the meter started at 0.5
+    }
+
+    @Test
+    public void higherAttackWinsCmpAndCancelsTheKoVictimsChargedMove()
+    {   // both throw Dynamic Punch on turn 33; B (4 Atk IV) goes first and KOs A
+        BattleResult result = Battle.simulate(
+            LOWER_ATTACK_MEDICHAM, new Moveset(COUNTER, List.of(DYNAMIC_PUNCH)),
+            MEDICHAM, new Moveset(COUNTER, List.of(DYNAMIC_PUNCH)));
+        assertEquals(33, result.turns());
+        assertEquals(0, result.hpA());
+        assertEquals(21, result.hpB());   // 0 if A's Dynamic Punch still fires; A wins if A always goes first
+    }
+
+    @Test
+    public void shadowBonusDoesNotCountForCmpSoItsATie()
+    {   // same IVs and level: raw Attack is equal, so both Ice Punches land -> double KO
+        BattleResult result = Battle.simulate(
+            MEDICHAM, new Moveset(COUNTER, List.of(ICE_PUNCH)),
+            SHADOW_MEDICHAM, new Moveset(COUNTER, List.of(ICE_PUNCH)));
+        assertEquals(31, result.turns());
+        assertEquals(0, result.hpA());
+        assertEquals(0, result.hpB());    // 7 if the Shadow's boosted Attack won CMP
     }
 
 }
