@@ -89,4 +89,16 @@ public class SpeciesLookupTest
         assertEquals(expected, muk.learnset().eliteMoves());
     }
 
+    @Test
+    public void dualTypedSpeciesHasBothTypes()
+    {
+        assertEquals(List.of("fighting", "psychic"), sl.findById("medicham").orElseThrow().types());
+    }
+
+    @Test
+    public void singleTypedSpeciesKeepsNoneAsSecondType()
+    {
+        assertEquals(List.of("normal", "none"), sl.findById("lickitung").orElseThrow().types());
+    }
+
 }
