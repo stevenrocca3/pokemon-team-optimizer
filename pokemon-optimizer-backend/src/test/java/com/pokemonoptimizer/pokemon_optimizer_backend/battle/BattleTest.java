@@ -188,4 +188,38 @@ public class BattleTest
         assertEquals(0, result.hpB());    // 7 if the Shadow's boosted Attack won CMP
     }
 
+     @Test
+    public void ratingRewardsDamageDealtAndHpKept()
+    {   // A keeps 31/99, B at 0/133: A = floor(500 + 500*31/99) = 656, B = floor(500*68/99) = 343
+        BattleResult result = Battle.simulate(
+            MEDICHAM, new Moveset(COUNTER, List.of()),
+            REGISTEEL, new Moveset(LOCK_ON, List.of()));
+        assertEquals(656, result.ratingA());
+        assertEquals(343, result.ratingB());
+        assertEquals(Winner.A, result.winner());
+    }
+
+    @Test
+    public void sideBCanWin()
+    {   // CMP scenario: A at 0, B keeps 21/99 -> A 393, B 606
+        BattleResult result = Battle.simulate(
+            LOWER_ATTACK_MEDICHAM, new Moveset(COUNTER, List.of(DYNAMIC_PUNCH)),
+            MEDICHAM, new Moveset(COUNTER, List.of(DYNAMIC_PUNCH)));
+        assertEquals(393, result.ratingA());
+        assertEquals(606, result.ratingB());
+        assertEquals(Winner.B, result.winner());
+    }
+
+    @Test
+    public void doubleKoIsATie()
+    {   // both at 0: 500 each
+        BattleResult result = Battle.simulate(
+            MEDICHAM, new Moveset(COUNTER, List.of()),
+            MEDICHAM, new Moveset(COUNTER, List.of()));
+        assertEquals(500, result.ratingA());
+        assertEquals(500, result.ratingB());
+        assertEquals(Winner.TIE, result.winner());
+    }
+
+
 }

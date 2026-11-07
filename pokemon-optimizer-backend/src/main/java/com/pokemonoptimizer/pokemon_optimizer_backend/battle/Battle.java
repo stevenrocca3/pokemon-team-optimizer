@@ -75,8 +75,11 @@ public final class Battle
                 afterChargedTurn(sideB, turn);
             }
         }
+
+        int ratingA = rating(sideA, sideB);
+        int ratingB = rating(sideB, sideA);
         return new BattleResult(turn, sideA.hp, sideB.hp, sideA.energy, sideB.energy, sideA.shields, sideB.shields, 
-            sideA.atkStage, sideA.defStage, sideB.atkStage, sideB.defStage);
+            sideA.atkStage, sideA.defStage, sideB.atkStage, sideB.defStage, ratingA, ratingB);
     }
 
     private static void startMoveIfFree(Side side, int turn) 
@@ -176,5 +179,14 @@ public final class Battle
 
         target.atkStage = StatStages.apply(target.atkStage, move.buffs().get(0));
         target.defStage = StatStages.apply(target.defStage, move.buffs().get(1));
+     }
+
+     private static int rating(Side self, Side opponent)
+     {
+        //return Math.floor( (500 * ((opponent.stats.hp - opponent.hp) /
+        //  opponent.stats.hp)) + (500 * (self.hp / self.stats.hp)))
+        double damageDealt = (opponent.pokemon.maxHp() - opponent.hp) / (double) opponent.pokemon.maxHp();
+        double hpKept = self.hp / (double) self.pokemon.maxHp();
+        return (int) Math.floor(500 * damageDealt + 500 * hpKept);
      }
 }
