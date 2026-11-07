@@ -66,8 +66,21 @@ public class TypeChart
     public static double effectiveness(String moveType, List<String> defenderTypes)
     {
         double result = 1.0;
+        if (!SUPER_EFFECTIVE.containsKey(moveType))
+        {
+            throw new IllegalArgumentException("Unknown move type: " + moveType);
+        }
+
         for (String defenderType : defenderTypes)
         {
+            if (defenderType.equals("none"))
+            {
+                continue;
+            }
+            if (!SUPER_EFFECTIVE.containsKey(defenderType))
+            {
+                throw new IllegalArgumentException("Unknown defender type: " + defenderType);
+            }
             if (IMMUNE.getOrDefault(moveType, Set.of()).contains(defenderType))
             {
                 result *= IMM;

@@ -1,6 +1,7 @@
 package com.pokemonoptimizer.pokemon_optimizer_backend.battle;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -46,5 +47,25 @@ public class TypeChartTest
     public void weaknessAndResistanceDoNotCancelExactly()
     {   // normal/flying vs fighting: 1.60000002 x 0.625 = 1.0000000149, not 1.0
         assertEquals(SE * RESISTED, TypeChart.effectiveness("fighting", List.of("normal", "flying")), 0.0);
+    }
+
+     @Test
+    public void unknownMoveTypeThrows()
+    {
+        assertThrows(IllegalArgumentException.class,
+            () -> TypeChart.effectiveness("Fighting", List.of("ghost")));
+    }
+
+    @Test
+    public void unknownDefenderTypeThrows()
+    {
+        assertThrows(IllegalArgumentException.class,
+            () -> TypeChart.effectiveness("fighting", List.of("Ghost")));
+    }
+
+    @Test
+    public void noneSecondTypeIsNeutral()
+    {   // gamemaster uses "none" as the second type of single-typed Species
+        assertEquals(SE, TypeChart.effectiveness("fighting", List.of("normal", "none")), 0.0);
     }
 }
