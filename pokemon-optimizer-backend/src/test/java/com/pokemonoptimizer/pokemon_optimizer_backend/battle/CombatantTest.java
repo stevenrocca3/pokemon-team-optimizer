@@ -50,4 +50,16 @@ public class CombatantTest {
     {
         assertEquals(99, SHADOW.maxHp());
     }
+
+    @Test
+    public void attackStageMultipliesAttack()
+    {   // 75.6029581375 * 1.25
+        assertEquals(94.503697671875, REGULAR.attack(1), DELTA);
+    }
+
+    @Test
+    public void defenseStageStacksWithShadow()
+    {   // 100.4007284066 * (4/6 * 0.83333331)
+        assertEquals(55.778180886322, SHADOW.defense(-2), DELTA);
+    }
 }

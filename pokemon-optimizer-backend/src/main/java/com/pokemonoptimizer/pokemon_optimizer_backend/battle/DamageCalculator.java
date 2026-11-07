@@ -16,10 +16,14 @@ public final class DamageCalculator {
     }
     public static int damage(Combatant attacker, Combatant defender, Move move)
     {
+        return damage(attacker, 0, defender, 0, move);
+
+    }
+    public static int damage(Combatant attacker, int attackStage, Combatant defender, int defenseStage, Move move)
+    {
         boolean stab = attacker.species().types().contains(move.type());
         double effectiveness = TypeChart.effectiveness(move.type(), defender.species().types());
-        return damage(move.power(), attacker.attack(), defender.defense(), stab, effectiveness);
-
+        return damage(move.power(), attacker.attack(attackStage), defender.defense(defenseStage), stab, effectiveness);
     }
 
 }

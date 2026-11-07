@@ -74,4 +74,16 @@ public class DamageCalculatorTest
     {   // fighting into dark/ghost = 1.6 x 0.390625; neutral 55, ghost only 22
         assertEquals(35, DamageCalculator.damage(MEDICHAM, SABLEYE, MOVES.findById("DYNAMIC_PUNCH").orElseThrow()));
     }
+
+    @Test
+    public void attackerStageAndDefenderStageBothCount()
+    {   // attacker +2, defender -2 -> 97; swapping the two stages would give 20
+        assertEquals(97, DamageCalculator.damage(MEDICHAM, 2, REGISTEEL, -2, MOVES.findById("DYNAMIC_PUNCH").orElseThrow()));
+    }
+
+    @Test
+    public void loweredAttackAndRaisedDefenseCutDamage()
+    {   // attacker -2, defender +2 -> 20
+        assertEquals(20, DamageCalculator.damage(MEDICHAM, -2, REGISTEEL, 2, MOVES.findById("DYNAMIC_PUNCH").orElseThrow()));
+    }
 }
