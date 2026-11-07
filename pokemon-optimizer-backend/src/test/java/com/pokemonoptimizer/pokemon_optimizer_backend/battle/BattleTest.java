@@ -86,4 +86,39 @@ public class BattleTest
         assertEquals(58, result.turns());      // 55 without the dead turn
         assertEquals(23, result.hpA());        // 27 if a floating Rock Smash is lost
     }
+
+     @Test
+    public void shieldedChargedMoveDoesOneDamage()
+    {   // 0-1: Registeel shields the first Dynamic Punch (1 dmg instead of 44)
+        BattleResult result = Battle.simulate(
+            MEDICHAM, new Moveset(COUNTER, List.of(DYNAMIC_PUNCH)),
+            REGISTEEL, new Moveset(LOCK_ON, List.of()),
+            new ShieldScenario(0, 1));
+        assertEquals(48, result.turns());      // 33 if the shield blocks nothing
+        assertEquals(53, result.hpA());
+        assertEquals(0, result.shieldsB());
+    }
+
+    @Test
+    public void eachShieldIsUsedOnce()
+    {   // 0-2: first two Dynamic Punches shielded, then shields are gone
+        BattleResult result = Battle.simulate(
+            MEDICHAM, new Moveset(COUNTER, List.of(DYNAMIC_PUNCH)),
+            REGISTEEL, new Moveset(LOCK_ON, List.of()),
+            new ShieldScenario(0, 2));
+        assertEquals(51, result.turns());
+        assertEquals(0, result.shieldsB());
+    }
+
+    @Test
+    public void shieldsAreOnlySpentByTheDefender()
+    {   // 2-2: Registeel never throws a charged move, so Medicham keeps both shields
+        BattleResult result = Battle.simulate(
+            MEDICHAM, new Moveset(COUNTER, List.of(DYNAMIC_PUNCH)),
+            REGISTEEL, new Moveset(LOCK_ON, List.of()),
+            new ShieldScenario(2, 2));
+        assertEquals(51, result.turns());
+        assertEquals(2, result.shieldsA());
+        assertEquals(0, result.shieldsB());
+    }
 }
