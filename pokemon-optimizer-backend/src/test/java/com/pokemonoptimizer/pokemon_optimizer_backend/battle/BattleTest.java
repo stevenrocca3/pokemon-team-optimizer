@@ -20,6 +20,14 @@ public class BattleTest
     private static final Move COUNTER = MOVES.findById("COUNTER").orElseThrow();   // 2 turns, 4 dmg to Registeel
     private static final Move LOCK_ON = MOVES.findById("LOCK_ON").orElseThrow();   // 1 turn, 1 dmg to Medicham
 
+    private static final Combatant QWILFISH = new Combatant(SPECIES.findById("qwilfish").orElseThrow(), 10, 10, 10, 25, false);
+    private static final Combatant KINGLER  = new Combatant(SPECIES.findById("kingler").orElseThrow(), 10, 10, 10, 25, false);
+    private static final Move POWER_UP_PUNCH = MOVES.findById("POWER_UP_PUNCH").orElseThrow(); // +1 Atk self, 100%
+    private static final Move POISON_STING   = MOVES.findById("POISON_STING").orElseThrow();
+    private static final Move ACID_SPRAY     = MOVES.findById("ACID_SPRAY").orElseThrow();     // -2 Def opponent, 100%
+    private static final Move BUBBLE         = MOVES.findById("BUBBLE").orElseThrow();
+    private static final Move RAZOR_SHELL    = MOVES.findById("RAZOR_SHELL").orElseThrow();    // -1 Def opponent, 50%
+
     @Test
     public void fastMoveDamageLandsOnTheMovesLastTurn()
     {   // Counter lands turns 2,4,6...: 34 hits to KO 133 HP -> turn 68.
@@ -121,4 +129,38 @@ public class BattleTest
         assertEquals(2, result.shieldsA());
         assertEquals(0, result.shieldsB());
     }
+
+     @Test
+    public void selfBuffRaisesLaterDamage()
+    {   // 3 Power-Up Punches -> Medicham at +3 Attack
+        BattleResult result = Battle.simulate(
+            MEDICHAM, new Moveset(COUNTER, List.of(POWER_UP_PUNCH)),
+            REGISTEEL, new Moveset(LOCK_ON, List.of()));
+        assertEquals(44, result.turns());      // 55 if buffs never apply
+        assertEquals(58, result.hpA());
+        assertEquals(3, result.atkStageA());
+    }
+
+    @Test
+    public void opponentDebuffLowersTheirDefense()
+    {   // 2 Acid Sprays -> Medicham at -4 Defense
+        BattleResult result = Battle.simulate(
+            QWILFISH, new Moveset(POISON_STING, List.of(ACID_SPRAY)),
+            MEDICHAM, new Moveset(COUNTER, List.of()));
+        assertEquals(23, result.turns());      // 28 if buffs never apply
+        assertEquals(82, result.hpA());
+        assertEquals(-4, result.defStageB());
+    }
+
+    @Test
+    public void fiftyPercentDebuffAppliesOnEverySecondUse()
+    {   // 3 Razor Shells: meter 0 -> 0.5 -> 1.0 (applies) -> 1.5
+        BattleResult result = Battle.simulate(
+            KINGLER, new Moveset(BUBBLE, List.of(RAZOR_SHELL)),
+            REGISTEEL, new Moveset(LOCK_ON, List.of()));
+        assertEquals(35, result.turns());
+        assertEquals(72, result.hpA());
+        assertEquals(-1, result.defStageB()); // -3 if it applied every time, -2 if the meter started at 0.5
+    }
+
 }

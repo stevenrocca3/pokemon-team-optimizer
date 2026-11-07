@@ -12,6 +12,9 @@ public final class Battle
     {
         final Combatant pokemon;
         int shields;
+        int atkStage;
+        int defStage;
+        double buffMeter;
         final Move fastMove;
         final Move chargedMove;
         boolean throwsCharged = false;
@@ -69,7 +72,8 @@ public final class Battle
                 afterChargedTurn(sideB, turn);
             }
         }
-        return new BattleResult(turn, sideA.hp, sideB.hp, sideA.energy, sideB.energy, sideA.shields, sideB.shields);
+        return new BattleResult(turn, sideA.hp, sideB.hp, sideA.energy, sideB.energy, sideA.shields, sideB.shields, 
+            sideA.atkStage, sideA.defStage, sideB.atkStage, sideB.defStage);
     }
 
     private static void startMoveIfFree(Side side, int turn) 
@@ -94,7 +98,7 @@ public final class Battle
     {
         if (attacker.landsOnTurn == turn && defender.hp > 0 && !(attacker.hp == 0 && attacker.faintedByCharged))
         {
-            int damage = DamageCalculator.damage(attacker.pokemon, defender.pokemon, attacker.fastMove);
+            int damage = DamageCalculator.damage(attacker.pokemon, attacker.atkStage, defender.pokemon, defender.defStage, attacker.fastMove);
             defender.hp = Math.max(0, defender.hp - damage);
             attacker.energy = Math.min(MAX_ENERGY, attacker.energy + attacker.fastMove.energyGain());
         }
@@ -106,7 +110,7 @@ public final class Battle
         {
             attacker.energy = Math.min(MAX_ENERGY, attacker.energy + attacker.chargedMove.energyGain());
             attacker.energy -= attacker.chargedMove.energy();
-            int damage = DamageCalculator.damage(attacker.pokemon, defender.pokemon, attacker.chargedMove);
+            int damage = DamageCalculator.damage(attacker.pokemon, attacker.atkStage, defender.pokemon, defender.defStage, attacker.chargedMove);
             if (defender.shields > 0)
             {
                 defender.shields--;
@@ -114,6 +118,7 @@ public final class Battle
             } 
             
             defender.hp = Math.max(0, defender.hp - damage);
+            applyBuffs(attacker, defender);
             if (defender.hp == 0)
             {
                 defender.faintedByCharged = true;
@@ -129,4 +134,44 @@ public final class Battle
             attacker.landsOnTurn = turn + 1;
         }
     }
+
+     private static void applyBuffs(Side attacker, Side defender)
+     {
+        Move move = attacker.chargedMove;
+        if (move.buffs().isEmpty())
+        {
+            return;
+        }
+        boolean applies;
+        if (move.buffApplyChance() >= 1.0)
+        {
+            applies = true;
+        }
+        else 
+        {
+            double start = Math.floor(attacker.buffMeter);
+            attacker.buffMeter += move.buffApplyChance();
+            applies = Math.floor(attacker.buffMeter) > start;
+        }
+        if (!applies)
+        {
+            return;
+        }
+        Side target;
+        if (move.buffTarget().equals("self"))
+        {
+            target = attacker;
+        } 
+        else if (move.buffTarget().equals("opponent"))
+        {
+            target = defender;
+        }
+        else 
+        {
+            throw new IllegalStateException("unsupported buff target: " + move.buffTarget());
+        }
+
+        target.atkStage = StatStages.apply(target.atkStage, move.buffs().get(0));
+        target.defStage = StatStages.apply(target.defStage, move.buffs().get(1));
+     }
 }
