@@ -23,4 +23,24 @@ public class MoveLookupTest
         assertEquals("POWER_UP_PUNCH", ml.findById("POWER_UP_PUNCH").orElseThrow().moveId());
     }
 
+    @Test
+    public void fastMoveHasBattleStats()
+    {   // Counter: fast move, gains energy, takes 2 turns
+        Move counter = ml.findById("COUNTER").orElseThrow();
+        assertEquals("fighting", counter.type());
+        assertEquals(8, counter.power());
+        assertEquals(0, counter.energy());
+        assertEquals(6, counter.energyGain());
+        assertEquals(2, counter.turns());
+    }
+
+    @Test
+    public void chargedMoveHasBattleStats()
+    {   // Power-Up Punch: charged move, costs 35 energy
+        Move pup = ml.findById("POWER_UP_PUNCH").orElseThrow();
+        assertEquals(20, pup.power());
+        assertEquals(35, pup.energy());
+        assertEquals(0, pup.energyGain());
+    }
+
 }

@@ -30,7 +30,12 @@ public class MoveLookup
                 {
                     String moveId = move.moveId();
                     String name = move.name();
-                    Move moves = new Move(moveId, name);
+                    String type = move.type();
+                    int power = move.power();
+                    int energy = move.energy();
+                    int energyGain = move.energyGain();
+                    int turns = move.turns();
+                    Move moves = new Move(moveId, name, type, power, energy, energyGain, turns);
                     if (!data.containsKey(moveId))
                     {
                         data.put(moveId, moves);
