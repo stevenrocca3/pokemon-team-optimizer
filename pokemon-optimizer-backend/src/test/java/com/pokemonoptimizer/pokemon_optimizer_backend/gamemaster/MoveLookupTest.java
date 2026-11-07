@@ -1,6 +1,7 @@
 package com.pokemonoptimizer.pokemon_optimizer_backend.gamemaster;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import java.util.List;
 
 
 import org.junit.jupiter.api.Test;
@@ -41,6 +42,15 @@ public class MoveLookupTest
         assertEquals(20, pup.power());
         assertEquals(35, pup.energy());
         assertEquals(0, pup.energyGain());
+    }
+
+
+    @Test
+    public void moveWithoutBuffsHasNoBuffs()
+    {
+        Move counter = ml.findById("COUNTER").orElseThrow();
+        assertEquals(List.of(), counter.buffs());
+        assertEquals(0.0, counter.buffApplyChance(), 0.0);
     }
 
 }
