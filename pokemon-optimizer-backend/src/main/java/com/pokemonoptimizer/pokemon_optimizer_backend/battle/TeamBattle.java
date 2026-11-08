@@ -95,8 +95,15 @@ public final class TeamBattle
                 switchTimer[side] = 45000;
                 outgoing.setStatBuffs(new int[] { 0, 0 });
                 incoming.shields = outgoing.shields;
+                incoming.startingShields = outgoing.shields;
                 active[side] = teamIndex;
                 return incoming;
+            }
+
+            public TeamPolicy.Shield decideShield(BattlePokemon attacker, BattlePokemon defender, BattleMove move)
+            {
+                int side = defender.index;
+                return policies[side].decideShield(sides.view(side), sides.view(1 - side), move, attacker.energy);
             }
         };
 
@@ -129,7 +136,8 @@ public final class TeamBattle
                     BattlePokemon fainted = teams.get(side).get(active[side]);
                     if (next[side] >= 0)
                     {
-                        teams.get(side).get(next[side]).shields = fainted.shields;
+                        teams.get(side).get(next[side]).startingShields = fainted.shields;
+                        teams.get(side).get(next[side]).startingShields = fainted.shields;
                     }
                     active[side] = next[side];
                 }

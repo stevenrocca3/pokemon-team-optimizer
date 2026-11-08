@@ -1,6 +1,8 @@
 package com.pokemonoptimizer.pokemon_optimizer_backend.battle;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -299,6 +301,162 @@ final class TrainingAi implements TeamPolicy
         for (BattleMove move : attacker.chargedMoves)
         {
             best = Math.max(best, (energy / move.energy) * ActionLogic.damage(attacker, defender, move));
+        }
+        return best;
+    }
+
+    // ---- decideShield ----
+
+    @Override
+    public Shield decideShield(TeamView me, TeamView them, BattleMove thrown, int attackerEnergy)
+    {
+        BattlePokemon defender = me.active();
+        BattlePokemon attacker = them.active();
+
+        // First, how hot are we looking in this current matchup?
+        double currentRating = scenario("NO_BAIT", defender, me.shields(), attacker);
+
+        // Which move do we think the attacker is using? (Champion guesses energy exactly; never below its cheapest move)
+        int estimatedEnergy = attackerEnergy;
+        int minimumEnergy = 100;
+        for (BattleMove move : attacker.chargedMoves)
+        {
+            minimumEnergy = Math.min(minimumEnergy, move.energy);
+        }
+        estimatedEnergy = Math.max(estimatedEnergy, minimumEnergy);
+
+        // PvPoke means to refresh each move's damage here but sets it on the array, so the cached values are used
+        List<BattleMove> moves = new ArrayList<>();
+        for (BattleMove move : attacker.chargedMoves)
+        {
+            if (estimatedEnergy >= move.energy)
+            {
+                moves.add(move);
+            }
+        }
+        moves.sort((a, b) -> Integer.compare(b.damage, a.damage)); // stable, most damage first
+
+        long[] guessWeights = new long[moves.size()];
+        for (int i = 0; i < moves.size(); i++)
+        {
+            long weight = 1;
+            if (i == 0 && attacker.hp / (double) attacker.maxHp <= .25)
+            {
+                weight += 8; // the opponent is low on HP: probably the higher damage move
+                if (moves.get(i).moveId.equals("ACID_SPRAY"))
+                {
+                    weight += 12;
+                }
+            }
+            if (i == 0)
+            {
+                weight += me.shields(); // more cautious with more shields
+            }
+            if (me.remaining() == 1 && moves.get(i).damage >= defender.hp)
+            {
+                weight += 4; // last Pokemon and this move faints me
+            }
+            if (i == 1 && moves.get(1).damage < moves.get(0).damage && moves.get(1).energy >= moves.get(0).energy
+                && !moves.get(1).moveId.equals("ACID_SPRAY"))
+            {
+                guessWeights[0] += 20; // lower damage and higher energy: definitely the other one
+            }
+            guessWeights[i] = weight;
+        }
+        BattleMove move = moves.get(argmax(guessWeights)); // the guessed move
+
+        int yesWeight = 4; // 4 + (3 - level) * 2 at Champion
+        int noWeight = 4;
+
+        // Will this attack hurt?
+        int damageWeight = (int) Math.min(Math.round(move.damage / Math.max(defender.hp, defender.maxHp / 2.0) * 10), 10);
+        int moveDamage = move.damage;
+        int fastMoveDamage = attacker.fastMove.damage;
+
+        if (damageWeight >= 5)
+        {
+            yesWeight += (damageWeight - 3) * (me.shields() + 1); // prefer shielding high damage moves
+        }
+        else
+        {
+            noWeight += (8 - damageWeight) * 2;
+        }
+
+        // Prefer to shield hard hitting or knockout moves in good matchups over bad matchups
+        if (damageWeight >= 6 || moveDamage + fastMoveDamage * 2 >= defender.hp)
+        {
+            if (me.remaining() > 1)
+            {
+                double yesRating = currentRating - 400;
+                double noRating = 400 - currentRating;
+                if (defender.hp / (double) defender.maxHp < .35)
+                {
+                    yesRating = currentRating - 500;
+                    noRating = 500 - currentRating;
+                }
+                if (me.switchTimer() > 0)
+                {
+                    yesRating *= 2; // locked in: shield good matchups, let bad ones go
+                    noRating *= 2;
+                }
+                yesWeight += Math.round((yesRating / 100) * damageWeight);
+                noWeight += Math.round((noRating / 100) * (10 - damageWeight));
+            }
+            else
+            {
+                yesWeight += damageWeight;
+                noWeight -= damageWeight;
+            }
+        }
+
+        // ADVANCED_SHIELDING: close to a Charged Move of my own that faints or seriously hurts the attacker?
+        // (PvPoke tests the guessed move's damage here, not my move's; kept as is)
+        for (BattleMove mine : defender.chargedMoves)
+        {
+            double turnsAway = Math.ceil((mine.energy - defender.energy) / (double) defender.fastMove.energyGain) * defender.fastMove.turns;
+            if ((moveDamage >= attacker.hp || moveDamage >= defender.maxHp * .8) && turnsAway <= 1)
+            {
+                yesWeight += 4;
+            }
+        }
+
+        // Preserve shield advantage where possible (PvPoke's extra "/ 4" compares an object with 500, so never runs)
+        if (me.remaining() > 1 && attacker.startingShields >= defender.startingShields && defender.shieldsUsed > 0)
+        {
+            yesWeight = (int) Math.round(yesWeight / 2.0);
+        }
+
+        // Last Pokemon remaining: protect it at all costs
+        if (me.remaining() == 1)
+        {
+            yesWeight *= 2;
+            noWeight = (int) Math.round(noWeight / 4.0);
+        }
+
+        // BAD_DECISION_PROTECTION: a 4x favourite becomes the only option
+        if (yesWeight / (double) noWeight >= 4)
+        {
+            noWeight = 0;
+        }
+        else if (noWeight / (double) yesWeight >= 4)
+        {
+            yesWeight = 0;
+        }
+
+        // chooseOption([yes, no]): highest weight, yes on ties (and when neither is positive)
+        return noWeight > Math.max(yesWeight, 0) ? Shield.TAKE_IT : Shield.SHIELD;
+    }
+
+    /** Index of the largest weight, first on ties (all non-positive -> 0). */
+    private static int argmax(long[] weights)
+    {
+        int best = 0;
+        for (int i = 1; i < weights.length; i++)
+        {
+            if (weights[i] > weights[best])
+            {
+                best = i;
+            }
         }
         return best;
     }

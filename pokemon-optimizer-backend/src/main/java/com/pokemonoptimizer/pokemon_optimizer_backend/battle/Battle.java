@@ -102,6 +102,9 @@ public final class Battle
         /** Player.decrementSwitchTimer, once per step. */
         void tick(int deltaTime);
 
+        /** A Charged Move is about to hit the defender, who has a shield left. */
+        TeamPolicy.Shield decideShield(BattlePokemon attacker, BattlePokemon defender, BattleMove move);
+
         /** Takes the active Pokémon out (timer, buff reset, shields) and returns the one coming in. */
         BattlePokemon switchIn(int side, int teamIndex);
     }
@@ -402,6 +405,13 @@ public final class Battle
 
         private void useMove(BattlePokemon attacker, BattlePokemon defender, BattleMove move, boolean charged)
         {
+            // 3v3: the defender's AI decides before the move resolves, on cached damage and the attacker's full energy
+            TeamPolicy.Shield aiShield = TeamPolicy.Shield.DEFAULT;
+            if (charged && switching != null && defender.shields > 0)
+            {
+                aiShield = switching.decideShield(attacker, defender, move);
+            }
+
             int damage = ActionLogic.damage(attacker, defender, move);
             move.damage = damage;
 
@@ -416,10 +426,14 @@ public final class Battle
 
                 if (defender.shields > 0)
                 {
-                    if (shouldShield(attacker, defender, move, damage))
+                    boolean useShield = aiShield == TeamPolicy.Shield.DEFAULT
+                        ? shouldShield(attacker, defender, move, damage)
+                        : aiShield == TeamPolicy.Shield.SHIELD;
+                    if (useShield)
                     {
                         damage = 1;
                         defender.shields--;
+                        defender.shieldsUsed++;
                         roundShieldUsed = true;
 
                         if (roundChargedMoveUsed == 0)

@@ -182,5 +182,40 @@ public class TeamBattleTest
         assertEquals(Winner.B, result.winner());
     }
 
+    /** TrainingAI's shield decisions only: never switches voluntarily, first one alive after a faint. */
+    private record ShieldsOnly(TeamPolicy ai) implements TeamPolicy
+    {
+        public int chooseAction(int now, TeamView me, TeamView opponent)
+        {
+            return FIGHT;
+        }
+
+        public int chooseReplacement(TeamView me, TeamView opponent)
+        {
+            return NEVER_SWITCH.chooseReplacement(me, opponent);
+        }
+
+        public Shield decideShield(TeamView me, TeamView attacker, BattleMove move, int attackerEnergy)
+        {
+            return ai.decideShield(me, attacker, move, attackerEnergy);
+        }
+    }
+
+    private static final Move ICE_PUNCH = MOVES.findById("ICE_PUNCH").orElseThrow(); // 40 energy, 10 dmg to Registeel
+
+    @Test
+    public void theAiSavesItsShieldsInsteadOfBlockingChipDamage()
+    {   // Each Ice Punch does 10 to Registeel: damageWeight = round(10 / max(hp, 66.5) x 10) = 1 or 2,
+        // so yes = 4 and no = 4 + (8 - dw) x 2 = 16-18. no >= 4 x yes (BAD_DECISION_PROTECTION) -> no shield, three times.
+        // Registeel faints sooner and the 9 HP Medicham behind it never gets to use the shields: Medicham ends at 43.
+        // With the 1v1 rule (always shield), Registeel blocks two Ice Punches and Medicham ends at 38.
+        TeamBattleResult result = TeamBattle.simulate(
+            List.of(MEDICHAM), List.of(new Moveset(COUNTER, List.of(ICE_PUNCH))), NEVER_SWITCH,
+            List.of(REGISTEEL, LEVEL_1_MEDICHAM), List.of(new Moveset(LOCK_ON, List.of()), new Moveset(COUNTER, List.of())),
+            new ShieldsOnly(new TrainingAi()));
+        assertEquals(List.of(43), result.hpA());
+        assertEquals(List.of(0, 0), result.hpB());
+    }
+
 
 }
