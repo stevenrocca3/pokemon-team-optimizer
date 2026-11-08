@@ -105,44 +105,26 @@ public final class TeamBattle
                 int side = defender.index;
                 return policies[side].decideShield(sides.view(side), sides.view(1 - side), move, attacker.energy);
             }
+
+            public int chooseReplacement(int side)
+            {
+                return policies[side].chooseReplacement(sides.view(side), sides.view(1 - side));   // stub: engine stops at the first faint, your loop handles it like before
+            }
+
+            public BattlePokemon replaceFainted(int side, int teamIndex)
+            {
+                BattlePokemon fainted = teams.get(side).get(active[side]); 
+                BattlePokemon incoming = teams.get(side).get(teamIndex);
+                incoming.shields = fainted.shields;
+                incoming.startingShields = fainted.shields;
+                active[side] = teamIndex;
+                return incoming;
+            }
         };
 
-        while (active[0] >= 0 && active[1] >= 0)
-        {
-            BattlePokemon a = sideA.get(active[0]);
-            BattlePokemon b = sideB.get(active[1]);
-            a.cooldown = 0;
-            b.cooldown = 0;
-
-            Battle.Engine engine = new Battle.Engine(a, b, switching);
-            switching.matchupChanged();
-            engine.run();
-            a = engine.active(0);
-            b = engine.active(1);
-
-            int[] next = { active[0], active[1] };
-            for (int side = 0; side < 2; side++)
-            {
-                if (engine.active(side).hp <= 0)
-                {
-                    next[side] = policies[side].chooseReplacement(sides.view(side), sides.view(1 - side));
-                }
-            }
-
-            for (int side = 0; side < 2; side++)
-            {
-                if (next[side] != active[side])
-                {
-                    BattlePokemon fainted = teams.get(side).get(active[side]);
-                    if (next[side] >= 0)
-                    {
-                        teams.get(side).get(next[side]).startingShields = fainted.shields;
-                        teams.get(side).get(next[side]).startingShields = fainted.shields;
-                    }
-                    active[side] = next[side];
-                }
-            }
-        }
+        Battle.Engine engine = new Battle.Engine(sideA.get(0), sideB.get(0), switching);
+        switching.matchupChanged();
+        engine.run();
         return new TeamBattleResult(hps(sideA), hps(sideB));
     }
 }

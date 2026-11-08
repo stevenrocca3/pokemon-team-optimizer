@@ -105,6 +105,12 @@ public final class Battle
         /** A Charged Move is about to hit the defender, who has a shield left. */
         TeamPolicy.Shield decideShield(BattlePokemon attacker, BattlePokemon defender, BattleMove move);
 
+        /** The active Pokémon on this side fainted: a team index to bring in, or -1 if nobody is left. */
+        int chooseReplacement(int side);
+
+        /** Brings that teammate in for the fainted one (shields carry over); returns it. */
+        BattlePokemon replaceFainted(int side, int teamIndex);
+
         /** Takes the active Pokémon out (timer, buff reset, shields) and returns the one coming in. */
         BattlePokemon switchIn(int side, int teamIndex);
     }
@@ -117,7 +123,7 @@ public final class Battle
         private static final int MAX_TIME = 240000;
 
         private final BattlePokemon[] pokemon;
-        private final boolean usePriority;
+        private boolean usePriority;
         private final Switching switching;
 
         int turns = 1;
@@ -156,6 +162,7 @@ public final class Battle
             return count;
         }
 
+        /** Plays until a side has nobody left (or the clock runs out); a plain 1v1 stops at the first faint. */
         void run()
         {
             boolean continueBattle = true;
@@ -163,11 +170,51 @@ public final class Battle
             {
                 step();
                 continueBattle = pokemon[0].hp > 0 && pokemon[1].hp > 0;
+                if (!continueBattle && switching != null)
+                {
+                    continueBattle = replaceFainted();
+                }
                 if (time > MAX_TIME)
                 {
                     continueBattle = false;
                 }
             }
+        }
+
+        /**
+         * 3v3: both sides pick a replacement for a fainted Pokémon before either comes in, then the new matchup
+         * starts fresh: no actions in flight, both cooldowns 0. False if a side has nobody left.
+         */
+        private boolean replaceFainted()
+        {
+            int[] next = { -1, -1 };
+            for (int side = 0; side < 2; side++)
+            {
+                if (pokemon[side].hp <= 0)
+                {
+                    next[side] = switching.chooseReplacement(side);
+                    if (next[side] < 0)
+                    {
+                        return false;
+                    }
+                }
+            }
+            for (int side = 0; side < 2; side++)
+            {
+                if (pokemon[side].hp <= 0)
+                {
+                    pokemon[side] = switching.replaceFainted(side, next[side]);
+                    pokemon[side].faintSource = "";
+                }
+                pokemon[side].cooldown = 0;
+            }
+            queuedActions = new ArrayList<>();
+            previousTurnActions = new ArrayList<>();
+            pokemon[0].resetMoves(pokemon[1]);
+            pokemon[1].resetMoves(pokemon[0]);
+            usePriority = pokemon[0].statAtk != pokemon[1].statAtk;
+            switching.matchupChanged();
+            return true;
         }
 
         private void step()

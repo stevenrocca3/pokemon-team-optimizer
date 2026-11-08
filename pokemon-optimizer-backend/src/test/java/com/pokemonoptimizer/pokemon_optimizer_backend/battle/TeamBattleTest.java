@@ -217,5 +217,18 @@ public class TeamBattleTest
         assertEquals(List.of(0, 0), result.hpB());
     }
 
+    @Test
+    public void turnsCountThroughTheWholeBattleNotPerFight()
+    {   // The 9 HP Medicham lands one Counter (99 -> 98) and faints on turn 2. Medicham then faces Registeel from turn 3,
+        // takes a Lock-On every turn, and A's plan switches it out on battle turn 31: 98 - 28 (turns 3-30) = 70.
+        // If the turn count restarted after the faint, the plan would fire on battle turn 33 and Medicham would leave at 68.
+        TeamBattleResult result = TeamBattle.simulate(
+            List.of(MEDICHAM, ALTARIA), List.of(new Moveset(COUNTER, List.of()), new Moveset(DRAGON_BREATH, List.of(SKY_ATTACK))),
+            new SwitchPlan(Map.of(31, 1)),
+            List.of(LEVEL_1_MEDICHAM, REGISTEEL), List.of(new Moveset(COUNTER, List.of()), new Moveset(LOCK_ON, List.of())), NEVER_SWITCH);
+        assertEquals(70, result.hpA().get(0));
+        assertEquals(Winner.A, result.winner());
+    }
+
 
 }
