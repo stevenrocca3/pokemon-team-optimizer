@@ -36,5 +36,15 @@ public class CpControllerTest
             .bodyJson().extractingPath("$.detail").asString().contains("notreal");
     }
 
+    @Test
+    public void rankDoesNotNeedACsrfToken()
+    {   // a fresh visitor's first /api/rank can go out before the XSRF-TOKEN cookie exists (403 before the fix)
+        String body = """
+                 {"speciesId":"notreal","hasCap":true,"cap":1500,"hasBestBuddy":false}
+                """;
+        assertThat(mvc.post().uri("/api/rank")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(body))
+            .hasStatus(HttpStatus.BAD_REQUEST);   // reached the controller, wasn't stopped by the CSRF filter
+    }
 }
-
