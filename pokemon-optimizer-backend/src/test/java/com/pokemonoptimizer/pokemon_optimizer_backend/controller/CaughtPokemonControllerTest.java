@@ -1,8 +1,13 @@
 package com.pokemonoptimizer.pokemon_optimizer_backend.controller;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.oidcLogin;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.oidcLogin;
 
+import java.util.Optional;
+
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
@@ -14,6 +19,7 @@ import org.springframework.test.web.servlet.assertj.MockMvcTester;
 
 import com.pokemonoptimizer.pokemon_optimizer_backend.gamemaster.SpeciesLookup;
 import com.pokemonoptimizer.pokemon_optimizer_backend.persistence.CaughtPokemonRepository;
+import com.pokemonoptimizer.pokemon_optimizer_backend.persistence.Trainer;
 import com.pokemonoptimizer.pokemon_optimizer_backend.persistence.TrainerRepository;
 import com.pokemonoptimizer.pokemon_optimizer_backend.security.SecurityConfig;
 
@@ -68,5 +74,51 @@ public class CaughtPokemonControllerTest {
             .contentType(MediaType.APPLICATION_JSON)
             .content(body))
             .hasStatus(HttpStatus.FORBIDDEN);
+    }
+
+    @Autowired private SpeciesLookup speciesLookup;            // the @MockitoBean mocks, injected so we can stub them
+    @Autowired private TrainerRepository trainerRepository;
+    @Autowired private CaughtPokemonRepository caughtPokemonRepository;
+
+    @BeforeEach
+    void stubMocks()
+    {
+        when(speciesLookup.findById("medicham")).thenReturn(new SpeciesLookup().findById("medicham"));   // the real Medicham
+        when(trainerRepository.findByGoogleId(any())).thenReturn(Optional.of(new Trainer("google-id", "Steven")));
+        when(caughtPokemonRepository.save(any())).thenAnswer(call -> call.getArgument(0));            // save returns what it was given
+    }
+
+    @Test
+    public void illegalMovesetReturns400()
+    {   // Mud Shot is Swampert's; Medicham can't learn it
+        String body = """
+                 {"speciesId":"medicham","atkIv":0,"defIv":15,"staIv":15,"level":40,
+                  "fastMove":"MUD_SHOT","chargedMoves":["DYNAMIC_PUNCH"]}
+                """;
+        assertThat(mvc.post().uri("/api/collection")
+            .with(csrf())
+            .with(oidcLogin())
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(body))
+            .hasStatus(HttpStatus.BAD_REQUEST)
+            .bodyJson().extractingPath("$.detail").asString().contains("MUD_SHOT");
+    }
+
+    @Test
+    public void legalMovesetIsSavedWithThePokemon()
+    {
+        String body = """
+                 {"speciesId":"medicham","atkIv":0,"defIv":15,"staIv":15,"level":40,
+                  "fastMove":"COUNTER","chargedMoves":["DYNAMIC_PUNCH","ICE_PUNCH"]}
+                """;
+        assertThat(mvc.post().uri("/api/collection")
+            .with(csrf())
+            .with(oidcLogin())
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(body))
+            .hasStatus(HttpStatus.CREATED)
+            .bodyJson()
+            .hasPathSatisfying("$.fastMove", v -> assertThat(v).asString().isEqualTo("COUNTER"))
+            .hasPathSatisfying("$.chargedMoves", v -> assertThat(v).asArray().containsExactly("DYNAMIC_PUNCH", "ICE_PUNCH"));
     }
 }

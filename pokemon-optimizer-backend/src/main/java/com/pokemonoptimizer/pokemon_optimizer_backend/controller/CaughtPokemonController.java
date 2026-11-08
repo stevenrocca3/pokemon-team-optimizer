@@ -16,6 +16,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.pokemonoptimizer.pokemon_optimizer_backend.dto.CaughtPokemonRequest;
 import com.pokemonoptimizer.pokemon_optimizer_backend.gamemaster.SpeciesLookup;
+import com.pokemonoptimizer.pokemon_optimizer_backend.gamemaster.SpeciesType;
 import com.pokemonoptimizer.pokemon_optimizer_backend.persistence.CaughtPokemon;
 import com.pokemonoptimizer.pokemon_optimizer_backend.persistence.CaughtPokemonRepository;
 import com.pokemonoptimizer.pokemon_optimizer_backend.persistence.Trainer;
@@ -55,16 +56,18 @@ public class CaughtPokemonController
     @ResponseStatus(HttpStatus.CREATED)
     public CaughtPokemon addToCollection(@Valid @RequestBody CaughtPokemonRequest request, @AuthenticationPrincipal OidcUser user) 
     {
-        if (speciesLookup.findById(request.speciesId()).isEmpty()) 
+        SpeciesType species = speciesLookup.findById(request.speciesId())
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Species: " + request.speciesId() + " Not Found."));
+        if (!species.learnset().allows(request.fastMove(), request.chargedMoves()))
         {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Species: " + request.speciesId() + " Not Found.");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Learnset: " + request.fastMove() + request.chargedMoves() + " Not Found.");
         }
         boolean isWholeOrHalf = request.level() * 2 == Math.floor(request.level() * 2);
         if (!isWholeOrHalf) 
         {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Level: " + request.level() + " must be a whole or half #.");
         }
-        CaughtPokemon cp = new CaughtPokemon(request.speciesId(), request.atkIv(), request.defIv(), request.staIv(), request.level(), currentTrainer(user));
+        CaughtPokemon cp = new CaughtPokemon(request.speciesId(), request.atkIv(), request.defIv(), request.staIv(), request.level(), request.fastMove(), request.chargedMoves(), currentTrainer(user));
         return caughtPokemonRepository.save(cp);
     }
 
