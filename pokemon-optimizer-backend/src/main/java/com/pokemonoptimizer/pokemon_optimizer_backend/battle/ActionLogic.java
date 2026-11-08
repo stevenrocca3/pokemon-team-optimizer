@@ -17,9 +17,8 @@ final class ActionLogic
     /** DamageCalculator.damage against the Pokémon's current stat stages. */
     static int damage(BattlePokemon attacker, BattlePokemon defender, BattleMove move)
     {
-        boolean stab = attacker.types.contains(move.type);
-        double effectiveness = TypeChart.effectiveness(move.type, defender.types);
-        return DamageCalculator.damage(move.power, attacker.effectiveAttack(), defender.effectiveDefense(), stab, effectiveness);
+        return DamageCalculator.damage(move.power, attacker.effectiveAttack(), defender.effectiveDefense(),
+            move.stabFor(attacker.types), move.effectivenessAgainst(defender.types));
     }
 
     /** A survival-check state: ELEMENTS OF STATE: POKEMON HP, OPPONENT ENERGY, CURRENT TURN, SHIELDS. */
@@ -520,7 +519,7 @@ final class ActionLogic
                 // PvPoke passes currState.opponentShields here, which is undefined; the value is never read again.
                 PlanState farmDown = new PlanState(curr.energy + fast.energyGain * movesToFarmDown, 0, farmTurn,
                     Double.NaN, curr.moves, curr.buffs, curr.chance);
-                insertBefore(dpQueue, farmDown, s -> s.turn <= farmTurn);
+                insertAfterTurn(dpQueue, farmDown);
 
                 // Find new attack after move
                 double attackMult = curr.buffs;
@@ -587,8 +586,8 @@ final class ActionLogic
                     if (insertElement)
                     {
                         double nextTurn = curr.turn + 1;
-                        insertBefore(dpQueue, new PlanState(curr.energy - move.energy, newOppHealth, nextTurn, newShields,
-                            plus(curr.moves, move), attackMult, curr.chance), s -> s.turn <= nextTurn);
+                        insertAfterTurn(dpQueue, new PlanState(curr.energy - move.energy, newOppHealth, nextTurn, newShields,
+                            plus(curr.moves, move), attackMult, curr.chance));
                     }
 
                     // If move will debuff attack, calculate values when you stack two of them then throw
@@ -603,8 +602,8 @@ final class ActionLogic
                             stackedHealth = curr.oppShields > 0 ? stackedHealth - 1 : stackedHealth - moveDamage;
 
                             double stackedTurn = newTurn + curr.turn + 1;
-                            insertBefore(dpQueue, new PlanState(newEnergy, stackedHealth, stackedTurn, newShields,
-                                plus(curr.moves, move), attackMult, curr.chance), s -> s.turn <= stackedTurn);
+                            insertAfterTurn(dpQueue, new PlanState(newEnergy, stackedHealth, stackedTurn, newShields,
+                                plus(curr.moves, move), attackMult, curr.chance));
                         }
                     }
                 }
@@ -621,8 +620,8 @@ final class ActionLogic
                     }
                     double newTurn = curr.turn + ready + 1;
 
-                    insertBefore(dpQueue, new PlanState(newEnergy, newOppHealth, newTurn, newShields,
-                        plus(curr.moves, move), attackMult, curr.chance), s -> s.turn < newTurn);
+                    insertBeforeTurn(dpQueue, new PlanState(newEnergy, newOppHealth, newTurn, newShields,
+                        plus(curr.moves, move), attackMult, curr.chance));
 
                     // If move will debuff attack, calculate values when you stack two of them then throw
                     if (move.selfDebuffing && move.buffs[0] < 0 && move.energy * 2 <= 100)
@@ -634,8 +633,8 @@ final class ActionLogic
                         stackedHealth = curr.oppShields > 0 ? stackedHealth - 1 : stackedHealth - moveDamage;
 
                         double stackedTurn = stackTurns + curr.turn + 1;
-                        insertBefore(dpQueue, new PlanState(stackEnergy, stackedHealth, stackedTurn, newShields,
-                            plus(curr.moves, move), attackMult, curr.chance), s -> s.turn < stackedTurn);
+                        insertBeforeTurn(dpQueue, new PlanState(stackEnergy, stackedHealth, stackedTurn, newShields,
+                            plus(curr.moves, move), attackMult, curr.chance));
                     }
                 }
             }
@@ -665,23 +664,39 @@ final class ActionLogic
      * Insert at the first index where keepGoing fails, scanning from the front (PvPoke's priority queue insert).
      * PvPoke's "is there a better state" checks inside these loops read fields that don't exist, so they never fire.
      */
-    private static void insertBefore(List<PlanState> queue, PlanState state, java.util.function.Predicate<PlanState> keepGoing)
+    // PvPoke inserts into dpQueue by scanning from the front while a turn test holds. Every insert uses the new
+    // state's own turn, so the queue stays sorted by turn and the scan's stopping point is a binary search bound.
+
+    /** Where PvPoke scans `while (queue[i].turn <= state.turn)`: after every state on the same turn. */
+    private static void insertAfterTurn(List<PlanState> queue, PlanState state)
     {
-        if (queue.isEmpty())
+        queue.add(searchTurn(queue, state.turn, true), state);
+    }
+
+    /** Where PvPoke scans `while (queue[i].turn < state.turn)`: before every state on the same turn. */
+    private static void insertBeforeTurn(List<PlanState> queue, PlanState state)
+    {
+        queue.add(searchTurn(queue, state.turn, false), state);
+    }
+
+    private static int searchTurn(List<PlanState> queue, double turn, boolean afterEqual)
+    {
+        int low = 0;
+        int high = queue.size();
+        while (low < high)
         {
-            queue.add(0, state);
-            return;
-        }
-        int i = 0;
-        while (keepGoing.test(queue.get(i)))
-        {
-            i++;
-            if (i == queue.size())
+            int mid = (low + high) >>> 1;
+            double t = queue.get(mid).turn;
+            if (t < turn || (afterEqual && t == turn))
             {
-                break;
+                low = mid + 1;
+            }
+            else
+            {
+                high = mid;
             }
         }
-        queue.add(i, state);
+        return low;
     }
 
     private static int debuffScore(List<BattleMove> moves)

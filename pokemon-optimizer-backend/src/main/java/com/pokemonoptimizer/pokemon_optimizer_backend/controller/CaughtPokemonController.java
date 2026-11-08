@@ -1,5 +1,6 @@
 package com.pokemonoptimizer.pokemon_optimizer_backend.controller;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
@@ -14,8 +15,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.pokemonoptimizer.pokemon_optimizer_backend.dto.CaughtPokemonBatch;
 import com.pokemonoptimizer.pokemon_optimizer_backend.dto.CaughtPokemonRequest;
 import com.pokemonoptimizer.pokemon_optimizer_backend.gamemaster.SpeciesLookup;
+import com.pokemonoptimizer.pokemon_optimizer_backend.gamemaster.SpeciesType;
 import com.pokemonoptimizer.pokemon_optimizer_backend.persistence.CaughtPokemon;
 import com.pokemonoptimizer.pokemon_optimizer_backend.persistence.CaughtPokemonRepository;
 import com.pokemonoptimizer.pokemon_optimizer_backend.persistence.Trainer;
@@ -53,19 +56,63 @@ public class CaughtPokemonController
     }
     @PostMapping("/collection")
     @ResponseStatus(HttpStatus.CREATED)
-    public CaughtPokemon addToCollection(@Valid @RequestBody CaughtPokemonRequest request, @AuthenticationPrincipal OidcUser user) 
+    public CaughtPokemon addToCollection(@Valid @RequestBody CaughtPokemonRequest request, @AuthenticationPrincipal OidcUser user)
     {
-        if (speciesLookup.findById(request.speciesId()).isEmpty()) 
+        String problem = problemWith(request);
+        if (problem != null)
         {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Species: " + request.speciesId() + " Not Found.");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, problem);
+        }
+        return caughtPokemonRepository.save(toEntity(request, currentTrainer(user)));
+    }
+
+    @PostMapping("/collection/batch")
+    @ResponseStatus(HttpStatus.CREATED)
+    public List<CaughtPokemon> addAllToCollection(@Valid @RequestBody CaughtPokemonBatch batch, @AuthenticationPrincipal OidcUser user)
+    {
+        // check everything before saving anything, so a bad row never leaves half an import behind
+        List<CaughtPokemonRequest> requests = batch.pokemon();
+        for (int i = 0; i < requests.size(); i++)
+        {
+            String problem = problemWith(requests.get(i));
+            if (problem != null)
+            {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Pokémon #" + (i + 1) + ": " + problem);
+            }
+        }
+        Trainer trainer = currentTrainer(user);
+        return caughtPokemonRepository.saveAll(requests.stream().map(request -> toEntity(request, trainer)).toList());
+    }
+
+    /** Why this Pokémon can't exist in the game, or null if it can. */
+    private String problemWith(CaughtPokemonRequest request)
+    {
+        Optional<SpeciesType> found = speciesLookup.findById(request.speciesId());
+        if (found.isEmpty())
+        {
+            return "Species: " + request.speciesId() + " Not Found.";
+        }
+        SpeciesType species = found.get();
+        if (!species.learnset().allows(request.fastMove(), request.chargedMoves()))
+        {
+            return "Learnset: " + request.fastMove() + request.chargedMoves() + " Not Found.";
+        }
+        if (request.shadow() && !species.shadowEligible())
+        {
+            return "Shadow: " + species.speciesName() + " isn't shadow eligible.";
         }
         boolean isWholeOrHalf = request.level() * 2 == Math.floor(request.level() * 2);
-        if (!isWholeOrHalf) 
+        if (!isWholeOrHalf)
         {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Level: " + request.level() + " must be a whole or half #.");
+            return "Level: " + request.level() + " must be a whole or half #.";
         }
-        CaughtPokemon cp = new CaughtPokemon(request.speciesId(), request.atkIv(), request.defIv(), request.staIv(), request.level(), currentTrainer(user));
-        return caughtPokemonRepository.save(cp);
+        return null;
+    }
+
+    private static CaughtPokemon toEntity(CaughtPokemonRequest request, Trainer trainer)
+    {
+        return new CaughtPokemon(request.speciesId(), request.atkIv(), request.defIv(), request.staIv(), request.level(),
+            request.shadow(), request.fastMove(), request.chargedMoves(), trainer);
     }
 
     @DeleteMapping("/collection/{id}")

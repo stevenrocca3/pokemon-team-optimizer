@@ -13,6 +13,21 @@ Things to know when comparing with `Battle.simulate`:
 
 - PvPoke's `turns` is ours + 1.
 - PvPoke's AI options default to the website's: `optimizeMoveTiming: true`, `baitShields: 1`.
-  Pass `"opts": {"optimizeMoveTiming": false}` to compare mechanics before that AI piece exists.
+  Pass `"opts": {"optimizeMoveTiming": false}` to match `Battle.simulate(..., false)`.
 - `load.js` stubs the browser (jQuery, localStorage) just enough for the battle code to load.
   If a new PvPoke version fails to load, the stubs there are the place to look.
+
+## Matchup fixture
+
+`PvPokeFixtureTest` replays 3000 seeded random Great League matchups from
+`src/test/resources/battle/pvpoke-matchups.json` and checks every result field against PvPoke.
+Regenerate it after a gamemaster update or a PvPoke bump, then review the diff:
+
+```sh
+node tools/pvpoke-oracle/gen-fixture.js tools/pvpoke-oracle/.pvpoke/src/js \
+  pokemon-optimizer-backend/src/main/resources/gamemaster.json \
+  pokemon-optimizer-backend/src/test/resources/battle/pvpoke-matchups.json 3000
+```
+
+Not covered (the engine throws or doesn't model them): moves that buff both sides (Obstruct) and
+form-change species (Aegislash, Cramorant, Mimikyu, Morpeko).

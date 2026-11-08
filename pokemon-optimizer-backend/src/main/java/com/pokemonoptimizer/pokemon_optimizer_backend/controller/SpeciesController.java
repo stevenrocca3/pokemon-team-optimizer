@@ -45,7 +45,8 @@ public class SpeciesController
         SpeciesDetail speciesDetail = new SpeciesDetail(speciesType.speciesId(), 
                                                         speciesType.speciesName(), speciesType.dex(), 
                                                         speciesType.baseAtk(), speciesType.baseDef(), 
-                                                        speciesType.baseSta(), speciesType.learnset());
+                                                        speciesType.baseSta(), speciesType.learnset(), 
+                                                        speciesType.shadowEligible());
         return speciesDetail;
     }
     

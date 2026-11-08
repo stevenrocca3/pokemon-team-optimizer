@@ -8,7 +8,7 @@ export type MovesState =
 
 export const MovesContext = createContext<MovesState>({ status: 'loading' })
 
-/** Every move by ID, loaded once for the whole app by MovesProvider. */
+/** Every move by ID, loaded once by the MovesProvider around the species page. */
 export function useMoves(): MovesState {
   return useContext(MovesContext)
 }

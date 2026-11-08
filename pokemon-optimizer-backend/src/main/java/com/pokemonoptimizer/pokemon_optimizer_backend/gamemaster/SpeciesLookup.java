@@ -47,7 +47,8 @@ public class SpeciesLookup
                     eliteMoves.addAll(pokemon.eliteMoves());
                     Set<String> finalEliteMoves = Set.copyOf(eliteMoves);
                     Learnset learnset = new Learnset(pokemon.fastMoves(), pokemon.chargedMoves(), finalEliteMoves);
-                    SpeciesType species = new SpeciesType(dex, speciesName, speciesId, baseSta, baseAtk, baseDef, learnset, pokemon.types());
+                    boolean shadowEligible = pokemon.tags().contains("shadoweligible");
+                    SpeciesType species = new SpeciesType(dex, speciesName, speciesId, baseSta, baseAtk, baseDef, learnset, pokemon.types(), shadowEligible);
                     if (!data.containsKey(speciesId))
                     {
                         data.put(speciesId, species);

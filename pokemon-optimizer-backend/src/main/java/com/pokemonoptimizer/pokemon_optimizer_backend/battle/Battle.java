@@ -39,32 +39,80 @@ public final class Battle
             rating(pokeA, pokeB), rating(pokeB, pokeA));
     }
 
-    private static int rating(BattlePokemon self, BattlePokemon opponent)
+    static int rating(BattlePokemon self, BattlePokemon opponent)
     {
         double damageDealt = (opponent.maxHp - opponent.hp) / (double) opponent.maxHp;
         double hpKept = self.hp / (double) self.maxHp;
         return (int) Math.floor(500 * damageDealt + 500 * hpKept);
     }
 
-    /** PvPoke's TimelineAction, limited to fast and charged actions. */
+    /** PvPoke's TimelineAction, limited to fast, charged and switch actions. */
     private static final class Action
     {
         final boolean charged;
+        final boolean isSwitch;
         final int actor;
         final int turn;
-        final int value; // index into chargedMoves
+        final int value; // index into chargedMoves, or the team index to switch to
         int priority;
         boolean valid = false;
         boolean processed = false;
 
         Action(boolean charged, int actor, int turn, int value, int priority)
         {
+            this(charged, false, actor, turn, value, priority);
+        }
+
+        private Action(boolean charged, boolean isSwitch, int actor, int turn, int value, int priority)
+        {
             this.charged = charged;
+            this.isSwitch = isSwitch;
             this.actor = actor;
             this.turn = turn;
             this.value = value;
             this.priority = priority;
         }
+
+        static Action switchTo(int actor, int turn, int teamIndex, int priority)
+        {
+            return new Action(false, true, actor, turn, teamIndex, priority);
+        }
+
+        boolean isFast()
+        {
+            return !charged && !isSwitch;
+        }
+    }
+
+    /**
+     * What a 3v3 adds to the engine: switching mid-fight. A plain 1v1 passes none, which leaves
+     * the engine exactly PvPoke's simulate mode (PvPokeFixtureTest guards that).
+     */
+    interface Switching
+    {
+        /** On a Pokémon's turn, before ActionLogic: a team index to switch to, TeamPolicy.FIGHT or TeamPolicy.FAST_MOVE. */
+        int decideSwitch(int side, int turn, BattlePokemon active, BattlePokemon opponent);
+
+        /** After a switch, or a Charged Move that didn't KO: the AIs re-evaluate the matchup. */
+        void matchupChanged();
+
+        /** Player.getSwitchTimer() == 0 */
+        boolean canSwitch(int side);
+
+        /** Player.decrementSwitchTimer, once per step. */
+        void tick(int deltaTime);
+
+        /** A Charged Move is about to hit the defender, who has a shield left. */
+        TeamPolicy.Shield decideShield(BattlePokemon attacker, BattlePokemon defender, BattleMove move);
+
+        /** The active Pokémon on this side fainted: a team index to bring in, or -1 if nobody is left. */
+        int chooseReplacement(int side);
+
+        /** Brings that teammate in for the fainted one (shields carry over); returns it. */
+        BattlePokemon replaceFainted(int side, int teamIndex);
+
+        /** Takes the active Pokémon out (timer, buff reset, shields) and returns the one coming in. */
+        BattlePokemon switchIn(int side, int teamIndex);
     }
 
     /** The battle state PvPoke keeps on its Battle object. ActionLogic reads turns and the action queue. */
@@ -75,7 +123,8 @@ public final class Battle
         private static final int MAX_TIME = 240000;
 
         private final BattlePokemon[] pokemon;
-        private final boolean usePriority;
+        private boolean usePriority;
+        private final Switching switching;
 
         int turns = 1;
         int lastProcessedTurn = 0;
@@ -87,6 +136,12 @@ public final class Battle
 
         Engine(BattlePokemon a, BattlePokemon b)
         {
+            this(a, b, null);
+        }
+
+        Engine(BattlePokemon a, BattlePokemon b, Switching switching)
+        {
+            this.switching = switching;
             this.pokemon = new BattlePokemon[] { a, b };
             a.resetMoves(b);
             b.resetMoves(a);
@@ -99,7 +154,7 @@ public final class Battle
             int count = 0;
             for (Action action : queuedActions)
             {
-                if (action.actor == actor && !action.charged)
+                if (action.actor == actor && action.isFast())
                 {
                     count++;
                 }
@@ -107,6 +162,7 @@ public final class Battle
             return count;
         }
 
+        /** Plays until a side has nobody left (or the clock runs out); a plain 1v1 stops at the first faint. */
         void run()
         {
             boolean continueBattle = true;
@@ -114,11 +170,51 @@ public final class Battle
             {
                 step();
                 continueBattle = pokemon[0].hp > 0 && pokemon[1].hp > 0;
+                if (!continueBattle && switching != null)
+                {
+                    continueBattle = replaceFainted();
+                }
                 if (time > MAX_TIME)
                 {
                     continueBattle = false;
                 }
             }
+        }
+
+        /**
+         * 3v3: both sides pick a replacement for a fainted Pokémon before either comes in, then the new matchup
+         * starts fresh: no actions in flight, both cooldowns 0. False if a side has nobody left.
+         */
+        private boolean replaceFainted()
+        {
+            int[] next = { -1, -1 };
+            for (int side = 0; side < 2; side++)
+            {
+                if (pokemon[side].hp <= 0)
+                {
+                    next[side] = switching.chooseReplacement(side);
+                    if (next[side] < 0)
+                    {
+                        return false;
+                    }
+                }
+            }
+            for (int side = 0; side < 2; side++)
+            {
+                if (pokemon[side].hp <= 0)
+                {
+                    pokemon[side] = switching.replaceFainted(side, next[side]);
+                    pokemon[side].faintSource = "";
+                }
+                pokemon[side].cooldown = 0;
+            }
+            queuedActions = new ArrayList<>();
+            previousTurnActions = new ArrayList<>();
+            pokemon[0].resetMoves(pokemon[1]);
+            pokemon[1].resetMoves(pokemon[0]);
+            usePriority = pokemon[0].statAtk != pokemon[1].statAtk;
+            switching.matchupChanged();
+            return true;
         }
 
         private void step()
@@ -132,6 +228,11 @@ public final class Battle
             {
                 poke.cooldown = Math.max(0, poke.cooldown - DELTA_TIME);
                 poke.hasActed = false;
+            }
+
+            if (switching != null)
+            {
+                switching.tick(DELTA_TIME);
             }
 
             boolean chargedMoveLastTurn = previousTurnActions.stream().anyMatch(action -> action.charged);
@@ -148,12 +249,17 @@ public final class Battle
                 {
                     continue;
                 }
-                // The turn after a Charged Move: the decision still ran (side effects included) but is dropped
-                if (chargedMoveLastTurn)
+                // The turn after a Charged Move: the decision still ran (side effects included) but is dropped.
+                // Switches still go through (0-turn switch).
+                if (chargedMoveLastTurn && !action.isSwitch)
                 {
                     continue;
                 }
-                if (poke.hp > 0 && opponent.hp > 0)
+                if (action.isSwitch)
+                {
+                    queuedActions.add(action);   // no cooldown: the switch replaces this turn's move
+                }
+                else if (poke.hp > 0 && opponent.hp > 0)
                 {
                     cooldownsToSet[i] += action.charged ? 500 : poke.fastMove.cooldown;
                     queuedActions.add(action);
@@ -168,10 +274,15 @@ public final class Battle
             {
                 Action action = queuedActions.get(i);
                 int timeSinceActivated = (turns - action.turn) * 500;
-                int requiredTimeToPass = action.charged ? 0 : pokemon[action.actor].fastMove.cooldown - 500;
+                int requiredTimeToPass = action.charged || action.isSwitch ? 0 : pokemon[action.actor].fastMove.cooldown - 500;
+
+                if (action.isSwitch && chargedMoveLastTurn)
+                {
+                    action.priority -= 40; // floating Fast Moves resolve before a 0-turn switch
+                }
 
                 // Floating Fast Moves: after a Charged Move, a Fast Move in progress lands right away
-                if (timeSinceActivated >= requiredTimeToPass || (!action.charged && chargedMoveLastTurn && action.turn < turns))
+                if (timeSinceActivated >= requiredTimeToPass || (action.isFast() && chargedMoveLastTurn && action.turn < turns))
                 {
                     turnActions.add(action);
                     queuedActions.remove(i);
@@ -187,7 +298,14 @@ public final class Battle
                 BattlePokemon poke = pokemon[action.actor];
                 BattlePokemon opponent = pokemon[1 - action.actor];
 
-                if (action.charged)
+                if (action.isSwitch)
+                {
+                    if ((poke.cooldown == 0 && switching.canSwitch(action.actor)) || poke.hp < 1)
+                    {
+                        action.valid = true;
+                    }
+                }
+                else if (action.charged)
                 {
                     BattleMove move = poke.chargedMoves.get(action.value);
                     if (poke.energy >= move.energy)
@@ -252,6 +370,19 @@ public final class Battle
             }
             poke.hasActed = true;
 
+            if (switching != null && poke.hp > 0)
+            {
+                int target = switching.decideSwitch(poke.index, turns, poke, opponent);
+                if (target >= 0)
+                {
+                    return Action.switchTo(poke.index, turns, target, poke.priority + 20);
+                }
+                if (target == TeamPolicy.FAST_MOVE)
+                {
+                    return new Action(false, poke.index, turns, 0, poke.priority);
+                }
+            }
+
             Integer chargedIndex = ActionLogic.decideAction(this, poke, opponent);
             if (chargedIndex == null)
             {
@@ -274,6 +405,12 @@ public final class Battle
             }
             action.processed = true;
 
+            if (action.isSwitch)
+            {
+                processSwitch(action.actor, action.value);
+                return;
+            }
+
             if (!action.charged)
             {
                 useMove(poke, opponent, poke.fastMove, false);
@@ -285,11 +422,43 @@ public final class Battle
             {
                 useMove(poke, opponent, move, true);
                 roundChargedMoveUsed++;
+
+                if (switching != null && opponent.hp > 0)
+                {
+                    switching.matchupChanged();
+                }
             }
+        }
+
+        /** processAction's "switch" case, for a Pokémon still standing. */
+        private void processSwitch(int side, int teamIndex)
+        {
+            BattlePokemon incoming = switching.switchIn(side, teamIndex);
+            incoming.cooldown = 0;
+            incoming.faintSource = "";
+            pokemon[side] = incoming;
+
+            // Cached move damage depends on the opponent, so both sides re-initialize (setNewPokemon -> resetMoves)
+            pokemon[0].resetMoves(pokemon[1]);
+            pokemon[1].resetMoves(pokemon[0]);
+            switching.matchupChanged();
+        }
+
+        /** The active Pokémon on a side; it changes when someone switches. */
+        BattlePokemon active(int side)
+        {
+            return pokemon[side];
         }
 
         private void useMove(BattlePokemon attacker, BattlePokemon defender, BattleMove move, boolean charged)
         {
+            // 3v3: the defender's AI decides before the move resolves, on cached damage and the attacker's full energy
+            TeamPolicy.Shield aiShield = TeamPolicy.Shield.DEFAULT;
+            if (charged && switching != null && defender.shields > 0)
+            {
+                aiShield = switching.decideShield(attacker, defender, move);
+            }
+
             int damage = ActionLogic.damage(attacker, defender, move);
             move.damage = damage;
 
@@ -304,10 +473,14 @@ public final class Battle
 
                 if (defender.shields > 0)
                 {
-                    if (shouldShield(attacker, defender, move, damage))
+                    boolean useShield = aiShield == TeamPolicy.Shield.DEFAULT
+                        ? shouldShield(attacker, defender, move, damage)
+                        : aiShield == TeamPolicy.Shield.SHIELD;
+                    if (useShield)
                     {
                         damage = 1;
                         defender.shields--;
+                        defender.shieldsUsed++;
                         roundShieldUsed = true;
 
                         if (roundChargedMoveUsed == 0)

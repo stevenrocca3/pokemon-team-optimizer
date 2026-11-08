@@ -98,6 +98,10 @@ function SpeciesView({ id, option }: { id: string; option?: SpeciesOption }) {
   const best = rows?.[0]
   const mine = byIvs.get(ivKey(myIvs.atk, myIvs.def, myIvs.sta))
   const title = option ? option.name : 'Loading…'
+  // The detail response is tiny and also carries the dex number, so the hero art (this page's LCP element)
+  // can start loading without waiting for the full species list.
+  const loadedDetail = detail && detail !== 'error' ? detail : undefined
+  const artDex = option?.dex ?? loadedDetail?.dex
 
   return (
     <div>
@@ -105,7 +109,7 @@ function SpeciesView({ id, option }: { id: string; option?: SpeciesOption }) {
       <section className="border-b border-line bg-gradient-to-b from-surface to-canvas">
         <div className="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-8 sm:flex-row sm:items-center sm:py-10">
           <div className="mx-auto aspect-square w-48 shrink-0 rounded-xl bg-raised/60 p-4 ring-1 ring-line-strong sm:mx-0 sm:w-56">
-            <PokemonArt dex={option?.dex} alt={option?.name ?? ''} className="h-full w-full" />
+            <PokemonArt dex={artDex} alt={option?.name ?? loadedDetail?.name ?? ''} className="h-full w-full" priority />
           </div>
           <div className="min-w-0 flex-1">
             <div className="text-sm text-subtle">{option ? formatDex(option.dex) : '\u00a0'}</div>
@@ -204,7 +208,7 @@ function SpeciesView({ id, option }: { id: string; option?: SpeciesOption }) {
                     !rows && <Skeleton className="ml-auto h-10 w-48" />
                   )}
                 </div>
-                <AddToCollection speciesId={id} ivs={myIvs} />
+                <AddToCollection speciesId={id} ivs={myIvs} detail={detail === 'error' ? null : detail} />
               </div>
             </div>
 
