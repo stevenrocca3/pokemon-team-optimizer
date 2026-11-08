@@ -44,6 +44,7 @@ export interface SpeciesDetail
     baseDef : number;
     baseSta : number;
     learnset : Learnset;
+    shadowEligible : boolean;
 }
 export interface Move
 {
@@ -61,6 +62,9 @@ export interface CaughtPokemon
     defIv : number;
     staIv : number;
     level : number;
+    fastMove : string;
+    chargedMoves : string[];
+    shadow : boolean;
 }
 
 export interface CaughtPokemonRequest
@@ -72,4 +76,7 @@ export interface CaughtPokemonRequest
     defIv : number;
     staIv : number;
     level : number;
+    fastMove : string;
+    chargedMoves : string[];
+    shadow : boolean;
 }

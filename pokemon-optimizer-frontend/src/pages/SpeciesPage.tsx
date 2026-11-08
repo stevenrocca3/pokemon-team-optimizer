@@ -204,7 +204,7 @@ function SpeciesView({ id, option }: { id: string; option?: SpeciesOption }) {
                     !rows && <Skeleton className="ml-auto h-10 w-48" />
                   )}
                 </div>
-                <AddToCollection speciesId={id} ivs={myIvs} />
+                <AddToCollection speciesId={id} ivs={myIvs} detail={detail === 'error' ? null : detail} />
               </div>
             </div>
 

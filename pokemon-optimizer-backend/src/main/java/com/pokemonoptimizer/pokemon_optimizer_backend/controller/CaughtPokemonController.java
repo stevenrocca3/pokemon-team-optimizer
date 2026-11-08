@@ -62,7 +62,7 @@ public class CaughtPokemonController
         {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Learnset: " + request.fastMove() + request.chargedMoves() + " Not Found.");
         }
-        if (request.shadow() && !species.shadowElgible()) 
+        if (request.shadow() && !species.shadowEligible()) 
         {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Shadow: " + request.shadow() + " Not shadow elgible.");
         }

@@ -7,6 +7,7 @@ import { PokemonArt } from '../components/PokemonArt'
 import { IvTriple } from '../components/IvTriple'
 import { SearchBar } from '../components/SearchBar'
 import { formatDex, formatLevel } from '../lib/species'
+import { useMoves } from '../moves/moves-context'
 
 type CollectionState = { status: 'loading' } | { status: 'logged-out' } | { status: 'error'; message: string } | { status: 'ready'; list: CaughtPokemon[] }
 
@@ -102,6 +103,8 @@ export function CollectionPage() {
 function CaughtCard({ pokemon, onRemoved }: { pokemon: CaughtPokemon; onRemoved: (id: number) => void }) {
   const species = useSpecies()
   const option = species.status === 'ready' ? species.byId.get(pokemon.speciesId) : undefined
+  const moveList = useMoves()
+  const nameOf = (id: string) => (moveList.status === 'ready' ? moveList.byId.get(id)?.name : undefined) ?? id
   const [removing, setRemoving] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -128,6 +131,11 @@ function CaughtCard({ pokemon, onRemoved }: { pokemon: CaughtPokemon; onRemoved:
         <div className="text-xs text-subtle">{option ? formatDex(option.dex) : ' '}</div>
         <Link to={`/species/${pokemon.speciesId}`} className="block truncate font-semibold hover:text-brand">
           {option?.name ?? pokemon.speciesId}
+          {pokemon.shadow && (
+            <span className="ml-2 rounded bg-violet-500/20 px-1.5 py-0.5 align-middle text-[10px] font-bold uppercase text-violet-300">
+              Shadow
+            </span>
+          )}
         </Link>
         <div className="mt-2 flex items-end justify-between gap-3">
           <IvTriple atk={pokemon.atkIv} def={pokemon.defIv} sta={pokemon.staIv} />
@@ -136,6 +144,14 @@ function CaughtCard({ pokemon, onRemoved }: { pokemon: CaughtPokemon; onRemoved:
             <div className="font-semibold tabular-nums">{formatLevel(pokemon.level)}</div>
           </div>
         </div>
+        {/* Pokémon saved before movesets existed have no moves */}
+        {pokemon.fastMove && (
+          <p className="mt-2 truncate text-xs text-ink-soft" title={[pokemon.fastMove, ...pokemon.chargedMoves].map(nameOf).join(' · ')}>
+            {nameOf(pokemon.fastMove)}
+            <span className="text-subtle"> · </span>
+            {pokemon.chargedMoves.map(nameOf).join(' / ')}
+          </p>
+        )}
         <div className="mt-3 flex items-center justify-between gap-2">
           <button
             onClick={remove}

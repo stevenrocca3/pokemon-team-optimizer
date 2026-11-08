@@ -3,4 +3,4 @@ import java.util.List;
 
 public record SpeciesType(int dex, String speciesName, String speciesId, 
             int baseSta, int baseAtk, int baseDef, Learnset learnset, 
-            List<String> types, boolean shadowElgible){}
+            List<String> types, boolean shadowEligible){}
