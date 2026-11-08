@@ -3,6 +3,8 @@ package com.pokemonoptimizer.pokemon_optimizer_backend.controller;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
 import org.junit.jupiter.api.Test;
@@ -38,7 +40,7 @@ public class ImportControllerTest
             + "1,Swampert,,260,,1500,145,0,15,14,64.4,20.0,20.0,Mud Shot,Hydro Cannon,Earthquake,"
             + "2026-11-08 10:00,2026-11-08 10:00,11/8/2026,80kg,1.5m,0,1,0,2500,,,,,,,,,,,,,,,,,,,,,,,,,\n";
 
-        assertThat(mvc.post().uri("/api/import/poke-genie").multipart().file(csv(content)))   // no csrf(): see TeamBuilderControllerTest
+        assertThat(mvc.post().uri("/api/import/preview").multipart().file(csv(content)))   // no csrf(): see TeamBuilderControllerTest
             .hasStatusOk()
             .bodyJson().extractingPath("$.pokemon[0].speciesId").asString().isEqualTo("swampert");
     }
@@ -46,8 +48,30 @@ public class ImportControllerTest
     @Test
     public void aFileThatIsntAPokeGenieExportIs400()
     {
-        assertThat(mvc.post().uri("/api/import/poke-genie").multipart().file(csv("name,cp\nSwampert,1500\n")).with(csrf()))
+        assertThat(mvc.post().uri("/api/import/preview").multipart().file(csv("name,cp\nSwampert,1500\n")).with(csrf()))
             .hasStatus(HttpStatus.BAD_REQUEST)
             .bodyJson().extractingPath("$.detail").asString().contains("Poké Genie");
+    }
+
+    @Test
+    public void aCalcyIvExportGoesThroughTheSameUpload() throws IOException
+    {   // one upload box for both apps: the format is told apart by its header
+        try (InputStream real = getClass().getResourceAsStream("/importer/calcy-iv-history.csv"))
+        {
+            MockMultipartFile file = new MockMultipartFile("file", "history.csv", "text/csv", real.readAllBytes());
+
+            assertThat(mvc.post().uri("/api/import/preview").multipart().file(file))
+                .hasStatusOk()
+                .bodyJson().extractingPath("$.pokemon[*].speciesId").asArray()
+                .containsExactly("metagross", "baxcalibur", "arcanine_hisuian", "metagross", "raichu_alolan");
+        }
+    }
+
+    @Test
+    public void aFileFromNeitherAppNamesBoth()
+    {
+        assertThat(mvc.post().uri("/api/import/preview").multipart().file(csv("name,cp\nSwampert,1500\n")))
+            .hasStatus(HttpStatus.BAD_REQUEST)
+            .bodyJson().extractingPath("$.detail").asString().contains("Poké Genie").contains("Calcy IV");
     }
 }
