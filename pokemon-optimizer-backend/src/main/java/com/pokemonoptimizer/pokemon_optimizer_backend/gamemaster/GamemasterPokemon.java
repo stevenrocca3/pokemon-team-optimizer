@@ -4,7 +4,9 @@ import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record GamemasterPokemon(BaseStats baseStats, int dex, String speciesName, 
-                        String speciesId, List<String> tags, boolean released, List<String> fastMoves, List<String> chargedMoves, List<String> eliteMoves, List<String> legacyMoves) {
+                        String speciesId, List<String> tags, boolean released, List<String> fastMoves, 
+                        List<String> chargedMoves, List<String> eliteMoves, List<String> legacyMoves,
+                        List<String> types) {
                             public GamemasterPokemon 
                             {
                                 if (tags == null) tags = List.of();

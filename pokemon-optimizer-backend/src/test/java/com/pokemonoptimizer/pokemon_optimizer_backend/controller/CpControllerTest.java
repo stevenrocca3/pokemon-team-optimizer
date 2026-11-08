@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 
 @WebMvcTest(CpController.class)
 @MockitoBean(types = SpeciesLookup.class)
@@ -28,6 +29,7 @@ public class CpControllerTest
                  {"speciesId":"notreal","hasCap":true,"cap":1500,"hasBestBuddy":false}
                 """;
         assertThat(mvc.post().uri("/api/rank")
+            .with(csrf())
             .contentType(MediaType.APPLICATION_JSON)
             .content(body))
             .hasStatus(HttpStatus.BAD_REQUEST)

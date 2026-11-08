@@ -47,7 +47,7 @@ public class SpeciesLookup
                     eliteMoves.addAll(pokemon.eliteMoves());
                     Set<String> finalEliteMoves = Set.copyOf(eliteMoves);
                     Learnset learnset = new Learnset(pokemon.fastMoves(), pokemon.chargedMoves(), finalEliteMoves);
-                    SpeciesType species = new SpeciesType(dex, speciesName, speciesId, baseSta, baseAtk, baseDef, learnset);
+                    SpeciesType species = new SpeciesType(dex, speciesName, speciesId, baseSta, baseAtk, baseDef, learnset, pokemon.types());
                     if (!data.containsKey(speciesId))
                     {
                         data.put(speciesId, species);

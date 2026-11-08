@@ -13,3 +13,6 @@ target/
 # IDE
 .vscode/
 .idea/
+
+# PvPoke oracle checkout
+tools/pvpoke-oracle/.pvpoke/

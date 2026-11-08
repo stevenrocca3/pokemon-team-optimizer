@@ -1,6 +1,7 @@
 package com.pokemonoptimizer.pokemon_optimizer_backend.gamemaster;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import java.util.List;
 
 
 import org.junit.jupiter.api.Test;
@@ -21,6 +22,35 @@ public class MoveLookupTest
        
         assertEquals("Power-Up Punch", ml.findById("POWER_UP_PUNCH").orElseThrow().name()); //making sure moves gets stored in proper index
         assertEquals("POWER_UP_PUNCH", ml.findById("POWER_UP_PUNCH").orElseThrow().moveId());
+    }
+
+    @Test
+    public void fastMoveHasBattleStats()
+    {   // Counter: fast move, gains energy, takes 2 turns
+        Move counter = ml.findById("COUNTER").orElseThrow();
+        assertEquals("fighting", counter.type());
+        assertEquals(8, counter.power());
+        assertEquals(0, counter.energy());
+        assertEquals(6, counter.energyGain());
+        assertEquals(2, counter.turns());
+    }
+
+    @Test
+    public void chargedMoveHasBattleStats()
+    {   // Power-Up Punch: charged move, costs 35 energy
+        Move pup = ml.findById("POWER_UP_PUNCH").orElseThrow();
+        assertEquals(20, pup.power());
+        assertEquals(35, pup.energy());
+        assertEquals(0, pup.energyGain());
+    }
+
+
+    @Test
+    public void moveWithoutBuffsHasNoBuffs()
+    {
+        Move counter = ml.findById("COUNTER").orElseThrow();
+        assertEquals(List.of(), counter.buffs());
+        assertEquals(0.0, counter.buffApplyChance(), 0.0);
     }
 
 }
