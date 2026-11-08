@@ -171,6 +171,20 @@ export async function sendFeedback(message: string, page: string): Promise<void>
     }
 }
 
+export async function sendRating(stars: number, page: string): Promise<void>
+{
+    const response = await fetch('/api/ratings',
+    {
+        method: 'POST',
+        headers: { 'Content-Type' : 'application/json', ...csrfHeader() },
+        body: JSON.stringify({ stars, page })
+    });
+    if (!response.ok)
+    {
+        throw new Error(await problemDetail(response));
+    }
+}
+
 async function problemDetail(response: Response): Promise<string>
 {
     try
