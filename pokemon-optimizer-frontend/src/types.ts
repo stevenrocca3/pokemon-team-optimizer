@@ -81,10 +81,10 @@ export interface CaughtPokemonRequest
     shadow : boolean;
 }
 
-// One Poké Genie row mapped to our IDs. fastMove is null / chargedMoves empty when Genie didn't record them.
+// One exported row (Poké Genie or Calcy IV) mapped to our IDs. fastMove is null / chargedMoves empty when the app didn't record them.
 export interface ImportedPokemon
 {
-    index : number;          // Genie's Index column
+    index : number;          // Genie's Index column, or the row number in a Calcy IV file
     speciesId : string;
     atkIv : number;
     defIv : number;
@@ -102,7 +102,7 @@ export interface RejectedRow
     reason : string;
 }
 
-// POST /api/import/poke-genie: what the file would import; nothing is saved yet
+// POST /api/import/preview: what the file would import; nothing is saved yet
 export interface ImportPreview
 {
     pokemon : ImportedPokemon[];

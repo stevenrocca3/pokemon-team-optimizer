@@ -1,12 +1,14 @@
 package com.pokemonoptimizer.pokemon_optimizer_backend.controller;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.oidcLogin;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -20,6 +22,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.assertj.MockMvcTester;
 
 import com.pokemonoptimizer.pokemon_optimizer_backend.gamemaster.SpeciesLookup;
+import com.pokemonoptimizer.pokemon_optimizer_backend.persistence.CaughtPokemon;
 import com.pokemonoptimizer.pokemon_optimizer_backend.persistence.CaughtPokemonRepository;
 import com.pokemonoptimizer.pokemon_optimizer_backend.persistence.Trainer;
 import com.pokemonoptimizer.pokemon_optimizer_backend.persistence.TrainerRepository;
@@ -205,5 +208,91 @@ public class CaughtPokemonControllerTest {
             .contentType(MediaType.APPLICATION_JSON)
             .content("{\"pokemon\":[]}"))
             .hasStatus(HttpStatus.UNAUTHORIZED);
+    }
+
+    private static final Trainer STEVEN = new Trainer("google-id", "Steven");
+
+    private void alreadyCaught(CaughtPokemon... pokemon)
+    {
+        when(caughtPokemonRepository.findByTrainer(any())).thenReturn(List.of(pokemon));
+        when(caughtPokemonRepository.saveAll(any())).thenAnswer(call -> call.getArgument(0));
+    }
+
+    private static CaughtPokemon medicham(int atkIv, double level, boolean shadow)
+    {
+        return new CaughtPokemon("medicham", atkIv, 15, 15, level, shadow, "COUNTER", List.of("ICE_PUNCH"), STEVEN);
+    }
+
+    @Test
+    public void oneChargedMoveIsListedWithoutAnEmptySecond()
+    {   // a null second move came back as [ICE_PUNCH, null], which the batch and team builder reject
+        alreadyCaught(medicham(0, 40, false));
+        assertThat(mvc.get().uri("/api/collection").with(oidcLogin()))
+            .hasStatusOk()
+            .bodyJson().extractingPath("$[0].chargedMoves").asArray().containsExactly("ICE_PUNCH");
+    }
+
+    @Test
+    public void batchSkipsPokemonAlreadyInTheCollection()
+    {   // the same file imported twice; only the new 1/15/15 is saved
+        alreadyCaught(medicham(0, 40, false));
+        String body = """
+                {"pokemon":[
+                  {"speciesId":"medicham","atkIv":0,"defIv":15,"staIv":15,"level":40,"fastMove":"COUNTER","chargedMoves":["ICE_PUNCH"]},
+                  {"speciesId":"medicham","atkIv":1,"defIv":15,"staIv":15,"level":40,"fastMove":"COUNTER","chargedMoves":["ICE_PUNCH"]}
+                ]}
+                """;
+        assertThat(mvc.post().uri("/api/collection/batch").with(csrf()).with(oidcLogin())
+            .contentType(MediaType.APPLICATION_JSON).content(body))
+            .hasStatus(HttpStatus.CREATED)
+            .bodyJson().extractingPath("$[*].atkIv").asArray().containsExactly(1);
+    }
+
+    @Test
+    public void batchSavesARepeatedPokemonOnce()
+    {
+        alreadyCaught();
+        String body = """
+                {"pokemon":[
+                  {"speciesId":"medicham","atkIv":0,"defIv":15,"staIv":15,"level":40,"fastMove":"COUNTER","chargedMoves":["ICE_PUNCH"]},
+                  {"speciesId":"medicham","atkIv":0,"defIv":15,"staIv":15,"level":40,"fastMove":"COUNTER","chargedMoves":["ICE_PUNCH"]}
+                ]}
+                """;
+        assertThat(mvc.post().uri("/api/collection/batch").with(csrf()).with(oidcLogin())
+            .contentType(MediaType.APPLICATION_JSON).content(body))
+            .hasStatus(HttpStatus.CREATED)
+            .bodyJson().extractingPath("$.length()").asNumber().isEqualTo(1);
+    }
+
+    @Test
+    public void shadowAndRegularWithTheSameIvsAreDifferentPokemon()
+    {
+        alreadyCaught(medicham(0, 40, true));
+        String body = """
+                {"pokemon":[
+                  {"speciesId":"medicham","atkIv":0,"defIv":15,"staIv":15,"level":40,"fastMove":"COUNTER","chargedMoves":["ICE_PUNCH"]}
+                ]}
+                """;
+        assertThat(mvc.post().uri("/api/collection/batch").with(csrf()).with(oidcLogin())
+            .contentType(MediaType.APPLICATION_JSON).content(body))
+            .hasStatus(HttpStatus.CREATED)
+            .bodyJson().extractingPath("$[*].shadow").asArray().containsExactly(false);
+    }
+
+    @Test
+    public void batchRaisesTheLevelOfAPoweredUpDuplicate()
+    {   // powered up since the last import: keep one Pokémon, at its new level
+        CaughtPokemon existing = medicham(0, 40, false);
+        alreadyCaught(existing);
+        String body = """
+                {"pokemon":[
+                  {"speciesId":"medicham","atkIv":0,"defIv":15,"staIv":15,"level":41,"fastMove":"COUNTER","chargedMoves":["ICE_PUNCH"]}
+                ]}
+                """;
+        assertThat(mvc.post().uri("/api/collection/batch").with(csrf()).with(oidcLogin())
+            .contentType(MediaType.APPLICATION_JSON).content(body))
+            .hasStatus(HttpStatus.CREATED)
+            .bodyJson().extractingPath("$[*].level").asArray().containsExactly(41.0);
+        verify(caughtPokemonRepository).saveAll(argThat(saved -> saved.equals(List.of(existing))));   // updated, not a second copy
     }
 }

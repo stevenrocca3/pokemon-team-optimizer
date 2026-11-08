@@ -1,8 +1,6 @@
 package com.pokemonoptimizer.pokemon_optimizer_backend.controller;
 
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 
 import org.springframework.http.HttpStatus;
@@ -15,7 +13,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.pokemonoptimizer.pokemon_optimizer_backend.importer.ImportPreview;
 import com.pokemonoptimizer.pokemon_optimizer_backend.importer.NotAPokeGenieExportException;
-import com.pokemonoptimizer.pokemon_optimizer_backend.importer.PokeGenieCsv;
+import com.pokemonoptimizer.pokemon_optimizer_backend.importer.ExportFile;
 import com.pokemonoptimizer.pokemon_optimizer_backend.importer.PokeGenieMapper;
 
 /**
@@ -33,12 +31,13 @@ public class ImportController
         this.mapper = mapper;
     }
 
-    @PostMapping("/poke-genie")
-    public ImportPreview previewPokeGenie(@RequestParam("file") MultipartFile file) throws IOException
+    /** A Poké Genie or Calcy IV export; uploads are capped at 10 MB, so reading it whole is fine. */
+    @PostMapping("/preview")
+    public ImportPreview preview(@RequestParam("file") MultipartFile file) throws IOException
     {
-        try (Reader csv = new InputStreamReader(file.getInputStream(), StandardCharsets.UTF_8))
+        try
         {
-            return mapper.map(PokeGenieCsv.parse(csv));
+            return mapper.map(ExportFile.parse(new String(file.getBytes(), StandardCharsets.UTF_8)));
         }
         catch (NotAPokeGenieExportException e)
         {

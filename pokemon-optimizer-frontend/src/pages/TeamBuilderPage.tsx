@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link } from 'react-router'
-import { buildTeams, getCollection, LOGIN_URL, NotLoggedInError, previewPokeGenieImport } from '../api'
+import { buildTeams, LOGIN_URL, previewImport } from '../api'
+import { useCollection } from '../collection/collection-context'
 import type { CaughtPokemonRequest, TeamBuilderLeague, TeamBuilderResult, TeamMember, TeamResult } from '../types'
 import { useSpecies } from '../species/species-context'
 import { useMoves } from '../moves/moves-context'
@@ -14,12 +15,12 @@ const LEAGUES: { key: TeamBuilderLeague; label: string; cpLabel: string }[] = [
   { key: 'MASTER', label: 'Master', cpLabel: 'No cap' },
 ]
 
-// Where the Pokémon come from: the saved Collection, or a Poké Genie file read in the browser session only
+// Where the Pokémon come from: the saved Collection, or a Poké Genie / Calcy IV file read in the browser session only
 type Source =
   | { kind: 'collection'; pokemon: CaughtPokemonRequest[]; withoutMoves: number }
   | { kind: 'file'; fileName: string; pokemon: CaughtPokemonRequest[]; withoutMoves: number }
 
-type CollectionState = { status: 'loading' } | { status: 'logged-out' } | { status: 'error'; message: string } | { status: 'ready'; source: Source }
+type CollectionState = { status: 'loading' } | { status: 'error'; message: string } | { status: 'ready'; inBrowser: boolean; source: Source }
 
 type Run =
   | { status: 'idle' }
@@ -28,35 +29,27 @@ type Run =
   | { status: 'done'; result: TeamBuilderResult; source: Source }
 
 export function TeamBuilderPage() {
-  const [collection, setCollection] = useState<CollectionState>({ status: 'loading' })
+  const saved = useCollection()
+  const collection = useMemo<CollectionState>(() => {
+    if (saved.status !== 'ready') return saved
+    // Pokémon saved before movesets existed have no moves and can't battle
+    const withMoves = saved.list.filter((p) => p.fastMove && p.chargedMoves.length > 0)
+    const pokemon = withMoves.map(({ speciesId, atkIv, defIv, staIv, level, fastMove, chargedMoves, shadow }) => ({
+      speciesId, atkIv, defIv, staIv, level, fastMove, chargedMoves, shadow,
+    }))
+    return {
+      status: 'ready',
+      inBrowser: saved.storage === 'browser',
+      source: { kind: 'collection', pokemon, withoutMoves: saved.list.length - withMoves.length },
+    }
+  }, [saved])
   const [fileSource, setFileSource] = useState<Source | null>(null)
   const [useFile, setUseFile] = useState(false)
   const [league, setLeague] = useState<TeamBuilderLeague>('GREAT')
   const [run, setRun] = useState<Run>({ status: 'idle' })
   const abort = useRef<AbortController | null>(null)
 
-  useEffect(() => {
-    let cancelled = false
-    getCollection()
-      .then((list) => {
-        if (cancelled) return
-        // Pokémon saved before movesets existed have no moves and can't battle
-        const withMoves = list.filter((p) => p.fastMove && p.chargedMoves.length > 0)
-        const pokemon = withMoves.map(({ speciesId, atkIv, defIv, staIv, level, fastMove, chargedMoves, shadow }) => ({
-          speciesId, atkIv, defIv, staIv, level, fastMove, chargedMoves, shadow,
-        }))
-        setCollection({ status: 'ready', source: { kind: 'collection', pokemon, withoutMoves: list.length - withMoves.length } })
-      })
-      .catch((error: unknown) => {
-        if (cancelled) return
-        if (error instanceof NotLoggedInError) setCollection({ status: 'logged-out' })
-        else setCollection({ status: 'error', message: error instanceof Error ? error.message : String(error) })
-      })
-    return () => {
-      cancelled = true
-      abort.current?.abort()
-    }
-  }, [])
+  useEffect(() => () => abort.current?.abort(), [])
 
   const source: Source | null =
     useFile || collection.status !== 'ready' ? fileSource : collection.source
@@ -133,7 +126,7 @@ export function TeamBuilderPage() {
           {run.status === 'running' ? 'Building…' : 'Build teams'}
         </button>
         {run.status === 'running' && <Progress startedAt={run.startedAt} />}
-        {source && source.pokemon.length > 0 && source.pokemon.length < 3 && (
+        {source?.kind === 'file' && source.pokemon.length > 0 && source.pokemon.length < 3 && (
           <span className="text-sm text-subtle">You need at least 3 Pokémon with moves.</span>
         )}
       </div>
@@ -172,7 +165,7 @@ function SourcePicker({
     setReading(true)
     setFileError(null)
     try {
-      const preview = await previewPokeGenieImport(file)
+      const preview = await previewImport(file)
       const ready = preview.pokemon.filter((p) => !p.needsMoves)
       onFile({
         kind: 'file',
@@ -191,7 +184,7 @@ function SourcePicker({
 
   const fileInput = (
     <label className={`inline-flex cursor-pointer items-center rounded-md bg-raised px-4 py-2 text-sm font-semibold text-ink ring-1 ring-line-strong transition hover:bg-raised-strong ${reading ? 'pointer-events-none opacity-60' : ''}`}>
-      {reading ? 'Reading…' : fileSource ? 'Choose another file' : 'Choose a Poké Genie export'}
+      {reading ? 'Reading…' : fileSource ? 'Choose another file' : 'Choose a Poké Genie or Calcy IV export'}
       <input
         type="file"
         accept=".csv,text/csv"
@@ -217,25 +210,16 @@ function SourcePicker({
             My Collection <span className="text-subtle">({collection.source.pokemon.length.toLocaleString()})</span>
           </Choice>
           <Choice active={useFile} onClick={() => onUseFile(true)}>
-            A Poké Genie file
+            An export file
           </Choice>
         </div>
       )}
 
-      {collection.status === 'logged-out' && (
-        <p className="mt-2 text-sm text-ink-soft">
-          Use a Poké Genie export, or{' '}
-          <a href={LOGIN_URL} className="text-brand underline">
-            log in
-          </a>{' '}
-          to use your saved Collection. Nothing from the file is saved.
-        </p>
-      )}
       {collection.status === 'error' && (
         <p className="mt-2 text-sm text-ink-soft">Couldn't load your Collection ({collection.message}). You can still use a file.</p>
       )}
 
-      {(useFile || collection.status === 'logged-out' || collection.status === 'error') && (
+      {(useFile || collection.status === 'error') && (
         <div className="mt-3 flex flex-wrap items-center gap-3">
           {fileInput}
           {fileSource?.kind === 'file' && (
@@ -250,15 +234,25 @@ function SourcePicker({
 
       <SourceNote source={useFile || collection.status !== 'ready' ? fileSource : collection.source} />
 
-      {collection.status === 'ready' && !useFile && collection.source.pokemon.length === 0 && (
-        <p className="mt-2 text-sm text-subtle">
-          Your Collection has no Pokémon with moves yet.{' '}
-          <Link to="/import" className="text-brand underline">
-            Import your Poké Genie export
+      {collection.status === 'ready' && !useFile && collection.source.pokemon.length < 3 && (
+        <p className="mt-3 text-sm text-ink-soft">
+          {collection.source.pokemon.length === 0 ? 'No Pokémon yet.' : `${collection.source.pokemon.length} so far; a team needs 3.`}{' '}
+          <Link to="/collection" className="text-brand underline">
+            Add them by name, IVs and CP
           </Link>
-          .
+          , it takes a few seconds each.
         </p>
       )}
+      {collection.status === 'ready' && collection.inBrowser && !useFile && (
+        <p className="mt-2 text-xs text-subtle">
+          Saved in this browser.{' '}
+          <a href={LOGIN_URL} className="text-brand underline">
+            Log in
+          </a>{' '}
+          to keep them everywhere.
+        </p>
+      )}
+      {useFile && <p className="mt-2 text-xs text-subtle">Nothing from the file is saved.</p>}
     </div>
   )
 }

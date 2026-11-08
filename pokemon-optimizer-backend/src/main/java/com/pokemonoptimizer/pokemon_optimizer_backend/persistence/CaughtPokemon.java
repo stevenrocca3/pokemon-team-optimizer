@@ -57,9 +57,18 @@ public class CaughtPokemon
     { 
         List<String> chargedMoves = new ArrayList<>();
         chargedMoves.add(chargedMove1);
-        chargedMoves.add(chargedMove2);
+        if (chargedMove2 != null)
+        {
+            chargedMoves.add(chargedMove2);
+        }
         return chargedMoves;
      }
+
+    /** Powered up since it was saved; Pokémon never lose levels, so a lower level is ignored. */
+    public void raiseLevelTo(double newLevel)
+    {
+        level = Math.max(level, newLevel);
+    }
 }
 
     
