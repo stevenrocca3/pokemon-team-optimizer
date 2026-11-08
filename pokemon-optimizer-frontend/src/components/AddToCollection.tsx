@@ -29,14 +29,17 @@ export function AddToCollection({ speciesId, ivs, detail }: Props) {
   // '' means "not chosen yet": fall back to the first legal move once the learnset arrives
   const [fastChoice, setFastChoice] = useState('')
   const [chargedChoice1, setChargedChoice1] = useState('')
-  const [chargedChoice2, setChargedChoice2] = useState('') // '' = only one charged move
+  const [chargedChoice2, setChargedChoice2] = useState<string | null>(null) // null = not chosen; '' = only one charged move
   const [shadowChoice, setShadowChoice] = useState(false)
   const [status, setStatus] = useState<Status>({ kind: 'idle' })
 
   const learnset = detail?.learnset
-  const fastMove = fastChoice || learnset?.fastMoves[0] || ''
-  const chargedMove1 = chargedChoice1 || learnset?.chargedMoves[0] || ''
-  const chargedMove2 = chargedChoice2 === chargedMove1 ? '' : chargedChoice2
+  // until the player picks, start on PvPoke's suggested moveset (or the learnset's first moves if it has none)
+  const suggested = detail?.suggestedMoves
+  const fastMove = fastChoice || suggested?.fastMove || learnset?.fastMoves[0] || ''
+  const chargedMove1 = chargedChoice1 || suggested?.chargedMoves[0] || learnset?.chargedMoves[0] || ''
+  const second = chargedChoice2 ?? suggested?.chargedMoves[1] ?? ''
+  const chargedMove2 = second === chargedMove1 ? '' : second
   const shadow = shadowChoice && detail?.shadowEligible === true
   const chargedMoves = chargedMove2 ? [chargedMove1, chargedMove2] : [chargedMove1]
 

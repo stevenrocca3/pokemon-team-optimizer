@@ -1,6 +1,7 @@
 import type {SpeciesOption, RankRequest, RankedIvResult, SpeciesDetail, Move, CaughtPokemon, CaughtPokemonRequest, ImportPreview, TeamBuilderRequest, TeamBuilderResult} from './types'
 
-export const LOGIN_URL = 'http://localhost:8081/oauth2/authorization/google'
+// production serves the app and the API from one origin; in development (.env.development) login starts on Spring's port
+export const LOGIN_URL: string = import.meta.env.VITE_LOGIN_URL ?? '/oauth2/authorization/google'
 export class NotLoggedInError extends Error {}
 
 export async function getSpecies(): Promise<SpeciesOption[]>
@@ -155,6 +156,21 @@ export async function buildTeams(request: TeamBuilderRequest, signal?: AbortSign
 }
 
 /** The backend's ProblemDetail message, falling back to the status code. */
+/** Anonymous: only the message and the page it was sent from are kept. */
+export async function sendFeedback(message: string, page: string): Promise<void>
+{
+    const response = await fetch('/api/feedback',
+    {
+        method: 'POST',
+        headers: { 'Content-Type' : 'application/json', ...csrfHeader() },
+        body: JSON.stringify({ message, page })
+    });
+    if (!response.ok)
+    {
+        throw new Error(await problemDetail(response));
+    }
+}
+
 async function problemDetail(response: Response): Promise<string>
 {
     try

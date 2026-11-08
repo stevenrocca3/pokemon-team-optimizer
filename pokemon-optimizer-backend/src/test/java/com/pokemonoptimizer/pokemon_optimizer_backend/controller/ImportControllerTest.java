@@ -17,12 +17,13 @@ import org.springframework.test.web.servlet.assertj.MockMvcTester;
 
 import com.pokemonoptimizer.pokemon_optimizer_backend.gamemaster.MoveLookup;
 import com.pokemonoptimizer.pokemon_optimizer_backend.gamemaster.SpeciesLookup;
+import com.pokemonoptimizer.pokemon_optimizer_backend.gamemaster.SuggestedMovesets;
 import com.pokemonoptimizer.pokemon_optimizer_backend.importer.PokeGenieCsvTest;
 import com.pokemonoptimizer.pokemon_optimizer_backend.importer.PokeGenieMapper;
 import com.pokemonoptimizer.pokemon_optimizer_backend.security.SecurityConfig;
 
 @WebMvcTest(ImportController.class)
-@Import({SecurityConfig.class, PokeGenieMapper.class, SpeciesLookup.class, MoveLookup.class})
+@Import({SecurityConfig.class, PokeGenieMapper.class, SpeciesLookup.class, MoveLookup.class, SuggestedMovesets.class})
 public class ImportControllerTest
 {
     @Autowired

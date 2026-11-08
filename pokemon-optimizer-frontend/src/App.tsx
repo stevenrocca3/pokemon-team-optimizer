@@ -9,6 +9,7 @@ import { CollectionPage } from './pages/CollectionPage'
 import { ImportPage } from './pages/ImportPage'
 import { TeamBuilderPage } from './pages/TeamBuilderPage'
 import { NotFoundPage } from './pages/NotFoundPage'
+import { Feedback } from './components/Feedback'
 
 function App() {
   return (
@@ -55,8 +56,9 @@ function App() {
             </Routes>
           </main>
           <footer className="border-t border-line py-6 text-center text-xs text-subtle">
-            Artwork from PokéAPI · Not affiliated with Niantic or The Pokémon Company
+            <Feedback variant="link" /> · Artwork from PokéAPI · Not affiliated with Niantic or The Pokémon Company
           </footer>
+          <Feedback variant="corner" />
         </div>
       </CollectionProvider>
     </SpeciesProvider>

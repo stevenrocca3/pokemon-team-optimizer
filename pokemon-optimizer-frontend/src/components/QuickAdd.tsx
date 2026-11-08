@@ -49,7 +49,13 @@ export function QuickAdd() {
       .then((d) => {
         if (cancelled) return
         setDetail(d)
-        setMoves({ fast: d.learnset.fastMoves[0] ?? '', charged1: d.learnset.chargedMoves[0] ?? '', charged2: '' })
+        // start on PvPoke's moveset; most players keep it, and the team builder is only as good as the moves
+        const suggested = d.suggestedMoves
+        setMoves(
+          suggested
+            ? { fast: suggested.fastMove, charged1: suggested.chargedMoves[0] ?? '', charged2: suggested.chargedMoves[1] ?? '' }
+            : { fast: d.learnset.fastMoves[0] ?? '', charged1: d.learnset.chargedMoves[0] ?? '', charged2: '' },
+        )
       })
       .catch(() => {
         if (!cancelled) setFeedback({ kind: 'error', message: `Couldn't load ${species.name}'s moves` })
