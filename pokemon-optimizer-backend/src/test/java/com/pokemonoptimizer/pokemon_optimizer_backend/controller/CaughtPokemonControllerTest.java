@@ -121,4 +121,41 @@ public class CaughtPokemonControllerTest {
             .hasPathSatisfying("$.fastMove", v -> assertThat(v).asString().isEqualTo("COUNTER"))
             .hasPathSatisfying("$.chargedMoves", v -> assertThat(v).asArray().containsExactly("DYNAMIC_PUNCH", "ICE_PUNCH"));
     }
+
+    @Test
+    public void shadowFlagIsSavedWithThePokemon()
+    {
+        when(speciesLookup.findById("swampert")).thenReturn(new SpeciesLookup().findById("swampert"));
+        String body = """
+                 {"speciesId":"swampert","atkIv":0,"defIv":15,"staIv":15,"level":20,"shadow":true,
+                  "fastMove":"MUD_SHOT","chargedMoves":["HYDRO_CANNON","EARTHQUAKE"]}
+                """;
+        assertThat(mvc.post().uri("/api/collection")
+            .with(csrf())
+            .with(oidcLogin())
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(body))
+            .hasStatus(HttpStatus.CREATED)
+            .bodyJson()
+            .hasPathSatisfying("$.shadow", v -> assertThat(v).asBoolean().isTrue());
+    }
+
+    @Test
+    public void shadowOnASpeciesThatCantBeShadowReturns400()
+    {   // Medicham has never been a Shadow
+        String body = """
+                 {"speciesId":"medicham","atkIv":0,"defIv":15,"staIv":15,"level":40,"shadow":true,
+                  "fastMove":"COUNTER","chargedMoves":["DYNAMIC_PUNCH"]}
+                """;
+        assertThat(mvc.post().uri("/api/collection")
+            .with(csrf())
+            .with(oidcLogin())
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(body))
+            .hasStatus(HttpStatus.BAD_REQUEST)
+            .bodyJson().extractingPath("$.detail").asString().contains("shadow");
+    }
+
 }
+
+

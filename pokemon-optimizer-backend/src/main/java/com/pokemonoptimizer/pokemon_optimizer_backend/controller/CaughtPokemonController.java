@@ -62,12 +62,17 @@ public class CaughtPokemonController
         {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Learnset: " + request.fastMove() + request.chargedMoves() + " Not Found.");
         }
+        if (request.shadow() && !species.shadowElgible()) 
+        {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Shadow: " + request.shadow() + " Not shadow elgible.");
+        }
         boolean isWholeOrHalf = request.level() * 2 == Math.floor(request.level() * 2);
         if (!isWholeOrHalf) 
         {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Level: " + request.level() + " must be a whole or half #.");
         }
-        CaughtPokemon cp = new CaughtPokemon(request.speciesId(), request.atkIv(), request.defIv(), request.staIv(), request.level(), request.fastMove(), request.chargedMoves(), currentTrainer(user));
+        CaughtPokemon cp = new CaughtPokemon(request.speciesId(), request.atkIv(), request.defIv(), request.staIv(), request.level(), 
+            request.shadow(), request.fastMove(), request.chargedMoves(), currentTrainer(user));
         return caughtPokemonRepository.save(cp);
     }
 

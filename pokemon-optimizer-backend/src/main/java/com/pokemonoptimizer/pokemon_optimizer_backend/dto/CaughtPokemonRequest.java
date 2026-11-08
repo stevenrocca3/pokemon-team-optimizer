@@ -14,4 +14,10 @@ public record CaughtPokemonRequest(
     @NotNull @Min(0) @Max(15) Integer defIv, 
     @NotNull @Min(0) @Max(15) Integer staIv,
     @NotNull @DecimalMin("1") @DecimalMax("51") Double level, 
-    @NotBlank String fastMove, @NotNull @Size(min = 1, max = 2) List<@NotBlank String> chargedMoves) {}
+    @NotBlank String fastMove, @NotNull @Size(min = 1, max = 2) List<@NotBlank String> chargedMoves,
+    Boolean shadow) {
+        public CaughtPokemonRequest
+        {
+            if (shadow == null) { shadow = false; }
+        }
+    }
