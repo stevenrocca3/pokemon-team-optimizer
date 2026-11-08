@@ -1,4 +1,6 @@
 @import "tailwindcss";
+/* self-hosted Fraunces (opsz + wght axes); only the latin file downloads, via unicode-range */
+@import "@fontsource-variable/fraunces/opsz.css";
 
 /* Espresso bar theme. Components use these semantic names, never raw palette colors,
    so a reskin only touches this block. */
@@ -23,7 +25,7 @@
   --color-field: #f3e9dc; /* search input */
   --color-on-field: #1f1814;
 
-  --font-display: "Fraunces", ui-serif, Georgia, serif;
+  --font-display: "Fraunces Variable", ui-serif, Georgia, serif;
 }
 
 html {
