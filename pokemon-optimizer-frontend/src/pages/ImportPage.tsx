@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router'
-import { addAllToCollection, LOGIN_URL, NotLoggedInError, previewPokeGenieImport } from '../api'
+import { LOGIN_URL, previewImport } from '../api'
+import { useCollection, type AddAllResult } from '../collection/collection-context'
 import type { CaughtPokemonRequest, ImportedPokemon, ImportPreview, Learnset } from '../types'
 import { useSpecies } from '../species/species-context'
 import { useMoves } from '../moves/moves-context'
@@ -16,12 +17,13 @@ type Stage =
   | { kind: 'error'; message: string }
   | { kind: 'preview'; fileName: string; preview: ImportPreview }
 
-type SaveStatus = { kind: 'idle' } | { kind: 'saving' } | { kind: 'saved'; count: number } | { kind: 'logged-out' } | { kind: 'error'; message: string }
+type SaveStatus = { kind: 'idle' } | { kind: 'saving' } | ({ kind: 'saved' } & AddAllResult) | { kind: 'error'; message: string }
 
 // what the player picked for a Pokémon that came without moves; '' = not picked
 type Picked = { fast: string; charged1: string; charged2: string }
 
 export function ImportPage() {
+  const collection = useCollection()
   const [stage, setStage] = useState<Stage>({ kind: 'pick' })
   const [picked, setPicked] = useState<Record<number, Picked>>({})
   const [save, setSave] = useState<SaveStatus>({ kind: 'idle' })
@@ -30,8 +32,8 @@ export function ImportPage() {
     setStage({ kind: 'reading', fileName: file.name })
     setSave({ kind: 'idle' })
     try {
-      const preview = await previewPokeGenieImport(file)
-      // keep whatever moves Genie did record, so the player only fills the gaps
+      const preview = await previewImport(file)
+      // keep whatever moves the app did record, so the player only fills the gaps
       const start: Record<number, Picked> = {}
       for (const p of preview.pokemon) {
         if (p.needsMoves) start[p.index] = { fast: p.fastMove ?? '', charged1: p.chargedMoves[0] ?? '', charged2: p.chargedMoves[1] ?? '' }
@@ -45,9 +47,9 @@ export function ImportPage() {
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10">
-      <h1 className="text-4xl font-black tracking-tight">Import from Poké Genie</h1>
+      <h1 className="text-4xl font-black tracking-tight">Import your Pokémon</h1>
       <p className="mt-2 max-w-2xl text-ink-soft">
-        In Poké Genie, open the menu → Back Up &amp; Restore → Export CSV, then choose that file here. Nothing is saved until you
+        Export a CSV from Poké Genie (menu → Back Up &amp; Restore → Export CSV) or from Calcy IV (your scan history → Export), then choose that file here. Nothing is saved until you
         press Save.
       </p>
 
@@ -77,13 +79,12 @@ export function ImportPage() {
           }}
           save={save}
           onSave={async (requests) => {
+            if (collection.status !== 'ready') return
             setSave({ kind: 'saving' })
             try {
-              const saved = await addAllToCollection(requests)
-              setSave({ kind: 'saved', count: saved.length })
+              setSave({ kind: 'saved', ...(await collection.addAll(requests)) })
             } catch (error: unknown) {
-              if (error instanceof NotLoggedInError) setSave({ kind: 'logged-out' })
-              else setSave({ kind: 'error', message: error instanceof Error ? error.message : String(error) })
+              setSave({ kind: 'error', message: error instanceof Error ? error.message : String(error) })
             }
           }}
           onStartOver={() => {
@@ -185,7 +186,7 @@ function Preview({ fileName, preview, picked, onPick, save, onSave, onStartOver 
 
       <dl className="mt-3 grid gap-3 sm:grid-cols-3">
         <Count label="Ready to save" value={readyFromFile} />
-        <Count label="Need moves picked" value={needing.length} note="Genie didn't record their moves" />
+        <Count label="Need moves picked" value={needing.length} note="The export didn't record their moves" />
         <Count label="Can't import" value={preview.rejected.length} note="Listed at the bottom" />
       </dl>
 
@@ -231,8 +232,8 @@ function Preview({ fileName, preview, picked, onPick, save, onSave, onStartOver 
             {preview.rejected.length.toLocaleString()} rows can't be imported
           </summary>
           <p className="mt-2 text-sm text-subtle">
-            Row numbers match the Index column in your export. "IVs unknown" means Poké Genie couldn't narrow the scan down to one
-            IV spread. Rescan those Pokémon to fix it.
+            Row numbers match Poké Genie's Index column, or the row in a Calcy IV file. "IVs unknown" or "not narrowed to one
+            spread" means the app couldn't pin the scan down to one IV spread. Appraise and rescan those Pokémon to fix it.
           </p>
           <ul className="mt-3 max-h-80 overflow-y-auto text-sm">
             {preview.rejected.map((r) => (
@@ -259,12 +260,14 @@ function Count({ label, value, note }: { label: string; value: number; note?: st
 }
 
 function SaveBar({ ready, stillNeeding, save, onSave }: { ready: number; stillNeeding: number; save: SaveStatus; onSave: () => void }) {
+  const collection = useCollection()
+  const inBrowser = collection.status === 'ready' && collection.storage === 'browser'
   return (
     <div className="sticky bottom-0 z-20 -mx-4 mt-6 border-t border-line bg-canvas/95 px-4 py-4 backdrop-blur sm:static sm:mx-0 sm:rounded-lg sm:border-0 sm:bg-surface sm:ring-1 sm:ring-line">
       <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
         <button
           onClick={onSave}
-          disabled={ready === 0 || save.kind === 'saving' || save.kind === 'saved'}
+          disabled={ready === 0 || save.kind === 'saving' || save.kind === 'saved' || collection.status !== 'ready'}
           className="rounded-md bg-brand px-5 py-2.5 text-sm font-bold text-on-brand transition hover:brightness-110 disabled:opacity-50"
         >
           {save.kind === 'saving'
@@ -276,18 +279,13 @@ function SaveBar({ ready, stillNeeding, save, onSave }: { ready: number; stillNe
         <p role="status" className="text-sm">
           {save.kind === 'saved' && (
             <span className="text-ink-soft">
-              Added {save.count.toLocaleString()} Pokémon.{' '}
+              Added {save.added.toLocaleString()} Pokémon
+              {save.raised > 0 && <>, updated the level of {save.raised.toLocaleString()}</>}
+              {save.skipped > 0 && <> ({save.skipped.toLocaleString()} were already there)</>}
+              .{' '}
               <Link to="/collection" className="text-brand underline">
                 View Collection
               </Link>
-            </span>
-          )}
-          {save.kind === 'logged-out' && (
-            <span className="text-ink-soft">
-              <a href={LOGIN_URL} className="text-brand underline">
-                Log in
-              </a>{' '}
-              to save, then choose the file again.
             </span>
           )}
           {save.kind === 'error' && <span className="text-red-400">Couldn't save ({save.message}).</span>}
@@ -296,7 +294,18 @@ function SaveBar({ ready, stillNeeding, save, onSave }: { ready: number; stillNe
           )}
         </p>
       </div>
-      <p className="mt-2 text-xs text-subtle">Saving adds to your Collection, so importing the same file twice adds duplicates.</p>
+      <p className="mt-2 text-xs text-subtle">
+        Pokémon already in your Collection are skipped, so importing a newer export only adds what's new.
+        {inBrowser && (
+          <>
+            {' '}You're not logged in, so they're saved in this browser.{' '}
+            <a href={LOGIN_URL} className="text-brand underline">
+              Log in
+            </a>{' '}
+            to keep them everywhere.
+          </>
+        )}
+      </p>
     </div>
   )
 }

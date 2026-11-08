@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router'
-import { addToCollection, LOGIN_URL, NotLoggedInError } from '../api'
+import { LOGIN_URL } from '../api'
+import { useCollection } from '../collection/collection-context'
 import { formatLevel } from '../lib/species'
 import { useMoves } from '../moves/moves-context'
 import type { SpeciesDetail } from '../types'
@@ -9,7 +10,7 @@ import type { SpeciesDetail } from '../types'
 const LEVELS = Array.from({ length: 101 }, (_, i) => 1 + i / 2)
 
 // `saved` remembers what was saved, so the same Pokémon can't be re-added by a second click
-type Status = { kind: 'idle' } | { kind: 'saving' } | { kind: 'saved'; key: string } | { kind: 'logged-out' } | { kind: 'error'; message: string }
+type Status = { kind: 'idle' } | { kind: 'saving' } | { kind: 'saved'; key: string } | { kind: 'duplicate'; key: string } | { kind: 'error'; message: string }
 
 interface Props {
   speciesId: string
@@ -23,6 +24,7 @@ const SELECT_CLASS =
 
 export function AddToCollection({ speciesId, ivs, detail }: Props) {
   const moveList = useMoves()
+  const collection = useCollection()
   const [level, setLevel] = useState(20)
   // '' means "not chosen yet": fall back to the first legal move once the learnset arrives
   const [fastChoice, setFastChoice] = useState('')
@@ -39,7 +41,7 @@ export function AddToCollection({ speciesId, ivs, detail }: Props) {
   const chargedMoves = chargedMove2 ? [chargedMove1, chargedMove2] : [chargedMove1]
 
   const key = `${speciesId}|${ivs.atk}|${ivs.def}|${ivs.sta}|${level}|${fastMove}|${chargedMoves.join(',')}|${shadow}`
-  const saved = status.kind === 'saved' && status.key === key
+  const saved = (status.kind === 'saved' || status.kind === 'duplicate') && status.key === key
   const ready = fastMove !== '' && chargedMove1 !== ''
 
   const nameOf = (id: string) => (moveList.status === 'ready' ? moveList.byId.get(id)?.name : undefined) ?? id
@@ -54,13 +56,13 @@ export function AddToCollection({ speciesId, ivs, detail }: Props) {
   }
 
   async function save() {
+    if (collection.status !== 'ready') return
     setStatus({ kind: 'saving' })
     try {
-      await addToCollection({ speciesId, atkIv: ivs.atk, defIv: ivs.def, staIv: ivs.sta, level, fastMove, chargedMoves, shadow })
-      setStatus({ kind: 'saved', key })
+      const isNew = await collection.add({ speciesId, atkIv: ivs.atk, defIv: ivs.def, staIv: ivs.sta, level, fastMove, chargedMoves, shadow })
+      setStatus({ kind: isNew ? 'saved' : 'duplicate', key })
     } catch (error: unknown) {
-      if (error instanceof NotLoggedInError) setStatus({ kind: 'logged-out' })
-      else setStatus({ kind: 'error', message: error instanceof Error ? error.message : String(error) })
+      setStatus({ kind: 'error', message: error instanceof Error ? error.message : String(error) })
     }
   }
 
@@ -149,26 +151,37 @@ export function AddToCollection({ speciesId, ivs, detail }: Props) {
       <div className="mt-3 flex flex-wrap items-center gap-3">
         <button
           onClick={save}
-          disabled={!ready || status.kind === 'saving' || saved}
+          disabled={!ready || status.kind === 'saving' || saved || collection.status !== 'ready'}
           className="rounded-md bg-brand px-4 py-2 text-sm font-bold text-on-brand transition hover:brightness-110 disabled:opacity-50"
         >
-          {status.kind === 'saving' ? 'Adding…' : saved ? 'Added ✓' : 'Add to Collection'}
+          {status.kind === 'saving' ? 'Adding…' : status.kind === 'saved' && saved ? 'Added ✓' : 'Add to Collection'}
         </button>
         <p role="status" className="text-sm">
-          {saved && (
+          {status.kind === 'saved' && saved && (
             <span className="text-ink-soft">
-              Added.{' '}
+              Added
+              {collection.status === 'ready' && collection.storage === 'browser' && (
+                <>
+                  {' '}to this browser (
+                  <a href={LOGIN_URL} className="text-brand underline">
+                    log in
+                  </a>{' '}
+                  to keep it everywhere)
+                </>
+              )}
+              .{' '}
               <Link to="/collection" className="text-brand underline">
                 View Collection
               </Link>
             </span>
           )}
-          {status.kind === 'logged-out' && (
-            <span className="text-ink-soft">
-              <a href={LOGIN_URL} className="text-brand underline">
-                Log in
-              </a>{' '}
-              to save Pokémon to your Collection.
+          {status.kind === 'duplicate' && saved && (
+            <span className="text-subtle">
+              Already in your{' '}
+              <Link to="/collection" className="text-brand underline">
+                Collection
+              </Link>
+              .
             </span>
           )}
           {status.kind === 'error' && <span className="text-red-400">Couldn't add ({status.message}).</span>}

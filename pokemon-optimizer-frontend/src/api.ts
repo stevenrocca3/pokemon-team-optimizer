@@ -102,9 +102,10 @@ export async function removeFromCollection(id : number): Promise<void>
     }
 }
 
-export async function previewPokeGenieImport(file: File): Promise<ImportPreview>
+/** A Poké Genie or Calcy IV export; the server tells them apart. */
+export async function previewImport(file: File): Promise<ImportPreview>
 {
-    const url = '/api/import/poke-genie';
+    const url = '/api/import/preview';
     const body = new FormData();
     body.append('file', file);
 
