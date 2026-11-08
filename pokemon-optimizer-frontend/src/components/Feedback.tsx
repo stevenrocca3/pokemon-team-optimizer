@@ -12,6 +12,7 @@ type Status = { kind: 'idle' } | { kind: 'sending' } | { kind: 'sent' } | { kind
  */
 export function Feedback({ variant }: { variant: 'corner' | 'link' }) {
   const dialog = useRef<HTMLDialogElement>(null)
+  const textarea = useRef<HTMLTextAreaElement>(null)
   const titleId = useId()
   const { pathname } = useLocation()
   const [message, setMessage] = useState('')
@@ -23,6 +24,9 @@ export function Feedback({ variant }: { variant: 'corner' | 'link' }) {
       setStatus({ kind: 'idle' })
     }
     dialog.current?.showModal()
+    // showModal focuses the first control, which is now a star: landing there would preview "1 star" and
+    // let Enter send it by accident, so start in the message box instead
+    textarea.current?.focus()
   }
 
   async function submit(e: FormEvent) {
@@ -61,7 +65,7 @@ export function Feedback({ variant }: { variant: 'corner' | 'link' }) {
       >
         <form onSubmit={submit} className="p-5">
           <h2 id={titleId} className="text-lg font-bold">
-            Send feedback
+            Feedback
           </h2>
           {status.kind === 'sent' ? (
             <>
@@ -86,8 +90,8 @@ export function Feedback({ variant }: { variant: 'corner' | 'link' }) {
               <textarea
                 value={message}
                 onChange={(e) => setMessage(e.target.value.slice(0, MAX))}
+                ref={textarea}
                 rows={5}
-                autoFocus
                 aria-label="Your feedback"
                 className="mt-3 block w-full resize-y rounded-md bg-raised p-3 text-base text-ink ring-1 ring-line-strong placeholder:text-subtle focus:outline-none focus:ring-2 focus:ring-brand"
                 placeholder="What happened, or what would help?"
