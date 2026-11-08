@@ -37,14 +37,21 @@ export function CollectionPage() {
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10">
-      <h1 className="flex items-baseline gap-3 text-4xl font-black tracking-tight">
-        Collection
+      <div className="flex flex-wrap items-baseline justify-between gap-3">
+        <h1 className="flex items-baseline gap-3 text-4xl font-black tracking-tight">
+          Collection
+          {state.status === 'ready' && (
+            <span className="text-base font-normal text-subtle">
+              {state.list.length.toLocaleString()} Pokémon
+            </span>
+          )}
+        </h1>
         {state.status === 'ready' && (
-          <span className="text-base font-normal text-subtle">
-            {state.list.length} Pokémon
-          </span>
+          <Link to="/import" className="text-sm font-semibold text-brand underline-offset-2 hover:underline">
+            Import from Poké Genie
+          </Link>
         )}
-      </h1>
+      </div>
 
       {state.status === 'error' && (
         <div role="alert" className="mt-6 rounded-lg border border-red-900 bg-red-950/50 p-5 text-red-200">
@@ -81,7 +88,11 @@ export function CollectionPage() {
         <div className="mt-10 max-w-xl">
           <p className="text-ink-soft">Your Collection is empty.</p>
           <p className="mt-1 text-sm text-subtle">
-            Find a Pokémon, set its IVs and level, then press <span className="text-ink-soft">Add to Collection</span>.
+            Find a Pokémon, set its IVs and level, then press <span className="text-ink-soft">Add to Collection</span>. Or{' '}
+            <Link to="/import" className="text-brand underline">
+              import your Poké Genie export
+            </Link>
+            .
           </p>
           <div className="mt-6">
             <SearchBar size="large" />

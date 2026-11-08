@@ -80,3 +80,32 @@ export interface CaughtPokemonRequest
     chargedMoves : string[];
     shadow : boolean;
 }
+
+// One Poké Genie row mapped to our IDs. fastMove is null / chargedMoves empty when Genie didn't record them.
+export interface ImportedPokemon
+{
+    index : number;          // Genie's Index column
+    speciesId : string;
+    atkIv : number;
+    defIv : number;
+    staIv : number;
+    level : number;
+    shadow : boolean;
+    fastMove : string | null;
+    chargedMoves : string[];
+    needsMoves : boolean;
+}
+
+export interface RejectedRow
+{
+    index : number;
+    reason : string;
+}
+
+// POST /api/import/poke-genie: what the file would import; nothing is saved yet
+export interface ImportPreview
+{
+    pokemon : ImportedPokemon[];
+    rejected : RejectedRow[];
+    learnsets : Record<string, Learnset>;   // only for species that need moves
+}

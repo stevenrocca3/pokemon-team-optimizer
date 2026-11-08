@@ -1,10 +1,12 @@
 package com.pokemonoptimizer.pokemon_optimizer_backend.importer;
 
 import java.io.IOException;
+import java.io.PushbackReader;
 import java.io.Reader;
 import java.io.UncheckedIOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
@@ -18,23 +20,34 @@ public final class PokeGenieCsv
         .setSkipHeaderRecord(true)
         .get();
 
+    // every column the parser reads; a file without them isn't a Genie export
+    private static final Set<String> REQUIRED = Set.of("Index", "Name", "Form", "Atk IV", "Def IV", "Sta IV", "Level Min",
+        "Quick Move", "Charge Move", "Charge Move 2", "Shadow/Purified");
+
     private PokeGenieCsv() {}
 
     public static PokeGenieImport parse(Reader csv)
     {
-        try (CSVParser parser = CSVParser.parse(csv, FORMAT))
+        try (CSVParser parser = CSVParser.parse(skipByteOrderMark(csv), FORMAT))
         {
+            List<String> missing = REQUIRED.stream().filter(column -> !parser.getHeaderMap().containsKey(column)).sorted().toList();
+            if (!missing.isEmpty())
+            {
+                throw new NotAPokeGenieExportException("This isn't a Poké Genie export (missing columns: " + String.join(", ", missing) + ").");
+            }
             List<PokeGenieRow> rows = new ArrayList<>();
             List<RejectedRow> rejected = new ArrayList<>();
             for (CSVRecord record : parser)
             {
+                int index = Integer.parseInt(record.get("Index"));
                 String problem = problemWith(record);
                 if (problem != null)
                 {
-                    rejected.add(new RejectedRow(Integer.parseInt(record.get("Index")), problem));
+                    rejected.add(new RejectedRow(index, problem));
                     continue;
                 }
                 rows.add(new PokeGenieRow(
+                    index,
                     record.get("Name"),
                     record.get("Form"),
                     Integer.parseInt(record.get("Atk IV")),
@@ -52,6 +65,18 @@ public final class PokeGenieCsv
         {
             throw new UncheckedIOException("Couldn't read the Poké Genie CSV", e);
         }
+    }
+
+    /** Excel puts U+FEFF before the first column name when it re-saves a CSV. */
+    private static Reader skipByteOrderMark(Reader csv) throws IOException
+    {
+        PushbackReader reader = new PushbackReader(csv);
+        int first = reader.read();
+        if (first != -1 && first != '\uFEFF')
+        {
+            reader.unread(first);
+        }
+        return reader;
     }
 
     /** Why this row can't be imported, or null if it can. */

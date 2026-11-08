@@ -1,6 +1,8 @@
 package com.pokemonoptimizer.pokemon_optimizer_backend.controller;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.oidcLogin;
@@ -156,6 +158,52 @@ public class CaughtPokemonControllerTest {
             .bodyJson().extractingPath("$.detail").asString().contains("shadow");
     }
 
+
+    @Test
+    public void batchSavesEveryPokemon()
+    {
+        when(caughtPokemonRepository.saveAll(any())).thenAnswer(call -> call.getArgument(0));
+        String body = """
+                {"pokemon":[
+                  {"speciesId":"medicham","atkIv":0,"defIv":15,"staIv":15,"level":40,"fastMove":"COUNTER","chargedMoves":["ICE_PUNCH"]},
+                  {"speciesId":"medicham","atkIv":1,"defIv":15,"staIv":14,"level":40.5,"fastMove":"PSYCHO_CUT","chargedMoves":["DYNAMIC_PUNCH","ICE_PUNCH"]}
+                ]}
+                """;
+        assertThat(mvc.post().uri("/api/collection/batch")
+            .with(csrf())
+            .with(oidcLogin())
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(body))
+            .hasStatus(HttpStatus.CREATED)
+            .bodyJson().extractingPath("$[*].fastMove").asArray().containsExactly("COUNTER", "PSYCHO_CUT");
+    }
+
+    @Test
+    public void batchWithOneIllegalMovesetSavesNothing()
+    {   // all or nothing: the player fixes #2 and retries, without duplicating #1
+        String body = """
+                {"pokemon":[
+                  {"speciesId":"medicham","atkIv":0,"defIv":15,"staIv":15,"level":40,"fastMove":"COUNTER","chargedMoves":["ICE_PUNCH"]},
+                  {"speciesId":"medicham","atkIv":1,"defIv":15,"staIv":14,"level":40,"fastMove":"MUD_SHOT","chargedMoves":["ICE_PUNCH"]}
+                ]}
+                """;
+        assertThat(mvc.post().uri("/api/collection/batch")
+            .with(csrf())
+            .with(oidcLogin())
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(body))
+            .hasStatus(HttpStatus.BAD_REQUEST)
+            .bodyJson().extractingPath("$.detail").asString().contains("#2").contains("MUD_SHOT");
+        verify(caughtPokemonRepository, never()).saveAll(any());
+    }
+
+    @Test
+    public void batchNeedsALogin()
+    {
+        assertThat(mvc.post().uri("/api/collection/batch")
+            .with(csrf())
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("{\"pokemon\":[]}"))
+            .hasStatus(HttpStatus.UNAUTHORIZED);
+    }
 }
-
-

@@ -5,6 +5,7 @@ import { MovesProvider } from './moves/MovesProvider'
 import { HomePage } from './pages/HomePage'
 import { SpeciesPage } from './pages/SpeciesPage'
 import { CollectionPage } from './pages/CollectionPage'
+import { ImportPage } from './pages/ImportPage'
 import { NotFoundPage } from './pages/NotFoundPage'
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
               <Route path="/" element={<HomePage />} />
               <Route path="/species/:id" element={<SpeciesPage />} />
               <Route path="/collection" element={<CollectionPage />} />
+              <Route path="/import" element={<ImportPage />} />
               <Route path="*" element={<NotFoundPage />} />
             </Routes>
           </main>
