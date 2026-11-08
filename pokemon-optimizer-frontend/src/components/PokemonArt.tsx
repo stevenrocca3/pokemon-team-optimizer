@@ -6,9 +6,11 @@ interface Props {
   dex?: number
   alt: string
   className?: string
+  /** The page's main image (its LCP element): load it right away at high priority instead of lazily. */
+  priority?: boolean
 }
 
-export function PokemonArt({ dex, alt, className = '' }: Props) {
+export function PokemonArt({ dex, alt, className = '', priority = false }: Props) {
   const [failedDex, setFailedDex] = useState<number | null>(null)
 
   if (dex === undefined || failedDex === dex) {
@@ -27,7 +29,9 @@ export function PokemonArt({ dex, alt, className = '' }: Props) {
     <img
       src={artworkUrl(dex)}
       alt={alt}
-      loading="lazy"
+      loading={priority ? 'eager' : 'lazy'}
+      fetchPriority={priority ? 'high' : 'auto'}
+      decoding="async"
       onError={() => setFailedDex(dex)}
       className={`object-contain ${className}`}
     />
