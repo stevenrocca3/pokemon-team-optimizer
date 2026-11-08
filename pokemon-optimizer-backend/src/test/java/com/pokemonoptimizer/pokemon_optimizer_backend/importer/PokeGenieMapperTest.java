@@ -9,11 +9,13 @@ import org.junit.jupiter.api.Test;
 
 import com.pokemonoptimizer.pokemon_optimizer_backend.gamemaster.MoveLookup;
 import com.pokemonoptimizer.pokemon_optimizer_backend.gamemaster.SpeciesLookup;
+import com.pokemonoptimizer.pokemon_optimizer_backend.gamemaster.SuggestedMoves;
+import com.pokemonoptimizer.pokemon_optimizer_backend.gamemaster.SuggestedMovesets;
 
 public class PokeGenieMapperTest
 {
     private static final SpeciesLookup SPECIES = new SpeciesLookup();
-    private final PokeGenieMapper mapper = new PokeGenieMapper(SPECIES, new MoveLookup());
+    private final PokeGenieMapper mapper = new PokeGenieMapper(SPECIES, new MoveLookup(), new SuggestedMovesets(SPECIES));
 
     private static PokeGenieRow row(String name, String form, String fast, String charged1, String charged2, boolean shadow)
     {
@@ -102,5 +104,13 @@ public class PokeGenieMapperTest
         ImportPreview preview = mapper.map(new PokeGenieImport(List.of(), List.of(new RejectedRow(7, "IVs unknown"))));
 
         assertEquals(List.of(new RejectedRow(7, "IVs unknown")), preview.rejected());
+    }
+
+    @Test
+    public void speciesThatNeedMovesComeWithASuggestion()
+    {   // Calcy never records moves, so every row needs them; the page starts each picker on PvPoke's moveset
+        ImportPreview preview = mapOne(row("Medicham", "", "", "", "", false));
+
+        assertEquals(new SuggestedMoves("PSYCHO_CUT", List.of("ICE_PUNCH", "DYNAMIC_PUNCH")), preview.suggestedMoves().get("medicham"));
     }
 }

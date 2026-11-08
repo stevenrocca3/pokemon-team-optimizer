@@ -45,6 +45,13 @@ export interface SpeciesDetail
     baseSta : number;
     learnset : Learnset;
     shadowEligible : boolean;
+    suggestedMoves : SuggestedMoves | null;   // PvPoke's moveset; null when it doesn't rank the species
+}
+// PvPoke's recommended moveset for the League a species ranks best in
+export interface SuggestedMoves
+{
+    fastMove : string;
+    chargedMoves : string[];
 }
 export interface Move
 {
@@ -108,6 +115,7 @@ export interface ImportPreview
     pokemon : ImportedPokemon[];
     rejected : RejectedRow[];
     learnsets : Record<string, Learnset>;   // only for species that need moves
+    suggestedMoves : Record<string, SuggestedMoves>;   // where pickers start, for those PvPoke ranks
 }
 
 // ---- Team Builder (POST /api/team-builder) ----

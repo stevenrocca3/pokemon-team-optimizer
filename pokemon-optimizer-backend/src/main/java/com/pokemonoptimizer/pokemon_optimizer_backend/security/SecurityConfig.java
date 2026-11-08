@@ -1,5 +1,6 @@
 package com.pokemonoptimizer.pokemon_optimizer_backend.security;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
@@ -13,14 +14,16 @@ import org.springframework.security.web.csrf.CsrfToken;
 public class SecurityConfig 
 {
     @Bean 
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception
+    public SecurityFilterChain securityFilterChain(HttpSecurity http,
+        // where Google login lands: the Vite dev server in development, the app itself ("/") in production
+        @Value("${app.after-login-url}") String afterLoginUrl) throws Exception
     {
         http
             .authorizeHttpRequests(auth -> auth
             .requestMatchers("/api/collection/**", "/api/me").authenticated()
             .anyRequest().permitAll())
             .exceptionHandling(e -> e.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
-            .oauth2Login(oauth -> oauth.defaultSuccessUrl("http://localhost:5173/", true))
+            .oauth2Login(oauth -> oauth.defaultSuccessUrl(afterLoginUrl, true))
             // These are pure calculations (POST only to carry a body or a file): nothing for a forged request to
             // change, and a fresh visitor's first call can go out before the XSRF-TOKEN cookie exists
             .csrf(csrf -> csrf.spa().ignoringRequestMatchers("/api/rank", "/api/team-builder", "/api/import/**"))

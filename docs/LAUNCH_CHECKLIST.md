@@ -4,7 +4,7 @@ Everything here is done before DexPresso goes public (target: 2026-11-30).
 Numbers match the original list; 7 and 8 were skipped.
 
 ## Legal and privacy
-- [ ] 1. Privacy policy — Google asks for a privacy policy URL before the consent screen can leave Testing mode
+- [ ] 1. Privacy policy — Google asks for a privacy policy URL before the consent screen can leave Testing mode. Cover the anonymous `feedback` table (message + page, no identity) and guest data kept only in the browser (localStorage)
 - [ ] 2. Terms of service
 - [ ] 3. Cookie consent banner — today's cookies are `JSESSIONID` and `XSRF-TOKEN`, both strictly necessary; recheck if analytics is added
 - [ ] 4. Check form consents
@@ -34,10 +34,10 @@ Numbers match the original list; 7 and 8 were skipped.
 - [ ] 19. Add rate limiting — the battle sim and team builder are CPU-heavy
 - [ ] 20. Set API limits
 - [ ] 26. Optimize DB queries
-- [ ] 27. Add DB indexes — `caught_pokemon.trainer_id` (every collection query filters on it)
+- [x] 27. Add DB indexes — `caught_pokemon.trainer_id` (Flyway V2)
 - [ ] 28. Paginate large results
 - [x] 29. Compress files — API JSON is gzipped (`server.compression.enabled`); images are W6
-- [ ] 30. Limit upload size — Poké Genie CSV import
+- [x] 30. Limit upload size — 10 MB for Poké Genie / Calcy IV CSVs (`spring.servlet.multipart`)
 - [ ] 31. Cache repeat requests — gamemaster data, rankings
 
 ## Web presence and SEO
@@ -49,7 +49,7 @@ Numbers match the original list; 7 and 8 were skipped.
 - [ ] W6. Compress images — Pokémon art loads from PokeAPI; see #29
 - [x] W7. Check page load speed (Lighthouse) — done 2026-11-07, see the frontend-performance branch
 - [ ] W8. Make mobile friendly
-- [x] W9. Custom 404 page — `NotFoundPage.tsx`; the server also has to send unknown routes to `index.html` when deployed
+- [x] W9. Custom 404 page — `NotFoundPage.tsx`; Spring sends unknown page routes to `index.html` (`SinglePageApp`)
 - [ ] W10. Fix broken links
 - [ ] W11. Form validation — backend returns field errors; frontend should show them per field
 - [ ] W12. Spam protection — CSV import and collection writes (pairs with #19 rate limiting)

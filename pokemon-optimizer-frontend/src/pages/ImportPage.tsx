@@ -8,6 +8,7 @@ import { useMoves } from '../moves/moves-context'
 import { PokemonArt } from '../components/PokemonArt'
 import { IvTriple } from '../components/IvTriple'
 import { formatLevel } from '../lib/species'
+import { startingMoves } from '../lib/moves'
 
 const PAGE_SIZE = 20
 
@@ -33,10 +34,10 @@ export function ImportPage() {
     setSave({ kind: 'idle' })
     try {
       const preview = await previewImport(file)
-      // keep whatever moves the app did record, so the player only fills the gaps
+      // keep whatever moves the app did record and start the gaps on PvPoke's suggestion, so most need only a glance
       const start: Record<number, Picked> = {}
       for (const p of preview.pokemon) {
-        if (p.needsMoves) start[p.index] = { fast: p.fastMove ?? '', charged1: p.chargedMoves[0] ?? '', charged2: p.chargedMoves[1] ?? '' }
+        if (p.needsMoves) start[p.index] = startingMoves(p, preview.suggestedMoves[p.speciesId])
       }
       setPicked(start)
       setStage({ kind: 'preview', fileName: file.name, preview })
@@ -186,7 +187,7 @@ function Preview({ fileName, preview, picked, onPick, save, onSave, onStartOver 
 
       <dl className="mt-3 grid gap-3 sm:grid-cols-3">
         <Count label="Ready to save" value={readyFromFile} />
-        <Count label="Need moves picked" value={needing.length} note="The export didn't record their moves" />
+        <Count label="Moves to check" value={needing.length} note="Not in the export; each starts on PvPoke's suggested moveset" />
         <Count label="Can't import" value={preview.rejected.length} note="Listed at the bottom" />
       </dl>
 
