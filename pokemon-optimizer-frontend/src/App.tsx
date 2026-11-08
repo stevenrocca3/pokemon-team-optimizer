@@ -6,6 +6,7 @@ import { HomePage } from './pages/HomePage'
 import { SpeciesPage } from './pages/SpeciesPage'
 import { CollectionPage } from './pages/CollectionPage'
 import { ImportPage } from './pages/ImportPage'
+import { TeamBuilderPage } from './pages/TeamBuilderPage'
 import { NotFoundPage } from './pages/NotFoundPage'
 
 function App() {
@@ -37,6 +38,14 @@ function App() {
               element={
                 <MovesProvider>
                   <ImportPage />
+                </MovesProvider>
+              }
+            />
+            <Route
+              path="/team-builder"
+              element={
+                <MovesProvider>
+                  <TeamBuilderPage />
                 </MovesProvider>
               }
             />

@@ -109,3 +109,61 @@ export interface ImportPreview
     rejected : RejectedRow[];
     learnsets : Record<string, Learnset>;   // only for species that need moves
 }
+
+// ---- Team Builder (POST /api/team-builder) ----
+
+export type TeamBuilderLeague = 'GREAT' | 'ULTRA' | 'MASTER'
+
+export interface TeamBuilderRequest
+{
+    league : TeamBuilderLeague;
+    pokemon : CaughtPokemonRequest[];
+}
+
+// A sampled win rate with its Wilson 95% interval, all as fractions 0–1
+export interface WinRate
+{
+    rate : number;
+    low : number;
+    high : number;
+    battles : number;
+}
+
+// As it would battle: level and CP after building it for the League. index = position in the request.
+export interface TeamMember
+{
+    index : number;
+    speciesId : string;
+    shadow : boolean;
+    level : number;
+    cp : number;
+    atkIv : number;
+    defIv : number;
+    staIv : number;
+    fastMove : string;
+    chargedMoves : string[];
+    metaRating : number;    // average 1v1 battle rating vs the meta, 500 = even
+}
+
+export interface TeamResult
+{
+    members : TeamMember[];   // lead first
+    winRate : WinRate;
+    toughest : string[];      // PvPoke meta IDs, e.g. "annihilape_shadow"
+}
+
+export interface SkippedPokemon
+{
+    index : number;
+    reason : string;
+}
+
+export interface TeamBuilderResult
+{
+    league : TeamBuilderLeague;
+    metaSize : number;
+    metaDate : string;        // yyyy-mm-dd of the PvPoke snapshot
+    eligible : number;
+    teams : TeamResult[];     // best first; empty when fewer than 3 species can play
+    skipped : SkippedPokemon[];
+}

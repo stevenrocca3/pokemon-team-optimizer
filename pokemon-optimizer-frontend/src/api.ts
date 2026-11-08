@@ -1,4 +1,4 @@
-import type {SpeciesOption, RankRequest, RankedIvResult, SpeciesDetail, Move, CaughtPokemon, CaughtPokemonRequest, ImportPreview} from './types'
+import type {SpeciesOption, RankRequest, RankedIvResult, SpeciesDetail, Move, CaughtPokemon, CaughtPokemonRequest, ImportPreview, TeamBuilderRequest, TeamBuilderResult} from './types'
 
 export const LOGIN_URL = 'http://localhost:8081/oauth2/authorization/google'
 export class NotLoggedInError extends Error {}
@@ -128,6 +128,24 @@ export async function addAllToCollection(pokemon: CaughtPokemonRequest[]): Promi
         body: JSON.stringify({ pokemon })
     });
     if (response.status === 401) throw new NotLoggedInError();
+    if (!response.ok)
+    {
+        throw new Error(await problemDetail(response));
+    }
+    return await response.json();
+}
+
+export async function buildTeams(request: TeamBuilderRequest, signal?: AbortSignal): Promise<TeamBuilderResult>
+{
+    const url = '/api/team-builder';
+
+    const response = await fetch(url,
+    {
+        method: 'POST',
+        headers: { 'Content-Type' : 'application/json', ...csrfHeader() },
+        body: JSON.stringify(request),
+        signal,
+    });
     if (!response.ok)
     {
         throw new Error(await problemDetail(response));

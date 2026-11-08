@@ -21,9 +21,9 @@ public class SecurityConfig
             .anyRequest().permitAll())
             .exceptionHandling(e -> e.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
             .oauth2Login(oauth -> oauth.defaultSuccessUrl("http://localhost:5173/", true))
-            // /api/rank is a pure calculation (POST only to carry a body): nothing for a forged request to change,
-            // and a fresh visitor's first call can go out before the XSRF-TOKEN cookie exists
-            .csrf(csrf -> csrf.spa().ignoringRequestMatchers("/api/rank"))
+            // These are pure calculations (POST only to carry a body or a file): nothing for a forged request to
+            // change, and a fresh visitor's first call can go out before the XSRF-TOKEN cookie exists
+            .csrf(csrf -> csrf.spa().ignoringRequestMatchers("/api/rank", "/api/team-builder", "/api/import/**"))
             .addFilterAfter((request, response, chain) -> {
                 ((CsrfToken) request.getAttribute(CsrfToken.class.getName())).getToken();
                 chain.doFilter(request, response);

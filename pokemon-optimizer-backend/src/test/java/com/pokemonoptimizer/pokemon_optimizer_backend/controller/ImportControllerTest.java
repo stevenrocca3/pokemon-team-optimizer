@@ -38,7 +38,7 @@ public class ImportControllerTest
             + "1,Swampert,,260,,1500,145,0,15,14,64.4,20.0,20.0,Mud Shot,Hydro Cannon,Earthquake,"
             + "2026-11-08 10:00,2026-11-08 10:00,11/8/2026,80kg,1.5m,0,1,0,2500,,,,,,,,,,,,,,,,,,,,,,,,,\n";
 
-        assertThat(mvc.post().uri("/api/import/poke-genie").multipart().file(csv(content)).with(csrf()))
+        assertThat(mvc.post().uri("/api/import/poke-genie").multipart().file(csv(content)))   // no csrf(): see TeamBuilderControllerTest
             .hasStatusOk()
             .bodyJson().extractingPath("$.pokemon[0].speciesId").asString().isEqualTo("swampert");
     }

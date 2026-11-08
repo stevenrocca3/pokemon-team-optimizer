@@ -2,6 +2,10 @@ import { Link, NavLink, useLocation } from 'react-router'
 import { SearchBar } from './SearchBar'
 import { LogoMark } from './Logo'
 
+function navClass({ isActive }: { isActive: boolean }) {
+  return `transition ${isActive ? 'text-brand' : 'text-ink-soft hover:text-ink'}`
+}
+
 export function Header() {
   const onHome = useLocation().pathname === '/'
 
@@ -22,16 +26,14 @@ export function Header() {
             <SearchBar />
           </div>
         )}
-        <NavLink
-          to="/collection"
-          className={({ isActive }) =>
-            `shrink-0 text-sm font-semibold transition ${onHome ? 'ml-auto' : ''} ${
-              isActive ? 'text-brand' : 'text-ink-soft hover:text-ink'
-            }`
-          }
-        >
-          Collection
-        </NavLink>
+        <nav className={`flex shrink-0 items-center gap-3 text-sm font-semibold sm:gap-5 ${onHome ? 'ml-auto' : ''}`}>
+          <NavLink to="/team-builder" className={navClass}>
+            Teams
+          </NavLink>
+          <NavLink to="/collection" className={navClass}>
+            Collection
+          </NavLink>
+        </nav>
       </div>
     </header>
   )

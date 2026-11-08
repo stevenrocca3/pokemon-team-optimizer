@@ -1,5 +1,7 @@
 package com.pokemonoptimizer.pokemon_optimizer_backend.battle;
 
+import java.util.List;
+
 import com.pokemonoptimizer.pokemon_optimizer_backend.gamemaster.Move;
 
 /**
@@ -70,6 +72,33 @@ final class BattleMove
                 selfBuffing = true;
             }
         }
+    }
+
+    // Damage is computed constantly while the AI plans, and type lookups were most of the 3v3 run time.
+    // Both answers only depend on a types list, so remember the last one; a different list just recomputes.
+    private List<String> stabFor;
+    private boolean stab;
+    private List<String> effectivenessFor;
+    private double effectiveness;
+
+    boolean stabFor(List<String> attackerTypes)
+    {
+        if (attackerTypes != stabFor)
+        {
+            stab = attackerTypes.contains(type);
+            stabFor = attackerTypes;
+        }
+        return stab;
+    }
+
+    double effectivenessAgainst(List<String> defenderTypes)
+    {
+        if (defenderTypes != effectivenessFor)
+        {
+            effectiveness = TypeChart.effectiveness(type, defenderTypes);
+            effectivenessFor = defenderTypes;
+        }
+        return effectiveness;
     }
 
     boolean hasBuffs()
