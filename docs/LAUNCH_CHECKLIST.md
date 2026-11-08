@@ -9,7 +9,7 @@ Numbers match the original list; 7 and 8 were skipped.
 - [ ] 3. Cookie consent banner — today's cookies are `JSESSIONID` and `XSRF-TOKEN`, both strictly necessary; recheck if analytics is added
 - [ ] 4. Check form consents
 - [ ] 5. No unnecessary data — `Trainer` stores Google ID and name only
-- [ ] 6. Audit 3rd party SDKs — Google OAuth, Google Fonts (Fraunces), PokeAPI sprites from GitHub
+- [ ] 6. Audit 3rd party SDKs — Google OAuth, PokeAPI sprites from GitHub (Fraunces is now self-hosted)
 - [ ] 14. Add business details
 - [ ] 15. Age consent for kids' data — Pokémon players skew young; decide on a minimum age (COPPA: under 13)
 - [ ] 17. License fonts/images — Fraunces is OFL; official Pokémon artwork is Nintendo/TPC IP, add a fan-site disclaimer
@@ -36,7 +36,7 @@ Numbers match the original list; 7 and 8 were skipped.
 - [ ] 26. Optimize DB queries
 - [ ] 27. Add DB indexes — `caught_pokemon.trainer_id` (every collection query filters on it)
 - [ ] 28. Paginate large results
-- [ ] 29. Compress files
+- [x] 29. Compress files — API JSON is gzipped (`server.compression.enabled`); images are W6
 - [ ] 30. Limit upload size — Poké Genie CSV import
 - [ ] 31. Cache repeat requests — gamemaster data, rankings
 
@@ -47,7 +47,7 @@ Numbers match the original list; 7 and 8 were skipped.
 - [ ] W4. Sitemap and robots.txt — keep `/api` and `/oauth2` out of crawls
 - [ ] W5. Alt text on images — same as #11
 - [ ] W6. Compress images — Pokémon art loads from PokeAPI; see #29
-- [ ] W7. Check page load speed (Lighthouse)
+- [x] W7. Check page load speed (Lighthouse) — done 2026-11-07, see the frontend-performance branch
 - [ ] W8. Make mobile friendly
 - [x] W9. Custom 404 page — `NotFoundPage.tsx`; the server also has to send unknown routes to `index.html` when deployed
 - [ ] W10. Fix broken links
