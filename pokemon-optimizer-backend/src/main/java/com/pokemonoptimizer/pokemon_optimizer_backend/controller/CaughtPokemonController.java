@@ -1,5 +1,9 @@
 package com.pokemonoptimizer.pokemon_optimizer_backend.controller;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
@@ -81,7 +85,37 @@ public class CaughtPokemonController
             }
         }
         Trainer trainer = currentTrainer(user);
-        return caughtPokemonRepository.saveAll(requests.stream().map(request -> toEntity(request, trainer)).toList());
+
+        // Importing the same export twice must not double the Collection. Same species, IVs and shadow
+        // means the same Pokémon: two identical ones are very rare and couldn't share a team anyway.
+        Map<String, CaughtPokemon> owned = new HashMap<>();
+        for (CaughtPokemon pokemon : caughtPokemonRepository.findByTrainer(trainer))
+        {
+            owned.putIfAbsent(sameness(pokemon.getSpeciesId(), pokemon.getAtkIv(), pokemon.getDefIv(), pokemon.getStaIv(), pokemon.isShadow()), pokemon);
+        }
+        Map<String, CaughtPokemon> toSave = new LinkedHashMap<>();
+        for (CaughtPokemonRequest request : requests)
+        {
+            String key = sameness(request.speciesId(), request.atkIv(), request.defIv(), request.staIv(), request.shadow());
+            CaughtPokemon match = owned.get(key);
+            if (match == null)
+            {
+                CaughtPokemon added = toEntity(request, trainer);
+                owned.put(key, added);
+                toSave.put(key, added);
+            }
+            else if (request.level() > match.getLevel())
+            {
+                match.raiseLevelTo(request.level());
+                toSave.put(key, match);
+            }
+        }
+        return caughtPokemonRepository.saveAll(new ArrayList<>(toSave.values()));
+    }
+
+    private static String sameness(String speciesId, int atkIv, int defIv, int staIv, boolean shadow)
+    {
+        return speciesId + "|" + atkIv + "|" + defIv + "|" + staIv + "|" + shadow;
     }
 
     /** Why this Pokémon can't exist in the game, or null if it can. */
