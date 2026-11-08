@@ -90,10 +90,13 @@ public class BattleTest
 
     @Test
     public void fastMoveInProgressFloatsToTheTurnAfterAChargedMove()
-    {   // Rock Smash is 3 turns; ones caught mid-move by Ice Punch land early on T+1
+    {   // Rock Smash is 3 turns; ones caught mid-move by Ice Punch land early on T+1.
+        // Timing optimization off so Medicham throws as soon as it can afford Ice Punch
+        // (PvPoke with it on, its default, ends with hpA 27 instead).
         BattleResult result = Battle.simulate(
             MEDICHAM, new Moveset(COUNTER, List.of(ICE_PUNCH)),
-            REGISTEEL, new Moveset(ROCK_SMASH, List.of()));
+            REGISTEEL, new Moveset(ROCK_SMASH, List.of()),
+            new ShieldScenario(0, 0), false);
         assertEquals(58, result.turns());      // 55 without the dead turn
         assertEquals(23, result.hpA());        // 27 if a floating Rock Smash is lost
     }
