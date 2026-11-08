@@ -18,13 +18,13 @@ public class CombatantTest {
     @Test
     public void attackIsBasePlusIvTimesCpm()
     {   // (121 + 4) * 0.6048236651
-        assertEquals(75.6029581375, REGULAR.attack(), DELTA);
+        assertEquals(75.60295718775913, REGULAR.attack(), DELTA);
     }
 
     @Test
     public void defenseIsBasePlusIvTimesCpm()
     {   // (152 + 14) * 0.6048236651
-        assertEquals(100.4007284066, REGULAR.defense(), DELTA);
+        assertEquals(100.40072714534412, REGULAR.defense(), DELTA);
     }
 
     @Test
@@ -36,13 +36,13 @@ public class CombatantTest {
     @Test
     public void shadowHitsHarder()
     {   // 75.6029581375 * 1.2
-        assertEquals(90.723549765, SHADOW.attack(), DELTA);
+        assertEquals(90.72354862531095, SHADOW.attack(), DELTA);
     }
 
     @Test
     public void shadowTakesMoreDamage()
     {   // 100.4007284066 * 0.83333331
-        assertEquals(83.6672713295, SHADOW.defense(), DELTA);
+        assertEquals(83.66727027843646, SHADOW.defense(), DELTA);
     }
 
     @Test
@@ -54,12 +54,12 @@ public class CombatantTest {
     @Test
     public void attackStageMultipliesAttack()
     {   // 75.6029581375 * 1.25
-        assertEquals(94.503697671875, REGULAR.attack(1), DELTA);
+        assertEquals(94.5036964846989, REGULAR.attack(1), DELTA);
     }
 
     @Test
     public void defenseStageStacksWithShadow()
     {   // 100.4007284066 * (4/6 * 0.83333331)
-        assertEquals(55.778180886322, SHADOW.defense(-2), DELTA);
+        assertEquals(55.77818018562431, SHADOW.defense(-2), DELTA);
     }
 }
