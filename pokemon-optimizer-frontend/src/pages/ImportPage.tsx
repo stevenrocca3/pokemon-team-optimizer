@@ -65,7 +65,7 @@ export function ImportPage() {
       {stage.kind === 'error' && (
         <div role="alert" className="mt-6 max-w-2xl rounded-lg border border-red-900 bg-red-950/50 p-5 text-red-200">
           <p className="font-semibold">Couldn't read that file</p>
-          <p className="mt-1 text-sm text-red-300/80">{stage.message}</p>
+          <p className="mt-1 text-sm text-red-200">{stage.message}</p>
         </div>
       )}
 
@@ -218,7 +218,7 @@ function Preview({ fileName, preview, picked, onPick, save, onSave, onStartOver 
             <div className="mt-6 text-center">
               <button
                 onClick={() => setVisible((n) => n + PAGE_SIZE * 2)}
-                className="rounded-md bg-raised px-5 py-2.5 text-sm font-semibold text-ink transition hover:bg-raised-strong"
+                className="btn btn-secondary"
               >
                 Show more <span className="text-muted">({visible} of {needing.length.toLocaleString()})</span>
               </button>
@@ -269,7 +269,7 @@ function SaveBar({ ready, stillNeeding, save, onSave }: { ready: number; stillNe
         <button
           onClick={onSave}
           disabled={ready === 0 || save.kind === 'saving' || save.kind === 'saved' || collection.status !== 'ready'}
-          className="rounded-md bg-brand px-5 py-2.5 text-sm font-bold text-on-brand transition hover:brightness-110 disabled:opacity-50"
+          className="btn btn-primary"
         >
           {save.kind === 'saving'
             ? 'Saving…'
@@ -312,7 +312,7 @@ function SaveBar({ ready, stillNeeding, save, onSave }: { ready: number; stillNe
 }
 
 const SELECT_CLASS =
-  'mt-1 block w-full rounded-md bg-raised px-2 py-1.5 text-sm text-ink ring-1 ring-line-strong focus:outline-none focus:ring-brand'
+  'field mt-1 h-9 px-2 text-sm'
 
 interface CardProps {
   pokemon: ImportedPokemon

@@ -10,83 +10,123 @@ import { formatDex, formatLevel } from '../lib/species'
 import { useMoves } from '../moves/moves-context'
 import { useCollection } from '../collection/collection-context'
 import { loadGuestCollection, saveGuestCollection } from '../collection/guest-storage'
+import { PageHeader } from '../components/PageHeader'
 
 export function CollectionPage() {
   const collection = useCollection()
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-10">
-      <div className="flex flex-wrap items-baseline justify-between gap-3">
-        <h1 className="flex items-baseline gap-3 text-4xl font-black tracking-tight">
-          Collection
-          {collection.status === 'ready' && (
-            <span className="text-base font-normal text-subtle">{collection.list.length.toLocaleString()} Pokémon</span>
-          )}
-        </h1>
-        {collection.status === 'ready' && (
-          <Link to="/import" className="text-sm font-semibold text-brand underline-offset-2 hover:underline">
-            Import a Poké Genie or Calcy IV export
-          </Link>
-        )}
-      </div>
+    <div className="mx-auto max-w-6xl px-4 pb-16">
+      <PageHeader
+        eyebrow="Collection"
+        title="Your Pokémon"
+        actions={
+          collection.status === 'ready' && (
+            <>
+              {collection.list.length > 0 && (
+                <span className="rounded-full bg-raised px-3 py-1 text-sm font-semibold tabular-nums text-ink-soft ring-1 ring-line">
+                  {collection.list.length.toLocaleString()} saved
+                </span>
+              )}
+              <Link to="/import" className="btn btn-secondary">
+                Import a file
+              </Link>
+            </>
+          )
+        }
+      >
+        Add them by name, IVs and CP, or import a Poké Genie or Calcy IV export.
+      </PageHeader>
 
       {collection.status === 'ready' && collection.storage === 'browser' && (
-        <p className="mt-2 max-w-2xl text-sm text-ink-soft">
-          Saved in this browser only.{' '}
-          {/* a plain <a>, not <Link>: login leaves the app for Spring and Google */}
-          <a href={LOGIN_URL} className="text-brand underline">
-            Log in
-          </a>{' '}
-          to keep them on every device. They'll move into your account.
+        <p className="mb-6 flex flex-wrap items-center gap-x-2 rounded-xl bg-raised/80 px-4 py-3 text-sm text-ink-soft ring-1 ring-line">
+          <span className="font-semibold text-ink">Saved in this browser only.</span>
+          <span>
+            {/* a plain <a>, not <Link>: login leaves the app for Spring and Google */}
+            <a href={LOGIN_URL} className="text-brand underline">
+              Log in
+            </a>{' '}
+            to keep them on every device. They'll move into your account.
+          </span>
         </p>
       )}
       {collection.status === 'ready' && collection.storage === 'account' && <MoveGuestPokemonIn />}
 
       {collection.status === 'error' && (
-        <div role="alert" className="mt-6 rounded-lg border border-red-900 bg-red-950/50 p-5 text-red-200">
+        <div role="alert" className="rounded-2xl border border-red-900 bg-red-950/70 p-5 text-red-200">
           <p className="font-semibold">Couldn't load your Collection</p>
-          <p className="mt-1 text-sm text-red-300/80">
+          <p className="mt-1 text-sm text-red-200">
             {collection.message}. Check that the Spring backend and the database are running.
           </p>
         </div>
       )}
 
       {collection.status === 'loading' && (
-        <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {Array.from({ length: 3 }, (_, i) => (
-            <div key={i} className="h-32 animate-pulse rounded-lg bg-surface ring-1 ring-line" />
+            <div key={i} className="h-36 animate-pulse rounded-2xl bg-surface ring-1 ring-line" />
           ))}
         </div>
       )}
 
       {collection.status === 'ready' && (
         <>
-          <div className="mt-6">
-            <QuickAdd />
-          </div>
+          <QuickAdd />
 
           {collection.list.length === 0 ? (
-            <p className="mt-6 max-w-xl text-sm text-subtle">
-              Nothing here yet. Add Pokémon above with the IVs from their appraisal, or{' '}
-              <Link to="/import" className="text-brand underline">
-                import a Poké Genie or Calcy IV export
-              </Link>
-              . Three or more and the{' '}
-              <Link to="/team-builder" className="text-brand underline">
-                Team Builder
-              </Link>{' '}
-              can find your best team.
-            </p>
+            <EmptyShelf />
           ) : (
-            <ul className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {collection.list.map((pokemon) => (
-                <CaughtCard key={pokemon.id} pokemon={pokemon} onRemove={() => collection.remove(pokemon.id)} />
+            <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {collection.list.map((pokemon, i) => (
+                <CaughtCard key={pokemon.id} pokemon={pokemon} delayMs={Math.min(i, 12) * 40} onRemove={() => collection.remove(pokemon.id)} />
               ))}
             </ul>
           )}
         </>
       )}
     </div>
+  )
+}
+
+/** Centred under the quick add: three steps to a first team, with empty cup slots standing in for the cards. */
+function EmptyShelf() {
+  const steps = [
+    { title: 'Add three or more', body: 'Type a name, the appraisal IVs and the CP. The level works itself out.' },
+    { title: 'Or import a file', body: 'A Poké Genie or Calcy IV export brings your whole box in at once.' },
+    { title: 'Build a team', body: 'The Team Builder battles them against the meta and picks your best three.' },
+  ]
+  return (
+    <section className="mx-auto mt-12 max-w-3xl text-center">
+      <div className="flex justify-center gap-4" aria-hidden="true">
+        {[0, 1, 2].map((i) => (
+          <div
+            key={i}
+            className="grid h-20 w-20 animate-rise place-items-center rounded-2xl border-2 border-dashed border-line-strong/70 text-2xl text-subtle"
+            style={{ animationDelay: `${i * 120}ms` }}
+          >
+            +
+          </div>
+        ))}
+      </div>
+      <h2 className="mt-6 font-display text-2xl font-black">Your shelf is empty</h2>
+      <ol className="mt-6 grid gap-4 text-left sm:grid-cols-3">
+        {steps.map((step, i) => (
+          <li key={step.title} className="card p-5">
+            <span className="text-xs font-black text-brand">0{i + 1}</span>
+            <p className="mt-1 font-bold">{step.title}</p>
+            <p className="mt-1 text-sm text-ink-soft">{step.body}</p>
+          </li>
+        ))}
+      </ol>
+      <div className="mt-6 flex flex-wrap justify-center gap-3">
+        <Link to="/import" className="btn btn-secondary">
+          Import a file
+        </Link>
+        <Link to="/team-builder" className="btn btn-ghost">
+          See the Team Builder
+        </Link>
+      </div>
+    </section>
   )
 }
 
@@ -114,14 +154,14 @@ function MoveGuestPokemonIn() {
   }
 
   return (
-    <div className="mt-4 flex max-w-2xl flex-wrap items-center gap-3 rounded-lg bg-brand/10 p-4 ring-1 ring-brand/40">
+    <div className="mb-6 flex flex-wrap items-center gap-3 rounded-xl bg-brand/10 p-4 ring-1 ring-brand/50">
       <p className="text-sm text-ink-soft">
         {waiting.length.toLocaleString()} Pokémon you added before logging in are still only in this browser.
       </p>
       <button
         onClick={moveIn}
         disabled={status.kind === 'moving'}
-        className="rounded-md bg-brand px-3 py-1.5 text-sm font-bold text-on-brand transition hover:brightness-110 disabled:opacity-50"
+        className="btn btn-primary btn-sm"
       >
         {status.kind === 'moving' ? 'Moving…' : 'Move them to my account'}
       </button>
@@ -130,7 +170,7 @@ function MoveGuestPokemonIn() {
   )
 }
 
-function CaughtCard({ pokemon, onRemove }: { pokemon: CaughtPokemon; onRemove: () => Promise<void> }) {
+function CaughtCard({ pokemon, delayMs, onRemove }: { pokemon: CaughtPokemon; delayMs: number; onRemove: () => Promise<void> }) {
   const species = useSpecies()
   const option = species.status === 'ready' ? species.byId.get(pokemon.speciesId) : undefined
   const moveList = useMoves()
@@ -150,10 +190,10 @@ function CaughtCard({ pokemon, onRemove }: { pokemon: CaughtPokemon; onRemove: (
   }
 
   return (
-    <li className="flex gap-4 rounded-lg bg-surface p-4 ring-1 ring-line">
+    <li className="card group flex animate-rise gap-4 p-4 transition hover:-translate-y-0.5 hover:ring-line-strong" style={{ animationDelay: `${delayMs}ms` }}>
       <Link to={`/species/${pokemon.speciesId}`} className="shrink-0" aria-label={option?.name ?? pokemon.speciesId}>
-        <div className="h-20 w-20 rounded-md bg-raised/60 p-2">
-          <PokemonArt dex={option?.dex} alt="" className="h-full w-full" />
+        <div className="h-24 w-24 rounded-xl bg-gradient-to-b from-raised to-canvas/40 p-2">
+          <PokemonArt dex={option?.dex} alt="" className="h-full w-full transition group-hover:scale-110" />
         </div>
       </Link>
       <div className="min-w-0 flex-1">
@@ -161,7 +201,7 @@ function CaughtCard({ pokemon, onRemove }: { pokemon: CaughtPokemon; onRemove: (
         <Link to={`/species/${pokemon.speciesId}`} className="block truncate font-semibold hover:text-brand">
           {option?.name ?? pokemon.speciesId}
           {pokemon.shadow && (
-            <span className="ml-2 rounded bg-violet-500/20 px-1.5 py-0.5 align-middle text-[10px] font-bold uppercase text-violet-300">
+            <span className="ml-2 rounded bg-violet-500/25 px-1.5 py-0.5 align-middle text-[10px] font-bold uppercase text-violet-200">
               Shadow
             </span>
           )}

@@ -9,6 +9,9 @@ import { PokemonArt } from '../components/PokemonArt'
 import { IvTriple } from '../components/IvTriple'
 import { formatLevel } from '../lib/species'
 import { startingMoves } from '../lib/moves'
+import { PageHeader } from '../components/PageHeader'
+import { Brewing } from '../components/Brewing'
+import { OddsRing } from '../components/OddsRing'
 
 const LEAGUES: { key: TeamBuilderLeague; label: string; cpLabel: string }[] = [
   { key: 'GREAT', label: 'Great', cpLabel: '1500 CP' },
@@ -76,66 +79,64 @@ export function TeamBuilderPage() {
     setRun({ status: 'idle' })
   }
 
+  const tooFew = !source || source.pokemon.length < 3
+
   return (
-    <div className="mx-auto max-w-6xl px-4 py-10">
-      <h1 className="text-4xl font-black tracking-tight">Team Builder</h1>
-      <p className="mt-2 max-w-2xl text-ink-soft">
-        Finds the best three from your Pokémon by battling full 3v3s against teams from the current meta, and tells you how often
-        each team wins.
-      </p>
+    <div className="mx-auto max-w-6xl px-4 pb-16">
+      <PageHeader eyebrow="Team Builder" title="Brew your best three">
+        Battles full 3v3s from your Pokémon against teams drawn from the current meta, then tells you how often each team wins.
+      </PageHeader>
 
-      <section className="mt-8 grid gap-6 lg:grid-cols-[1fr_auto] lg:items-end">
-        <SourcePicker
-          collection={collection}
-          fileSource={fileSource}
-          useFile={useFile}
-          onUseFile={setUseFile}
-          onFile={(next) => {
-            setFileSource(next)
-            setUseFile(true)
-            setRun({ status: 'idle' })
-          }}
-        />
+      <section className="card grid gap-px overflow-hidden bg-line lg:grid-cols-[1.4fr_1fr_auto]">
+        <Step n={1} title="Your Pokémon">
+          <SourcePicker
+            collection={collection}
+            fileSource={fileSource}
+            useFile={useFile}
+            onUseFile={setUseFile}
+            onFile={(next) => {
+              setFileSource(next)
+              setUseFile(true)
+              setRun({ status: 'idle' })
+            }}
+          />
+        </Step>
 
-        <div>
-          <div className="text-xs uppercase tracking-wider text-muted">League</div>
-          <div role="tablist" aria-label="League" className="mt-2 inline-flex rounded-lg bg-surface p-1 ring-1 ring-line">
+        <Step n={2} title="League">
+          <div role="tablist" aria-label="League" className="grid grid-cols-3 gap-1 rounded-xl bg-raised p-1 ring-1 ring-line">
             {LEAGUES.map((l) => (
               <button
                 key={l.key}
                 role="tab"
                 aria-selected={l.key === league}
                 onClick={() => changeLeague(l.key)}
-                className={`rounded-md px-3 py-2 text-left text-sm transition sm:px-4 ${
-                  l.key === league ? 'bg-brand text-on-brand' : 'text-ink-soft hover:bg-raised'
+                className={`flex h-14 flex-col items-center justify-center rounded-lg text-sm transition ${
+                  l.key === league ? 'bg-brand text-on-brand shadow' : 'text-ink-soft hover:bg-raised-strong hover:text-ink'
                 }`}
               >
-                <div className="font-bold">{l.label}</div>
-                <div className={`text-xs ${l.key === league ? 'text-on-brand/70' : 'text-subtle'}`}>{l.cpLabel}</div>
+                <span className="font-bold">{l.label}</span>
+                <span className={`text-xs ${l.key === league ? 'font-semibold text-on-brand' : 'text-subtle'}`}>{l.cpLabel}</span>
               </button>
             ))}
           </div>
-        </div>
+        </Step>
+
+        <Step n={3} title="Brew">
+          <button onClick={build} disabled={tooFew || run.status === 'running'} className="btn btn-primary btn-lg w-full">
+            {run.status === 'running' ? 'Brewing…' : 'Build teams'}
+          </button>
+          <p className="mt-3 text-xs text-subtle">
+            {tooFew ? 'Needs at least 3 Pokémon with moves.' : `${source.pokemon.length.toLocaleString()} Pokémon ready`}
+          </p>
+        </Step>
       </section>
 
-      <div className="mt-6 flex flex-wrap items-center gap-4">
-        <button
-          onClick={build}
-          disabled={!source || source.pokemon.length < 3 || run.status === 'running'}
-          className="rounded-md bg-brand px-6 py-3 font-bold text-on-brand transition hover:brightness-110 disabled:opacity-50"
-        >
-          {run.status === 'running' ? 'Building…' : 'Build teams'}
-        </button>
-        {run.status === 'running' && <Progress startedAt={run.startedAt} />}
-        {source?.kind === 'file' && source.pokemon.length > 0 && source.pokemon.length < 3 && (
-          <span className="text-sm text-subtle">You need at least 3 Pokémon with moves.</span>
-        )}
-      </div>
+      {run.status === 'running' && <Brewing startedAt={run.startedAt} />}
 
       {run.status === 'error' && (
-        <div role="alert" className="mt-6 max-w-2xl rounded-lg border border-red-900 bg-red-950/50 p-5 text-red-200">
+        <div role="alert" className="mt-8 max-w-2xl rounded-2xl border border-red-900 bg-red-950/70 p-5 text-red-200">
           <p className="font-semibold">Couldn't build teams</p>
-          <p className="mt-1 text-sm text-red-300/80">{run.message}</p>
+          <p className="mt-1 text-sm text-red-200">{run.message}</p>
         </div>
       )}
 
@@ -184,8 +185,8 @@ function SourcePicker({
   }
 
   const fileInput = (
-    <label className={`inline-flex cursor-pointer items-center rounded-md bg-raised px-4 py-2 text-sm font-semibold text-ink ring-1 ring-line-strong transition hover:bg-raised-strong ${reading ? 'pointer-events-none opacity-60' : ''}`}>
-      {reading ? 'Reading…' : fileSource ? 'Choose another file' : 'Choose a Poké Genie or Calcy IV export'}
+    <label className={`btn btn-secondary cursor-pointer ${reading ? 'pointer-events-none opacity-60' : ''}`}>
+      {reading ? 'Reading…' : fileSource ? 'Choose another file' : 'Choose a Poké Genie or Calcy IV file'}
       <input
         type="file"
         accept=".csv,text/csv"
@@ -200,15 +201,13 @@ function SourcePicker({
   )
 
   return (
-    <div className="rounded-lg bg-surface p-5 ring-1 ring-line">
-      <div className="text-xs uppercase tracking-wider text-muted">Your Pokémon</div>
-
-      {collection.status === 'loading' && <div className="mt-3 h-6 w-64 animate-pulse rounded bg-raised" />}
+    <div>
+      {collection.status === 'loading' && <div className="h-11 w-64 animate-pulse rounded-lg bg-raised" />}
 
       {collection.status === 'ready' && (
-        <div className="mt-3 flex flex-wrap gap-2">
+        <div className="grid grid-cols-2 gap-2">
           <Choice active={!useFile} onClick={() => onUseFile(false)}>
-            My Collection <span className="text-subtle">({collection.source.pokemon.length.toLocaleString()})</span>
+            My Collection <span className={useFile ? 'text-subtle' : 'text-brand'}>({collection.source.pokemon.length.toLocaleString()})</span>
           </Choice>
           <Choice active={useFile} onClick={() => onUseFile(true)}>
             An export file
@@ -217,7 +216,7 @@ function SourcePicker({
       )}
 
       {collection.status === 'error' && (
-        <p className="mt-2 text-sm text-ink-soft">Couldn't load your Collection ({collection.message}). You can still use a file.</p>
+        <p className="text-sm text-ink-soft">Couldn't load your Collection ({collection.message}). You can still use a file.</p>
       )}
 
       {(useFile || collection.status === 'error') && (
@@ -273,8 +272,8 @@ function Choice({ active, onClick, children }: { active: boolean; onClick: () =>
     <button
       onClick={onClick}
       aria-pressed={active}
-      className={`rounded-md px-3 py-1.5 text-sm font-semibold ring-1 transition ${
-        active ? 'bg-brand/15 text-brand ring-brand/60' : 'bg-raised text-ink-soft ring-line hover:text-ink'
+      className={`btn ring-1 ring-inset ${
+        active ? 'bg-brand/15 text-brand ring-brand' : 'bg-raised text-ink-soft ring-line-strong hover:text-ink'
       }`}
     >
       {children}
@@ -282,17 +281,15 @@ function Choice({ active, onClick, children }: { active: boolean; onClick: () =>
   )
 }
 
-function Progress({ startedAt }: { startedAt: number }) {
-  const [now, setNow] = useState(() => Date.now())
-  useEffect(() => {
-    const id = setInterval(() => setNow(Date.now()), 500)
-    return () => clearInterval(id)
-  }, [])
-  const seconds = Math.floor((now - startedAt) / 1000)
+function Step({ n, title, children }: { n: number; title: string; children: React.ReactNode }) {
   return (
-    <span role="status" className="text-sm text-ink-soft">
-      Simulating a few thousand battles… <span className="tabular-nums text-subtle">{seconds}s</span>
-    </span>
+    <div className="bg-surface p-5 sm:p-6">
+      <div className="mb-4 flex items-center gap-3">
+        <span className="grid h-7 w-7 place-items-center rounded-full bg-brand/15 text-sm font-black text-brand ring-1 ring-brand/50">{n}</span>
+        <h2 className="font-bold">{title}</h2>
+      </div>
+      {children}
+    </div>
   )
 }
 
@@ -303,9 +300,9 @@ function Results({ result, source }: { result: TeamBuilderResult; source: Source
   const nameOf = (id: string) => (species.status === 'ready' ? species.byId.get(id)?.name : undefined) ?? id
 
   return (
-    <section className="mt-10" aria-live="polite">
+    <section className="mt-12" aria-live="polite">
       {result.teams.length === 0 ? (
-        <div className="max-w-2xl rounded-lg bg-surface p-5 ring-1 ring-line">
+        <div className="card max-w-2xl p-6">
           <p className="font-semibold">Not enough Pokémon for {LEAGUE_NAMES[result.league]}</p>
           <p className="mt-1 text-sm text-ink-soft">
             A team needs three different species that fit the league. {result.eligible} of yours can play there.
@@ -313,23 +310,21 @@ function Results({ result, source }: { result: TeamBuilderResult; source: Source
         </div>
       ) : (
         <>
-          <h2 className="flex flex-wrap items-baseline gap-x-3 text-2xl font-bold">
-            <span className="h-7 w-1 self-center rounded bg-brand" aria-hidden="true" />
-            Best teams for {LEAGUE_NAMES[result.league]}
-            <span className="text-sm font-normal text-subtle">
-              from {result.eligible.toLocaleString()} eligible · vs {result.metaSize} meta Pokémon (PvPoke, {result.metaDate})
-            </span>
-          </h2>
-          <ol className="mt-5 grid gap-5">
+          <p className="eyebrow text-brand">Fresh from the bar</p>
+          <h2 className="mt-1 font-display text-3xl font-black">Best teams for {LEAGUE_NAMES[result.league]}</h2>
+          <p className="mt-1 text-sm text-subtle">
+            From {result.eligible.toLocaleString()} eligible · vs {result.metaSize} meta Pokémon (PvPoke, {result.metaDate})
+          </p>
+          <ol className="mt-6 grid gap-6">
             {result.teams.map((team, i) => (
-              <TeamCard key={team.members.map((m) => m.index).join('-')} rank={i + 1} team={team} />
+              <TeamCard key={team.members.map((m) => m.index).join('-')} rank={i + 1} team={team} delayMs={i * 140} />
             ))}
           </ol>
         </>
       )}
 
       {result.skipped.length > 0 && (
-        <details className="mt-6 max-w-2xl rounded-lg bg-surface p-4 ring-1 ring-line">
+        <details className="card mt-6 max-w-2xl p-4">
           <summary className="cursor-pointer text-sm font-semibold">
             {result.skipped.length.toLocaleString()} Pokémon couldn't play in {LEAGUE_NAMES[result.league]}
           </summary>
@@ -351,7 +346,7 @@ function percent(fraction: number) {
   return Math.round(fraction * 100)
 }
 
-function TeamCard({ rank, team }: { rank: number; team: TeamResult }) {
+function TeamCard({ rank, team, delayMs }: { rank: number; team: TeamResult; delayMs: number }) {
   const species = useSpecies()
   const { rate, low, high, battles } = team.winRate
 
@@ -364,54 +359,38 @@ function TeamCard({ rank, team }: { rank: number; team: TeamResult }) {
   }
 
   return (
-    <li className="rounded-xl bg-surface p-5 ring-1 ring-line">
-      <div className="flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <div className="text-xs uppercase tracking-wider text-muted">Team {rank}</div>
-          <div className="mt-1 flex items-baseline gap-2">
-            <span className="text-5xl font-black tabular-nums">{percent(rate)}%</span>
-            <span className="text-ink-soft">win odds</span>
+    <li className="card animate-rise p-5 sm:p-6" style={{ animationDelay: `${delayMs}ms` }}>
+      <div className="grid gap-6 md:grid-cols-[auto_1fr] md:items-center">
+        <div className="flex items-center gap-5 md:flex-col md:gap-2">
+          <OddsRing rate={rate} low={low} high={high} delayMs={delayMs + 200} />
+          <div className="md:text-center">
+            <div className="eyebrow">Team {rank}</div>
+            <p className="mt-1 text-xs text-subtle">
+              Likely {percent(low)}–{percent(high)}%
+              <br />
+              {battles} simulated battles
+            </p>
           </div>
         </div>
-        <div className="w-full max-w-xs">
-          <OddsBar rate={rate} low={low} high={high} />
-          <p className="mt-1 text-xs text-subtle">
-            Likely {percent(low)}–{percent(high)}% · {battles} simulated battles
+
+        <div>
+          <ul className="grid gap-3 md:grid-cols-3">
+            {team.members.map((member, i) => (
+              <MemberCard key={member.index} member={member} lead={i === 0} />
+            ))}
+          </ul>
+          <p className="mt-4 text-sm text-subtle">
+            Toughest matchups:{' '}
+            {team.toughest.map((id, i) => (
+              <span key={id}>
+                {i > 0 && ', '}
+                <span className="text-ink-soft">{metaName(id)}</span>
+              </span>
+            ))}
           </p>
         </div>
       </div>
-
-      <ul className="mt-5 grid gap-3 md:grid-cols-3">
-        {team.members.map((member, i) => (
-          <MemberCard key={member.index} member={member} lead={i === 0} />
-        ))}
-      </ul>
-
-      <p className="mt-4 text-sm text-subtle">
-        Toughest matchups:{' '}
-        {team.toughest.map((id, i) => (
-          <span key={id}>
-            {i > 0 && ', '}
-            <span className="text-ink-soft">{metaName(id)}</span>
-          </span>
-        ))}
-      </p>
     </li>
-  )
-}
-
-/** The estimate's 95% interval as a band on 0–100%, the point estimate as a tick, 50% marked. */
-function OddsBar({ rate, low, high }: { rate: number; low: number; high: number }) {
-  return (
-    <div
-      className="relative h-3 rounded-full bg-raised"
-      role="img"
-      aria-label={`Win odds ${percent(rate)}%, likely between ${percent(low)} and ${percent(high)}%`}
-    >
-      <div className="absolute inset-y-0 left-1/2 w-px bg-line-strong" aria-hidden="true" />
-      <div className="absolute inset-y-0 rounded-full bg-brand/35" style={{ left: `${low * 100}%`, width: `${(high - low) * 100}%` }} />
-      <div className="absolute -inset-y-0.5 w-1 -translate-x-1/2 rounded-full bg-brand" style={{ left: `${rate * 100}%` }} />
-    </div>
   )
 }
 
@@ -422,16 +401,16 @@ function MemberCard({ member, lead }: { member: TeamMember; lead: boolean }) {
   const moveName = (id: string) => (moves.status === 'ready' ? moves.byId.get(id)?.name : undefined) ?? id
 
   return (
-    <li className={`flex gap-3 rounded-lg p-3 ring-1 ${lead ? 'bg-brand/5 ring-brand/50' : 'bg-raised/40 ring-line'}`}>
-      <Link to={`/species/${member.speciesId}`} className="h-16 w-16 shrink-0 rounded-md bg-raised/60 p-1.5" aria-label={option?.name ?? member.speciesId}>
-        <PokemonArt dex={option?.dex} alt="" className="h-full w-full" />
+    <li className={`group flex gap-3 rounded-xl p-3 ring-1 transition hover:-translate-y-0.5 ${lead ? 'bg-brand/10 ring-brand/60' : 'bg-raised/60 ring-line'}`}>
+      <Link to={`/species/${member.speciesId}`} className="h-20 w-20 shrink-0 rounded-lg bg-canvas/60 p-1.5" aria-label={option?.name ?? member.speciesId}>
+        <PokemonArt dex={option?.dex} alt="" className="h-full w-full transition group-hover:scale-110" />
       </Link>
       <div className="min-w-0 flex-1">
         <div className="flex flex-wrap items-center gap-1.5">
           <span className="truncate font-semibold">{option?.name ?? member.speciesId}</span>
           {lead && <span className="rounded bg-brand px-1.5 py-0.5 text-[10px] font-bold uppercase text-on-brand">Lead</span>}
           {member.shadow && (
-            <span className="rounded bg-violet-500/20 px-1.5 py-0.5 text-[10px] font-bold uppercase text-violet-300">Shadow</span>
+            <span className="rounded bg-violet-500/25 px-1.5 py-0.5 text-[10px] font-bold uppercase text-violet-200">Shadow</span>
           )}
         </div>
         <div className="mt-0.5 text-xs text-subtle">
@@ -453,7 +432,7 @@ function MemberCard({ member, lead }: { member: TeamMember; lead: boolean }) {
 
 function HowItWorks() {
   return (
-    <details className="mt-12 max-w-3xl rounded-lg bg-surface p-5 ring-1 ring-line">
+    <details className="card mt-14 max-w-3xl p-5">
       <summary className="cursor-pointer font-semibold">How the win odds work</summary>
       <div className="mt-3 grid gap-3 text-sm leading-relaxed text-ink-soft">
         <p>

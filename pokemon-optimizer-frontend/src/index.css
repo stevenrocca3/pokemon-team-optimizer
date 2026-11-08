@@ -3,7 +3,11 @@
 @import "@fontsource-variable/fraunces/opsz.css";
 
 /* Espresso bar theme. Components use these semantic names, never raw palette colors,
-   so a reskin only touches this block. */
+   so a reskin only touches this block.
+   Contrast (WCAG 2.2 AA), measured against canvas / surface / raised / raised-strong:
+   ink ≥ 11:1, ink-soft ≥ 8.3:1, muted ≥ 5.3:1, subtle ≥ 4.8:1 (all text sizes);
+   line-strong ≥ 3.3:1 on canvas, surface and raised (input borders, WCAG 1.4.11);
+   faint is decorative only (never text). */
 @theme {
   --color-brand: #e0a458; /* crema */
   --color-brand-dark: #c88a3e;
@@ -13,31 +17,163 @@
   --color-surface: #1f1814; /* cards */
   --color-raised: #2b211b; /* inputs, hovered rows */
   --color-raised-strong: #3a2d25;
-  --color-line: #33271f;
-  --color-line-strong: #4a3a2f;
+  --color-line: #3f3128; /* card edges (decorative) */
+  --color-line-strong: #86705f; /* input and control borders */
 
   --color-ink: #f3e9dc; /* cream text */
   --color-ink-soft: #dccbb7;
   --color-muted: #b6a08a;
-  --color-subtle: #9a8572;
+  --color-subtle: #ad9884;
   --color-faint: #64524a;
 
   --color-field: #f3e9dc; /* search input */
   --color-on-field: #1f1814;
 
   --font-display: "Fraunces Variable", ui-serif, Georgia, serif;
+
+  --animate-rise: rise 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 
 html {
   color-scheme: dark;
 }
 
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* components/Reveal.tsx: content lifts in as it scrolls into view */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.8s cubic-bezier(0.2, 0.8, 0.2, 1),
+    transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.reveal[data-shown="true"] {
+  opacity: 1;
+  transform: none;
+}
+
+/* the home page's parallax layers, driven by --scroll (useScrollVariable) */
+.parallax-slow {
+  transform: translateY(calc(var(--scroll, 0) * 0.15px));
+}
+.parallax-fast {
+  transform: translateY(calc(var(--scroll, 0) * -0.12px));
+}
+.hero-cue {
+  opacity: calc(1 - var(--scroll, 0) / 120);
+}
+.hero-fade {
+  opacity: calc(1 - var(--scroll, 0) / 700);
+  transform: translateY(calc(var(--scroll, 0) * 0.25px));
+}
+
 body {
   @apply bg-canvas text-ink antialiased;
 }
 
+/* The scenic backdrop: coffee highlands at dusk under a roast-dark overlay, like PvPoke's landscape.
+   The overlay never drops below 78% where text sits, so text over the brightest spot (the sun) still
+   passes AA. Fixed to the viewport with a pseudo-element because background-attachment: fixed
+   is ignored on iOS. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(
+      to bottom,
+      rgb(21 16 13 / 0.78) 0%,
+      rgb(21 16 13 / 0.82) 35vh,
+      rgb(21 16 13 / 0.94) 75vh,
+      rgb(21 16 13 / 0.97) 100%
+    ),
+    url("/scene-highlands.svg") center 35% / cover no-repeat;
+}
+
 h1 {
   font-family: var(--font-display);
+}
+
+/* every control shares these heights, so buttons and fields line up wherever they sit together */
+@layer components {
+  .btn {
+    @apply inline-flex h-11 shrink-0 items-center justify-center gap-2 rounded-lg px-5 text-sm font-semibold whitespace-nowrap transition select-none;
+    @apply disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .btn-sm {
+    @apply h-9 px-3;
+  }
+  .btn-lg {
+    @apply h-12 px-7 text-base;
+  }
+  .btn-primary {
+    @apply bg-brand font-bold text-on-brand shadow-[0_6px_20px_-8px] shadow-brand/60 hover:brightness-110 active:brightness-95;
+  }
+  .btn-secondary {
+    @apply bg-raised text-ink ring-1 ring-line-strong ring-inset hover:bg-raised-strong;
+  }
+  .btn-ghost {
+    @apply text-ink-soft hover:bg-raised hover:text-ink;
+  }
+  .field {
+    @apply block h-11 w-full rounded-lg bg-raised px-3 text-base text-ink ring-1 ring-line-strong ring-inset placeholder:text-subtle;
+    @apply focus:ring-2 focus:ring-brand focus:outline-none disabled:opacity-60;
+  }
+  .card {
+    @apply rounded-2xl bg-surface ring-1 ring-line shadow-[0_12px_40px_-20px] shadow-black/80;
+  }
+  .eyebrow {
+    @apply text-xs font-semibold tracking-wider text-muted uppercase;
+  }
+}
+
+/* keyboard focus is always visible (WCAG 2.4.7); mouse clicks don't draw it */
+:where(a, button, summary, [role="tab"], [role="option"]):focus-visible {
+  outline: 2px solid var(--color-brand);
+  outline-offset: 2px;
+}
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* the Team Builder's brewing animation (components/Brewing.tsx) */
+@keyframes shimmer {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(300%); }
+}
+@keyframes pour {
+  to { stroke-dashoffset: -9; }
+}
+@keyframes fill {
+  to { transform: translateY(-44px); }
+}
+@keyframes steam {
+  0% { transform: translateY(4px); opacity: 0; }
+  40% { opacity: 0.7; }
+  100% { transform: translateY(-10px); opacity: 0; }
+}
+
+/* the home page: steam drifting up the hero, Pokémon bobbing gently */
+@keyframes drift {
+  0% { transform: translate(0, 40px) scaleX(1); opacity: 0; }
+  30% { opacity: 0.5; }
+  100% { transform: translate(18px, -260px) scaleX(1.4); opacity: 0; }
+}
+@keyframes bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+@keyframes scroll-cue {
+  0%, 100% { transform: translateY(0); opacity: 0.5; }
+  50% { transform: translateY(8px); opacity: 1; }
 }
 
 /* the logo's steam rises when you hover it */
@@ -56,7 +192,11 @@ h1 {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .group:hover .steam {
-    animation: none;
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }

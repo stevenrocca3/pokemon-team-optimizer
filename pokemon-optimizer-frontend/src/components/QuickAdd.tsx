@@ -8,8 +8,8 @@ import { useSpecies } from '../species/species-context'
 import type { SpeciesDetail, SpeciesOption } from '../types'
 import { PokemonArt } from './PokemonArt'
 
-const INPUT =
-  'block w-full rounded-md bg-raised px-2 py-2 text-base text-ink ring-1 ring-line-strong placeholder:text-faint focus:outline-none focus:ring-2 focus:ring-brand'
+// .field (index.css) gives every control here the same 44px height as the buttons
+const INPUT = 'field'
 const LABEL = 'text-[11px] font-semibold uppercase tracking-wider text-subtle'
 
 type IvKey = 'atk' | 'def' | 'sta'
@@ -132,9 +132,9 @@ export function QuickAdd() {
   }
 
   return (
-    <form onSubmit={submit} className="rounded-xl bg-surface p-4 ring-1 ring-line sm:p-5" aria-label="Quick add a Pokémon">
+    <form onSubmit={submit} className="card p-5 sm:p-6" aria-label="Quick add a Pokémon">
       <div className="flex items-baseline justify-between gap-3">
-        <h2 className="font-bold">Add a Pokémon</h2>
+        <h2 className="text-lg font-bold">Add a Pokémon</h2>
         <span className="hidden text-xs text-subtle sm:inline">Name → Enter → IVs → CP → Enter</span>
       </div>
 
@@ -203,7 +203,7 @@ export function QuickAdd() {
           onChange={(charged2) => setMoves((m) => ({ ...m, charged2 }))}
         />
         <label
-          className={`flex items-center gap-2 pb-2.5 text-sm ${detail?.shadowEligible ? 'cursor-pointer text-ink-soft' : 'text-faint'}`}
+          className={`flex h-11 items-center gap-2 text-sm ${detail?.shadowEligible ? 'cursor-pointer text-ink-soft' : 'text-subtle opacity-60'}`}
           title={detail && !detail.shadowEligible ? `${detail.name} can't be a Shadow` : undefined}
         >
           <input
@@ -221,7 +221,7 @@ export function QuickAdd() {
         <button
           type="submit"
           disabled={!ready || saving || collection.status !== 'ready'}
-          className="rounded-md bg-brand px-5 py-2.5 text-sm font-bold text-on-brand transition hover:brightness-110 disabled:opacity-50"
+          className="btn btn-primary min-w-28"
         >
           {saving ? 'Adding…' : 'Add'}
         </button>
@@ -360,7 +360,7 @@ function SpeciesPicker({
       <label htmlFor={`${listId}-input`} className={LABEL}>
         Pokémon
       </label>
-      <div className="mt-1 flex items-center gap-2 rounded-md bg-raised pl-1.5 ring-1 ring-line-strong focus-within:ring-2 focus-within:ring-brand">
+      <div className="mt-1 flex h-11 items-center gap-2 rounded-lg bg-raised pl-1.5 ring-1 ring-line-strong ring-inset focus-within:ring-2 focus-within:ring-brand">
         <PokemonArt dex={selected?.dex} alt="" className="h-8 w-8 shrink-0" />
         <input
           id={`${listId}-input`}
@@ -380,7 +380,7 @@ function SpeciesPicker({
           aria-controls={listId}
           aria-activedescendant={showList ? `${listId}-${active}` : undefined}
           autoComplete="off"
-          className={`min-w-0 flex-1 bg-transparent py-2 pr-2 text-base text-ink focus:outline-none ${selected ? 'placeholder:text-ink' : 'placeholder:text-faint'}`}
+          className={`h-full min-w-0 flex-1 bg-transparent pr-2 text-base text-ink focus:outline-none ${selected ? 'placeholder:text-ink' : 'placeholder:text-subtle'}`}
         />
       </div>
       {showList && (
