@@ -12,6 +12,7 @@ final class BattlePokemon
     private static final int BUFF_DIVISOR = 4;
 
     final Combatant combatant;
+    final Moveset moveset;
     final int index;
     final List<String> types;
     final String speciesName;
@@ -23,6 +24,9 @@ final class BattlePokemon
     int hp;
     int energy = 0;
     int shields;
+    /** 3v3: the team's shields when this Pokémon came in, and how many it has used this battle (PvPoke's startingShields, battleStats.shieldsUsed). */
+    int startingShields;
+    int shieldsUsed = 0;
     int cooldown = 0;
     final int[] statBuffs = { 0, 0 };
     String faintSource = "";
@@ -44,6 +48,7 @@ final class BattlePokemon
     BattlePokemon(Combatant combatant, Moveset moveset, int shields, int index)
     {
         this.combatant = combatant;
+        this.moveset = moveset;
         this.index = index;
         this.types = combatant.species().types();
         this.speciesName = combatant.species().speciesName();
@@ -51,12 +56,24 @@ final class BattlePokemon
         this.maxHp = combatant.maxHp();
         this.hp = maxHp;
         this.shields = shields;
+        this.startingShields = shields;
         this.fastMove = new BattleMove(moveset.fastMove());
         this.chargedMoves = new ArrayList<>();
         for (var move : moveset.chargedMoves())
         {
             chargedMoves.add(new BattleMove(move));
         }
+    }
+
+    /** A fresh Pokémon in this one's current state (HP, energy, shields, stat stages, cooldown), for side simulations. */
+    BattlePokemon copy(int newIndex)
+    {
+        BattlePokemon copy = new BattlePokemon(combatant, moveset, shields, newIndex);
+        copy.hp = hp;
+        copy.energy = energy;
+        copy.cooldown = cooldown;
+        copy.setStatBuffs(statBuffs);
+        return copy;
     }
 
     /** getEffectiveStat(0): stats.atk x (buff multiplier x Shadow multiplier). */
