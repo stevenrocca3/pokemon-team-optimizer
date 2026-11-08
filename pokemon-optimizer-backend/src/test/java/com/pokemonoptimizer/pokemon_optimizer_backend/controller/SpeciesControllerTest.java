@@ -15,10 +15,12 @@ import com.pokemonoptimizer.pokemon_optimizer_backend.dto.SpeciesDetail;
 import com.pokemonoptimizer.pokemon_optimizer_backend.dto.SpeciesOption;
 import com.pokemonoptimizer.pokemon_optimizer_backend.gamemaster.SpeciesLookup;
 import com.pokemonoptimizer.pokemon_optimizer_backend.gamemaster.SpeciesType;
+import com.pokemonoptimizer.pokemon_optimizer_backend.gamemaster.SuggestedMoves;
+import com.pokemonoptimizer.pokemon_optimizer_backend.gamemaster.SuggestedMovesets;
 
 public class SpeciesControllerTest {
     private static final SpeciesLookup sl = new SpeciesLookup();
-    private static final SpeciesController sc = new SpeciesController(sl);
+    private static final SpeciesController sc = new SpeciesController(sl, new SuggestedMovesets(sl));
 
     @Test
     public void testCheckUniqueIds()
@@ -99,4 +101,10 @@ public class SpeciesControllerTest {
         Optional<SpeciesType> opt = (sl.findById("bulbasaur_shadow"));
         assertTrue(opt.isEmpty(), "findById found: " + opt);
     }  
+
+    @Test
+    public void detailSuggestsAMovesetForPickers()
+    {   // so Add to Collection starts on moves worth having, not the learnset's first
+        assertEquals(new SuggestedMoves("PSYCHO_CUT", List.of("ICE_PUNCH", "DYNAMIC_PUNCH")), sc.speciesById("medicham").suggestedMoves());
+    }
 }

@@ -8,6 +8,7 @@ import { useMoves } from '../moves/moves-context'
 import { PokemonArt } from '../components/PokemonArt'
 import { IvTriple } from '../components/IvTriple'
 import { formatLevel } from '../lib/species'
+import { startingMoves } from '../lib/moves'
 
 const LEAGUES: { key: TeamBuilderLeague; label: string; cpLabel: string }[] = [
   { key: 'GREAT', label: 'Great', cpLabel: '1500 CP' },
@@ -166,15 +167,15 @@ function SourcePicker({
     setFileError(null)
     try {
       const preview = await previewImport(file)
-      const ready = preview.pokemon.filter((p) => !p.needsMoves)
-      onFile({
-        kind: 'file',
-        fileName: file.name,
-        pokemon: ready.map(({ speciesId, atkIv, defIv, staIv, level, shadow, fastMove, chargedMoves }) => ({
-          speciesId, atkIv, defIv, staIv, level, shadow, fastMove: fastMove ?? '', chargedMoves,
-        })),
-        withoutMoves: preview.pokemon.length - ready.length,
+      // a Pokémon the export has no moves for battles with PvPoke's suggested moveset
+      const pokemon = preview.pokemon.flatMap((p) => {
+        const moves = startingMoves(p, preview.suggestedMoves[p.speciesId])
+        if (moves.fast === '' || moves.charged1 === '') return []
+        const chargedMoves = moves.charged2 ? [moves.charged1, moves.charged2] : [moves.charged1]
+        const { speciesId, atkIv, defIv, staIv, level, shadow } = p
+        return [{ speciesId, atkIv, defIv, staIv, level, shadow, fastMove: moves.fast, chargedMoves }]
       })
+      onFile({ kind: 'file', fileName: file.name, pokemon, withoutMoves: preview.pokemon.length - pokemon.length })
     } catch (error: unknown) {
       setFileError(error instanceof Error ? error.message : String(error))
     } finally {
@@ -262,7 +263,7 @@ function SourceNote({ source }: { source: Source | null }) {
   return (
     <p className="mt-2 text-xs text-subtle">
       {source.withoutMoves.toLocaleString()} without moves are left out
-      {source.kind === 'file' ? ' (pick their moves on the Import page to include them).' : '.'}
+      {source.kind === 'file' ? ' (PvPoke has no suggested moves for them; pick them on the Import page).' : '.'}
     </p>
   )
 }

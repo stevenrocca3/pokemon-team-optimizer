@@ -17,6 +17,8 @@ import com.pokemonoptimizer.pokemon_optimizer_backend.gamemaster.Move;
 import com.pokemonoptimizer.pokemon_optimizer_backend.gamemaster.MoveLookup;
 import com.pokemonoptimizer.pokemon_optimizer_backend.gamemaster.SpeciesLookup;
 import com.pokemonoptimizer.pokemon_optimizer_backend.gamemaster.SpeciesType;
+import com.pokemonoptimizer.pokemon_optimizer_backend.gamemaster.SuggestedMoves;
+import com.pokemonoptimizer.pokemon_optimizer_backend.gamemaster.SuggestedMovesets;
 
 /** Turns Poké Genie's display names ("Stunfisk" + "Galar", "Mud-Slap") into our species and move IDs. */
 @Component
@@ -43,11 +45,13 @@ public class PokeGenieMapper
 
     private final SpeciesLookup speciesLookup;
     private final MoveLookup moveLookup;
+    private final SuggestedMovesets suggestedMovesets;
 
-    public PokeGenieMapper(SpeciesLookup speciesLookup, MoveLookup moveLookup)
+    public PokeGenieMapper(SpeciesLookup speciesLookup, MoveLookup moveLookup, SuggestedMovesets suggestedMovesets)
     {
         this.speciesLookup = speciesLookup;
         this.moveLookup = moveLookup;
+        this.suggestedMovesets = suggestedMovesets;
     }
 
     public ImportPreview map(PokeGenieImport parsed)
@@ -55,6 +59,7 @@ public class PokeGenieMapper
         List<ImportedPokemon> pokemon = new ArrayList<>();
         List<RejectedRow> rejected = new ArrayList<>(parsed.rejected());
         Map<String, Learnset> learnsets = new TreeMap<>();
+        Map<String, SuggestedMoves> suggestions = new TreeMap<>();
 
         for (PokeGenieRow row : parsed.rows())
         {
@@ -83,6 +88,7 @@ public class PokeGenieMapper
             if (needsMoves)
             {
                 learnsets.put(species.speciesId(), learnset);
+                suggestedMovesets.forSpecies(species.speciesId()).ifPresent(moves -> suggestions.put(species.speciesId(), moves));
             }
 
             pokemon.add(new ImportedPokemon(row.index(), species.speciesId(), row.atkIv(), row.defIv(), row.staIv(),
@@ -90,7 +96,7 @@ public class PokeGenieMapper
         }
 
         rejected.sort(Comparator.comparingInt(RejectedRow::index));
-        return new ImportPreview(pokemon, rejected, learnsets);
+        return new ImportPreview(pokemon, rejected, learnsets, suggestions);
     }
 
     private Optional<SpeciesType> findSpecies(String name, String form)

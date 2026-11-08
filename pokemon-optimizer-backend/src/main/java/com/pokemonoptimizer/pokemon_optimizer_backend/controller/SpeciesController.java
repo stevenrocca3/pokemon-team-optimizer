@@ -13,6 +13,7 @@ import com.pokemonoptimizer.pokemon_optimizer_backend.dto.SpeciesDetail;
 import com.pokemonoptimizer.pokemon_optimizer_backend.dto.SpeciesOption;
 import com.pokemonoptimizer.pokemon_optimizer_backend.gamemaster.SpeciesLookup;
 import com.pokemonoptimizer.pokemon_optimizer_backend.gamemaster.SpeciesType;
+import com.pokemonoptimizer.pokemon_optimizer_backend.gamemaster.SuggestedMovesets;
 
 
 @RestController 
@@ -20,10 +21,12 @@ import com.pokemonoptimizer.pokemon_optimizer_backend.gamemaster.SpeciesType;
 public class SpeciesController 
 {
     private final SpeciesLookup speciesLookup;
+    private final SuggestedMovesets suggestedMovesets;
 
-    public SpeciesController(SpeciesLookup sl)
+    public SpeciesController(SpeciesLookup sl, SuggestedMovesets sm)
     {
        speciesLookup = sl;
+       suggestedMovesets = sm;
     }
 
     @GetMapping("/species")
@@ -46,7 +49,8 @@ public class SpeciesController
                                                         speciesType.speciesName(), speciesType.dex(), 
                                                         speciesType.baseAtk(), speciesType.baseDef(), 
                                                         speciesType.baseSta(), speciesType.learnset(), 
-                                                        speciesType.shadowEligible());
+                                                        speciesType.shadowEligible(),
+                                                        suggestedMovesets.forSpecies(speciesType.speciesId()).orElse(null));
         return speciesDetail;
     }
     
