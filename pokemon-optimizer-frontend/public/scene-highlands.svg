@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice">
+  <!-- Coffee highlands at dusk: DexPresso's backdrop. Drawn for this site; no third-party artwork. -->
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1c120d"/>
+      <stop offset="0.45" stop-color="#4a2a19"/>
+      <stop offset="0.7" stop-color="#9a5a2e"/>
+      <stop offset="0.82" stop-color="#d08f4f"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.7" cy="0.6" r="0.45">
+      <stop offset="0" stop-color="#f6c98a" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#f6c98a" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="mist" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f3e9dc" stop-opacity="0"/>
+      <stop offset="0.5" stop-color="#f3e9dc" stop-opacity="0.12"/>
+      <stop offset="1" stop-color="#f3e9dc" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1600" height="900" fill="url(#sky)"/>
+  <rect width="1600" height="900" fill="url(#glow)"/>
+  <circle cx="1120" cy="545" r="62" fill="#f8d9a4"/>
+
+  <!-- far ridge -->
+  <path d="M0 560 C120 520 220 500 330 520 C450 545 520 470 650 480 C780 490 840 540 960 530 C1080 520 1150 470 1280 480 C1400 490 1500 530 1600 515 L1600 900 L0 900 Z" fill="#5a3320"/>
+  <rect x="0" y="540" width="1600" height="90" fill="url(#mist)"/>
+
+  <!-- middle hills with terraced coffee rows -->
+  <path d="M0 640 C160 590 300 600 430 625 C560 650 660 600 800 595 C960 590 1060 640 1200 640 C1340 640 1460 600 1600 610 L1600 900 L0 900 Z" fill="#3d2216"/>
+  <g fill="none" stroke="#5c3622" stroke-width="9" stroke-linecap="round" stroke-dasharray="1 22">
+    <path d="M0 668 C160 622 300 632 430 656 C560 680 660 632 800 627 C960 622 1060 670 1200 670 C1340 670 1460 632 1600 642"/>
+    <path d="M0 700 C160 656 300 666 430 690 C560 714 660 668 800 663 C960 658 1060 704 1200 704 C1340 704 1460 668 1600 678"/>
+    <path d="M0 734 C160 692 300 702 430 726 C560 750 660 706 800 701 C960 696 1060 740 1200 740 C1340 740 1460 706 1600 716"/>
+  </g>
+  <rect x="0" y="620" width="1600" height="70" fill="url(#mist)" opacity="0.7"/>
+
+  <!-- near slope -->
+  <path d="M0 760 C200 720 380 735 560 760 C740 785 900 745 1080 740 C1260 735 1420 770 1600 760 L1600 900 L0 900 Z" fill="#26150e"/>
+  <g fill="none" stroke="#3b2318" stroke-width="13" stroke-linecap="round" stroke-dasharray="1 30">
+    <path d="M0 792 C200 754 380 769 560 794 C740 819 900 781 1080 776 C1260 771 1420 804 1600 794"/>
+    <path d="M0 834 C200 798 380 813 560 838 C740 863 900 827 1080 822 C1260 817 1420 848 1600 838"/>
+  </g>
+
+  <!-- steam rising off the valley, like off a cup -->
+  <g fill="none" stroke="#f3e9dc" stroke-opacity="0.10" stroke-width="10" stroke-linecap="round">
+    <path d="M300 600 C280 560 330 530 305 490 C285 455 325 430 310 395"/>
+    <path d="M340 610 C320 575 365 545 345 505 C328 470 362 445 350 410"/>
+    <path d="M1420 600 C1400 560 1450 530 1425 490 C1405 455 1445 430 1430 395"/>
+  </g>
+</svg>

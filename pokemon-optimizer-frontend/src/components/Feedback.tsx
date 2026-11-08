@@ -1,6 +1,6 @@
 import { useId, useRef, useState, type FormEvent } from 'react'
 import { useLocation } from 'react-router'
-import { sendFeedback } from '../api'
+import { sendFeedback, sendRating } from '../api'
 
 const MAX = 2000
 
@@ -42,7 +42,7 @@ export function Feedback({ variant }: { variant: 'corner' | 'link' }) {
       {variant === 'corner' ? (
         <button
           onClick={open}
-          className="fixed bottom-5 right-5 z-30 hidden rounded-full bg-raised px-4 py-2 text-sm font-semibold text-ink shadow-lg ring-1 ring-line-strong transition hover:bg-raised-strong sm:block"
+          className="btn btn-secondary btn-sm fixed right-5 bottom-5 z-30 hidden rounded-full shadow-lg sm:inline-flex"
         >
           Feedback
         </button>
@@ -70,7 +70,7 @@ export function Feedback({ variant }: { variant: 'corner' | 'link' }) {
                 <button
                   type="button"
                   onClick={() => dialog.current?.close()}
-                  className="rounded-md bg-brand px-4 py-2 text-sm font-bold text-on-brand transition hover:brightness-110"
+                  className="btn btn-primary"
                 >
                   Close
                 </button>
@@ -78,6 +78,8 @@ export function Feedback({ variant }: { variant: 'corner' | 'link' }) {
             </>
           ) : (
             <>
+              <StarRating />
+              <h3 className="mt-6 border-t border-line pt-5 font-bold">Tell us more</h3>
               <p className="mt-1 text-sm text-subtle">
                 A bug, a wrong result, something you'd like. It's anonymous: only your message and this page's address are kept.
               </p>
@@ -87,7 +89,7 @@ export function Feedback({ variant }: { variant: 'corner' | 'link' }) {
                 rows={5}
                 autoFocus
                 aria-label="Your feedback"
-                className="mt-3 block w-full resize-y rounded-md bg-raised p-3 text-base text-ink ring-1 ring-line-strong placeholder:text-faint focus:outline-none focus:ring-2 focus:ring-brand"
+                className="mt-3 block w-full resize-y rounded-md bg-raised p-3 text-base text-ink ring-1 ring-line-strong placeholder:text-subtle focus:outline-none focus:ring-2 focus:ring-brand"
                 placeholder="What happened, or what would help?"
               />
               <div className="mt-1 text-right text-xs tabular-nums text-subtle">
@@ -98,14 +100,14 @@ export function Feedback({ variant }: { variant: 'corner' | 'link' }) {
                 <button
                   type="button"
                   onClick={() => dialog.current?.close()}
-                  className="rounded-md px-4 py-2 text-sm font-semibold text-ink-soft hover:text-ink"
+                  className="btn btn-ghost"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={message.trim() === '' || status.kind === 'sending'}
-                  className="rounded-md bg-brand px-4 py-2 text-sm font-bold text-on-brand transition hover:brightness-110 disabled:opacity-50"
+                  className="btn btn-primary"
                 >
                   {status.kind === 'sending' ? 'Sending…' : 'Send'}
                 </button>
@@ -115,5 +117,110 @@ export function Feedback({ variant }: { variant: 'corner' | 'link' }) {
         </form>
       </dialog>
     </>
+  )
+}
+
+// One rating per browser: anonymous ratings can't be edited later, so this stops double counting from the same person
+const RATED_KEY = 'dexpresso.rated.v1'
+const STAR_WORDS = ['', 'Poor', 'Not great', 'Okay', 'Good', 'Excellent']
+
+function loadRated(): number | null {
+  try {
+    const value = Number(localStorage.getItem(RATED_KEY))
+    return value >= 1 && value <= 5 ? value : null
+  } catch {
+    return null
+  }
+}
+
+/** Its own part of the dialog: a click on a star sends the rating straight away, no message needed. */
+function StarRating() {
+  const { pathname } = useLocation()
+  const [rated, setRated] = useState<number | null>(loadRated)
+  const [hover, setHover] = useState(0)
+  const [status, setStatus] = useState<Status>({ kind: 'idle' })
+  const labelId = useId()
+
+  async function rate(stars: number) {
+    setStatus({ kind: 'sending' })
+    try {
+      await sendRating(stars, pathname)
+      try {
+        localStorage.setItem(RATED_KEY, String(stars))
+      } catch {
+        // storage blocked: the rating still counts, they just see the stars again next time
+      }
+      setRated(stars)
+      setStatus({ kind: 'sent' })
+    } catch (error: unknown) {
+      setStatus({ kind: 'error', message: error instanceof Error ? error.message : String(error) })
+    }
+  }
+
+  if (rated !== null) {
+    return (
+      <div className="rounded-lg bg-raised/60 p-4 ring-1 ring-line">
+        <p className="font-bold">Rate DexPresso</p>
+        <p className="mt-1 flex items-center gap-2 text-sm text-ink-soft">
+          <Stars filled={rated} className="h-4 w-4" />
+          {status.kind === 'sent' ? 'Thanks for rating!' : `You rated it ${rated} out of 5.`}
+        </p>
+      </div>
+    )
+  }
+
+  const shown = hover || 0
+  return (
+    <div className="rounded-lg bg-raised/60 p-4 ring-1 ring-line">
+      <p id={labelId} className="font-bold">
+        Rate DexPresso
+      </p>
+      <div className="mt-2 flex items-center gap-3">
+        <div role="group" aria-labelledby={labelId} className="flex" onMouseLeave={() => setHover(0)}>
+          {[1, 2, 3, 4, 5].map((n) => (
+            <button
+              key={n}
+              type="button"
+              onClick={() => rate(n)}
+              onMouseEnter={() => setHover(n)}
+              onFocus={() => setHover(n)}
+              onBlur={() => setHover(0)}
+              disabled={status.kind === 'sending'}
+              aria-label={`${n} star${n === 1 ? '' : 's'}: ${STAR_WORDS[n]}`}
+              className="grid h-11 w-11 place-items-center rounded-lg transition hover:scale-110 disabled:opacity-60"
+            >
+              <Star filled={n <= shown} className="h-8 w-8" />
+            </button>
+          ))}
+        </div>
+        <span className="text-sm text-ink-soft" aria-hidden="true">
+          {status.kind === 'sending' ? 'Sending…' : STAR_WORDS[shown]}
+        </span>
+      </div>
+      {status.kind === 'error' && <p className="mt-2 text-sm text-red-400">Couldn't send it ({status.message}).</p>}
+    </div>
+  )
+}
+
+function Stars({ filled, className }: { filled: number; className: string }) {
+  return (
+    <span className="flex" aria-hidden="true">
+      {[1, 2, 3, 4, 5].map((n) => (
+        <Star key={n} filled={n <= filled} className={className} />
+      ))}
+    </span>
+  )
+}
+
+function Star({ filled, className }: { filled: boolean; className: string }) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} aria-hidden="true">
+      <path
+        d="M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4-4.7-4.4 6.4-.8z"
+        strokeWidth="1.6"
+        strokeLinejoin="round"
+        className={filled ? 'fill-brand stroke-brand' : 'fill-none stroke-line-strong'}
+      />
+    </svg>
   )
 }

@@ -20,7 +20,7 @@ interface Props {
 }
 
 const SELECT_CLASS =
-  'mt-1 block rounded-md bg-raised px-2 py-1.5 text-base text-ink ring-1 ring-line-strong focus:outline-none focus:ring-brand'
+  'field mt-1 px-2'
 
 export function AddToCollection({ speciesId, ivs, detail }: Props) {
   const moveList = useMoves()
@@ -88,7 +88,7 @@ export function AddToCollection({ speciesId, ivs, detail }: Props) {
         </label>
 
         {detail?.shadowEligible && (
-          <label className="flex cursor-pointer items-center gap-2 pb-2 text-sm text-ink-soft">
+          <label className="flex h-11 cursor-pointer items-center gap-2 text-sm text-ink-soft">
             <input
               type="checkbox"
               checked={shadowChoice}
@@ -155,7 +155,7 @@ export function AddToCollection({ speciesId, ivs, detail }: Props) {
         <button
           onClick={save}
           disabled={!ready || status.kind === 'saving' || saved || collection.status !== 'ready'}
-          className="rounded-md bg-brand px-4 py-2 text-sm font-bold text-on-brand transition hover:brightness-110 disabled:opacity-50"
+          className="btn btn-primary"
         >
           {status.kind === 'saving' ? 'Adding…' : status.kind === 'saved' && saved ? 'Added ✓' : 'Add to Collection'}
         </button>

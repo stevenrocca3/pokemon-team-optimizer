@@ -132,7 +132,7 @@ function SpeciesView({ id, option }: { id: string; option?: SpeciesOption }) {
                     }`}
                   >
                     <div className="font-bold">{l.label.replace(' League', '')}</div>
-                    <div className={`text-xs ${l.key === league.key ? 'text-on-brand/70' : 'text-subtle'}`}>{l.cpLabel}</div>
+                    <div className={`text-xs ${l.key === league.key ? 'font-semibold text-on-brand' : 'text-subtle'}`}>{l.cpLabel}</div>
                   </button>
                 ))}
               </div>
@@ -158,7 +158,7 @@ function SpeciesView({ id, option }: { id: string; option?: SpeciesOption }) {
         {current && 'error' in current ? (
           <div role="alert" className="rounded-lg border border-red-900 bg-red-950/50 p-5 text-red-200">
             <p className="font-semibold">Couldn't load rankings</p>
-            <p className="mt-1 text-sm text-red-300/80">{current.error}. Check that the Spring backend is running on port 8080.</p>
+            <p className="mt-1 text-sm text-red-200">{current.error}. Check that the Spring backend is running on port 8080.</p>
           </div>
         ) : (
           <>
@@ -188,7 +188,7 @@ function SpeciesView({ id, option }: { id: string; option?: SpeciesOption }) {
                       <select
                         value={myIvs[stat]}
                         onChange={(e) => setMyIvs({ ...myIvs, [stat]: Number(e.target.value) })}
-                        className="mt-1 block w-16 rounded-md bg-raised px-2 py-1.5 text-base text-ink ring-1 ring-line-strong focus:outline-none focus:ring-brand"
+                        className="field mt-1 w-16 px-2 text-center tabular-nums"
                       >
                         {IV_VALUES.map((v) => (
                           <option key={v} value={v}>
@@ -274,7 +274,7 @@ function SpeciesView({ id, option }: { id: string; option?: SpeciesOption }) {
               <div className="mt-6 text-center">
                 <button
                   onClick={() => setVisibleCount((n) => n + PAGE_SIZE * 2)}
-                  className="rounded-md bg-raised px-5 py-2.5 text-sm font-semibold text-ink transition hover:bg-raised-strong"
+                  className="btn btn-secondary"
                 >
                   Show more <span className="text-muted">({visibleCount} of {rows.length})</span>
                 </button>
