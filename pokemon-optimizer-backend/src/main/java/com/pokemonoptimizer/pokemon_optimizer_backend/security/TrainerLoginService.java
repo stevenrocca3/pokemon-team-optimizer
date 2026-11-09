@@ -23,7 +23,7 @@ public class TrainerLoginService extends OidcUserService
         OidcUser user = super.loadUser(request);
         if (trainerRepository.findByGoogleId(user.getSubject()).isEmpty())
         {
-            trainerRepository.save(new Trainer(user.getSubject(), user.getFullName()));
+            trainerRepository.save(new Trainer(user.getSubject()));
         }
         return user;
     }

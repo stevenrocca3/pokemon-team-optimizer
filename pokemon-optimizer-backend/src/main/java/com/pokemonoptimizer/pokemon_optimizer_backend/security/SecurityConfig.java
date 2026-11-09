@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
+import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
 import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.security.web.csrf.CsrfToken;
 
@@ -24,6 +25,10 @@ public class SecurityConfig
             .anyRequest().permitAll())
             .exceptionHandling(e -> e.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
             .oauth2Login(oauth -> oauth.defaultSuccessUrl(afterLoginUrl, true))
+            // the React app logs out with fetch, so answer 204 instead of redirecting to a login page that doesn't exist
+            .logout(logout -> logout.logoutUrl("/api/logout")
+                .deleteCookies("JSESSIONID")
+                .logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler(HttpStatus.NO_CONTENT)))
             // These are pure calculations (POST only to carry a body or a file): nothing for a forged request to
             // change, and a fresh visitor's first call can go out before the XSRF-TOKEN cookie exists
             .csrf(csrf -> csrf.spa().ignoringRequestMatchers("/api/rank", "/api/team-builder", "/api/import/**"))

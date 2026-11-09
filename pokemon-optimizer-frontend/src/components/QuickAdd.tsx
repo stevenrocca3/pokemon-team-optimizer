@@ -67,6 +67,9 @@ export function QuickAdd() {
 
   const ivValues = { atk: Number(ivs.atk), def: Number(ivs.def), sta: Number(ivs.sta) }
   const ivsDone = IV_FIELDS.every(({ key }) => ivs[key] !== '' && ivValues[key] >= 0 && ivValues[key] <= 15)
+  // two digits fit in the box, so 16–99 can be typed: flag the box instead of leaving Add disabled with no reason
+  const badIvs = IV_FIELDS.filter(({ key }) => ivs[key] !== '' && ivValues[key] > 15)
+  const ivErrorId = useId()
   const cp = Number(cpText)
   const levels = useMemo(
     () => (detail && ivsDone && cpText !== '' && cp >= 10 ? levelsForCp(detail, ivValues, cp) : []),
@@ -155,7 +158,9 @@ export function QuickAdd() {
                 inputMode="numeric"
                 placeholder="0–15"
                 aria-label={`${label} IV`}
-                className={`${INPUT} mt-1 px-1 text-center tabular-nums`}
+                aria-invalid={badIvs.some((f) => f.key === key)}
+                aria-describedby={badIvs.length > 0 ? ivErrorId : undefined}
+                className={`${INPUT} mt-1 px-1 text-center tabular-nums aria-invalid:ring-2 aria-invalid:ring-danger`}
               />
             </label>
           ))}
@@ -177,7 +182,13 @@ export function QuickAdd() {
         </div>
       </div>
 
-      <LevelLine detail={detail} ivsDone={ivsDone} cpText={cpText} levels={levels} level={level} onChoose={setLevelChoice} />
+      {badIvs.length > 0 ? (
+        <p id={ivErrorId} role="alert" className="mt-2 text-xs text-ink">
+          {badIvs.map((f) => f.label).join(' and ')} must be 0 to 15. IVs never go higher.
+        </p>
+      ) : (
+        <LevelLine detail={detail} ivsDone={ivsDone} cpText={cpText} levels={levels} level={level} onChoose={setLevelChoice} />
+      )}
 
       <div className="mt-3 grid gap-3 sm:grid-cols-[repeat(3,minmax(0,1fr))_auto] sm:items-end">
         <MoveSelect

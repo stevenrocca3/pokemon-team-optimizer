@@ -8,6 +8,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.oidcLogin;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -89,7 +90,7 @@ public class CaughtPokemonControllerTest {
     void stubMocks()
     {
         when(speciesLookup.findById("medicham")).thenReturn(new SpeciesLookup().findById("medicham"));   // the real Medicham
-        when(trainerRepository.findByGoogleId(any())).thenReturn(Optional.of(new Trainer("google-id", "Steven")));
+        when(trainerRepository.findByGoogleId(any())).thenReturn(Optional.of(new Trainer("google-id")));
         when(caughtPokemonRepository.save(any())).thenAnswer(call -> call.getArgument(0));            // save returns what it was given
     }
 
@@ -210,7 +211,7 @@ public class CaughtPokemonControllerTest {
             .hasStatus(HttpStatus.UNAUTHORIZED);
     }
 
-    private static final Trainer STEVEN = new Trainer("google-id", "Steven");
+    private static final Trainer STEVEN = new Trainer("google-id");
 
     private void alreadyCaught(CaughtPokemon... pokemon)
     {
@@ -294,5 +295,53 @@ public class CaughtPokemonControllerTest {
             .hasStatus(HttpStatus.CREATED)
             .bodyJson().extractingPath("$[*].level").asArray().containsExactly(41.0);
         verify(caughtPokemonRepository).saveAll(argThat(saved -> saved.equals(List.of(existing))));   // updated, not a second copy
+    }
+
+    /** The Team Builder takes at most 10,000 Pokémon, so a Collection may not grow past what it can build from. */
+    @Test
+    public void aBatchThatWouldPushTheCollectionPast10000IsRefusedWholly()
+    {
+        alreadyCaught(Collections.nCopies(9_999, medicham(0, 40, false)).toArray(CaughtPokemon[]::new));
+        String twoNew = """
+                {"pokemon":[
+                  {"speciesId":"medicham","atkIv":1,"defIv":15,"staIv":15,"level":40,"fastMove":"COUNTER","chargedMoves":["ICE_PUNCH"]},
+                  {"speciesId":"medicham","atkIv":2,"defIv":15,"staIv":15,"level":40,"fastMove":"COUNTER","chargedMoves":["ICE_PUNCH"]}
+                ]}
+                """;
+        assertThat(mvc.post().uri("/api/collection/batch").with(csrf()).with(oidcLogin())
+                .contentType(MediaType.APPLICATION_JSON).content(twoNew))
+            .hasStatus(HttpStatus.BAD_REQUEST)
+            .bodyJson().extractingPath("$.detail").asString().contains("10,000").contains("1 more");
+        verify(caughtPokemonRepository, never()).saveAll(any());
+    }
+
+    @Test
+    public void aBatchThatExactlyFillsTheCollectionIsSaved()
+    {
+        alreadyCaught(Collections.nCopies(9_999, medicham(0, 40, false)).toArray(CaughtPokemon[]::new));
+        String oneNewOneAlreadyThere = """
+                {"pokemon":[
+                  {"speciesId":"medicham","atkIv":1,"defIv":15,"staIv":15,"level":40,"fastMove":"COUNTER","chargedMoves":["ICE_PUNCH"]},
+                  {"speciesId":"medicham","atkIv":0,"defIv":15,"staIv":15,"level":40,"fastMove":"COUNTER","chargedMoves":["ICE_PUNCH"]}
+                ]}
+                """;
+        assertThat(mvc.post().uri("/api/collection/batch").with(csrf()).with(oidcLogin())
+                .contentType(MediaType.APPLICATION_JSON).content(oneNewOneAlreadyThere))
+            .hasStatus(HttpStatus.CREATED);
+    }
+
+    @Test
+    public void addingOneToAFullCollectionIsRefused()
+    {
+        when(caughtPokemonRepository.countByTrainer(any())).thenReturn(10_000L);
+        String body = """
+                 {"speciesId":"medicham","atkIv":0,"defIv":15,"staIv":15,"level":40,
+                  "fastMove":"COUNTER","chargedMoves":["DYNAMIC_PUNCH","ICE_PUNCH"]}
+                """;
+        assertThat(mvc.post().uri("/api/collection").with(csrf()).with(oidcLogin())
+                .contentType(MediaType.APPLICATION_JSON).content(body))
+            .hasStatus(HttpStatus.BAD_REQUEST)
+            .bodyJson().extractingPath("$.detail").asString().contains("10,000");
+        verify(caughtPokemonRepository, never()).save(any());
     }
 }

@@ -12,6 +12,7 @@ import { startingMoves } from '../lib/moves'
 import { PageHeader } from '../components/PageHeader'
 import { Brewing } from '../components/Brewing'
 import { OddsRing } from '../components/OddsRing'
+import { usePageTitle } from '../lib/page-title'
 
 const LEAGUES: { key: TeamBuilderLeague; label: string; cpLabel: string }[] = [
   { key: 'GREAT', label: 'Great', cpLabel: '1500 CP' },
@@ -33,6 +34,7 @@ type Run =
   | { status: 'done'; result: TeamBuilderResult; source: Source }
 
 export function TeamBuilderPage() {
+  usePageTitle('Team Builder')
   const saved = useCollection()
   const collection = useMemo<CollectionState>(() => {
     if (saved.status !== 'ready') return saved

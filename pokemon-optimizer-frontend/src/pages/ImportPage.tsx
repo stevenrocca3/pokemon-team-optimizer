@@ -9,6 +9,7 @@ import { PokemonArt } from '../components/PokemonArt'
 import { IvTriple } from '../components/IvTriple'
 import { formatLevel } from '../lib/species'
 import { startingMoves } from '../lib/moves'
+import { usePageTitle } from '../lib/page-title'
 
 const PAGE_SIZE = 20
 
@@ -24,6 +25,7 @@ type SaveStatus = { kind: 'idle' } | { kind: 'saving' } | ({ kind: 'saved' } & A
 type Picked = { fast: string; charged1: string; charged2: string }
 
 export function ImportPage() {
+  usePageTitle('Import from Poké Genie or Calcy IV')
   const collection = useCollection()
   const [stage, setStage] = useState<Stage>({ kind: 'pick' })
   const [picked, setPicked] = useState<Record<number, Picked>>({})

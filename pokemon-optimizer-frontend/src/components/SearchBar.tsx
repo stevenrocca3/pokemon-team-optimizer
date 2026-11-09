@@ -53,7 +53,7 @@ export function SearchBar({ size = 'compact', autoFocus = false }: Props) {
     species.status === 'loading'
       ? 'Brewing species…'
       : species.status === 'error'
-        ? 'Species unavailable — is the backend running?'
+        ? "Couldn't load Pokémon. Reload to try again."
         : 'Search 1,100+ Pokémon by name or dex #'
 
   const large = size === 'large'

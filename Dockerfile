@@ -8,6 +8,9 @@ WORKDIR /web
 COPY pokemon-optimizer-frontend/package.json pokemon-optimizer-frontend/package-lock.json ./
 RUN npm ci
 COPY pokemon-optimizer-frontend/ ./
+# optional cookieless analytics: --build-arg VITE_GOATCOUNTER_URL=https://<code>.goatcounter.com/count
+ARG VITE_GOATCOUNTER_URL=""
+ENV VITE_GOATCOUNTER_URL=$VITE_GOATCOUNTER_URL
 RUN npm run build
 
 FROM maven:3.9-eclipse-temurin-21 AS api

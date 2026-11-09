@@ -23,7 +23,7 @@ public class CaughtPokemonRepositoryTest
     {
         //"dex": 308,"speciesName": "Medicham","speciesId": "medicham","baseStats": {"atk": 121,"def": 152,"hp": 155
         //public CaughtPokemon(String speciesId, int atkIv, int defIv, int staIv, double level)
-        Trainer ash = entityManager.persist(new Trainer("google-ash", "Ash"));
+        Trainer ash = entityManager.persist(new Trainer("google-ash"));
         CaughtPokemon caughtPokemon = new CaughtPokemon("medicham", 0, 15, 15, 22.5, false, "COUNTER", List.of("DYNAMIC_PUNCH", "ICE_PUNCH"), ash);
         assertNull(caughtPokemon.getId());
         CaughtPokemon saved = caughtPokemonRepository.save(caughtPokemon);
@@ -35,7 +35,7 @@ public class CaughtPokemonRepositoryTest
     public void testSaveTwoSpecies()
     {
         Long count = caughtPokemonRepository.count();
-        Trainer ash = entityManager.persist(new Trainer("google-ash", "Ash"));
+        Trainer ash = entityManager.persist(new Trainer("google-ash"));
         CaughtPokemon caughtPokemon = new CaughtPokemon("medicham", 0, 15, 15, 22.5, false, "COUNTER", List.of("DYNAMIC_PUNCH", "ICE_PUNCH"), ash);
         CaughtPokemon caughtPokemon2 = new CaughtPokemon("medicham", 0, 15, 15, 22.5, false, "COUNTER", List.of("DYNAMIC_PUNCH", "ICE_PUNCH"), ash);
         CaughtPokemon saved = caughtPokemonRepository.save(caughtPokemon);
@@ -47,7 +47,7 @@ public class CaughtPokemonRepositoryTest
     @Test
     public void testFieldsComeBackUnchanged()
     {
-        Trainer ash = entityManager.persist(new Trainer("google-ash", "Ash"));
+        Trainer ash = entityManager.persist(new Trainer("google-ash"));
         CaughtPokemon caughtPokemon = new CaughtPokemon("medicham", 1, 14, 15, 22.5, false, "COUNTER", List.of("DYNAMIC_PUNCH", "ICE_PUNCH"), ash);
         CaughtPokemon saved = caughtPokemonRepository.save(caughtPokemon);
         entityManager.flush();
@@ -63,8 +63,8 @@ public class CaughtPokemonRepositoryTest
     @Test
     public void findByTrainerOnlyReturnsThatTrainersPokemon()
     {
-        Trainer ash = entityManager.persist(new Trainer("google-ash", "Ash"));
-        Trainer misty = entityManager.persist(new Trainer("google-misty", "Misty"));
+        Trainer ash = entityManager.persist(new Trainer("google-ash"));
+        Trainer misty = entityManager.persist(new Trainer("google-misty"));
         caughtPokemonRepository.save(new CaughtPokemon("medicham", 0, 15, 15, 22.5, false, "BUBBLE", List.of("ICE_BEAM", "PLAY_ROUGH"), ash));
         caughtPokemonRepository.save(new CaughtPokemon("azumarill", 0, 15, 15, 40, false, "BUBBLE", List.of("ICE_BEAM", "PLAY_ROUGH"), misty));
          List<CaughtPokemon> ashes = caughtPokemonRepository.findByTrainer(ash);

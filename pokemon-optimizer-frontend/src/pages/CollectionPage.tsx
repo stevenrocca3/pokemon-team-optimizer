@@ -11,8 +11,10 @@ import { useMoves } from '../moves/moves-context'
 import { useCollection } from '../collection/collection-context'
 import { loadGuestCollection, saveGuestCollection } from '../collection/guest-storage'
 import { PageHeader } from '../components/PageHeader'
+import { usePageTitle } from '../lib/page-title'
 
 export function CollectionPage() {
+  usePageTitle('Your Collection')
   const collection = useCollection()
 
   return (
@@ -56,8 +58,11 @@ export function CollectionPage() {
         <div role="alert" className="rounded-2xl border border-red-900 bg-red-950/70 p-5 text-red-200">
           <p className="font-semibold">Couldn't load your Collection</p>
           <p className="mt-1 text-sm text-red-200">
-            {collection.message}. Check that the Spring backend and the database are running.
+            {collection.message}
           </p>
+          <button type="button" onClick={() => window.location.reload()} className="btn btn-secondary btn-sm mt-4">
+            Try again
+          </button>
         </div>
       )}
 

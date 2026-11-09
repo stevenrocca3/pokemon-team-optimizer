@@ -7,6 +7,7 @@ import { useScrollVariable } from "../lib/motion";
 import { useSpecies } from "../species/species-context";
 import { formatDex } from "../lib/species";
 import type { SpeciesOption } from "../types";
+import { usePageTitle } from '../lib/page-title'
 
 // Staples of GO Battle League — quick ways into the app
 const POPULAR_IDS = [
@@ -64,6 +65,7 @@ const BREW_STEPS = [
 ];
 
 export function HomePage() {
+  usePageTitle(null);
   const species = useSpecies();
   const hero = useScrollVariable<HTMLElement>();
   const popular = POPULAR_IDS.map((id) => ({
@@ -101,8 +103,7 @@ export function HomePage() {
           </div>
           {species.status === "error" && (
             <p className="mt-4 text-sm text-red-300">
-              Couldn't load species ({species.message}). Check that the Spring
-              backend is running on port 8080.
+              Couldn't load the Pokémon list. {species.message}
             </p>
           )}
 
