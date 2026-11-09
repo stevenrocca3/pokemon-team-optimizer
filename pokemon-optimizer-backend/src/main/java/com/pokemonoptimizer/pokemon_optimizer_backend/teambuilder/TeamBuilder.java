@@ -51,6 +51,7 @@ public class TeamBuilder
         static final Settings DEFAULT = new Settings(30, 10, 5, 100, 400, 3, 2026);
     }
 
+    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(TeamBuilder.class);
     private static final int SCREEN_SHIELDS = 1;
     private static final int[] SHIELDS = { 0, 1, 2 };
     private static final int TOUGHEST_SHOWN = 3;
@@ -60,6 +61,32 @@ public class TeamBuilder
 
     /** A Team being considered: three shortlist positions, and its 1v1 coverage of the meta. */
     private record Trio(int[] members, double coverage) {}
+
+    /** One finalist Team with one lead: its order and its wins so far against the selection sample. */
+    record Trial(int finalist, int[] order, double wins) {}
+
+    /**
+     * The trials, best first, that go on to play the rest of the selection sample: the best few, plus the best trial of
+     * further Teams until {@code results} different Teams are in, so one Team's three leads can't crowd the others out.
+     */
+    static List<Trial> survivors(List<Trial> ranked, int results)
+    {
+        List<Trial> survivors = new ArrayList<>();
+        Set<Integer> represented = new HashSet<>();
+        for (Trial trial : ranked)
+        {
+            boolean newTeam = !represented.contains(trial.finalist());
+            if (survivors.size() < results + SURVIVORS_EXTRA || (newTeam && represented.size() < results))
+            {
+                survivors.add(trial);
+                represented.add(trial.finalist());
+            }
+        }
+        return survivors;
+    }
+
+    /** How many (Team, lead) trials beyond the Teams shown play the whole selection sample. */
+    private static final int SURVIVORS_EXTRA = 2;
 
     /** An opposing Team, lead first. */
     private record Opponents(List<Combatant> combatants, List<Moveset> movesets) {}
@@ -108,6 +135,16 @@ public class TeamBuilder
     /** {@code cup} is null for the open League. */
     private TeamBuilderResult search(League league, List<MetaPokemon> meta, String metaDate, Cup cup,
                                      List<CaughtPokemonRequest> pokemon, List<OwnedSpecies> species)
+    {
+        long started = System.nanoTime();
+        TeamBuilderResult result = searchTeams(league, meta, metaDate, cup, pokemon, species);
+        log.info("Team Builder: {} Pokémon, {} eligible, {} vs {} meta: {} ms", pokemon.size() + species.size(), result.eligible(),
+            cup == null ? league : cup.key(), meta.size(), (System.nanoTime() - started) / 1_000_000);
+        return result;
+    }
+
+    private TeamBuilderResult searchTeams(League league, List<MetaPokemon> meta, String metaDate, Cup cup,
+                                          List<CaughtPokemonRequest> pokemon, List<OwnedSpecies> species)
     {
         List<SkippedPokemon> skipped = new ArrayList<>();
         List<Candidate> eligible = new ArrayList<>();
@@ -190,39 +227,45 @@ public class TeamBuilder
             .limit(settings.teamsToSimulate())
             .toList();
 
-        // Stage 3: each finalist's best lead against one shared sample of meta Teams
+        // Stage 3: each finalist's best lead against one shared sample of meta Teams. Every Team and lead plays the
+        // first quarter of the sample; only the most promising go on to play the rest, so a clearly worse lead or
+        // Team doesn't cost a full sample of 3v3s
         List<Opponents> selection = sampleOpponents(meta, settings.selectionSamples(), settings.seed());
-        List<int[]> orders = new ArrayList<>();
-        List<Double> selectionWins = new ArrayList<>();
-        for (Trio trio : finalists)
+        int firstRound = Math.max(1, selection.size() / 4);
+        List<Opponents> early = selection.subList(0, firstRound);
+        List<Opponents> rest = selection.subList(firstRound, selection.size());
+        List<Trial> trials = new ArrayList<>();
+        for (int f = 0; f < finalists.size(); f++)
         {
-            int[] bestOrder = null;
-            double bestWins = -1;
             for (int lead = 0; lead < 3; lead++)
             {
-                int[] order = leadFirst(trio.members(), lead);
-                double wins = wins(order, eligible, selection);
-                if (wins > bestWins)
-                {
-                    bestWins = wins;
-                    bestOrder = order;
-                }
+                int[] order = leadFirst(finalists.get(f).members(), lead);
+                trials.add(new Trial(f, order, wins(order, eligible, early)));
             }
-            orders.add(bestOrder);
-            selectionWins.add(bestWins);
         }
-        List<Integer> chosen = IntStream.range(0, finalists.size()).boxed()
-            .sorted(Comparator.comparingDouble((Integer t) -> -selectionWins.get(t)))
+        trials.sort(Comparator.comparingDouble((Trial t) -> -t.wins()));   // stable: ties keep finalist, then lead order
+        List<Trial> survivors = new ArrayList<>();
+        for (Trial trial : survivors(trials, settings.results()))
+        {
+            survivors.add(new Trial(trial.finalist(), trial.order(), trial.wins() + wins(trial.order(), eligible, rest)));
+        }
+        Map<Integer, Trial> bestPerTeam = new LinkedHashMap<>();
+        for (Trial trial : survivors)
+        {
+            bestPerTeam.merge(trial.finalist(), trial, (a, b) -> b.wins() > a.wins() ? b : a);
+        }
+        List<int[]> chosen = bestPerTeam.values().stream()
+            .sorted(Comparator.comparingDouble((Trial t) -> -t.wins()).thenComparingInt(Trial::finalist))
             .limit(settings.results())
+            .map(Trial::order)
             .toList();
 
         // Stage 4: odds for the chosen Teams on fresh opponents, so picking the luckiest estimate doesn't inflate them
         List<Opponents> estimate = sampleOpponents(meta, settings.estimateSamples(), settings.seed() + 1);
         List<TeamResult> teams = new ArrayList<>();
         Map<Integer, PowerUpImpact> powerUps = new HashMap<>();   // a Pokémon on several Teams is battled once
-        for (int t : chosen)
+        for (int[] order : chosen)
         {
-            int[] order = orders.get(t);
             WinRate odds = WinRate.of(wins(order, eligible, estimate), estimate.size());
             List<TeamMember> members = new ArrayList<>();
             for (int c : order)

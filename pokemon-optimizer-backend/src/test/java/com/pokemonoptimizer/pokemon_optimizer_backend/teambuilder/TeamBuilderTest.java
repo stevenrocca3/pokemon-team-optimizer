@@ -283,4 +283,30 @@ public class TeamBuilderTest
 
         assertEquals("Not allowed in Spectral Cup", BUILDER.problemWith(shadow, League.GREAT, noShadows));
     }
+
+    private static TeamBuilder.Trial trial(int finalist, int lead, double wins)
+    {
+        return new TeamBuilder.Trial(finalist, new int[] { lead }, wins);
+    }
+
+    @Test
+    public void theLeadShortcutKeepsTheBestFewTrials()
+    {   // 3 Teams to show + 2 more: the five best trials go on, whichever Teams they belong to
+        List<TeamBuilder.Trial> ranked = List.of(trial(0, 0, 20), trial(1, 0, 19), trial(2, 0, 18), trial(0, 1, 17), trial(1, 1, 16),
+            trial(2, 1, 15), trial(0, 2, 3));
+
+        assertEquals(List.of(ranked.get(0), ranked.get(1), ranked.get(2), ranked.get(3), ranked.get(4)), TeamBuilder.survivors(ranked, 3));
+    }
+
+    @Test
+    public void oneTeamsLeadsCantCrowdOutTheTeamsStillToShow()
+    {   // Teams 0 and 1 fill the first five places; Team 2's best trial still goes on, so 3 Teams can be shown
+        List<TeamBuilder.Trial> ranked = List.of(trial(0, 0, 20), trial(0, 1, 19), trial(0, 2, 18), trial(1, 0, 17), trial(1, 1, 16),
+            trial(1, 2, 15), trial(2, 0, 9), trial(2, 1, 8));
+
+        List<TeamBuilder.Trial> survivors = TeamBuilder.survivors(ranked, 3);
+
+        assertEquals(6, survivors.size());
+        assertEquals(ranked.get(6), survivors.get(5));
+    }
 }

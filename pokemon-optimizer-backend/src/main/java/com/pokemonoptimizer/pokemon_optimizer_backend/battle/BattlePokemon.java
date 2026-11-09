@@ -58,7 +58,7 @@ final class BattlePokemon
         this.shields = shields;
         this.startingShields = shields;
         this.fastMove = new BattleMove(moveset.fastMove());
-        this.chargedMoves = new ArrayList<>();
+        this.chargedMoves = new ArrayList<>(moveset.chargedMoves().size());
         for (var move : moveset.chargedMoves())
         {
             chargedMoves.add(new BattleMove(move));
@@ -158,7 +158,7 @@ final class BattlePokemon
             initializeMove(move, opponent);
         }
 
-        activeChargedMoves = new ArrayList<>();
+        activeChargedMoves = new ArrayList<>(chargedMoves.size());
         if (chargedMoves.isEmpty())
         {
             bestChargedMove = null;

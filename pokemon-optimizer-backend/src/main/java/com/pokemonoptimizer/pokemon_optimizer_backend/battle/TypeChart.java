@@ -2,6 +2,7 @@ package com.pokemonoptimizer.pokemon_optimizer_backend.battle;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class TypeChart
 {
@@ -63,7 +64,23 @@ public class TypeChart
 
     
 
+    /** Answers by move type, then defending types: battles ask the same few pairs millions of times. */
+    private static final Map<String, Map<List<String>, Double>> MEMO = new ConcurrentHashMap<>();
+
     public static double effectiveness(String moveType, List<String> defenderTypes)
+    {
+        Map<List<String>, Double> byDefender = MEMO.computeIfAbsent(moveType, type -> new ConcurrentHashMap<>());
+        Double known = byDefender.get(defenderTypes);
+        if (known != null)
+        {
+            return known;
+        }
+        double result = compute(moveType, defenderTypes);   // throws on an unknown type, before anything is remembered
+        byDefender.put(List.copyOf(defenderTypes), result);
+        return result;
+    }
+
+    private static double compute(String moveType, List<String> defenderTypes)
     {
         double result = 1.0;
         if (!SUPER_EFFECTIVE.containsKey(moveType))
