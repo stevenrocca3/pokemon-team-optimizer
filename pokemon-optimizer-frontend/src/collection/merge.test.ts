@@ -39,4 +39,16 @@ describe('mergeInto', () => {
       'Your Collection is full (10,000 Pokémon). Remove some to add more.',
     )
   })
+
+  it('fills in the level of one added without a CP, and never forgets a known level', () => {
+    let id = 100
+    const unknown = { ...medicham(0), level: null, id: 1 }
+    const filled = mergeInto([unknown], [medicham(0, 41)], () => ++id)
+    expect(filled.list[0].level).toBe(41)
+    expect(filled.raised).toBe(1)
+
+    const kept = mergeInto([{ ...medicham(0, 40), id: 1 }], [{ ...medicham(0), level: null }], () => ++id)
+    expect(kept.list[0].level).toBe(40)
+    expect(kept.skipped).toBe(1)
+  })
 })

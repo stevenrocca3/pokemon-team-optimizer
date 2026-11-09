@@ -7,10 +7,6 @@ import java.util.stream.IntStream;
 
 import org.springframework.stereotype.Component;
 
-import com.pokemonoptimizer.pokemon_optimizer_backend.battle.Battle;
-import com.pokemonoptimizer.pokemon_optimizer_backend.battle.BattleResult;
-import com.pokemonoptimizer.pokemon_optimizer_backend.battle.ShieldScenario;
-import com.pokemonoptimizer.pokemon_optimizer_backend.battle.Winner;
 import com.pokemonoptimizer.pokemon_optimizer_backend.dto.CaughtPokemonRequest;
 
 /**
@@ -21,8 +17,6 @@ import com.pokemonoptimizer.pokemon_optimizer_backend.dto.CaughtPokemonRequest;
 @Component
 public class IvComparison
 {
-    private static final int[] SHIELDS = { 0, 1, 2 };
-
     private final TeamBuilder teamBuilder;
     private final MetaLookup metaLookup;
 
@@ -35,7 +29,7 @@ public class IvComparison
     public IvComparisonResult compare(League league, List<CaughtPokemonRequest> pokemon)
     {
         List<MetaPokemon> meta = metaLookup.meta(league);
-        int battles = meta.size() * SHIELDS.length;
+        int battles = MetaBattles.battles(meta);
 
         // won[p][battle]: null when Pokémon p can't play in the League; battle = opponent * 3 + shield scenario
         boolean[][] won = new boolean[pokemon.size()][];
@@ -47,25 +41,10 @@ public class IvComparison
                 return new ComparedPokemon(p, 0, 0, 0, battles, 0, problem);
             }
             TeamBuilder.Candidate candidate = teamBuilder.candidate(p, pokemon.get(p), false, league);
-            won[p] = new boolean[battles];
-            double total = 0;
-            int wins = 0;
-            for (int m = 0; m < meta.size(); m++)
-            {
-                for (int s = 0; s < SHIELDS.length; s++)
-                {
-                    BattleResult result = Battle.simulate(candidate.combatant(), candidate.moveset(), meta.get(m).combatant(),
-                        meta.get(m).moveset(), new ShieldScenario(SHIELDS[s], SHIELDS[s]));
-                    total += result.ratingA();
-                    if (result.winner() == Winner.A)
-                    {
-                        won[p][m * SHIELDS.length + s] = true;
-                        wins++;
-                    }
-                }
-            }
-            rating[p] = total / battles;
-            return new ComparedPokemon(p, candidate.combatant().level(), candidate.cp(), wins, battles,
+            MetaBattles.Record record = MetaBattles.against(candidate.combatant(), candidate.moveset(), meta);
+            won[p] = record.won();
+            rating[p] = record.rating();
+            return new ComparedPokemon(p, candidate.combatant().level(), candidate.cp(), record.wins(), battles,
                 Math.round(rating[p] * 10) / 10.0, null);
         }).toList());
 
@@ -83,7 +62,8 @@ public class IvComparison
             List<Integer> winners = playing.stream().filter(p -> won[p][battle]).toList();
             if (!winners.isEmpty() && winners.size() < playing.size())
             {
-                flips.add(new FlippedMatchup(meta.get(b / SHIELDS.length).id(), SHIELDS[b % SHIELDS.length], winners));
+                MatchupRef matchup = MetaBattles.matchup(meta, b);
+                flips.add(new FlippedMatchup(matchup.opponent(), matchup.shields(), winners));
             }
         }
         return new IvComparisonResult(league, meta.size(), metaLookup.snapshotDate(), List.copyOf(compared), List.copyOf(flips));

@@ -39,7 +39,7 @@ export function mergeInto(list: CaughtPokemon[], incoming: CaughtPokemonRequest[
     if (!match) {
       byKey.set(key, { ...request, id: nextId() })
       added++
-    } else if (request.level > match.level) {
+    } else if (request.level !== null && (match.level === null || request.level > match.level)) {
       byKey.set(key, { ...match, level: request.level })
       raisedKeys.add(key)
     } else {

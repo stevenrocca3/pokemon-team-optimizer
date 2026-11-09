@@ -23,7 +23,7 @@ public class CaughtPokemon
     private Long id;
     private String speciesId; 
     private int atkIv, defIv, staIv;
-    private double level;
+    private Double level;   // null: added without a CP, so the level isn't known
     protected CaughtPokemon(){}
     private String fastMove;
     private String chargedMove1;
@@ -34,7 +34,7 @@ public class CaughtPokemon
     @ManyToOne(optional = false)
     private Trainer trainer;
    
-    public CaughtPokemon(String speciesId, int atkIv, int defIv, int staIv, double level, boolean shadow,
+    public CaughtPokemon(String speciesId, int atkIv, int defIv, int staIv, Double level, boolean shadow,
                      String fastMove, List<String> chargedMoves, Trainer trainer)
     {
        this.speciesId = speciesId;
@@ -54,7 +54,7 @@ public class CaughtPokemon
     public int getAtkIv() { return atkIv; }
     public int getDefIv() { return defIv; }
     public int getStaIv() { return staIv; }
-    public double getLevel() { return level;}
+    public Double getLevel() { return level;}
     public boolean isShadow() { return shadow; }
     public String getFastMove() { return fastMove; }
     public List<String> getChargedMoves() 
@@ -68,10 +68,10 @@ public class CaughtPokemon
         return chargedMoves;
      }
 
-    /** Powered up since it was saved; Pokémon never lose levels, so a lower level is ignored. */
+    /** Powered up since it was saved, or its level is now known; Pokémon never lose levels, so a lower one is ignored. */
     public void raiseLevelTo(double newLevel)
     {
-        level = Math.max(level, newLevel);
+        level = level == null ? newLevel : Math.max(level, newLevel);
     }
 }
 

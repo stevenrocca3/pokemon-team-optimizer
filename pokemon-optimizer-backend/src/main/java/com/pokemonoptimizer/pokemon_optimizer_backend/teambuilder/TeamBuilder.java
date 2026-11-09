@@ -2,6 +2,7 @@ package com.pokemonoptimizer.pokemon_optimizer_backend.teambuilder;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -21,6 +22,7 @@ import com.pokemonoptimizer.pokemon_optimizer_backend.battle.Moveset;
 import com.pokemonoptimizer.pokemon_optimizer_backend.battle.ShieldScenario;
 import com.pokemonoptimizer.pokemon_optimizer_backend.battle.TeamBattle;
 import com.pokemonoptimizer.pokemon_optimizer_backend.battle.Winner;
+import com.pokemonoptimizer.pokemon_optimizer_backend.calculator.PowerUpCost;
 import com.pokemonoptimizer.pokemon_optimizer_backend.dto.CaughtPokemonRequest;
 import com.pokemonoptimizer.pokemon_optimizer_backend.dto.OwnedSpecies;
 import com.pokemonoptimizer.pokemon_optimizer_backend.gamemaster.Move;
@@ -203,6 +205,7 @@ public class TeamBuilder
         // Stage 4: odds for the chosen Teams on fresh opponents, so picking the luckiest estimate doesn't inflate them
         List<Opponents> estimate = sampleOpponents(meta, settings.estimateSamples(), settings.seed() + 1);
         List<TeamResult> teams = new ArrayList<>();
+        Map<Integer, PowerUpImpact> powerUps = new HashMap<>();   // a Pokémon on several Teams is battled once
         for (int t : chosen)
         {
             int[] order = orders.get(t);
@@ -210,7 +213,8 @@ public class TeamBuilder
             List<TeamMember> members = new ArrayList<>();
             for (int c : order)
             {
-                members.add(member(eligible.get(c), metaRating[c]));
+                PowerUpImpact powerUp = powerUps.computeIfAbsent(c, k -> powerUp(eligible.get(k), meta).orElse(null));
+                members.add(member(eligible.get(c), metaRating[c], powerUp));
             }
             teams.add(new TeamResult(members, odds, toughest(order, ratings, meta)));
         }
@@ -249,7 +253,7 @@ public class TeamBuilder
         {
             return "Can't be a Shadow";
         }
-        if (league.buildLevel(species, request.atkIv(), request.defIv(), request.staIv(), request.level()).isEmpty())
+        if (league.buildLevel(species, request.atkIv(), request.defIv(), request.staIv(), currentLevel(request)).isEmpty())
         {
             return "Over " + league.cpCap + " CP";
         }
@@ -273,7 +277,7 @@ public class TeamBuilder
     Candidate candidate(int index, CaughtPokemonRequest request, boolean assumed, League league)
     {
         SpeciesType species = speciesLookup.findById(request.speciesId()).orElseThrow();
-        OptionalDouble level = league.buildLevel(species, request.atkIv(), request.defIv(), request.staIv(), request.level());
+        OptionalDouble level = league.buildLevel(species, request.atkIv(), request.defIv(), request.staIv(), currentLevel(request));
         Combatant combatant = new Combatant(species, request.atkIv(), request.defIv(), request.staIv(), level.orElseThrow(), request.shadow());
         List<Move> charged = request.chargedMoves().stream().map(id -> moveLookup.findById(id).orElseThrow()).toList();
         Moveset moveset = new Moveset(moveLookup.findById(request.fastMove()).orElseThrow(), charged);
@@ -406,12 +410,59 @@ public class TeamBuilder
         return order;
     }
 
-    private static TeamMember member(Candidate candidate, double metaRating)
+    /**
+     * Its meta battles at its current level against those at the level it's built at. Empty for a checklist tick
+     * or one added without a CP (no current level to compare), or one already at its built level.
+     */
+    private static Optional<PowerUpImpact> powerUp(Candidate candidate, List<MetaPokemon> meta)
+    {
+        Double current = candidate.request().level();
+        Combatant built = candidate.combatant();
+        if (candidate.assumed() || current == null || current >= built.level())
+        {
+            return Optional.empty();
+        }
+        Combatant now = new Combatant(built.species(), built.atkIv(), built.defIv(), built.staIv(), current, built.shadow());
+        MetaBattles.Record before = MetaBattles.against(now, candidate.moveset(), meta);
+        MetaBattles.Record after = MetaBattles.against(built, candidate.moveset(), meta);
+        List<MatchupRef> gained = new ArrayList<>();
+        List<MatchupRef> lost = new ArrayList<>();
+        for (int b = 0; b < before.won().length; b++)
+        {
+            if (after.won()[b] && !before.won()[b]) gained.add(MetaBattles.matchup(meta, b));
+            if (before.won()[b] && !after.won()[b]) lost.add(MetaBattles.matchup(meta, b));
+        }
+        int fromCp = League.cp(candidate.species(), built.atkIv(), built.defIv(), built.staIv(), current);
+        return Optional.of(new PowerUpImpact(current, fromCp, before.wins(), after.wins(), before.won().length,
+            List.copyOf(gained), List.copyOf(lost)));
+    }
+
+    /** Current level to built level; null for a checklist tick or one added without a CP. */
+    private static PowerUpCost.Cost cost(Candidate candidate)
+    {
+        Double current = candidate.request().level();
+        if (candidate.assumed() || current == null)
+        {
+            return null;
+        }
+        return PowerUpCost.between(current, candidate.combatant().level(), candidate.request().shadow());
+    }
+
+    private static TeamMember member(Candidate candidate, double metaRating, PowerUpImpact powerUp)
     {
         CaughtPokemonRequest request = candidate.request();
         return new TeamMember(candidate.index(), request.speciesId(), request.shadow(), candidate.combatant().level(), candidate.cp(),
             request.atkIv(), request.defIv(), request.staIv(), request.fastMove(), request.chargedMoves(),
-            Math.round(metaRating * 10) / 10.0, candidate.assumed());
+            Math.round(metaRating * 10) / 10.0, candidate.assumed(), powerUp, cost(candidate));
+    }
+
+    /**
+     * A Pokémon added without its CP has no known level. It's taken as able to reach the League's best level,
+     * so it's never ruled out as over the Cap; typing its CP makes that check exact.
+     */
+    static double currentLevel(CaughtPokemonRequest request)
+    {
+        return request.level() == null ? 1.0 : request.level();
     }
 
     private static double average(double[] values)

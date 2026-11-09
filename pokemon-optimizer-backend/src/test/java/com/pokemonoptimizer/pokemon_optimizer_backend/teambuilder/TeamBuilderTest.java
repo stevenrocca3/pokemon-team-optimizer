@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
 
+import com.pokemonoptimizer.pokemon_optimizer_backend.calculator.PowerUpCost;
 import com.pokemonoptimizer.pokemon_optimizer_backend.dto.CaughtPokemonRequest;
 import com.pokemonoptimizer.pokemon_optimizer_backend.dto.OwnedSpecies;
 import com.pokemonoptimizer.pokemon_optimizer_backend.gamemaster.MoveLookup;
@@ -158,5 +159,64 @@ public class TeamBuilderTest
         TeamBuilderResult result = BUILDER.build(League.GREAT, List.of(), List.of(owned("medicham"), owned("charmander")));
 
         assertEquals(List.of(new SkippedPokemon(1, "No PvP moveset to assume; add it with its moves instead")), result.skipped());
+    }
+
+    @Test
+    public void aPokemonWithoutALevelIsBuiltToTheBestLevel()
+    {   // added without a CP: assumed to be able to reach the League's best level
+        List<CaughtPokemonRequest> box = List.of(
+            new CaughtPokemonRequest("medicham", 0, 15, 15, null, "COUNTER", List.of("ICE_PUNCH", "DYNAMIC_PUNCH"), false),
+            pokemon("registeel", 0, 14, 15, 20, "LOCK_ON", "FOCUS_BLAST", "FLASH_CANNON"),
+            pokemon("azumarill", 0, 14, 15, 20, "BUBBLE", "ICE_BEAM", "PLAY_ROUGH"));
+
+        TeamMember medicham = memberOf(BUILDER.build(League.GREAT, box).teams().get(0), "medicham");
+
+        assertEquals(50.0, medicham.level());
+        assertEquals(1439, medicham.cp());
+    }
+
+    @Test
+    public void aMemberBelowItsBuiltLevelShowsWhatPoweringUpChanges()
+    {   // BOX's Registeel is level 20; built for Great League it's far higher
+        TeamMember registeel = memberOf(BUILDER.build(League.GREAT, BOX).teams().get(0), "registeel");
+
+        PowerUpImpact impact = registeel.powerUp();
+        assertEquals(20.0, impact.fromLevel());
+        assertEquals(League.cp(SPECIES.findById("registeel").orElseThrow(), 0, 14, 15, 20), impact.fromCp());
+        assertEquals(44 * 3, impact.battles());
+        assertTrue(impact.winsAfter() > impact.winsBefore(), impact.toString());
+        assertEquals(impact.winsAfter() - impact.winsBefore(), impact.gained().size() - impact.lost().size());
+    }
+
+    @Test
+    public void noPowerUpWithoutAKnownLowerLevel()
+    {   // level unknown, already at its built level, or a checklist tick: nothing to compare against
+        List<CaughtPokemonRequest> box = List.of(
+            new CaughtPokemonRequest("medicham", 0, 15, 15, null, "COUNTER", List.of("ICE_PUNCH", "DYNAMIC_PUNCH"), false),
+            pokemon("registeel", 0, 14, 15, 20, "LOCK_ON", "FOCUS_BLAST", "FLASH_CANNON"));
+        TeamResult best = BUILDER.build(League.GREAT, box, List.of(owned("azumarill"))).teams().get(0);
+
+        assertEquals(null, memberOf(best, "medicham").powerUp());
+        assertEquals(null, memberOf(best, "azumarill").powerUp());
+        TeamMember atBuiltLevel = memberOf(BUILDER.build(League.GREAT, List.of(
+            pokemon("medicham", 0, 15, 15, 50, "COUNTER", "ICE_PUNCH", "DYNAMIC_PUNCH"),
+            pokemon("registeel", 0, 14, 15, 20, "LOCK_ON", "FOCUS_BLAST", "FLASH_CANNON"),
+            pokemon("azumarill", 0, 14, 15, 20, "BUBBLE", "ICE_BEAM", "PLAY_ROUGH"))).teams().get(0), "medicham");
+        assertEquals(null, atBuiltLevel.powerUp());
+    }
+
+    @Test
+    public void eachMemberSaysWhatPoweringItUpCosts()
+    {   // from its current level to the one it's built at; unknown without a current level
+        List<CaughtPokemonRequest> box = List.of(
+            new CaughtPokemonRequest("medicham", 0, 15, 15, null, "COUNTER", List.of("ICE_PUNCH", "DYNAMIC_PUNCH"), false),
+            pokemon("registeel", 0, 14, 15, 20, "LOCK_ON", "FOCUS_BLAST", "FLASH_CANNON"));
+        TeamResult best = BUILDER.build(League.GREAT, box, List.of(owned("azumarill"))).teams().get(0);
+
+        TeamMember registeel = memberOf(best, "registeel");
+        assertEquals(PowerUpCost.between(20, registeel.level(), false), registeel.cost());
+        assertTrue(registeel.cost().stardust() > 0);
+        assertEquals(null, memberOf(best, "medicham").cost());
+        assertEquals(null, memberOf(best, "azumarill").cost());
     }
 }

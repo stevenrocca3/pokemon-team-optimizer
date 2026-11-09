@@ -1,4 +1,4 @@
-import type {SpeciesOption, RankRequest, RankedIvResult, SpeciesDetail, Move, CaughtPokemon, CaughtPokemonRequest, ImportPreview, IvComparisonResult, OwnedSpecies, TeamBuilderLeague, TeamBuilderRequest, TeamBuilderResult} from './types'
+import type {SpeciesOption, RankRequest, RankedIvResult, SpeciesDetail, Move, CaughtPokemon, CaughtPokemonRequest, BreakpointReport, ImportPreview, IvComparisonResult, OwnedSpecies, TeamBuilderLeague, TeamBuilderRequest, TeamBuilderResult} from './types'
 import { apiFetch } from './lib/http'
 
 export { NotLoggedInError } from './lib/http'
@@ -126,6 +126,19 @@ export async function buildTeams(request: TeamBuilderRequest, signal?: AbortSign
 export async function compareCopies(league: TeamBuilderLeague, pokemon: CaughtPokemonRequest[], signal?: AbortSignal): Promise<IvComparisonResult>
 {
     const response = await apiFetch('/api/compare',
+    {
+        method: 'POST',
+        headers: { 'Content-Type' : 'application/json', ...csrfHeader() },
+        body: JSON.stringify({ league, pokemon }),
+        signal,
+    });
+    return await response.json();
+}
+
+/** Damage breakpoints and bulkpoints for one Pokémon against the League's meta. */
+export async function getBreakpoints(league: TeamBuilderLeague, pokemon: CaughtPokemonRequest, signal?: AbortSignal): Promise<BreakpointReport>
+{
+    const response = await apiFetch('/api/breakpoints',
     {
         method: 'POST',
         headers: { 'Content-Type' : 'application/json', ...csrfHeader() },

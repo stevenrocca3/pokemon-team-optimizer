@@ -120,7 +120,7 @@ public class CaughtPokemonController
                 owned.put(key, added);
                 toSave.put(key, added);
             }
-            else if (request.level() > match.getLevel())
+            else if (request.level() != null && (match.getLevel() == null || request.level() > match.getLevel()))
             {
                 match.raiseLevelTo(request.level());
                 toSave.put(key, match);
@@ -157,7 +157,7 @@ public class CaughtPokemonController
         {
             return "Shadow: " + species.speciesName() + " isn't shadow eligible.";
         }
-        boolean isWholeOrHalf = request.level() * 2 == Math.floor(request.level() * 2);
+        boolean isWholeOrHalf = request.level() == null || request.level() * 2 == Math.floor(request.level() * 2);
         if (!isWholeOrHalf)
         {
             return "Level: " + request.level() + " must be a whole or half #.";

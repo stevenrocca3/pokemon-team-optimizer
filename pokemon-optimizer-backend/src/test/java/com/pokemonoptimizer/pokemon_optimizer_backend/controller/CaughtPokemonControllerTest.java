@@ -297,6 +297,56 @@ public class CaughtPokemonControllerTest {
         verify(caughtPokemonRepository).saveAll(argThat(saved -> saved.equals(List.of(existing))));   // updated, not a second copy
     }
 
+    private static CaughtPokemon medichamWithoutLevel()
+    {
+        return new CaughtPokemon("medicham", 0, 15, 15, null, false, "COUNTER", List.of("ICE_PUNCH"), STEVEN);
+    }
+
+    @Test
+    public void aPokemonCanBeAddedWithoutALevel()
+    {   // the player skipped the CP box: the Team Builder powers it to the best level anyway
+        String body = """
+                 {"speciesId":"medicham","atkIv":0,"defIv":15,"staIv":15,
+                  "fastMove":"COUNTER","chargedMoves":["ICE_PUNCH"]}
+                """;
+        assertThat(mvc.post().uri("/api/collection").with(csrf()).with(oidcLogin())
+            .contentType(MediaType.APPLICATION_JSON).content(body))
+            .hasStatus(HttpStatus.CREATED)
+            .bodyJson().extractingPath("$.level").isNull();
+    }
+
+    @Test
+    public void anImportFillsInTheLevelOfOneAddedWithoutIt()
+    {
+        CaughtPokemon existing = medichamWithoutLevel();
+        alreadyCaught(existing);
+        String body = """
+                {"pokemon":[
+                  {"speciesId":"medicham","atkIv":0,"defIv":15,"staIv":15,"level":41,"fastMove":"COUNTER","chargedMoves":["ICE_PUNCH"]}
+                ]}
+                """;
+        assertThat(mvc.post().uri("/api/collection/batch").with(csrf()).with(oidcLogin())
+            .contentType(MediaType.APPLICATION_JSON).content(body))
+            .hasStatus(HttpStatus.CREATED)
+            .bodyJson().extractingPath("$[*].level").asArray().containsExactly(41.0);
+        verify(caughtPokemonRepository).saveAll(argThat(saved -> saved.equals(List.of(existing))));
+    }
+
+    @Test
+    public void addingAgainWithoutALevelKeepsTheKnownOne()
+    {
+        alreadyCaught(medicham(0, 40, false));
+        String body = """
+                {"pokemon":[
+                  {"speciesId":"medicham","atkIv":0,"defIv":15,"staIv":15,"fastMove":"COUNTER","chargedMoves":["ICE_PUNCH"]}
+                ]}
+                """;
+        assertThat(mvc.post().uri("/api/collection/batch").with(csrf()).with(oidcLogin())
+            .contentType(MediaType.APPLICATION_JSON).content(body))
+            .hasStatus(HttpStatus.CREATED)
+            .bodyJson().extractingPath("$.length()").asNumber().isEqualTo(0);
+    }
+
     /** The Team Builder takes at most 10,000 Pokémon, so a Collection may not grow past what it can build from. */
     @Test
     public void aBatchThatWouldPushTheCollectionPast10000IsRefusedWholly()

@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link } from 'react-router'
 import { buildTeams, LOGIN_URL, previewImport } from '../api'
 import { useCollection } from '../collection/collection-context'
-import type { CaughtPokemonRequest, OwnedSpecies, TeamBuilderLeague, TeamBuilderResult, TeamMember, TeamResult } from '../types'
+import type { CaughtPokemonRequest, MatchupRef, OwnedSpecies, PowerUpImpact, TeamBuilderLeague, TeamBuilderResult, TeamMember, TeamResult } from '../types'
 import { useSpecies } from '../species/species-context'
 import { useMoves } from '../moves/moves-context'
 import { PokemonArt } from '../components/PokemonArt'
@@ -13,6 +13,33 @@ import { PageHeader } from '../components/PageHeader'
 import { Brewing } from '../components/Brewing'
 import { OddsRing } from '../components/OddsRing'
 import { usePageTitle } from '../lib/page-title'
+import { useMetaName } from '../species/meta-name'
+import { groupByOpponent, shieldsList } from '../lib/matchups'
+import { bestAffordable, teamCost } from '../lib/budget'
+
+const STARDUST_KEY = 'dexpresso.stardust'
+
+/** The player's Stardust, remembered in this browser only (a convenience; it's fine if storage is blocked). */
+function useStardustBudget(): [string, (next: string) => void] {
+  const [text, setText] = useState(() => {
+    try {
+      return localStorage.getItem(STARDUST_KEY) ?? ''
+    } catch {
+      return ''
+    }
+  })
+  const update = (next: string) => {
+    const digits = next.replace(/\D/g, '').slice(0, 9)
+    setText(digits)
+    try {
+      if (digits) localStorage.setItem(STARDUST_KEY, digits)
+      else localStorage.removeItem(STARDUST_KEY)
+    } catch {
+      // storage blocked: the box still works for this visit
+    }
+  }
+  return [text, update]
+}
 
 const LEAGUES: { key: TeamBuilderLeague; label: string; cpLabel: string }[] = [
   { key: 'GREAT', label: 'Great', cpLabel: '1500 CP' },
@@ -313,6 +340,10 @@ const LEAGUE_NAMES: Record<TeamBuilderLeague, string> = { GREAT: 'Great League',
 function Results({ result, source }: { result: TeamBuilderResult; source: Source }) {
   const species = useSpecies()
   const nameOf = (id: string) => (species.status === 'ready' ? species.byId.get(id)?.name : undefined) ?? id
+  const [stardustText, setStardust] = useStardustBudget()
+  const budget = stardustText === '' ? null : Number(stardustText)
+  const affordable = budget === null ? null : bestAffordable(result.teams, budget)
+  const anyCost = result.teams.some((t) => t.members.some((m) => m.cost !== null))
 
   return (
     <section className="mt-12" aria-live="polite">
@@ -340,9 +371,39 @@ function Results({ result, source }: { result: TeamBuilderResult; source: Source
               to check.
             </p>
           )}
+          {anyCost && (
+            <div className="mt-5 flex flex-wrap items-center gap-3">
+              <label className="flex items-center gap-2 text-sm text-ink-soft">
+                Your Stardust
+                <input
+                  value={stardustText === '' ? '' : Number(stardustText).toLocaleString()}
+                  onChange={(e) => setStardust(e.target.value)}
+                  inputMode="numeric"
+                  placeholder="e.g. 500,000"
+                  className="field h-9 w-36 tabular-nums"
+                />
+              </label>
+              <p className="text-sm text-subtle">
+                {budget === null
+                  ? 'Add it to see which team you can afford to power up.'
+                  : affordable === null
+                    ? "None of these fit yet. Costs are from each Pokémon's current level."
+                    : affordable === 0
+                      ? 'The best team fits your budget.'
+                      : `Team ${affordable + 1} is the best one that fits.`}
+              </p>
+            </div>
+          )}
           <ol className="mt-6 grid gap-6">
             {result.teams.map((team, i) => (
-              <TeamCard key={team.members.map((m) => m.index).join('-')} rank={i + 1} team={team} delayMs={i * 140} />
+              <TeamCard
+                key={team.members.map((m) => m.index).join('-')}
+                rank={i + 1}
+                team={team}
+                delayMs={i * 140}
+                budget={budget}
+                bestForBudget={affordable === i && i > 0}
+              />
             ))}
           </ol>
         </>
@@ -371,17 +432,23 @@ function percent(fraction: number) {
   return Math.round(fraction * 100)
 }
 
-function TeamCard({ rank, team, delayMs }: { rank: number; team: TeamResult; delayMs: number }) {
-  const species = useSpecies()
+function TeamCard({
+  rank,
+  team,
+  delayMs,
+  budget,
+  bestForBudget,
+}: {
+  rank: number
+  team: TeamResult
+  delayMs: number
+  budget: number | null
+  bestForBudget: boolean
+}) {
+  const metaName = useMetaName()
   const { rate, low, high, battles } = team.winRate
-
-  // PvPoke meta IDs mark Shadows with a suffix; our species list has the base form
-  const metaName = (id: string) => {
-    const shadow = id.endsWith('_shadow')
-    const base = shadow ? id.slice(0, -'_shadow'.length) : id
-    const name = (species.status === 'ready' ? species.byId.get(base)?.name : undefined) ?? base
-    return shadow ? `Shadow ${name}` : name
-  }
+  const cost = teamCost(team.members)
+  const known = team.members.length - cost.unknown
 
   return (
     <li className="card animate-rise p-5 sm:p-6" style={{ animationDelay: `${delayMs}ms` }}>
@@ -390,6 +457,11 @@ function TeamCard({ rank, team, delayMs }: { rank: number; team: TeamResult; del
           <OddsRing rate={rate} low={low} high={high} delayMs={delayMs + 200} />
           <div className="md:text-center">
             <div className="eyebrow">Team {rank}</div>
+            {bestForBudget && (
+              <span className="mt-1 inline-block rounded bg-brand px-1.5 py-0.5 text-[10px] font-bold uppercase text-on-brand">
+                Best for your budget
+              </span>
+            )}
             <p className="mt-1 text-xs text-subtle">
               Likely {percent(low)}–{percent(high)}%
               <br />
@@ -404,7 +476,27 @@ function TeamCard({ rank, team, delayMs }: { rank: number; team: TeamResult; del
               <MemberCard key={member.index} member={member} lead={i === 0} />
             ))}
           </ul>
-          <p className="mt-4 text-sm text-subtle">
+          {known > 0 && (
+            <p className="mt-4 text-sm text-ink-soft">
+              Power-up cost:{' '}
+              <span className="font-semibold tabular-nums text-ink">{cost.stardust.toLocaleString()}</span> Stardust
+              {cost.candy > 0 && <>, {cost.candy.toLocaleString()} Candy</>}
+              {cost.xlCandy > 0 && <>, {cost.xlCandy.toLocaleString()} Candy XL</>}
+              {cost.unknown > 0 && (
+                <span className="text-subtle">
+                  {' '}
+                  (plus {cost.unknown} without a known level)
+                </span>
+              )}
+              {budget !== null && (
+                <span className={cost.stardust <= budget ? 'text-brand' : 'text-subtle'}>
+                  {' '}
+                  · {cost.stardust <= budget ? 'fits your Stardust' : `${(cost.stardust - budget).toLocaleString()} short`}
+                </span>
+              )}
+            </p>
+          )}
+          <p className="mt-2 text-sm text-subtle">
             Toughest matchups:{' '}
             {team.toughest.map((id, i) => (
               <span key={id}>
@@ -455,8 +547,57 @@ function MemberCard({ member, lead }: { member: TeamMember; lead: boolean }) {
           <span className="text-subtle"> · </span>
           {member.chargedMoves.map(moveName).join(' / ')}
         </p>
+        {member.cost && (member.cost.stardust > 0 ? (
+          <p className="mt-2 text-xs text-subtle">
+            To Lv {formatLevel(member.level)}:{' '}
+            <span className="tabular-nums text-ink-soft">{member.cost.stardust.toLocaleString()}</span> dust
+            {member.cost.candy > 0 && <>, {member.cost.candy} candy</>}
+            {member.cost.xlCandy > 0 && <>, {member.cost.xlCandy} XL</>}
+            {member.shadow && <span title="Shadow costs are 1.2× and rounded up each power-up, our estimate"> (est.)</span>}
+          </p>
+        ) : (
+          <p className="mt-2 text-xs text-subtle">Already at its best level.</p>
+        ))}
+        {member.powerUp && <PowerUp impact={member.powerUp} toLevel={member.level} />}
       </div>
     </li>
+  )
+}
+
+/** What powering this one up from its current level gets: meta battles won before and after, and which flip. */
+function PowerUp({ impact, toLevel }: { impact: PowerUpImpact; toLevel: number }) {
+  const metaName = useMetaName()
+  const change = impact.winsAfter - impact.winsBefore
+  const groups = (list: MatchupRef[]) =>
+    groupByOpponent(list).map((g) => (
+      <li key={g.opponent}>
+        {metaName(g.opponent)} <span className="text-subtle">({shieldsList(g.shields)})</span>
+      </li>
+    ))
+  return (
+    <details className="mt-3 rounded-lg bg-canvas/50 px-2.5 py-2 text-xs ring-1 ring-line">
+      <summary className="cursor-pointer text-ink-soft">
+        Yours is Lv {formatLevel(impact.fromLevel)} ({impact.fromCp.toLocaleString()} CP). Powering to {formatLevel(toLevel)}:{' '}
+        <span className={`font-semibold ${change > 0 ? 'text-brand' : 'text-ink'}`}>
+          {change > 0 ? `+${change}` : change} wins
+        </span>
+      </summary>
+      <p className="mt-2 text-subtle tabular-nums">
+        {impact.winsBefore} → {impact.winsAfter} of {impact.battles} meta battles
+      </p>
+      {impact.gained.length > 0 && (
+        <>
+          <p className="mt-2 font-semibold text-ink">Starts beating</p>
+          <ul className="mt-1 space-y-0.5 text-ink-soft">{groups(impact.gained)}</ul>
+        </>
+      )}
+      {impact.lost.length > 0 && (
+        <>
+          <p className="mt-2 font-semibold text-ink">Stops beating</p>
+          <ul className="mt-1 space-y-0.5 text-ink-soft">{groups(impact.lost)}</ul>
+        </>
+      )}
+    </details>
   )
 }
 

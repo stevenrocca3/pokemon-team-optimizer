@@ -76,7 +76,7 @@ export interface CaughtPokemon
     atkIv : number;
     defIv : number;
     staIv : number;
-    level : number;
+    level : number | null;   // null: added without a CP; the Team Builder assumes the best level
     fastMove : string;
     chargedMoves : string[];
     shadow : boolean;
@@ -90,7 +90,7 @@ export interface CaughtPokemonRequest
     atkIv : number;
     defIv : number;
     staIv : number;
-    level : number;
+    level : number | null;   // null: added without a CP; the Team Builder assumes the best level
     fastMove : string;
     chargedMoves : string[];
     shadow : boolean;
@@ -161,6 +161,34 @@ export interface TeamMember
     chargedMoves : string[];
     metaRating : number;    // average 1v1 battle rating vs the meta, 500 = even
     assumed : boolean;      // a checklist tick battling with assumed good IVs
+    powerUp : PowerUpImpact | null;   // only when its current level is known and below the built one
+    cost : PowerUpCost | null;        // current level to built level; null when the current level isn't known
+}
+
+export interface MatchupRef
+{
+    opponent : string;        // PvPoke meta ID
+    shields : number;         // each side
+}
+
+/** Stardust and Candy for a power-up (Candy XL from level 40). Shadow costs are estimates. */
+export interface PowerUpCost
+{
+    stardust : number;
+    candy : number;
+    xlCandy : number;
+}
+
+/** What powering a Pokémon from its current level to the built one changes, in meta battles won. */
+export interface PowerUpImpact
+{
+    fromLevel : number;
+    fromCp : number;
+    winsBefore : number;
+    winsAfter : number;
+    battles : number;
+    gained : MatchupRef[];
+    lost : MatchupRef[];
 }
 
 export interface TeamResult
@@ -212,4 +240,28 @@ export interface IvComparisonResult
     metaDate : string;
     pokemon : ComparedPokemon[];   // best first
     flips : FlippedMatchup[];
+}
+
+// POST /api/breakpoints: fast move damage both ways against each meta Pokémon
+export interface OpponentBreakpoint
+{
+    opponent : string;              // PvPoke meta ID
+    opponentFastMove : string;
+    damageDealt : number;
+    attackForMore : number | null;  // Attack stat for +1 damage; null when no IV spread reaches it under the cap
+    damageTaken : number;
+    defenseForLess : number | null; // Defense stat for 1 less damage taken
+}
+
+export interface BreakpointReport
+{
+    league : TeamBuilderLeague;
+    level : number;
+    cp : number;
+    fastMove : string;
+    attack : number;
+    defense : number;
+    maxAttack : number;             // best any IV spread reaches under the cap
+    maxDefense : number;
+    opponents : OpponentBreakpoint[];
 }

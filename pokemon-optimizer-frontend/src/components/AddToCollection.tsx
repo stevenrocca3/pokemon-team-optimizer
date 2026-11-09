@@ -25,7 +25,8 @@ const SELECT_CLASS =
 export function AddToCollection({ speciesId, ivs, detail }: Props) {
   const moveList = useMoves()
   const collection = useCollection()
-  const [level, setLevel] = useState(20)
+  // null = not sure: the Team Builder powers it to the best level for each league
+  const [level, setLevel] = useState<number | null>(null)
   // '' means "not chosen yet": fall back to the first legal move once the learnset arrives
   const [fastChoice, setFastChoice] = useState('')
   const [chargedChoice1, setChargedChoice1] = useState('')
@@ -75,10 +76,11 @@ export function AddToCollection({ speciesId, ivs, detail }: Props) {
         <label className="text-xs uppercase text-subtle">
           Level
           <select
-            value={level}
-            onChange={(e) => change(setLevel)(Number(e.target.value))}
-            className={`${SELECT_CLASS} w-20`}
+            value={level ?? ''}
+            onChange={(e) => change(setLevel)(e.target.value === '' ? null : Number(e.target.value))}
+            className={`${SELECT_CLASS} w-28`}
           >
+            <option value="">Not sure</option>
             {LEVELS.map((l) => (
               <option key={l} value={l}>
                 {formatLevel(l)}

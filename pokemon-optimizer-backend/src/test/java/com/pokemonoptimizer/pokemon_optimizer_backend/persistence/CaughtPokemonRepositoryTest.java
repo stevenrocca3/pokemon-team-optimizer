@@ -66,7 +66,7 @@ public class CaughtPokemonRepositoryTest
         Trainer ash = entityManager.persist(new Trainer("google-ash"));
         Trainer misty = entityManager.persist(new Trainer("google-misty"));
         caughtPokemonRepository.save(new CaughtPokemon("medicham", 0, 15, 15, 22.5, false, "BUBBLE", List.of("ICE_BEAM", "PLAY_ROUGH"), ash));
-        caughtPokemonRepository.save(new CaughtPokemon("azumarill", 0, 15, 15, 40, false, "BUBBLE", List.of("ICE_BEAM", "PLAY_ROUGH"), misty));
+        caughtPokemonRepository.save(new CaughtPokemon("azumarill", 0, 15, 15, 40.0, false, "BUBBLE", List.of("ICE_BEAM", "PLAY_ROUGH"), misty));
          List<CaughtPokemon> ashes = caughtPokemonRepository.findByTrainer(ash);
 
         assertEquals(1, ashes.size());
