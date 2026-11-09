@@ -733,7 +733,7 @@ function HowItWorks() {
         </p>
         <p>
           Teams of those ten are ranked by how well they cover the meta together. The best few then play full 3v3 battles, with
-          switching and shared shields, against randomly drawn meta teams. Each one is tried in all six lineups: a lead, a safe
+          switching and shared shields, against 100 randomly drawn meta teams. Each one is tried in all six lineups: a lead, a safe
           swap that comes in whenever you switch out, and a closer saved for the end. After a faint, whoever handles their
           Pokémon best comes in. The best lineup is kept, and the cards show it in order.
         </p>

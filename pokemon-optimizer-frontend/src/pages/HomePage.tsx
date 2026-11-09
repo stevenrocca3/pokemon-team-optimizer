@@ -52,7 +52,7 @@ const GLOSSARY = [
 const DEMO_STEPS: { title: string; body: string; phases: DemoPhase[] }[] = [
   { title: "Tick Your Pokémon", body: "No IVs needed: each gets a good spread for the league.", phases: ["pick"] },
   { title: "Pick a League or Cup", body: "Great, Ultra, Master, or any Cup running now.", phases: ["league", "tap"] },
-  { title: "It Battles Thousands of 3v3s", body: "Against teams drawn from PvPoke's meta, every lineup tried.", phases: ["brew"] },
+  { title: "It Plays Full 3v3s", body: "Every lineup against 100 meta teams, then 400 fresh battles for the odds.", phases: ["brew"] },
   { title: "Your Best Three, in Order", body: "Lead, safe swap and closer, with honest win odds.", phases: ["result"] },
 ];
 
@@ -268,7 +268,7 @@ export function HomePage() {
             Pull Your First Shot
           </h2>
           <p className="mx-auto mt-4 max-w-lg text-ink-soft">
-            Add three Pokémon and see which team brews the strongest.
+            Add your Pokémon and see which three win most.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <Link to="/collection" className="btn btn-primary btn-lg">

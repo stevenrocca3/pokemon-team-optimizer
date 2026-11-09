@@ -24,7 +24,7 @@ export function Brewing({ startedAt }: { startedAt: number }) {
       <div>
         <p className="eyebrow">Brewing</p>
         <h2 className="mt-1 font-display text-2xl">
-          Simulating a Few Thousand Battles <span className="tabular-nums text-muted">· {seconds}s</span>
+          Simulating Full 3v3s <span className="tabular-nums text-muted">· {seconds}s</span>
         </h2>
         <ol className="mt-4 grid gap-2 text-sm text-ink-soft">
           {STEPS.map((step, i) => (
