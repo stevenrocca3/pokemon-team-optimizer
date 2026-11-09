@@ -72,9 +72,9 @@ export function CompareCopies({
 
   return (
     <section id="compare" className="mt-10 scroll-mt-24">
-      <h2 className="mb-1 flex items-center gap-3 text-2xl font-bold">
-        <span className="h-7 w-1 rounded bg-brand" aria-hidden="true" />
-        Which one to build
+      <h2 className="mb-1 flex items-center gap-3 font-display text-2xl">
+        <span className="h-7 w-1.5 rounded bg-gradient-to-b from-creamer to-brand" aria-hidden="true" />
+        Which One to Build
       </h2>
       <p className="mb-4 text-sm text-subtle">
         Your copies, each powered to its best level for {leagueLabel}, battled against the meta at 0, 1 and 2 shields.

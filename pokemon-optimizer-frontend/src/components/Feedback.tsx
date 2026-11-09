@@ -83,7 +83,7 @@ export function Feedback({ variant }: { variant: 'corner' | 'link' }) {
           ) : (
             <>
               <StarRating />
-              <h3 className="mt-6 border-t border-line pt-5 font-bold">Tell us more</h3>
+              <h3 className="mt-6 border-t border-line pt-5 font-bold">Tell Us More</h3>
               <p className="mt-1 text-sm text-subtle">
                 A bug, a wrong result, something you'd like. It's anonymous: only your message and this page's address are kept.
               </p>

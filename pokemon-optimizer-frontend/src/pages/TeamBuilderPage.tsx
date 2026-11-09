@@ -159,7 +159,7 @@ export function TeamBuilderPage() {
 
   return (
     <div className="mx-auto max-w-6xl px-4 pb-16">
-      <PageHeader eyebrow="Team Builder" title="Brew your best three">
+      <PageHeader eyebrow="Team Builder" title="Brew Your Best Three">
         Battles full 3v3s from your Pokémon against teams drawn from the current meta, then tells you how often each team wins.
       </PageHeader>
 
@@ -187,7 +187,7 @@ export function TeamBuilderPage() {
                 aria-selected={l.key === league}
                 onClick={() => changeLeague(l.key)}
                 className={`flex h-14 flex-col items-center justify-center rounded-lg text-sm transition ${
-                  l.key === league ? 'bg-brand text-on-brand shadow' : 'text-ink-soft hover:bg-raised-strong hover:text-ink'
+                  l.key === league ? 'bg-brand text-on-brand shadow inset-shadow-[0_3px_0] inset-shadow-creamer/60' : 'text-ink-soft hover:bg-raised-strong hover:text-ink'
                 }`}
               >
                 <span className="font-bold">{l.label}</span>
@@ -452,7 +452,7 @@ function Results({ result, source, name }: { result: TeamBuilderResult; source: 
       ) : (
         <>
           <p className="eyebrow text-brand">Fresh from the bar</p>
-          <h2 className="mt-1 font-display text-3xl font-black">Best teams for {name}</h2>
+          <h2 className="mt-1 font-display text-3xl font-black">Best Teams for {name}</h2>
           <p className="mt-1 text-sm text-subtle">
             From {result.eligible.toLocaleString()} eligible · vs {result.metaSize} meta Pokémon (PvPoke, {result.metaDate})
           </p>
@@ -716,7 +716,7 @@ function PowerUp({ impact, toLevel }: { impact: PowerUpImpact; toLevel: number }
 function HowItWorks() {
   return (
     <details className="card mt-14 max-w-3xl p-5">
-      <summary className="cursor-pointer font-semibold">How the win odds work</summary>
+      <summary className="cursor-pointer font-semibold">How the Win Odds Work</summary>
       <div className="mt-3 grid gap-3 text-sm leading-relaxed text-ink-soft">
         <p>
           Each Pokémon is built to the highest level that fits the league (at most 50, never below its current level), then

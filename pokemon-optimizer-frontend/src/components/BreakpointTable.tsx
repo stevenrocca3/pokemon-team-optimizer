@@ -67,8 +67,8 @@ export function BreakpointTable({
 
   return (
     <section className="mt-10">
-      <h2 className="mb-1 flex items-center gap-3 text-2xl font-bold">
-        <span className="h-7 w-1 rounded bg-brand" aria-hidden="true" />
+      <h2 className="mb-1 flex items-center gap-3 font-display text-2xl">
+        <span className="h-7 w-1.5 rounded bg-gradient-to-b from-creamer to-brand" aria-hidden="true" />
         Breakpoints
       </h2>
       <p className="mb-4 max-w-3xl text-sm text-subtle">

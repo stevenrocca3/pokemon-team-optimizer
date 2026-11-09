@@ -1,6 +1,14 @@
 @import "tailwindcss";
-/* self-hosted Fraunces (opsz + wght axes); only the latin file downloads, via unicode-range */
-@import "@fontsource-variable/fraunces/opsz.css";
+/* Self-hosted fonts; only the latin files download, via unicode-range.
+   Jersey 15 for the big striped logo text, Pixelify Sans for titles (to match the pixel sprites), Chakra Petch for
+   text (squared-off, so it sits with the pixel titles, but reads easily), JetBrains Mono for numbers. */
+@import "@fontsource/jersey-15/latin.css";
+@import "@fontsource-variable/pixelify-sans/index.css";
+@import "@fontsource/chakra-petch/latin-400.css";
+@import "@fontsource/chakra-petch/latin-500.css";
+@import "@fontsource/chakra-petch/latin-600.css";
+@import "@fontsource/chakra-petch/latin-700.css";
+@import "@fontsource-variable/jetbrains-mono/index.css";
 
 /* Espresso bar theme. Components use these semantic names, never raw palette colors,
    so a reskin only touches this block.
@@ -32,7 +40,12 @@
   --color-field: #f3e9dc; /* search input */
   --color-on-field: #1f1814;
 
-  --font-display: "Fraunces Variable", ui-serif, Georgia, serif;
+  --font-display: "Pixelify Sans Variable", ui-sans-serif, system-ui, sans-serif;
+  --color-creamer: #f1dcc0; /* coffee creamer: the swirls, button foam and IV bar fill */
+  --color-espresso: #392a1c; /* the hard pixel shadow under titles and buttons */
+  --font-sans: "Chakra Petch", ui-sans-serif, system-ui, sans-serif;
+  --font-logo: "Jersey 15", "Pixelify Sans Variable", ui-sans-serif, sans-serif;
+  --font-mono: "JetBrains Mono Variable", ui-monospace, SFMono-Regular, Menlo, monospace;
 
   --animate-rise: rise 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
@@ -99,8 +112,28 @@ body::before {
     url("/scene-highlands.svg") center 35% / cover no-repeat;
 }
 
-h1 {
+/* Titles: a pixel font with a hard, unblurred espresso shadow, like a game's title text.
+   Unlayered, so it wins over the font-black utilities. */
+h1,
+.font-display {
   font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: 0;
+  font-variant-ligatures: none; /* Pixelify's "fi" ligature reads as an A */
+  text-shadow: 0 0.09em 0 var(--color-espresso);
+}
+
+/* every tabular figure (CP, IVs, levels, win odds) is set like a tool's readout */
+.tabular-nums {
+  font-family: var(--font-mono);
+  font-size: 0.94em;
+  letter-spacing: -0.02em;
+}
+input,
+select,
+textarea,
+button {
+  font-family: inherit;
 }
 
 /* every control shares these heights, so buttons and fields line up wherever they sit together */
@@ -115,8 +148,18 @@ h1 {
   .btn-lg {
     @apply h-12 px-7 text-base;
   }
+  /* crema with a line of creamer foam along the top and a hard espresso shadow; pressing pushes it down into it */
   .btn-primary {
-    @apply bg-brand font-bold text-on-brand shadow-[0_6px_20px_-8px] shadow-brand/60 hover:brightness-110 active:brightness-95;
+    @apply bg-brand font-bold text-on-brand hover:brightness-110;
+    box-shadow:
+      inset 0 3px 0 color-mix(in srgb, var(--color-creamer) 70%, transparent),
+      0 4px 0 var(--color-espresso);
+  }
+  .btn-primary:not(:disabled):active {
+    transform: translateY(3px);
+    box-shadow:
+      inset 0 3px 0 color-mix(in srgb, var(--color-creamer) 70%, transparent),
+      0 1px 0 var(--color-espresso);
   }
   .btn-secondary {
     @apply bg-raised text-ink ring-1 ring-line-strong ring-inset hover:bg-raised-strong;
@@ -131,8 +174,15 @@ h1 {
     @apply block h-11 w-full rounded-lg bg-raised px-3 text-base text-ink ring-1 ring-line-strong ring-inset placeholder:text-subtle;
     @apply focus:ring-2 focus:ring-brand focus:outline-none disabled:opacity-60;
   }
+  /* every card has a soft head of creamer foam along its top edge */
   .card {
+    background-image: linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--color-creamer) 9%, transparent),
+      transparent 72px
+    );
     @apply rounded-2xl bg-surface ring-1 ring-line shadow-[0_12px_40px_-20px] shadow-black/80;
+    @apply inset-shadow-[0_1px_0] inset-shadow-creamer/25;
   }
   .eyebrow {
     @apply text-xs font-semibold tracking-wider text-muted uppercase;
@@ -143,6 +193,87 @@ h1 {
 :where(a, button, summary, [role="tab"], [role="option"]):focus-visible {
   outline: 2px solid var(--color-brand);
   outline-offset: 2px;
+}
+
+/* creamer: swirls that pour themselves in under titles (once a home section has scrolled into view),
+   and IV bars stirred with creamer */
+.creamer-pour path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: pour-in 1.4s cubic-bezier(0.3, 0.7, 0.2, 1) 0.3s forwards;
+}
+.reveal:not([data-shown="true"]) .creamer-pour path {
+  animation: none;
+}
+@keyframes pour-in {
+  to { stroke-dashoffset: 0; }
+}
+
+/* Big logo text, like a game's title screen: tall pixel capitals in bands of creamer, crema and caramel, with a
+   thick espresso outline. The outline is a copy of the text behind (text-shadow can't sit under clipped text). */
+.logo-text {
+  position: relative;
+  display: inline-block;
+  font-family: var(--font-logo);
+  font-weight: 400;
+  line-height: 0.9;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+.logo-text-outline {
+  position: absolute;
+  inset: 0;
+  color: var(--color-espresso);
+  --o: 0.045em;
+  text-shadow:
+    var(--o) 0 var(--color-espresso), calc(var(--o) * -1) 0 var(--color-espresso),
+    0 var(--o) var(--color-espresso), 0 calc(var(--o) * -1) var(--color-espresso),
+    var(--o) var(--o) var(--color-espresso), calc(var(--o) * -1) var(--o) var(--color-espresso),
+    var(--o) calc(var(--o) * -1) var(--color-espresso), calc(var(--o) * -1) calc(var(--o) * -1) var(--color-espresso),
+    0 0.12em #1d140e, var(--o) 0.12em #1d140e, calc(var(--o) * -1) 0.12em #1d140e;
+}
+.logo-text-fill {
+  position: relative;
+  text-shadow: none; /* an inherited title shadow would paint over the bands */
+  color: transparent;
+  background:
+    linear-gradient(100deg, transparent 40%, rgb(255 250 240 / 0.55) 50%, transparent 60%) no-repeat,
+    linear-gradient(
+      to bottom,
+      #fff4e0 0 16%,
+      var(--color-creamer) 16% 36%,
+      #edb862 36% 56%,
+      var(--color-brand) 56% 68%,
+      #c0612e 68% 76%,
+      #e6a352 76% 84%,
+      #8e3f22 84% 100%
+    );
+  background-size: 250% 100%, 100% 100%;
+  background-position: 160% 0, 0 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: logo-shine 5s ease-in-out 1.2s infinite;
+}
+/* a glint of light sweeps across now and then */
+@keyframes logo-shine {
+  0%, 70% { background-position: 160% 0, 0 0; }
+  100% { background-position: -60% 0, 0 0; }
+}
+.creamer-fill {
+  background: linear-gradient(
+    100deg,
+    var(--color-brand) 0%,
+    var(--color-brand) 35%,
+    var(--color-creamer) 55%,
+    var(--color-brand) 75%,
+    var(--color-brand) 100%
+  );
+  background-size: 300% 100%;
+  animation: stir 4s ease-in-out infinite;
+}
+@keyframes stir {
+  0%, 100% { background-position: 100% 0; }
+  50% { background-position: 0% 0; }
 }
 
 @keyframes rise {

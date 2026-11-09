@@ -6,6 +6,7 @@ import type { CaughtPokemonRequest, ImportedPokemon, ImportPreview, Learnset } f
 import { useSpecies } from '../species/species-context'
 import { useMoves } from '../moves/moves-context'
 import { PokemonArt } from '../components/PokemonArt'
+import { CreamerRule } from '../components/Creamer'
 import { IvTriple } from '../components/IvTriple'
 import { formatLevel } from '../lib/species'
 import { startingMoves } from '../lib/moves'
@@ -50,7 +51,8 @@ export function ImportPage() {
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10">
-      <h1 className="text-4xl font-black tracking-tight">Import your Pokémon</h1>
+      <h1 className="text-4xl font-black tracking-tight">Import Your Pokémon</h1>
+      <CreamerRule align="left" className="mt-3" />
       <p className="mt-2 max-w-2xl text-ink-soft">
         Export a CSV from Poké Genie (menu → Back Up &amp; Restore → Export CSV) or from Calcy IV (your scan history → Export), then choose that file here. Nothing is saved until you
         press Save.
@@ -197,9 +199,9 @@ function Preview({ fileName, preview, picked, onPick, save, onSave, onStartOver 
 
       {needing.length > 0 && (
         <section className="mt-10">
-          <h2 className="flex items-center gap-3 text-2xl font-bold">
-            <span className="h-7 w-1 rounded bg-brand" aria-hidden="true" />
-            Pick moves
+          <h2 className="flex items-center gap-3 font-display text-2xl">
+            <span className="h-7 w-1.5 rounded bg-gradient-to-b from-creamer to-brand" aria-hidden="true" />
+            Pick Moves
             <span className="text-base font-normal text-subtle">
               {needing.filter((p) => isComplete(p, picked)).length.toLocaleString()} of {needing.length.toLocaleString()} done
             </span>

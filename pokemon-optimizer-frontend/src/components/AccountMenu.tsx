@@ -158,7 +158,7 @@ function SignedIn({ pokemonCount }: { pokemonCount: number }) {
       >
         <div className="p-5">
           <h2 id={titleId} className="text-lg font-bold">
-            Delete your account?
+            Delete Your Account?
           </h2>
           <p className="mt-3 text-sm text-ink-soft">
             This permanently deletes your account and the {pokemon} in your Collection. It can't be undone. Anonymous

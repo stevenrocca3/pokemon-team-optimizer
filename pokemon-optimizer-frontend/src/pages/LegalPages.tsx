@@ -10,16 +10,16 @@ const UPDATED = 'November 8, 2026'
 function Section({ title, children }: { title: string; children: ReactNode }) {
   return (
     <section className="mt-10">
-      <h2 className="text-xl font-bold text-ink">{title}</h2>
+      <h2 className="font-display text-xl text-ink">{title}</h2>
       <div className="mt-3 space-y-3 text-ink-soft [&_li]:ml-5 [&_li]:list-disc [&_strong]:text-ink">{children}</div>
     </section>
   )
 }
 
-function LegalPage({ eyebrow, title, children }: { eyebrow: string; title: string; children: ReactNode }) {
+function LegalPage({ title, children }: { title: string; children: ReactNode }) {
   return (
     <div className="mx-auto max-w-3xl px-4 pb-20">
-      <PageHeader eyebrow={eyebrow} title={title}>
+      <PageHeader title={title}>
         <p className="text-sm text-muted">Last updated {UPDATED}</p>
       </PageHeader>
       <div className="card p-6 leading-relaxed sm:p-8">{children}</div>
@@ -28,15 +28,15 @@ function LegalPage({ eyebrow, title, children }: { eyebrow: string; title: strin
 }
 
 export function PrivacyPage() {
-  usePageTitle('Privacy policy')
+  usePageTitle('Privacy Policy')
   return (
-    <LegalPage eyebrow="Privacy" title="Privacy policy">
+    <LegalPage title="Privacy Policy">
       <p className="text-ink-soft">
         DexPresso is a free fan-made tool for Pokémon GO PvP. It keeps as little about you as it can. This page lists
         all of it.
       </p>
 
-      <Section title="Without an account">
+      <Section title="Without an Account">
         <p>
           You can use everything without logging in. Pokémon you add as a guest are saved <strong>only in your
           browser</strong> (localStorage), never on our server. Clearing your browser data deletes them.
@@ -47,7 +47,7 @@ export function PrivacyPage() {
         </p>
       </Section>
 
-      <Section title="With an account (Google login)">
+      <Section title="With an Account (Google Login)">
         <p>When you log in with Google, we store:</p>
         <ul>
           <li>your Google account ID, a number that links your login to your Collection, and</li>
@@ -59,14 +59,14 @@ export function PrivacyPage() {
         </p>
       </Section>
 
-      <Section title="Feedback and ratings">
+      <Section title="Feedback and Ratings">
         <p>
           Feedback messages and star ratings are anonymous. We keep what you write (or the stars you pick), the page you
           sent it from and when. They aren't linked to your account, your IP address or your browser.
         </p>
       </Section>
 
-      <Section title="Cookies and browser storage">
+      <Section title="Cookies and Browser Storage">
         <p>DexPresso uses two cookies, both needed for the site to work, so there's no cookie banner:</p>
         <ul>
           <li>
@@ -81,7 +81,7 @@ export function PrivacyPage() {
         </p>
       </Section>
 
-      <Section title="Other services your browser talks to">
+      <Section title="Other Services Your Browser Talks To">
         <ul>
           <li>
             <strong>Google</strong>, only when you choose to log in. Google's own privacy policy applies there.
@@ -100,7 +100,7 @@ export function PrivacyPage() {
         <p>There are no ads, no tracking pixels, and we never sell or share your data.</p>
       </Section>
 
-      <Section title="Server logs and abuse protection">
+      <Section title="Server Logs and Abuse Protection">
         <p>
           To keep the site up, the server briefly remembers how many requests each IP address made in the last few
           minutes. That count lives in memory only and is never saved. Error logs record which page failed, not who
@@ -108,7 +108,7 @@ export function PrivacyPage() {
         </p>
       </Section>
 
-      <Section title="Deleting your data">
+      <Section title="Deleting Your Data">
         <p>
           Open the account menu (top right, once logged in) and choose <strong>Delete account</strong>. It permanently
           deletes your account ID and every Pokémon in your Collection, right away. Anonymous feedback and ratings
@@ -124,7 +124,7 @@ export function PrivacyPage() {
         </p>
       </Section>
 
-      <Section title="Contact and changes">
+      <Section title="Contact and Changes">
         <p>
           Questions or requests: <Feedback variant="link" />. If this policy changes, the date at the top changes too.
         </p>
@@ -134,19 +134,19 @@ export function PrivacyPage() {
 }
 
 export function TermsPage() {
-  usePageTitle('Terms of use')
+  usePageTitle('Terms of Use')
   return (
-    <LegalPage eyebrow="Terms" title="Terms of use">
+    <LegalPage title="Terms of Use">
       <p className="text-ink-soft">By using DexPresso you agree to these terms. They're short.</p>
 
-      <Section title="What DexPresso is">
+      <Section title="What DexPresso Is">
         <p>
           A free, unofficial fan tool that ranks Pokémon GO IVs for PvP leagues and suggests Teams from your Pokémon.
           There are no paid plans and nothing to buy.
         </p>
       </Section>
 
-      <Section title="Not affiliated">
+      <Section title="Not Affiliated">
         <p>
           DexPresso is not affiliated with, endorsed by or sponsored by Niantic, Nintendo, Creatures, GAME FREAK or The
           Pokémon Company. Pokémon and Pokémon character names are trademarks of Nintendo, Creatures and GAME FREAK.
@@ -155,7 +155,7 @@ export function TermsPage() {
         </p>
       </Section>
 
-      <Section title="No guarantees">
+      <Section title="No Guarantees">
         <p>
           Rankings, win odds and Team suggestions are estimates from a battle simulation. They can be wrong or out of
           date after a game update. DexPresso is provided as is, without warranties of any kind, and we aren't liable
@@ -163,7 +163,7 @@ export function TermsPage() {
         </p>
       </Section>
 
-      <Section title="Fair use">
+      <Section title="Fair Use">
         <ul>
           <li>Don't try to break, overload or scrape the site, or get around its rate limits.</li>
           <li>Don't use it to break the rules of Pokémon GO.</li>
@@ -172,7 +172,7 @@ export function TermsPage() {
         <p>We may limit or remove access for anyone who abuses the service.</p>
       </Section>
 
-      <Section title="Your data and changes">
+      <Section title="Your Data and Changes">
         <p>
           You can delete your account at any time from the account menu. We may change or stop the service, or update
           these terms; the date at the top shows the latest version.
