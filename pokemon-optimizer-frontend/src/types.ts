@@ -185,3 +185,31 @@ export interface TeamBuilderResult
     teams : TeamResult[];     // best first; empty when fewer than 3 species can play
     skipped : SkippedPokemon[];
 }
+
+// POST /api/compare: which of a few Pokémon (copies of one species) is worth building for a League
+export interface ComparedPokemon
+{
+    index : number;           // position in the request
+    level : number;           // built for the League
+    cp : number;
+    wins : number;            // meta battles won at 0, 1 and 2 shields
+    battles : number;
+    metaRating : number;
+    problem : string | null;  // why it can't play there
+}
+
+export interface FlippedMatchup
+{
+    opponent : string;        // PvPoke meta ID, e.g. "annihilape_shadow"
+    shields : number;         // each side
+    winners : number[];       // request indexes that win it
+}
+
+export interface IvComparisonResult
+{
+    league : TeamBuilderLeague;
+    metaSize : number;
+    metaDate : string;
+    pokemon : ComparedPokemon[];   // best first
+    flips : FlippedMatchup[];
+}

@@ -1,11 +1,12 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useParams, useSearchParams } from 'react-router'
 import { getRank, getSpeciesDetail } from '../api'
-import type { RankedIvResult, SpeciesDetail, SpeciesOption } from '../types'
+import type { CaughtPokemon, RankedIvResult, SpeciesDetail, SpeciesOption } from '../types'
 import { useSpecies } from '../species/species-context'
 import { PokemonArt } from '../components/PokemonArt'
 import { IvTriple } from '../components/IvTriple'
 import { AddToCollection } from '../components/AddToCollection'
+import { CompareCopies } from '../components/CompareCopies'
 import { formatDex, formatLevel } from '../lib/species'
 import { useMoves } from '../moves/moves-context'
 import { DEFAULT_LEAGUE, LEAGUES, leagueFromKey, type League } from '../lib/leagues'
@@ -98,6 +99,12 @@ function SpeciesView({ id, option }: { id: string; option?: SpeciesOption }) {
     setSearchParams(params, { replace: true })
     setVisibleCount(PAGE_SIZE)
   }
+
+  // the copies section ranks your copies by this before battling them; null until the ranking has loaded
+  const rankOf = useMemo(
+    () => (rows ? (p: CaughtPokemon) => byIvs.get(ivKey(p.atkIv, p.defIv, p.staIv))?.statProductRank : null),
+    [rows, byIvs],
+  )
 
   const best = rows?.[0]
   const mine = byIvs.get(ivKey(myIvs.atk, myIvs.def, myIvs.sta))
@@ -218,6 +225,8 @@ function SpeciesView({ id, option }: { id: string; option?: SpeciesOption }) {
                 <AddToCollection speciesId={id} ivs={myIvs} detail={detail === 'error' ? null : detail} />
               </div>
             </div>
+
+            <CompareCopies speciesId={id} leagueKey={league.key} leagueLabel={league.label} rankOf={rankOf} />
 
             {/* Rankings table */}
             <h2 className="mb-4 mt-10 flex items-center gap-3 text-2xl font-bold">

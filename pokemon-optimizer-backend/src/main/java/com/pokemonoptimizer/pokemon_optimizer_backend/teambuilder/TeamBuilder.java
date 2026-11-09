@@ -51,8 +51,8 @@ public class TeamBuilder
     private static final int[] SHIELDS = { 0, 1, 2 };
     private static final int TOUGHEST_SHOWN = 3;
 
-    /** An eligible Pokémon from the request, built for the League. */
-    private record Candidate(int index, CaughtPokemonRequest request, boolean assumed, SpeciesType species, Combatant combatant, Moveset moveset, int cp) {}
+    /** An eligible Pokémon from the request, built for the League. Shared with IvComparison. */
+    record Candidate(int index, CaughtPokemonRequest request, boolean assumed, SpeciesType species, Combatant combatant, Moveset moveset, int cp) {}
 
     /** A Team being considered: three shortlist positions, and its 1v1 coverage of the meta. */
     private record Trio(int[] members, double coverage) {}
@@ -220,7 +220,7 @@ public class TeamBuilder
 
     // ---- eligibility ----
 
-    private String problemWith(CaughtPokemonRequest request, League league)
+    String problemWith(CaughtPokemonRequest request, League league)
     {
         Optional<SpeciesType> found = speciesLookup.findById(request.speciesId());
         if (found.isEmpty())
@@ -270,7 +270,7 @@ public class TeamBuilder
         }
     }
 
-    private Candidate candidate(int index, CaughtPokemonRequest request, boolean assumed, League league)
+    Candidate candidate(int index, CaughtPokemonRequest request, boolean assumed, League league)
     {
         SpeciesType species = speciesLookup.findById(request.speciesId()).orElseThrow();
         OptionalDouble level = league.buildLevel(species, request.atkIv(), request.defIv(), request.staIv(), request.level());

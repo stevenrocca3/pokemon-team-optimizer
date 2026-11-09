@@ -1,4 +1,4 @@
-import type {SpeciesOption, RankRequest, RankedIvResult, SpeciesDetail, Move, CaughtPokemon, CaughtPokemonRequest, ImportPreview, OwnedSpecies, TeamBuilderLeague, TeamBuilderRequest, TeamBuilderResult} from './types'
+import type {SpeciesOption, RankRequest, RankedIvResult, SpeciesDetail, Move, CaughtPokemon, CaughtPokemonRequest, ImportPreview, IvComparisonResult, OwnedSpecies, TeamBuilderLeague, TeamBuilderRequest, TeamBuilderResult} from './types'
 import { apiFetch } from './lib/http'
 
 export { NotLoggedInError } from './lib/http'
@@ -118,6 +118,19 @@ export async function buildTeams(request: TeamBuilderRequest, signal?: AbortSign
         body: JSON.stringify(request),
         signal,
         timeoutMs: 120_000,
+    });
+    return await response.json();
+}
+
+/** Battles each Pokémon (2 to 6) against the League's meta, built to its best level under the cap. */
+export async function compareCopies(league: TeamBuilderLeague, pokemon: CaughtPokemonRequest[], signal?: AbortSignal): Promise<IvComparisonResult>
+{
+    const response = await apiFetch('/api/compare',
+    {
+        method: 'POST',
+        headers: { 'Content-Type' : 'application/json', ...csrfHeader() },
+        body: JSON.stringify({ league, pokemon }),
+        signal,
     });
     return await response.json();
 }
