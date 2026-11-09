@@ -3,6 +3,7 @@ import { Link } from "react-router";
 import { SearchBar } from "../components/SearchBar";
 import { PokemonArt } from "../components/PokemonArt";
 import { Reveal } from "../components/Reveal";
+import { CreamerRule, LogoText } from "../components/Creamer";
 import { useScrollVariable } from "../lib/motion";
 import { useSpecies } from "../species/species-context";
 import { formatDex } from "../lib/species";
@@ -39,7 +40,7 @@ const GLOSSARY = [
     body: "Spreads ordered by Attack. A better Mirror Rank wins more CMP ties when both sides throw a charged move together.",
   },
   {
-    title: "League caps",
+    title: "League Caps",
     body: "Great League caps at 1500 CP and Ultra at 2500, so low Attack IVs often let a Pokémon level higher and end up stronger.",
   },
 ];
@@ -56,7 +57,7 @@ const BREW_STEPS = [
   },
   {
     title: "Pull",
-    body: "The best teams play full 3v3s, with switching and shields, against 100 meta teams, with every lead tried.",
+    body: "The best teams play full 3v3s, with switching and shields, against 100 meta teams, in every lineup of lead, safe swap and closer.",
   },
   {
     title: "Taste",
@@ -85,20 +86,22 @@ export function HomePage() {
       >
         <HeroScene />
         <Steam />
-        <div className="hero-fade relative mx-auto flex w-full max-w-3xl flex-1 flex-col items-center justify-center px-4 py-16 text-center">
+        <div className="hero-fade relative mx-auto flex w-full max-w-3xl flex-1 flex-col items-center justify-center px-4 pt-10 pb-20 text-center">
           <p className="animate-rise eyebrow tracking-[0.3em] text-brand">
-            Pokémon GO PvP · brewed fresh
+            Pokémon GO PvP · Brewed Fresh
           </p>
-          <h1 className="mt-5 animate-rise text-5xl leading-[1.02] font-black tracking-tight text-balance [animation-delay:120ms] sm:text-7xl">
-            Find the best IVs for{" "}
-            <span className="text-brand italic">every</span> league
+          <h1 className="mt-4 animate-rise [animation-delay:120ms]">
+            <LogoText text="DexPresso" className="text-[5rem] sm:text-[8.5rem]" />
           </h1>
-          <p className="mx-auto mt-6 max-w-xl animate-rise text-lg text-ink-soft [animation-delay:240ms]">
+          <p className="mt-4 animate-rise font-display text-3xl leading-tight text-balance [animation-delay:200ms] sm:text-4xl">
+            Find the Best IVs for <span className="text-brand">Every</span> League
+          </p>
+          <p className="mx-auto mt-4 max-w-xl animate-rise text-lg text-ink-soft [animation-delay:240ms]">
             Every one of a species' 4,096 IV spreads, ranked for Little, Great,
             Ultra and Master League. Then a Team Builder that battles your own
             Pokémon against the meta.
           </p>
-          <div className="relative z-10 mt-10 w-full max-w-2xl animate-rise text-left [animation-delay:360ms]">
+          <div className="relative z-10 mt-8 w-full max-w-2xl animate-rise text-left [animation-delay:360ms]">
             <SearchBar size="large" autoFocus />
           </div>
           {species.status === "error" && (
@@ -108,7 +111,7 @@ export function HomePage() {
           )}
 
           <ul
-            className="parallax-fast mt-12 flex flex-wrap justify-center gap-3 sm:gap-5"
+            className="parallax-fast mt-8 flex flex-wrap justify-center gap-3 sm:gap-5"
             aria-label="Popular picks"
           >
             {popular.slice(0, 5).map(({ id, option }, i) => (
@@ -124,6 +127,7 @@ export function HomePage() {
                   aria-label={option?.name ?? id}
                 >
                   <PokemonArt
+                    icon
                     dex={option?.dex}
                     alt=""
                     className="h-full w-full"
@@ -173,7 +177,7 @@ export function HomePage() {
           <Reveal>
             <SectionTitle
               eyebrow="About DexPresso"
-              title="Three things, done properly"
+              title="Three Things, Done Properly"
             >
               A free tool for Pokémon GO battlers. No account needed to try any
               of it.
@@ -183,7 +187,7 @@ export function HomePage() {
           <div className="mt-16 grid gap-20">
             <Feature
               number="01"
-              title="IV rankings for every species"
+              title="IV Rankings for Every Species"
               body="Search any Pokémon and see all 4,096 of its IV spreads ranked by stat product for each league, with the level each one reaches under the cap. Enter your own IVs to see where yours lands."
               to="/species/medicham"
               cta="Try Medicham"
@@ -197,7 +201,7 @@ export function HomePage() {
             <Feature
               flip
               number="02"
-              title="A Collection of your Pokémon"
+              title="A Collection of Your Pokémon"
               body="Add Pokémon by name, appraisal IVs and CP, and the level works itself out. Or import a whole box from a Poké Genie or Calcy IV export. Without logging in, they stay in your browser."
               to="/collection"
               cta="Open your Collection"
@@ -210,7 +214,7 @@ export function HomePage() {
             />
             <Feature
               number="03"
-              title="A Team Builder that actually battles"
+              title="A Team Builder That Actually Battles"
               body="It plays full 3v3 battles with your Pokémon against teams drawn from PvPoke's current meta, and tells you how often each team wins, with an honest range around the number."
               to="/team-builder"
               cta="Build a team"
@@ -234,7 +238,7 @@ export function HomePage() {
           <Reveal>
             <SectionTitle
               eyebrow="How teams are built"
-              title="From beans to a cup in four steps"
+              title="From Beans to a Cup in Four Steps"
             />
           </Reveal>
           <div className="relative mt-14">
@@ -272,7 +276,7 @@ export function HomePage() {
           <Reveal>
             <SectionTitle
               eyebrow="Barista's notes"
-              title="Words worth knowing"
+              title="Words Worth Knowing"
             />
           </Reveal>
           <div className="mt-12 grid gap-5 sm:grid-cols-3">
@@ -297,7 +301,7 @@ export function HomePage() {
             Ready when you are
           </p>
           <h2 className="mt-4 font-display text-4xl font-black tracking-tight sm:text-5xl">
-            Pull your first shot
+            Pull Your First Shot
           </h2>
           <p className="mx-auto mt-4 max-w-lg text-ink-soft">
             Add three Pokémon and see which team brews the strongest.
@@ -331,33 +335,12 @@ function SectionTitle({
       <h2 className="mt-3 font-display text-4xl font-black tracking-tight text-balance sm:text-5xl">
         {title}
       </h2>
-      <Ornament />
+      <CreamerRule className="mt-5" />
       {children && <p className="mt-4 text-lg text-ink-soft">{children}</p>}
     </div>
   );
 }
 
-/** A thin rule with a coffee bean in the middle, under each section title. */
-function Ornament() {
-  return (
-    <div
-      className="mx-auto mt-5 flex max-w-xs items-center gap-3"
-      aria-hidden="true"
-    >
-      <span className="h-px flex-1 bg-gradient-to-r from-transparent to-line-strong" />
-      <svg viewBox="0 0 20 28" className="h-5 w-4 fill-brand">
-        <ellipse cx="10" cy="14" rx="9" ry="13" />
-        <path
-          d="M10 2 C5 9 15 19 10 26"
-          fill="none"
-          className="stroke-canvas"
-          strokeWidth="2"
-        />
-      </svg>
-      <span className="h-px flex-1 bg-gradient-to-l from-transparent to-line-strong" />
-    </div>
-  );
-}
 
 function PopularCard({ id, option }: { id: string; option?: SpeciesOption }) {
   return (
@@ -371,6 +354,7 @@ function PopularCard({ id, option }: { id: string; option?: SpeciesOption }) {
           aria-hidden="true"
         />
         <PokemonArt
+          icon
           dex={option?.dex}
           alt={option?.name ?? ""}
           className="relative h-full w-full transition duration-500 group-hover:-translate-y-2 group-hover:scale-110"

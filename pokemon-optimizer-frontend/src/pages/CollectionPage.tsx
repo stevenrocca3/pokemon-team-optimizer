@@ -88,7 +88,7 @@ export function CollectionPage() {
               aria-selected={view === key}
               onClick={() => setParams(key === 'exact' ? { view: 'exact' } : {}, { replace: true })}
               className={`h-10 rounded-lg px-4 text-sm font-bold transition ${
-                view === key ? 'bg-brand text-on-brand shadow' : 'text-ink-soft hover:bg-raised-strong hover:text-ink'
+                view === key ? 'bg-brand text-on-brand shadow inset-shadow-[0_3px_0] inset-shadow-creamer/60' : 'text-ink-soft hover:bg-raised-strong hover:text-ink'
               }`}
             >
               {label}{' '}
@@ -147,7 +147,7 @@ function EmptyShelf() {
           </div>
         ))}
       </div>
-      <h2 className="mt-6 font-display text-2xl font-black">Your shelf is empty</h2>
+      <h2 className="mt-6 font-display text-2xl font-black">Your Shelf Is Empty</h2>
       <ol className="mt-6 grid gap-4 text-left sm:grid-cols-3">
         {steps.map((step, i) => (
           <li key={step.title} className="card p-5">

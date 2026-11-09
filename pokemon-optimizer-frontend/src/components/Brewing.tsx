@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
 const STEPS = [
   'Battling each of your Pokémon 1v1 against every meta Pokémon',
   'Ranking teams of your ten strongest by how well they cover the meta',
-  'Trying every lead in full 3v3s against 100 meta teams',
+  'Trying every lineup in full 3v3s against 100 meta teams',
   'Measuring win odds on 400 fresh battles',
 ]
 
@@ -23,8 +23,8 @@ export function Brewing({ startedAt }: { startedAt: number }) {
       <EspressoShot />
       <div>
         <p className="eyebrow">Brewing</p>
-        <h2 className="mt-1 text-2xl font-bold">
-          Simulating a few thousand battles <span className="tabular-nums text-muted">· {seconds}s</span>
+        <h2 className="mt-1 font-display text-2xl">
+          Simulating a Few Thousand Battles <span className="tabular-nums text-muted">· {seconds}s</span>
         </h2>
         <ol className="mt-4 grid gap-2 text-sm text-ink-soft">
           {STEPS.map((step, i) => (
@@ -67,6 +67,15 @@ function EspressoShot() {
       {/* the shot: rises once to just under the rim and stays */}
       <g clipPath="url(#cup-inside)">
         <rect x="28" y="100" width="62" height="60" fill="url(#shot)" className="animate-[fill_9s_cubic-bezier(0.3,0.6,0.3,1)_forwards]" />
+        {/* then creamer swirls down into it */}
+        <path
+          d="M36 60 C48 54 62 66 76 59 C86 54 82 72 66 73 C52 74 48 66 57 64 C63 63 64 69 60 70"
+          pathLength={1}
+          fill="none"
+          strokeWidth="3.5"
+          strokeLinecap="round"
+          className="stroke-creamer opacity-90 [stroke-dasharray:1] [stroke-dashoffset:1] animate-[pour-in_2.4s_ease-out_3.5s_forwards]"
+        />
       </g>
 
       {/* cup and handle */}

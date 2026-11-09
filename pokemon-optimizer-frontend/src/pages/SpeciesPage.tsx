@@ -3,6 +3,7 @@ import { useParams, useSearchParams } from 'react-router'
 import { getRank, getSpeciesDetail } from '../api'
 import type { CaughtPokemon, RankedIvResult, SpeciesDetail, SpeciesOption } from '../types'
 import { useSpecies } from '../species/species-context'
+import { CreamerRule } from '../components/Creamer'
 import { PokemonArt } from '../components/PokemonArt'
 import { IvTriple } from '../components/IvTriple'
 import { AddToCollection } from '../components/AddToCollection'
@@ -128,6 +129,7 @@ function SpeciesView({ id, option }: { id: string; option?: SpeciesOption }) {
             <h1 className="mt-1 flex flex-wrap items-baseline gap-3 text-4xl font-black tracking-tight sm:text-5xl">
               {title}
             </h1>
+            <CreamerRule align="left" className="mt-2" />
 
             <BaseStats detail={detail} />
 
@@ -140,7 +142,7 @@ function SpeciesView({ id, option }: { id: string; option?: SpeciesOption }) {
                     aria-selected={l.key === league.key}
                     onClick={() => updateParams({ league: l })}
                     className={`rounded-md px-3 py-2 text-left text-sm transition sm:px-4 ${
-                      l.key === league.key ? 'bg-brand text-on-brand' : 'text-ink-soft hover:bg-raised'
+                      l.key === league.key ? 'bg-brand text-on-brand inset-shadow-[0_3px_0] inset-shadow-creamer/60' : 'text-ink-soft hover:bg-raised'
                     }`}
                   >
                     <div className="font-bold">{l.label.replace(' League', '')}</div>
@@ -237,8 +239,8 @@ function SpeciesView({ id, option }: { id: string; option?: SpeciesOption }) {
             />
 
             {/* Rankings table */}
-            <h2 className="mb-4 mt-10 flex items-center gap-3 text-2xl font-bold">
-              <span className="h-7 w-1 rounded bg-brand" aria-hidden="true" />
+            <h2 className="mb-4 mt-10 flex items-center gap-3 font-display text-2xl">
+              <span className="h-7 w-1.5 rounded bg-gradient-to-b from-creamer to-brand" aria-hidden="true" />
               IV Rankings
               <span className="text-base font-normal text-subtle">4,096 spreads</span>
             </h2>

@@ -94,7 +94,7 @@ export function Checklist() {
                   setQuery('')
                 }}
                 className={`h-9 rounded-lg px-4 text-sm font-bold transition ${
-                  l.key === league ? 'bg-brand text-on-brand shadow' : 'text-ink-soft hover:bg-raised-strong hover:text-ink'
+                  l.key === league ? 'bg-brand text-on-brand shadow inset-shadow-[0_3px_0] inset-shadow-creamer/60' : 'text-ink-soft hover:bg-raised-strong hover:text-ink'
                 }`}
               >
                 {l.label}
@@ -233,9 +233,17 @@ function CheckItem({
         }`}
       >
         <input type="checkbox" checked={checked} onChange={() => onToggle(owned)} className="h-5 w-5 shrink-0 accent-brand" />
-        <PokemonArt icon dex={option?.dex} alt="" className="h-12 w-12 shrink-0" />
+        {/* unticked ones are greyed out, so what you own stands out */}
+        <PokemonArt
+          icon
+          dex={option?.dex}
+          alt=""
+          className={`h-12 w-12 shrink-0 transition-[opacity,filter] duration-200 ${checked ? '' : 'opacity-45 grayscale'}`}
+        />
         <span className="min-w-0 flex-1">
-          <span className="block truncate font-semibold">{name}</span>
+          <span className={`block truncate font-semibold transition-colors duration-200 ${checked ? 'text-ink' : 'text-subtle'}`}>
+            {name}
+          </span>
           {owned.shadow && (
             <span className="mt-0.5 inline-block rounded bg-violet-500/25 px-1.5 py-0.5 text-[10px] font-bold uppercase text-violet-200">
               Shadow

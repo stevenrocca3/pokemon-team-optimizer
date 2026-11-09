@@ -3,7 +3,7 @@ import { SearchBar } from '../components/SearchBar'
 import { usePageTitle } from '../lib/page-title'
 
 export function NotFoundPage({ message = "That page doesn't exist." }: { message?: string }) {
-  usePageTitle('Page not found')
+  usePageTitle('Page Not Found')
   return (
     <div className="mx-auto max-w-xl px-4 py-24 text-center">
       <p className="text-6xl font-black text-brand">404</p>
