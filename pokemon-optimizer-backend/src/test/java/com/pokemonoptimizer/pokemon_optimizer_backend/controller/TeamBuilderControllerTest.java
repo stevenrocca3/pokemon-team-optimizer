@@ -16,6 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.assertj.MockMvcTester;
 
+import com.pokemonoptimizer.pokemon_optimizer_backend.dto.OwnedSpecies;
 import com.pokemonoptimizer.pokemon_optimizer_backend.security.SecurityConfig;
 import com.pokemonoptimizer.pokemon_optimizer_backend.teambuilder.League;
 import com.pokemonoptimizer.pokemon_optimizer_backend.teambuilder.TeamBuilder;
@@ -41,7 +42,7 @@ public class TeamBuilderControllerTest
     @Test
     public void guestsCanBuildTeamsWithoutLoggingIn()
     {   // no oidcLogin() and no csrf(): a fresh visitor may not have the XSRF-TOKEN cookie yet, like /api/rank
-        when(teamBuilder.build(eq(League.ULTRA), any())).thenReturn(new TeamBuilderResult(League.ULTRA, 45, "2026-10-04", 1, List.of(), List.of()));
+        when(teamBuilder.build(eq(League.ULTRA), any(), any())).thenReturn(new TeamBuilderResult(League.ULTRA, 45, "2026-10-04", 1, List.of(), List.of()));
 
         assertThat(mvc.post().uri("/api/team-builder").contentType(MediaType.APPLICATION_JSON).content(BODY))
             .hasStatusOk()
@@ -55,5 +56,27 @@ public class TeamBuilderControllerTest
                 .content(BODY.replace("\"league\":\"ULTRA\",", "")))
             .hasStatus(HttpStatus.BAD_REQUEST)
             .bodyJson().extractingPath("$.errors[*].field").asArray().contains("league");
+    }
+
+    @Test
+    public void tickedSpeciesAloneAreEnough()
+    {   // a checklist-only Trainer sends no exact Pokémon
+        when(teamBuilder.build(League.GREAT, List.of(), List.of(new OwnedSpecies("medicham", false), new OwnedSpecies("registeel", true))))
+            .thenReturn(new TeamBuilderResult(League.GREAT, 44, "2026-10-04", 2, List.of(), List.of()));
+
+        assertThat(mvc.post().uri("/api/team-builder").contentType(MediaType.APPLICATION_JSON).content("""
+                {"league":"GREAT","species":[{"speciesId":"medicham"},{"speciesId":"registeel","shadow":true}]}
+                """))
+            .hasStatusOk()
+            .bodyJson().extractingPath("$.eligible").asNumber().isEqualTo(2);
+    }
+
+    @Test
+    public void tooManyTickedSpeciesIs400()
+    {
+        String many = "{\"speciesId\":\"medicham\"},".repeat(2001);
+        assertThat(mvc.post().uri("/api/team-builder").contentType(MediaType.APPLICATION_JSON)
+                .content("{\"league\":\"GREAT\",\"species\":[" + many.substring(0, many.length() - 1) + "]}"))
+            .hasStatus(HttpStatus.BAD_REQUEST);
     }
 }

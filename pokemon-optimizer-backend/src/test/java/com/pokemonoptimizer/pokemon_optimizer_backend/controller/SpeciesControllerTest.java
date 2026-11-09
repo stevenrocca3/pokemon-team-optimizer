@@ -107,4 +107,15 @@ public class SpeciesControllerTest {
     {   // so Add to Collection starts on moves worth having, not the learnset's first
         assertEquals(new SuggestedMoves("PSYCHO_CUT", List.of("ICE_PUNCH", "DYNAMIC_PUNCH")), sc.speciesById("medicham").suggestedMoves());
     }
+
+    @Test
+    public void optionsSayWhichCanBeShadow()
+    {   // the Collection checklist offers a Shadow tick only where one exists
+        List<SpeciesOption> options = sc.speciesOption();
+        SpeciesOption medicham = options.stream().filter(o -> o.id().equals("medicham")).findFirst().orElseThrow();
+        SpeciesOption registeel = options.stream().filter(o -> o.id().equals("registeel")).findFirst().orElseThrow();
+
+        assertEquals(false, medicham.shadowEligible());
+        assertEquals(true, registeel.shadowEligible());
+    }
 }

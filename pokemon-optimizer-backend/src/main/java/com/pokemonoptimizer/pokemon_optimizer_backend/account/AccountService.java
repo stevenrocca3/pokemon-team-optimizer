@@ -3,6 +3,7 @@ package com.pokemonoptimizer.pokemon_optimizer_backend.account;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.pokemonoptimizer.pokemon_optimizer_backend.checklist.ChecklistRepository;
 import com.pokemonoptimizer.pokemon_optimizer_backend.persistence.CaughtPokemonRepository;
 import com.pokemonoptimizer.pokemon_optimizer_backend.persistence.TrainerRepository;
 
@@ -12,11 +13,14 @@ public class AccountService
 {
     private final TrainerRepository trainerRepository;
     private final CaughtPokemonRepository caughtPokemonRepository;
+    private final ChecklistRepository checklistRepository;
 
-    public AccountService(TrainerRepository trainerRepository, CaughtPokemonRepository caughtPokemonRepository)
+    public AccountService(TrainerRepository trainerRepository, CaughtPokemonRepository caughtPokemonRepository,
+                          ChecklistRepository checklistRepository)
     {
         this.trainerRepository = trainerRepository;
         this.caughtPokemonRepository = caughtPokemonRepository;
+        this.checklistRepository = checklistRepository;
     }
 
     /** Already gone (a second click, another tab) is fine: there's nothing left to delete. */
@@ -24,7 +28,9 @@ public class AccountService
     public void deleteAccount(String googleId)
     {
         trainerRepository.findByGoogleId(googleId).ifPresent(trainer -> {
-            caughtPokemonRepository.deleteByTrainer(trainer);   // the Collection first: it points at the Trainer
+            // the Collection and checklist first: they point at the Trainer
+            caughtPokemonRepository.deleteByTrainer(trainer);
+            checklistRepository.deleteByTrainer(trainer);
             trainerRepository.delete(trainer);
         });
     }

@@ -22,6 +22,7 @@ import com.pokemonoptimizer.pokemon_optimizer_backend.battle.ShieldScenario;
 import com.pokemonoptimizer.pokemon_optimizer_backend.battle.TeamBattle;
 import com.pokemonoptimizer.pokemon_optimizer_backend.battle.Winner;
 import com.pokemonoptimizer.pokemon_optimizer_backend.dto.CaughtPokemonRequest;
+import com.pokemonoptimizer.pokemon_optimizer_backend.dto.OwnedSpecies;
 import com.pokemonoptimizer.pokemon_optimizer_backend.gamemaster.Move;
 import com.pokemonoptimizer.pokemon_optimizer_backend.gamemaster.MoveLookup;
 import com.pokemonoptimizer.pokemon_optimizer_backend.gamemaster.SpeciesLookup;
@@ -50,8 +51,8 @@ public class TeamBuilder
     private static final int[] SHIELDS = { 0, 1, 2 };
     private static final int TOUGHEST_SHOWN = 3;
 
-    /** An eligible Pokémon from the request, built for the League. */
-    private record Candidate(int index, CaughtPokemonRequest request, SpeciesType species, Combatant combatant, Moveset moveset, int cp) {}
+    /** An eligible Pokémon from the request, built for the League. Shared with IvComparison. */
+    record Candidate(int index, CaughtPokemonRequest request, boolean assumed, SpeciesType species, Combatant combatant, Moveset moveset, int cp) {}
 
     /** A Team being considered: three shortlist positions, and its 1v1 coverage of the meta. */
     private record Trio(int[] members, double coverage) {}
@@ -62,38 +63,62 @@ public class TeamBuilder
     private final SpeciesLookup speciesLookup;
     private final MoveLookup moveLookup;
     private final MetaLookup metaLookup;
+    private final GoodIvs goodIvs;
     private final Settings settings;
 
     @Autowired   // the other constructor is for tests' narrower Settings
-    public TeamBuilder(SpeciesLookup speciesLookup, MoveLookup moveLookup, MetaLookup metaLookup)
+    public TeamBuilder(SpeciesLookup speciesLookup, MoveLookup moveLookup, MetaLookup metaLookup, GoodIvs goodIvs)
     {
-        this(speciesLookup, moveLookup, metaLookup, Settings.DEFAULT);
+        this(speciesLookup, moveLookup, metaLookup, goodIvs, Settings.DEFAULT);
     }
 
-    TeamBuilder(SpeciesLookup speciesLookup, MoveLookup moveLookup, MetaLookup metaLookup, Settings settings)
+    TeamBuilder(SpeciesLookup speciesLookup, MoveLookup moveLookup, MetaLookup metaLookup, GoodIvs goodIvs, Settings settings)
     {
         this.speciesLookup = speciesLookup;
         this.moveLookup = moveLookup;
         this.metaLookup = metaLookup;
+        this.goodIvs = goodIvs;
         this.settings = settings;
     }
 
     public TeamBuilderResult build(League league, List<CaughtPokemonRequest> pokemon)
+    {
+        return build(league, pokemon, List.of());
+    }
+
+    /**
+     * Teams from the Trainer's exact Pokémon plus the species they ticked on the checklist. Indexes in the result
+     * count {@code pokemon} first, then {@code species}: species {@code s} is index {@code pokemon.size() + s}.
+     */
+    public TeamBuilderResult build(League league, List<CaughtPokemonRequest> pokemon, List<OwnedSpecies> species)
     {
         List<MetaPokemon> meta = metaLookup.meta(league);
         List<SkippedPokemon> skipped = new ArrayList<>();
         List<Candidate> eligible = new ArrayList<>();
         for (int i = 0; i < pokemon.size(); i++)
         {
-            CaughtPokemonRequest request = pokemon.get(i);
-            String problem = problemWith(request, league);
-            if (problem != null)
+            consider(i, pokemon.get(i), false, league, eligible, skipped);
+        }
+        // a ticked species the Trainer also entered exactly is theirs already; the real one counts, not a guess
+        Set<String> entered = new HashSet<>();
+        pokemon.forEach(p -> entered.add(p.speciesId() + "/" + p.shadow()));
+        for (int s = 0; s < species.size(); s++)
+        {
+            OwnedSpecies owned = species.get(s);
+            if (entered.contains(owned.speciesId() + "/" + owned.shadow()))
             {
-                skipped.add(new SkippedPokemon(i, problem));
+                continue;
+            }
+            int index = pokemon.size() + s;
+            Optional<CaughtPokemonRequest> assumed = goodIvs.assume(owned, league);
+            if (assumed.isEmpty())
+            {
+                skipped.add(new SkippedPokemon(index, speciesLookup.findById(owned.speciesId()).isEmpty()
+                    ? "Unknown species" : "No PvP moveset to assume; add it with its moves instead"));
             }
             else
             {
-                eligible.add(candidate(i, request, league));
+                consider(index, assumed.get(), true, league, eligible, skipped);
             }
         }
 
@@ -195,7 +220,7 @@ public class TeamBuilder
 
     // ---- eligibility ----
 
-    private String problemWith(CaughtPokemonRequest request, League league)
+    String problemWith(CaughtPokemonRequest request, League league)
     {
         Optional<SpeciesType> found = speciesLookup.findById(request.speciesId());
         if (found.isEmpty())
@@ -231,7 +256,21 @@ public class TeamBuilder
         return null;
     }
 
-    private Candidate candidate(int index, CaughtPokemonRequest request, League league)
+    private void consider(int index, CaughtPokemonRequest request, boolean assumed, League league,
+                          List<Candidate> eligible, List<SkippedPokemon> skipped)
+    {
+        String problem = problemWith(request, league);
+        if (problem != null)
+        {
+            skipped.add(new SkippedPokemon(index, problem));
+        }
+        else
+        {
+            eligible.add(candidate(index, request, assumed, league));
+        }
+    }
+
+    Candidate candidate(int index, CaughtPokemonRequest request, boolean assumed, League league)
     {
         SpeciesType species = speciesLookup.findById(request.speciesId()).orElseThrow();
         OptionalDouble level = league.buildLevel(species, request.atkIv(), request.defIv(), request.staIv(), request.level());
@@ -239,7 +278,7 @@ public class TeamBuilder
         List<Move> charged = request.chargedMoves().stream().map(id -> moveLookup.findById(id).orElseThrow()).toList();
         Moveset moveset = new Moveset(moveLookup.findById(request.fastMove()).orElseThrow(), charged);
         int cp = League.cp(species, request.atkIv(), request.defIv(), request.staIv(), level.orElseThrow());
-        return new Candidate(index, request, species, combatant, moveset, cp);
+        return new Candidate(index, request, assumed, species, combatant, moveset, cp);
     }
 
     // ---- 1v1 screening ----
@@ -372,7 +411,7 @@ public class TeamBuilder
         CaughtPokemonRequest request = candidate.request();
         return new TeamMember(candidate.index(), request.speciesId(), request.shadow(), candidate.combatant().level(), candidate.cp(),
             request.atkIv(), request.defIv(), request.staIv(), request.fastMove(), request.chargedMoves(),
-            Math.round(metaRating * 10) / 10.0);
+            Math.round(metaRating * 10) / 10.0, candidate.assumed());
     }
 
     private static double average(double[] values)

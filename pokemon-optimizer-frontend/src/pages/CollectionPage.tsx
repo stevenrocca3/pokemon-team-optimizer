@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link } from 'react-router'
+import { Link, useSearchParams } from 'react-router'
 import { LOGIN_URL } from '../api'
 import type { CaughtPokemon } from '../types'
 import { useSpecies } from '../species/species-context'
@@ -12,10 +12,15 @@ import { useCollection } from '../collection/collection-context'
 import { loadGuestCollection, saveGuestCollection } from '../collection/guest-storage'
 import { PageHeader } from '../components/PageHeader'
 import { usePageTitle } from '../lib/page-title'
+import { Checklist } from '../components/Checklist'
 
 export function CollectionPage() {
   usePageTitle('Your Collection')
   const collection = useCollection()
+  // the checklist is the quick way in; exact IVs are for players who want the closest answer
+  const [params, setParams] = useSearchParams()
+  const view = params.get('view') === 'exact' ? 'exact' : 'checklist'
+  const ticked = collection.status === 'ready' ? collection.checklist.length : 0
 
   return (
     <div className="mx-auto max-w-6xl px-4 pb-16">
@@ -24,20 +29,14 @@ export function CollectionPage() {
         title="Your Pokémon"
         actions={
           collection.status === 'ready' && (
-            <>
-              {collection.list.length > 0 && (
-                <span className="rounded-full bg-raised px-3 py-1 text-sm font-semibold tabular-nums text-ink-soft ring-1 ring-line">
-                  {collection.list.length.toLocaleString()} saved
-                </span>
-              )}
-              <Link to="/import" className="btn btn-secondary">
-                Import a file
-              </Link>
-            </>
+            <Link to="/team-builder" className="btn btn-primary">
+              Build teams
+            </Link>
           )
         }
       >
-        Add them by name, IVs and CP, or import a Poké Genie or Calcy IV export.
+        Tick the Pokémon you have and the Team Builder does the rest. Add exact IVs, or import a Poké Genie or Calcy IV
+        export, when you want it to use your real ones.
       </PageHeader>
 
       {collection.status === 'ready' && collection.storage === 'browser' && (
@@ -75,7 +74,42 @@ export function CollectionPage() {
       )}
 
       {collection.status === 'ready' && (
+        <div role="tablist" aria-label="Collection view" className="mb-6 inline-grid grid-cols-2 gap-1 rounded-xl bg-raised p-1 ring-1 ring-line">
+          {(
+            [
+              ['checklist', 'Checklist', ticked],
+              ['exact', 'Exact IVs', collection.list.length],
+            ] as const
+          ).map(([key, label, count]) => (
+            <button
+              key={key}
+              type="button"
+              role="tab"
+              aria-selected={view === key}
+              onClick={() => setParams(key === 'exact' ? { view: 'exact' } : {}, { replace: true })}
+              className={`h-10 rounded-lg px-4 text-sm font-bold transition ${
+                view === key ? 'bg-brand text-on-brand shadow' : 'text-ink-soft hover:bg-raised-strong hover:text-ink'
+              }`}
+            >
+              {label}{' '}
+              <span className={`tabular-nums ${view === key ? 'text-on-brand' : 'text-subtle'}`}>({count.toLocaleString()})</span>
+            </button>
+          ))}
+        </div>
+      )}
+
+      {collection.status === 'ready' && view === 'checklist' && <Checklist />}
+
+      {collection.status === 'ready' && view === 'exact' && (
         <>
+          <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+            <p className="max-w-2xl text-sm text-ink-soft">
+              Pokémon with their real IVs. The Team Builder uses these instead of a checklist tick for the same species.
+            </p>
+            <Link to="/import" className="btn btn-secondary">
+              Import a file
+            </Link>
+          </div>
           <QuickAdd />
 
           {collection.list.length === 0 ? (

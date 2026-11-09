@@ -1,5 +1,5 @@
 import { createContext, useContext } from 'react'
-import type { CaughtPokemon, CaughtPokemonRequest } from '../types'
+import type { CaughtPokemon, CaughtPokemonRequest, OwnedSpecies } from '../types'
 
 /**
  * Where a player's Pokémon live: their account when logged in, this browser when not.
@@ -11,6 +11,11 @@ export interface AddAllResult {
   added: number
   raised: number
   skipped: number
+}
+
+export interface ChecklistSave {
+  saving: boolean
+  error: string | null
 }
 
 export type CollectionState =
@@ -25,6 +30,11 @@ export type CollectionState =
       add: (pokemon: CaughtPokemonRequest) => Promise<boolean>
       addAll: (pokemon: CaughtPokemonRequest[]) => Promise<AddAllResult>
       remove: (id: number) => Promise<void>
+      /** species ticked as owned without exact IVs; the Team Builder assumes good IVs for them */
+      checklist: OwnedSpecies[]
+      /** updates at once; saving to the account happens behind it (see checklistSave) */
+      setChecklist: (next: OwnedSpecies[]) => void
+      checklistSave: ChecklistSave
     }
 
 export const CollectionContext = createContext<CollectionState>({ status: 'loading' })

@@ -34,7 +34,7 @@ public class SpeciesController
         ArrayList<SpeciesOption> speciesOptionList = new ArrayList<>();
         for (SpeciesType species : speciesLookup.findAll())
         {
-            SpeciesOption speciesOption = new SpeciesOption(species.speciesId(),species.speciesName(), species.dex());
+            SpeciesOption speciesOption = new SpeciesOption(species.speciesId(), species.speciesName(), species.dex(), species.shadowEligible());
             speciesOptionList.add(speciesOption);
             
         }

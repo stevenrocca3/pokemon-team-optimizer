@@ -33,6 +33,6 @@ public class TeamBuilderController
     public TeamBuilderResult build(@Valid @RequestBody TeamBuilderRequest request)
     {
         // a search takes every core for seconds, so only a few run at once; the rest wait, then get a 503
-        return gate.run(() -> teamBuilder.build(request.league(), request.pokemon()));
+        return gate.run(() -> teamBuilder.build(request.league(), request.pokemon(), request.species()));
     }
 }
