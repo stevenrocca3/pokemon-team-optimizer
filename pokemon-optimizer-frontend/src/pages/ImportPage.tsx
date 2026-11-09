@@ -335,7 +335,7 @@ function NeedsMovesCard({ pokemon, learnset, picked, onPick }: CardProps) {
     <li className={`rounded-lg bg-surface p-4 ring-1 ${done ? 'ring-brand/50' : 'ring-line'}`}>
       <div className="flex items-center gap-3">
         <div className="h-14 w-14 shrink-0 rounded-md bg-raised/60 p-1.5">
-          <PokemonArt dex={option?.dex} alt="" className="h-full w-full" />
+          <PokemonArt dex={option?.dex} alt="" icon className="h-full w-full" />
         </div>
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2">

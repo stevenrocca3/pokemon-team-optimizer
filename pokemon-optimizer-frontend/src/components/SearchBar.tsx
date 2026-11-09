@@ -119,7 +119,7 @@ export function SearchBar({ size = 'compact', autoFocus = false }: Props) {
                   index === activeIndex ? 'bg-raised' : ''
                 }`}
               >
-                <PokemonArt dex={option.dex} alt="" className="h-10 w-10 shrink-0" />
+                <PokemonArt dex={option.dex} alt="" icon className="h-10 w-10 shrink-0" />
                 <div className="min-w-0">
                   <div className="truncate font-medium text-ink">
                     {option.name}

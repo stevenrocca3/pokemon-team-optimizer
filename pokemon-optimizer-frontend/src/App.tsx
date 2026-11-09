@@ -19,8 +19,15 @@ function App() {
     <SpeciesProvider>
       <CollectionProvider>
         <div className="flex min-h-screen flex-col">
+          {/* the first Tab stop: keyboard users jump past the header and nav straight to the page */}
+          <a
+            href="#main"
+            className="btn btn-primary btn-sm fixed top-3 left-3 z-50 -translate-y-20 focus:translate-y-0"
+          >
+            Skip to content
+          </a>
           <Header />
-          <main className="flex-1">
+          <main id="main" tabIndex={-1} className="flex-1 focus:outline-none">
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route
@@ -60,7 +67,7 @@ function App() {
               <Route path="*" element={<NotFoundPage />} />
             </Routes>
           </main>
-          <footer className="border-t border-line px-4 py-6 text-center text-xs leading-6 text-subtle">
+          <footer className="border-t border-line px-4 py-6 text-center text-xs leading-6 text-muted">
             <p>
               <Feedback variant="link" /> ·{' '}
               <Link to="/privacy" className="hover:text-ink">

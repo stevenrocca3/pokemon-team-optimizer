@@ -5,6 +5,11 @@ export function artworkUrl(dex: number): string {
   return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${dex}.png`
 }
 
+/** The 96px game sprite: about 1 KB against the artwork's 100–200 KB, for images shown at icon size. */
+export function iconUrl(dex: number): string {
+  return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${dex}.png`
+}
+
 export function formatLevel(level: number): string {
   return Number.isInteger(level) ? String(level) : level.toFixed(1)
 }
