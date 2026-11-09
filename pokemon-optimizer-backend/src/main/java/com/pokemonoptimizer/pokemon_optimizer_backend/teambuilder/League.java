@@ -27,6 +27,18 @@ public enum League
         this.cpCap = cpCap;
     }
 
+    /** The League with PvPoke's CP cap (1500, 2500, or 10000 for no cap). */
+    public static League ofPvpokeCap(int cp)
+    {
+        return switch (cp)
+        {
+            case 1500 -> GREAT;
+            case 2500 -> ULTRA;
+            case 10000 -> MASTER;
+            default -> throw new IllegalArgumentException("No League has a " + cp + " CP cap");
+        };
+    }
+
     /**
      * The level this Pokémon battles at once built for the League: the highest level whose CP fits the Cap
      * (at most 50), but never below its current level. Empty if it is already over the Cap.

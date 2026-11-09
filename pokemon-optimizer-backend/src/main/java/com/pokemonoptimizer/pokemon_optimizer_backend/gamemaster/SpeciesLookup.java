@@ -15,6 +15,7 @@ import java.util.Set;
 @Component
 public class SpeciesLookup
 {
+    private final HashMap<String, SpeciesTraits> traitsById = new HashMap<>();
     private final HashMap<String, SpeciesType> speciesById;
     private HashMap<String, SpeciesType> loadSpecies() 
     {
@@ -52,6 +53,7 @@ public class SpeciesLookup
                     if (!data.containsKey(speciesId))
                     {
                         data.put(speciesId, species);
+                        traitsById.put(speciesId, new SpeciesTraits(List.copyOf(pokemon.tags()), evolutionStage(pokemon.family())));
                     }
                     else
                     {
@@ -71,6 +73,28 @@ public class SpeciesLookup
     {
         return Optional.ofNullable(speciesById.get(id));
         
+    }
+
+    /** Tags and evolution stage for Cup rules; empty for an unknown species. */
+    public Optional<SpeciesTraits> traits(String id)
+    {
+        return Optional.ofNullable(traitsById.get(id));
+    }
+
+    /** PvPoke's Pokemon.getEvolutionStage. */
+    private static int evolutionStage(Family family)
+    {
+        if (family == null)
+        {
+            return 0;
+        }
+        boolean evolves = family.evolutions() != null && !family.evolutions().isEmpty();
+        boolean hasParent = family.parent() != null;
+        if (evolves)
+        {
+            return hasParent ? 2 : 1;
+        }
+        return hasParent ? 3 : 0;
     }
 
     public List<SpeciesType> findAll()

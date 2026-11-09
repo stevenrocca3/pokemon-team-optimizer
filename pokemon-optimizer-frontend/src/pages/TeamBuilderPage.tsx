@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link } from 'react-router'
-import { buildTeams, LOGIN_URL, previewImport } from '../api'
+import { buildTeams, getCups, LOGIN_URL, previewImport } from '../api'
 import { useCollection } from '../collection/collection-context'
-import type { CaughtPokemonRequest, MatchupRef, OwnedSpecies, PowerUpImpact, TeamBuilderLeague, TeamBuilderResult, TeamMember, TeamResult } from '../types'
+import type { CaughtPokemonRequest, CupSummary, MatchupRef, OwnedSpecies, PowerUpImpact, TeamBuilderLeague, TeamBuilderResult, TeamMember, TeamResult } from '../types'
 import { useSpecies } from '../species/species-context'
 import { useMoves } from '../moves/moves-context'
 import { PokemonArt } from '../components/PokemonArt'
@@ -16,6 +16,7 @@ import { usePageTitle } from '../lib/page-title'
 import { useMetaName } from '../species/meta-name'
 import { groupByOpponent, shieldsList } from '../lib/matchups'
 import { bestAffordable, teamCost } from '../lib/budget'
+import { cupsFor, formatName } from '../lib/cups'
 
 const STARDUST_KEY = 'dexpresso.stardust'
 
@@ -39,6 +40,30 @@ function useStardustBudget(): [string, (next: string) => void] {
     }
   }
   return [text, update]
+}
+
+type Cups = { status: 'loading' } | { status: 'error' } | { status: 'ready'; list: CupSummary[] }
+
+// the Cups change at most nightly: fetch them once per visit, and again after a failure
+let cupsRequest: Promise<CupSummary[]> | null = null
+
+function useCups(): Cups {
+  const [cups, setCups] = useState<Cups>({ status: 'loading' })
+  useEffect(() => {
+    let cancelled = false
+    cupsRequest ??= getCups().catch((error: unknown) => {
+      cupsRequest = null
+      throw error
+    })
+    cupsRequest.then(
+      (list) => !cancelled && setCups({ status: 'ready', list }),
+      () => !cancelled && setCups({ status: 'error' }),
+    )
+    return () => {
+      cancelled = true
+    }
+  }, [])
+  return cups
 }
 
 const LEAGUES: { key: TeamBuilderLeague; label: string; cpLabel: string }[] = [
@@ -66,7 +91,7 @@ type Run =
   | { status: 'idle' }
   | { status: 'running'; startedAt: number }
   | { status: 'error'; message: string }
-  | { status: 'done'; result: TeamBuilderResult; source: Source }
+  | { status: 'done'; result: TeamBuilderResult; source: Source; name: string }
 
 export function TeamBuilderPage() {
   usePageTitle('Team Builder')
@@ -87,6 +112,8 @@ export function TeamBuilderPage() {
   const [fileSource, setFileSource] = useState<Source | null>(null)
   const [useFile, setUseFile] = useState(false)
   const [league, setLeague] = useState<TeamBuilderLeague>('GREAT')
+  const [cupKey, setCupKey] = useState('')
+  const cups = useCups()
   const [run, setRun] = useState<Run>({ status: 'idle' })
   const abort = useRef<AbortController | null>(null)
 
@@ -94,6 +121,8 @@ export function TeamBuilderPage() {
 
   const source: Source | null =
     useFile || collection.status !== 'ready' ? fileSource : collection.source
+  const leagueCups = cups.status === 'ready' ? cupsFor(cups.list, league) : []
+  const cup = leagueCups.find((c) => c.key === cupKey) ?? null
 
   async function build() {
     if (!source || sizeOf(source) === 0) return
@@ -102,8 +131,11 @@ export function TeamBuilderPage() {
     abort.current = controller
     setRun({ status: 'running', startedAt: Date.now() })
     try {
-      const result = await buildTeams({ league, pokemon: source.pokemon, species: source.species }, controller.signal)
-      setRun({ status: 'done', result, source })
+      const result = await buildTeams(
+        { league, pokemon: source.pokemon, species: source.species, cup: cup?.key ?? null },
+        controller.signal,
+      )
+      setRun({ status: 'done', result, source, name: formatName(league, cup) })
     } catch (error: unknown) {
       if (controller.signal.aborted) return
       setRun({ status: 'error', message: error instanceof Error ? error.message : String(error) })
@@ -113,6 +145,13 @@ export function TeamBuilderPage() {
   function changeLeague(next: TeamBuilderLeague) {
     abort.current?.abort()
     setLeague(next)
+    setCupKey('')
+    setRun({ status: 'idle' })
+  }
+
+  function changeCup(next: string) {
+    abort.current?.abort()
+    setCupKey(next)
     setRun({ status: 'idle' })
   }
 
@@ -139,7 +178,7 @@ export function TeamBuilderPage() {
           />
         </Step>
 
-        <Step n={2} title="League">
+        <Step n={2} title="League or Cup">
           <div role="tablist" aria-label="League" className="grid grid-cols-3 gap-1 rounded-xl bg-raised p-1 ring-1 ring-line">
             {LEAGUES.map((l) => (
               <button
@@ -156,6 +195,7 @@ export function TeamBuilderPage() {
               </button>
             ))}
           </div>
+          <CupPicker cups={cups} leagueCups={leagueCups} league={league} cup={cup} onChange={changeCup} />
         </Step>
 
         <Step n={3} title="Brew">
@@ -177,9 +217,65 @@ export function TeamBuilderPage() {
         </div>
       )}
 
-      {run.status === 'done' && <Results result={run.result} source={run.source} />}
+      {run.status === 'done' && <Results result={run.result} source={run.source} name={run.name} />}
 
       <HowItWorks />
+    </div>
+  )
+}
+
+function CupPicker({
+  cups,
+  leagueCups,
+  league,
+  cup,
+  onChange,
+}: {
+  cups: Cups
+  leagueCups: CupSummary[]
+  league: TeamBuilderLeague
+  cup: CupSummary | null
+  onChange: (key: string) => void
+}) {
+  if (cups.status === 'error') {
+    return <p className="mt-3 text-xs text-subtle">Cups can't be loaded right now. The open leagues still work.</p>
+  }
+  return (
+    <div className="mt-3">
+      <label className="block text-xs font-semibold uppercase tracking-wide text-subtle">
+        Cup
+        <select
+          value={cup?.key ?? ''}
+          onChange={(e) => onChange(e.target.value)}
+          disabled={cups.status === 'loading'}
+          className="field mt-1 w-full normal-case tracking-normal"
+        >
+          <option value="">{cups.status === 'loading' ? 'Loading Cups…' : `Open ${formatName(league, null)}`}</option>
+          {leagueCups.map((c) => (
+            <option key={c.key} value={c.key}>
+              {c.title}
+            </option>
+          ))}
+        </select>
+      </label>
+      {cups.status === 'ready' && leagueCups.length === 0 && (
+        <p className="mt-2 text-xs text-subtle">No {formatName(league, null)} Cups running right now.</p>
+      )}
+      {cup && (
+        <div className="mt-2 text-xs text-ink-soft">
+          {cup.rules.length > 0 && (
+            <ul className="list-disc space-y-0.5 pl-4">
+              {cup.rules.map((rule) => (
+                <li key={rule}>{rule}</li>
+              ))}
+            </ul>
+          )}
+          <p className="mt-1 text-subtle">
+            {cup.partySize === 6 ? 'Bring 6, battle with 3. ' : ''}
+            Rules and meta from PvPoke, {cup.updated}.
+          </p>
+        </div>
+      )}
     </div>
   )
 }
@@ -335,9 +431,7 @@ function Step({ n, title, children }: { n: number; title: string; children: Reac
   )
 }
 
-const LEAGUE_NAMES: Record<TeamBuilderLeague, string> = { GREAT: 'Great League', ULTRA: 'Ultra League', MASTER: 'Master League' }
-
-function Results({ result, source }: { result: TeamBuilderResult; source: Source }) {
+function Results({ result, source, name }: { result: TeamBuilderResult; source: Source; name: string }) {
   const species = useSpecies()
   const nameOf = (id: string) => (species.status === 'ready' ? species.byId.get(id)?.name : undefined) ?? id
   const [stardustText, setStardust] = useStardustBudget()
@@ -349,15 +443,16 @@ function Results({ result, source }: { result: TeamBuilderResult; source: Source
     <section className="mt-12" aria-live="polite">
       {result.teams.length === 0 ? (
         <div className="card max-w-2xl p-6">
-          <p className="font-semibold">Not enough Pokémon for {LEAGUE_NAMES[result.league]}</p>
+          <p className="font-semibold">Not enough Pokémon for {name}</p>
           <p className="mt-1 text-sm text-ink-soft">
-            A team needs three different species that fit the league. {result.eligible} of yours can play there.
+            A team needs three different species that {result.cup ? "the Cup's rules allow" : 'fit the league'}. {result.eligible} of
+            yours can play there.
           </p>
         </div>
       ) : (
         <>
           <p className="eyebrow text-brand">Fresh from the bar</p>
-          <h2 className="mt-1 font-display text-3xl font-black">Best teams for {LEAGUE_NAMES[result.league]}</h2>
+          <h2 className="mt-1 font-display text-3xl font-black">Best teams for {name}</h2>
           <p className="mt-1 text-sm text-subtle">
             From {result.eligible.toLocaleString()} eligible · vs {result.metaSize} meta Pokémon (PvPoke, {result.metaDate})
           </p>
@@ -412,7 +507,7 @@ function Results({ result, source }: { result: TeamBuilderResult; source: Source
       {result.skipped.length > 0 && (
         <details className="card mt-6 max-w-2xl p-4">
           <summary className="cursor-pointer text-sm font-semibold">
-            {result.skipped.length.toLocaleString()} Pokémon couldn't play in {LEAGUE_NAMES[result.league]}
+            {result.skipped.length.toLocaleString()} Pokémon couldn't play in {name}
           </summary>
           <ul className="mt-3 max-h-72 overflow-y-auto text-sm">
             {result.skipped.map((s) => (
@@ -609,6 +704,10 @@ function HowItWorks() {
         <p>
           Each Pokémon is built to the highest level that fits the league (at most 50, never below its current level), then
           battled 1v1 against every Pokémon in PvPoke's meta for that league to find your strongest ten.
+        </p>
+        <p>
+          For a Cup, only the Pokémon its rules allow can play, and the opponents come from PvPoke's meta for that Cup. The
+          list of Cups, their rules and their metas are refreshed from PvPoke every night.
         </p>
         <p>
           Pokémon ticked on your checklist have no IVs yet, so each gets a good spread for the league: the line where the top 10%

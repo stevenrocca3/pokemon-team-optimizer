@@ -15,6 +15,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.assertj.MockMvcTester;
 
+import com.pokemonoptimizer.pokemon_optimizer_backend.cups.CupCatalog;
 import com.pokemonoptimizer.pokemon_optimizer_backend.security.SecurityConfig;
 import com.pokemonoptimizer.pokemon_optimizer_backend.teambuilder.TeamBuilder;
 import com.pokemonoptimizer.pokemon_optimizer_backend.teambuilder.TeamBuilderGate;
@@ -27,6 +28,9 @@ public class TeamBuilderControllerBusyTest
 {
     @Autowired
     private MockMvcTester mvc;
+
+    @MockitoBean
+    private CupCatalog cups;
 
     @MockitoBean
     private TeamBuilder teamBuilder;

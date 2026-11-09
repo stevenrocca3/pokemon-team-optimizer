@@ -6,7 +6,7 @@ import java.util.List;
 public record GamemasterPokemon(BaseStats baseStats, int dex, String speciesName, 
                         String speciesId, List<String> tags, boolean released, List<String> fastMoves, 
                         List<String> chargedMoves, List<String> eliteMoves, List<String> legacyMoves,
-                        List<String> types) {
+                        List<String> types, Family family) {
                             public GamemasterPokemon 
                             {
                                 if (tags == null) tags = List.of();

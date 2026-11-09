@@ -135,6 +135,19 @@ export interface TeamBuilderRequest
     league : TeamBuilderLeague;
     pokemon : CaughtPokemonRequest[];
     species : OwnedSpecies[];   // checklist ticks; result indexes past pokemon point here
+    cup? : string | null;       // a live Cup's key ("fantasy-1500"); absent for the open League
+}
+
+// GET /api/cups: a live Cup from PvPoke's data, refreshed nightly
+export interface CupSummary
+{
+    key : string;               // "fantasy-1500"
+    title : string;
+    league : TeamBuilderLeague;
+    partySize : number;         // 6 for Play! Pokémon's pick-3-of-6 formats
+    rules : string[];           // PvPoke's rule lines, for people to read
+    metaSize : number;
+    updated : string;           // yyyy-mm-dd of PvPoke's data
 }
 
 // A sampled win rate with its Wilson 95% interval, all as fractions 0–1
@@ -212,6 +225,7 @@ export interface TeamBuilderResult
     eligible : number;
     teams : TeamResult[];     // best first; empty when fewer than 3 species can play
     skipped : SkippedPokemon[];
+    cup : string | null;      // the Cup's key, or null for the open League
 }
 
 // POST /api/compare: which of a few Pokémon (copies of one species) is worth building for a League

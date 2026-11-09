@@ -6,6 +6,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.assertj.MockMvcTester;
 
+import com.pokemonoptimizer.pokemon_optimizer_backend.cups.Cup;
+import com.pokemonoptimizer.pokemon_optimizer_backend.cups.CupCatalog;
+import com.pokemonoptimizer.pokemon_optimizer_backend.cups.CupRules;
 import com.pokemonoptimizer.pokemon_optimizer_backend.dto.OwnedSpecies;
 import com.pokemonoptimizer.pokemon_optimizer_backend.security.SecurityConfig;
 import com.pokemonoptimizer.pokemon_optimizer_backend.teambuilder.League;
@@ -31,7 +35,10 @@ public class TeamBuilderControllerTest
     private MockMvcTester mvc;
 
     @MockitoBean
-    private TeamBuilder teamBuilder;   // the search itself is TeamBuilderTest's job
+    private TeamBuilder teamBuilder;
+
+    @MockitoBean
+    private CupCatalog cups;   // the search itself is TeamBuilderTest's job
 
     private static final String BODY = """
             {"league":"ULTRA","pokemon":[
@@ -42,7 +49,7 @@ public class TeamBuilderControllerTest
     @Test
     public void guestsCanBuildTeamsWithoutLoggingIn()
     {   // no oidcLogin() and no csrf(): a fresh visitor may not have the XSRF-TOKEN cookie yet, like /api/rank
-        when(teamBuilder.build(eq(League.ULTRA), any(), any())).thenReturn(new TeamBuilderResult(League.ULTRA, 45, "2026-10-04", 1, List.of(), List.of()));
+        when(teamBuilder.build(eq(League.ULTRA), any(), any())).thenReturn(new TeamBuilderResult(League.ULTRA, 45, "2026-10-04", 1, List.of(), List.of(), null));
 
         assertThat(mvc.post().uri("/api/team-builder").contentType(MediaType.APPLICATION_JSON).content(BODY))
             .hasStatusOk()
@@ -62,7 +69,7 @@ public class TeamBuilderControllerTest
     public void tickedSpeciesAloneAreEnough()
     {   // a checklist-only Trainer sends no exact Pokémon
         when(teamBuilder.build(League.GREAT, List.of(), List.of(new OwnedSpecies("medicham", false), new OwnedSpecies("registeel", true))))
-            .thenReturn(new TeamBuilderResult(League.GREAT, 44, "2026-10-04", 2, List.of(), List.of()));
+            .thenReturn(new TeamBuilderResult(League.GREAT, 44, "2026-10-04", 2, List.of(), List.of(), null));
 
         assertThat(mvc.post().uri("/api/team-builder").contentType(MediaType.APPLICATION_JSON).content("""
                 {"league":"GREAT","species":[{"speciesId":"medicham"},{"speciesId":"registeel","shadow":true}]}
@@ -77,6 +84,46 @@ public class TeamBuilderControllerTest
         String many = "{\"speciesId\":\"medicham\"},".repeat(2001);
         assertThat(mvc.post().uri("/api/team-builder").contentType(MediaType.APPLICATION_JSON)
                 .content("{\"league\":\"GREAT\",\"species\":[" + many.substring(0, many.length() - 1) + "]}"))
+            .hasStatus(HttpStatus.BAD_REQUEST);
+    }
+
+    private static final Cup FANTASY = new Cup("fantasy-1500", "Fantasy Cup", League.GREAT, 1500, 3, List.of(),
+        new CupRules(List.of(), List.of()), List.of(), "2026-11-03");
+
+    @Test
+    public void aCupBuildsForThatCup()
+    {
+        when(cups.find("fantasy-1500")).thenReturn(Optional.of(FANTASY));
+        when(teamBuilder.build(eq(FANTASY), any(), any()))
+            .thenReturn(new TeamBuilderResult(League.GREAT, 30, "2026-11-03", 2, List.of(), List.of(), "fantasy-1500"));
+
+        assertThat(mvc.post().uri("/api/team-builder").contentType(MediaType.APPLICATION_JSON).content("""
+                {"league":"GREAT","cup":"fantasy-1500","species":[{"speciesId":"azumarill"}]}
+                """))
+            .hasStatusOk()
+            .bodyJson().extractingPath("$.cup").asString().isEqualTo("fantasy-1500");
+    }
+
+    @Test
+    public void aCupThatsNoLongerRunningIs400()
+    {
+        when(cups.find("halloween-1500")).thenReturn(Optional.empty());
+
+        assertThat(mvc.post().uri("/api/team-builder").contentType(MediaType.APPLICATION_JSON).content("""
+                {"league":"GREAT","cup":"halloween-1500","species":[{"speciesId":"azumarill"}]}
+                """))
+            .hasStatus(HttpStatus.BAD_REQUEST)
+            .bodyJson().extractingPath("$.detail").asString().contains("isn't running");
+    }
+
+    @Test
+    public void aCupFromAnotherLeagueIs400()
+    {
+        when(cups.find("fantasy-1500")).thenReturn(Optional.of(FANTASY));
+
+        assertThat(mvc.post().uri("/api/team-builder").contentType(MediaType.APPLICATION_JSON).content("""
+                {"league":"ULTRA","cup":"fantasy-1500","species":[{"speciesId":"azumarill"}]}
+                """))
             .hasStatus(HttpStatus.BAD_REQUEST);
     }
 }
