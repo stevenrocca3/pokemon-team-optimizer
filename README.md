@@ -6,7 +6,7 @@ Pick a league or Cup, and DexPresso picks your best team of three from your coll
 
 🔗 **Live at [dexpresso.app](https://dexpresso.app)**
 
-🔗 **Team Builder here: [Team Builder Demo](demo.mp4)
+🔗 **Team Builder here: [Team Builder Demo](https://drive.google.com/file/d/1Jwr-vhJI5Bknsm-2WSljwemkjur0Xs1X/view?usp=sharing)
 
 ---
 
