@@ -372,7 +372,7 @@ function SpeciesPicker({
         Pokémon
       </label>
       <div className="mt-1 flex h-11 items-center gap-2 rounded-lg bg-raised pl-1.5 ring-1 ring-line-strong ring-inset focus-within:ring-2 focus-within:ring-brand">
-        <PokemonArt dex={selected?.dex} alt="" className="h-8 w-8 shrink-0" />
+        <PokemonArt dex={selected?.dex} alt="" icon className="h-8 w-8 shrink-0" />
         <input
           id={`${listId}-input`}
           ref={inputRef}
@@ -410,7 +410,7 @@ function SpeciesPicker({
               onMouseEnter={() => setActive(i)}
               className={`flex cursor-pointer items-center gap-2 px-2 py-1.5 text-sm ${i === active ? 'bg-brand/15 text-ink' : 'text-ink-soft'}`}
             >
-              <PokemonArt dex={option.dex} alt="" className="h-7 w-7 shrink-0" />
+              <PokemonArt dex={option.dex} alt="" icon className="h-7 w-7 shrink-0" />
               <span className="truncate">{option.name}</span>
               <span className="ml-auto text-xs text-subtle">{formatDex(option.dex)}</span>
             </li>

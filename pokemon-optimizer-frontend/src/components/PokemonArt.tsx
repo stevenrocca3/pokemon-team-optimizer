@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { artworkUrl } from '../lib/species'
+import { artworkUrl, iconUrl } from '../lib/species'
 
 interface Props {
   /** Pokédex number; undefined while the species list is still loading. */
@@ -8,10 +8,15 @@ interface Props {
   className?: string
   /** The page's main image (its LCP element): load it right away at high priority instead of lazily. */
   priority?: boolean
+  /** For images shown at about 56px or smaller: the tiny game sprite instead of the full artwork. */
+  icon?: boolean
 }
 
-export function PokemonArt({ dex, alt, className = '', priority = false }: Props) {
+export function PokemonArt({ dex, alt, className = '', priority = false, icon = false }: Props) {
   const [failedDex, setFailedDex] = useState<number | null>(null)
+  // if a sprite is ever missing, fall back to the artwork before giving up
+  const [spriteFailedDex, setSpriteFailedDex] = useState<number | null>(null)
+  const useSprite = icon && spriteFailedDex !== dex
 
   if (dex === undefined || failedDex === dex) {
     return (
@@ -27,13 +32,14 @@ export function PokemonArt({ dex, alt, className = '', priority = false }: Props
 
   return (
     <img
-      src={artworkUrl(dex)}
+      src={useSprite ? iconUrl(dex) : artworkUrl(dex)}
       alt={alt}
       loading={priority ? 'eager' : 'lazy'}
       fetchPriority={priority ? 'high' : 'auto'}
       decoding="async"
-      onError={() => setFailedDex(dex)}
-      className={`object-contain ${className}`}
+      onError={() => (useSprite ? setSpriteFailedDex(dex) : setFailedDex(dex))}
+      // sprites are pixel art: keep the pixels crisp when scaled
+      className={`object-contain ${useSprite ? '[image-rendering:pixelated]' : ''} ${className}`}
     />
   )
 }
