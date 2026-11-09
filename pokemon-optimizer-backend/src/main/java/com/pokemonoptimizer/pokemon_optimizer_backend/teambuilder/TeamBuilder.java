@@ -34,7 +34,7 @@ import com.pokemonoptimizer.pokemon_optimizer_backend.gamemaster.SpeciesType;
 
 /**
  * Finds the best Teams of three from a set of Pokémon, ranked by sampled 3v3 win odds (ADR 0005):
- * screen with 1v1s against the meta, shortlist Teams by coverage, pick each one's lead on a selection sample,
+ * screen with 1v1s against the meta, shortlist Teams by coverage, pick each one's lineup on a selection sample,
  * then estimate the finalists' odds on a fresh sample. Battles run in parallel; every result is a sum of
  * whole and half wins, so the order they finish in can't change the answer.
  */
@@ -62,12 +62,12 @@ public class TeamBuilder
     /** A Team being considered: three shortlist positions, and its 1v1 coverage of the meta. */
     private record Trio(int[] members, double coverage) {}
 
-    /** One finalist Team with one lead: its order and its wins so far against the selection sample. */
+    /** One finalist Team in one lineup: its order and its wins so far against the selection sample. */
     record Trial(int finalist, int[] order, double wins) {}
 
     /**
      * The trials, best first, that go on to play the rest of the selection sample: the best few, plus the best trial of
-     * further Teams until {@code results} different Teams are in, so one Team's three leads can't crowd the others out.
+     * further Teams until {@code results} different Teams are in, so one Team's six lineups can't crowd the others out.
      */
     static List<Trial> survivors(List<Trial> ranked, int results)
     {
@@ -85,7 +85,7 @@ public class TeamBuilder
         return survivors;
     }
 
-    /** How many (Team, lead) trials beyond the Teams shown play the whole selection sample. */
+    /** How many (Team, lineup) trials beyond the Teams shown play the whole selection sample. */
     private static final int SURVIVORS_EXTRA = 2;
 
     /** An opposing Team, lead first. */
@@ -227,23 +227,22 @@ public class TeamBuilder
             .limit(settings.teamsToSimulate())
             .toList();
 
-        // Stage 3: each finalist's best lead against one shared sample of meta Teams. Every Team and lead plays the
-        // first quarter of the sample; only the most promising go on to play the rest, so a clearly worse lead or
-        // Team doesn't cost a full sample of 3v3s
+        // Stage 3: each finalist's best lineup (lead, safe swap, closer) against one shared sample of meta Teams.
+        // Every Team and lineup plays the first sixth of the sample; only the most promising go on to play the rest,
+        // so a clearly worse lineup or Team doesn't cost a full sample of 3v3s
         List<Opponents> selection = sampleOpponents(meta, settings.selectionSamples(), settings.seed());
-        int firstRound = Math.max(1, selection.size() / 4);
+        int firstRound = Math.max(1, selection.size() / 6);
         List<Opponents> early = selection.subList(0, firstRound);
         List<Opponents> rest = selection.subList(firstRound, selection.size());
         List<Trial> trials = new ArrayList<>();
         for (int f = 0; f < finalists.size(); f++)
         {
-            for (int lead = 0; lead < 3; lead++)
+            for (int[] order : lineups(finalists.get(f).members()))
             {
-                int[] order = leadFirst(finalists.get(f).members(), lead);
                 trials.add(new Trial(f, order, wins(order, eligible, early)));
             }
         }
-        trials.sort(Comparator.comparingDouble((Trial t) -> -t.wins()));   // stable: ties keep finalist, then lead order
+        trials.sort(Comparator.comparingDouble((Trial t) -> -t.wins()));   // stable: ties keep finalist, then lineup order
         List<Trial> survivors = new ArrayList<>();
         for (Trial trial : survivors(trials, settings.results()))
         {
@@ -448,7 +447,7 @@ public class TeamBuilder
         return teams;
     }
 
-    /** Wins against each opposing Team, ties as half. */
+    /** Wins against each opposing Team, ties as half. Our side plays its lineup's roles; the meta side plays as PvPoke's AI. */
     private static double wins(int[] order, List<Candidate> eligible, List<Opponents> opponents)
     {
         List<Combatant> combatants = new ArrayList<>();
@@ -460,25 +459,27 @@ public class TeamBuilder
         }
         return opponents.parallelStream()
             .mapToDouble(opponent -> {
-                Winner winner = TeamBattle.simulate(combatants, movesets, opponent.combatants(), opponent.movesets()).winner();
+                Winner winner = TeamBattle.simulateWithRoles(combatants, movesets, opponent.combatants(), opponent.movesets()).winner();
                 return winner == Winner.A ? 1 : winner == Winner.TIE ? 0.5 : 0;
             })
             .sum();
     }
 
-    private static int[] leadFirst(int[] members, int lead)
+    /** Every lineup of a Team: lead, safe swap (who a switch-out goes to), closer. */
+    static List<int[]> lineups(int[] members)
     {
-        int[] order = new int[3];
-        order[0] = members[lead];
-        int next = 1;
-        for (int i = 0; i < 3; i++)
+        List<int[]> lineups = new ArrayList<>();
+        for (int lead = 0; lead < 3; lead++)
         {
-            if (i != lead)
+            for (int swap = 0; swap < 3; swap++)
             {
-                order[next++] = members[i];
+                if (swap != lead)
+                {
+                    lineups.add(new int[] { members[lead], members[swap], members[3 - lead - swap] });
+                }
             }
         }
-        return order;
+        return lineups;
     }
 
     /**
