@@ -47,7 +47,7 @@ const STEPS: Step[] = [
   },
   {
     title: 'Dose',
-    body: 'Your ten strongest are combined into teams, ranked by how well they cover the meta together.',
+    body: 'Your ten strongest are combined into teams, ranked by how well they cover the meta together. The top five go on.',
     screen: 'Coverage',
     Screen: DoseScreen,
     advanceMs: 9600,
@@ -55,7 +55,7 @@ const STEPS: Step[] = [
   },
   {
     title: 'Pull',
-    body: 'The best teams play full 3v3s, with switching and shields, against 100 meta teams, in every lineup of lead, safe swap and closer.',
+    body: 'Those five play full 3v3s, with switching and shields, against 100 meta teams, in every lineup of lead, safe swap and closer.',
     screen: '3v3s',
     Screen: PullScreen,
     advanceMs: 12000,

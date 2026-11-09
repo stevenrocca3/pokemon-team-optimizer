@@ -8,10 +8,10 @@ import { pixelCorners } from '../lib/pixel'
 const STEP_CAPTIONS = [
   `Battling each Pokémon 1v1 against all ${DEMO_RUN.metaSize} meta picks…`,
   'Ranking teams by how well they cover the meta…',
-  'Trying all 6 lineups in full 3v3s, shields and all…',
+  'Trying all 6 lineups against 100 meta teams…',
   `Measuring the win odds on ${DEMO_RUN.best.battles} fresh battles…`,
 ]
-const STEP_LABELS = ['1v1s vs the meta', 'Rank by coverage', '3v3s, every lineup', '400 fresh battles']
+const STEP_LABELS = ['1v1s vs the meta', 'Rank by coverage', '3v3s vs 100 meta teams', '400 fresh battles']
 const ROLES = ['Lead', 'Safe swap', 'Closer']
 const LEAGUES = ['Great', 'Ultra', 'Master']
 // shown with reduced motion: the result, fully typed
