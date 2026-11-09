@@ -3,6 +3,7 @@ import { PokemonArt } from './PokemonArt'
 import { useSpecies } from '../species/species-context'
 import { prefersReducedMotion } from '../lib/motion'
 import { DEMO_RUN, demoFrame, typed, type DemoFrame } from '../lib/demo-run'
+import { pixelCorners } from '../lib/pixel'
 
 const STEP_CAPTIONS = [
   `Battling each Pokémon 1v1 against all ${DEMO_RUN.metaSize} meta picks…`,
@@ -299,16 +300,6 @@ function PixelHand({ className, style }: { className: string; style: CSSProperti
       )}
     </svg>
   )
-}
-
-/** Corners stepped like pixel art, `s` px per step, as a clip-path. */
-function pixelCorners(s: number): CSSProperties {
-  const a = `${s}px`
-  const b = `${2 * s}px`
-  const W = (d: string) => `calc(100% - ${d})`
-  return {
-    clipPath: `polygon(${b} 0, ${W(b)} 0, ${W(b)} ${a}, ${W(a)} ${a}, ${W(a)} ${b}, 100% ${b}, 100% ${W(b)}, ${W(a)} ${W(b)}, ${W(a)} ${W(a)}, ${W(b)} ${W(a)}, ${W(b)} 100%, ${b} 100%, ${b} ${W(a)}, ${a} ${W(a)}, ${a} ${W(b)}, 0 ${W(b)}, 0 ${b}, ${a} ${b}, ${a} ${a}, ${b} ${a})`,
-  }
 }
 
 /** Milliseconds of demo played: runs only while the phone is on screen; frozen on the result with reduced motion. */

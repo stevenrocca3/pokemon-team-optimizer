@@ -337,3 +337,28 @@ button {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* components/BrewCarousel.tsx: the step screens */
+@keyframes beam-march {
+  to {
+    stroke-dashoffset: -16;
+  }
+}
+@keyframes pop-in {
+  from {
+    opacity: 0;
+    scale: 0.6;
+  }
+}
+@keyframes slide-in-left {
+  from {
+    opacity: 0;
+    translate: -40% 0;
+  }
+}
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
