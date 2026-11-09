@@ -279,3 +279,18 @@ export interface BreakpointReport
     maxDefense : number;
     opponents : OpponentBreakpoint[];
 }
+
+// GET /api/stats: the site's public totals. Floors: guests keep their Pokémon in the browser.
+export interface RatingSummary {
+    total : number;
+    average : number;                       // 0 when nobody has rated yet
+    percentByStars : Record<string, number>;
+}
+
+export interface SiteStats {
+    teamsBuilt : number;
+    pokemonSaved : number;                  // exact Pokémon in Collections
+    speciesTicked : number;                 // checklist ticks
+    trainers : number;                      // accounts; guests never show up here
+    ratings : RatingSummary;
+}

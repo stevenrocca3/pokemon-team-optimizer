@@ -1,4 +1,4 @@
-import type {SpeciesOption, RankRequest, RankedIvResult, SpeciesDetail, Move, CaughtPokemon, CaughtPokemonRequest, BreakpointReport, CupSummary, ImportPreview, IvComparisonResult, OwnedSpecies, TeamBuilderLeague, TeamBuilderRequest, TeamBuilderResult} from './types'
+import type {SpeciesOption, RankRequest, RankedIvResult, SpeciesDetail, Move, CaughtPokemon, CaughtPokemonRequest, BreakpointReport, CupSummary, ImportPreview, IvComparisonResult, OwnedSpecies, SiteStats, TeamBuilderLeague, TeamBuilderRequest, TeamBuilderResult} from './types'
 import { apiFetch } from './lib/http'
 
 export { NotLoggedInError } from './lib/http'
@@ -197,4 +197,10 @@ export async function deleteAccount(): Promise<void>
 function csrfHeader(): Record<string, string> {
     const token = document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1]
     return token ? { 'X-XSRF-TOKEN': decodeURIComponent(token) } : {}
+}
+
+export async function getSiteStats(): Promise<SiteStats>
+{
+    const response = await apiFetch('/api/stats');
+    return await response.json();
 }

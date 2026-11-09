@@ -6,6 +6,7 @@ import { Reveal } from "../components/Reveal";
 import { CreamerRule, LogoText } from "../components/Creamer";
 import { DemoPhone } from "../components/DemoPhone";
 import { BrewCarousel } from "../components/BrewCarousel";
+import { ProofStrip } from "../components/ProofStrip";
 import { DEMO_RUN, type DemoPhase } from "../lib/demo-run";
 import { useScrollVariable } from "../lib/motion";
 import { useSpecies } from "../species/species-context";
@@ -143,6 +144,9 @@ export function HomePage() {
           />
         </a>
       </section>
+
+      {/* The real totals, once they're big enough to be worth showing */}
+      <ProofStrip />
 
       {/* 2. Popular */}
       <section id="popular" className="scroll-mt-16 bg-canvas py-24">
