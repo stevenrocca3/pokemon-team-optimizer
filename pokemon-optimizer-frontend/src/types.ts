@@ -3,6 +3,14 @@ export interface SpeciesOption
     id : string;
     name : string;
     dex : number;
+    shadowEligible : boolean;
+}
+
+/** A species ticked on the Collection checklist: owned, exact IVs unknown. */
+export interface OwnedSpecies
+{
+    speciesId : string;
+    shadow : boolean;
 }
 export interface RankRequest
 {
@@ -126,6 +134,7 @@ export interface TeamBuilderRequest
 {
     league : TeamBuilderLeague;
     pokemon : CaughtPokemonRequest[];
+    species : OwnedSpecies[];   // checklist ticks; result indexes past pokemon point here
 }
 
 // A sampled win rate with its Wilson 95% interval, all as fractions 0–1
@@ -151,6 +160,7 @@ export interface TeamMember
     fastMove : string;
     chargedMoves : string[];
     metaRating : number;    // average 1v1 battle rating vs the meta, 500 = even
+    assumed : boolean;      // a checklist tick battling with assumed good IVs
 }
 
 export interface TeamResult

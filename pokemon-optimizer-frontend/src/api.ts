@@ -1,4 +1,4 @@
-import type {SpeciesOption, RankRequest, RankedIvResult, SpeciesDetail, Move, CaughtPokemon, CaughtPokemonRequest, ImportPreview, TeamBuilderRequest, TeamBuilderResult} from './types'
+import type {SpeciesOption, RankRequest, RankedIvResult, SpeciesDetail, Move, CaughtPokemon, CaughtPokemonRequest, ImportPreview, OwnedSpecies, TeamBuilderLeague, TeamBuilderRequest, TeamBuilderResult} from './types'
 import { apiFetch } from './lib/http'
 
 export { NotLoggedInError } from './lib/http'
@@ -57,6 +57,32 @@ export async function addToCollection(request: CaughtPokemonRequest): Promise<Ca
 export async function removeFromCollection(id : number): Promise<void>
 {
     await apiFetch(`/api/collection/${id}`, { method: 'DELETE', headers: csrfHeader() });
+}
+
+/** The species the logged-in Trainer ticked on the Collection checklist. */
+export async function getChecklist(): Promise<OwnedSpecies[]>
+{
+    const response = await apiFetch('/api/checklist');
+    return await response.json();
+}
+
+/** Replaces the whole checklist; returns what was saved (species order, each once). */
+export async function saveChecklist(species: OwnedSpecies[]): Promise<OwnedSpecies[]>
+{
+    const response = await apiFetch('/api/checklist',
+    {
+        method: 'PUT',
+        headers: { 'Content-Type' : 'application/json', ...csrfHeader() },
+        body: JSON.stringify({ species })
+    });
+    return await response.json();
+}
+
+/** The League's meta, the checklist's default list. */
+export async function getMeta(league: TeamBuilderLeague): Promise<OwnedSpecies[]>
+{
+    const response = await apiFetch(`/api/meta/${league}`);
+    return await response.json();
 }
 
 /** A Poké Genie or Calcy IV export; the server tells them apart. */

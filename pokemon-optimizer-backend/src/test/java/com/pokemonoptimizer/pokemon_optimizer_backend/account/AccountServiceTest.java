@@ -11,6 +11,8 @@ import org.springframework.boot.jdbc.test.autoconfigure.AutoConfigureTestDatabas
 import org.springframework.boot.jpa.test.autoconfigure.TestEntityManager;
 import org.springframework.context.annotation.Import;
 
+import com.pokemonoptimizer.pokemon_optimizer_backend.checklist.ChecklistEntry;
+import com.pokemonoptimizer.pokemon_optimizer_backend.dto.OwnedSpecies;
 import com.pokemonoptimizer.pokemon_optimizer_backend.persistence.CaughtPokemon;
 import com.pokemonoptimizer.pokemon_optimizer_backend.persistence.CaughtPokemonRepository;
 import com.pokemonoptimizer.pokemon_optimizer_backend.persistence.Trainer;
@@ -46,6 +48,24 @@ public class AccountServiceTest
         assertThat(entityManager.getEntityManager()
             .createQuery("SELECT COUNT(c) FROM CaughtPokemon c WHERE c.trainer.googleId = 'google-ash'", Long.class)
             .getSingleResult()).isZero();
+    }
+
+    @Test
+    public void deletingAnAccountRemovesItsChecklistToo()
+    {
+        Trainer ash = entityManager.persist(new Trainer("google-ash"));
+        Trainer misty = entityManager.persist(new Trainer("google-misty"));
+        entityManager.persist(new ChecklistEntry(ash, new OwnedSpecies("medicham", false)));
+        entityManager.persist(new ChecklistEntry(misty, new OwnedSpecies("medicham", false)));
+        entityManager.flush();
+
+        accountService.deleteAccount("google-ash");
+        entityManager.flush();
+        entityManager.clear();
+
+        assertThat(entityManager.getEntityManager()
+            .createQuery("SELECT e.trainer.googleId FROM ChecklistEntry e", String.class)
+            .getResultList()).containsExactly("google-misty");
     }
 
     @Test

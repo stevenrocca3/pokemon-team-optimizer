@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link } from 'react-router'
 import { buildTeams, LOGIN_URL, previewImport } from '../api'
 import { useCollection } from '../collection/collection-context'
-import type { CaughtPokemonRequest, TeamBuilderLeague, TeamBuilderResult, TeamMember, TeamResult } from '../types'
+import type { CaughtPokemonRequest, OwnedSpecies, TeamBuilderLeague, TeamBuilderResult, TeamMember, TeamResult } from '../types'
 import { useSpecies } from '../species/species-context'
 import { useMoves } from '../moves/moves-context'
 import { PokemonArt } from '../components/PokemonArt'
@@ -20,10 +20,18 @@ const LEAGUES: { key: TeamBuilderLeague; label: string; cpLabel: string }[] = [
   { key: 'MASTER', label: 'Master', cpLabel: 'No cap' },
 ]
 
-// Where the Pokémon come from: the saved Collection, or a Poké Genie / Calcy IV file read in the browser session only
+// Where the Pokémon come from: the saved Collection (exact Pokémon plus checklist ticks), or a Poké Genie / Calcy IV
+// file read in the browser session only
 type Source =
-  | { kind: 'collection'; pokemon: CaughtPokemonRequest[]; withoutMoves: number }
-  | { kind: 'file'; fileName: string; pokemon: CaughtPokemonRequest[]; withoutMoves: number }
+  | { kind: 'collection'; pokemon: CaughtPokemonRequest[]; species: OwnedSpecies[]; withoutMoves: number }
+  | { kind: 'file'; fileName: string; pokemon: CaughtPokemonRequest[]; species: OwnedSpecies[]; withoutMoves: number }
+
+const sizeOf = (source: Source) => source.pokemon.length + source.species.length
+
+/** The species behind a result index: exact Pokémon first, then the ticks (TeamBuilder.build on the server). */
+function speciesAt(source: Source, index: number): string {
+  return index < source.pokemon.length ? source.pokemon[index].speciesId : (source.species[index - source.pokemon.length]?.speciesId ?? '')
+}
 
 type CollectionState = { status: 'loading' } | { status: 'error'; message: string } | { status: 'ready'; inBrowser: boolean; source: Source }
 
@@ -46,7 +54,7 @@ export function TeamBuilderPage() {
     return {
       status: 'ready',
       inBrowser: saved.storage === 'browser',
-      source: { kind: 'collection', pokemon, withoutMoves: saved.list.length - withMoves.length },
+      source: { kind: 'collection', pokemon, species: saved.checklist, withoutMoves: saved.list.length - withMoves.length },
     }
   }, [saved])
   const [fileSource, setFileSource] = useState<Source | null>(null)
@@ -61,13 +69,13 @@ export function TeamBuilderPage() {
     useFile || collection.status !== 'ready' ? fileSource : collection.source
 
   async function build() {
-    if (!source || source.pokemon.length === 0) return
+    if (!source || sizeOf(source) === 0) return
     abort.current?.abort()
     const controller = new AbortController()
     abort.current = controller
     setRun({ status: 'running', startedAt: Date.now() })
     try {
-      const result = await buildTeams({ league, pokemon: source.pokemon }, controller.signal)
+      const result = await buildTeams({ league, pokemon: source.pokemon, species: source.species }, controller.signal)
       setRun({ status: 'done', result, source })
     } catch (error: unknown) {
       if (controller.signal.aborted) return
@@ -81,7 +89,7 @@ export function TeamBuilderPage() {
     setRun({ status: 'idle' })
   }
 
-  const tooFew = !source || source.pokemon.length < 3
+  const tooFew = !source || sizeOf(source) < 3
 
   return (
     <div className="mx-auto max-w-6xl px-4 pb-16">
@@ -128,7 +136,7 @@ export function TeamBuilderPage() {
             {run.status === 'running' ? 'Brewing…' : 'Build teams'}
           </button>
           <p className="mt-3 text-xs text-subtle">
-            {tooFew ? 'Needs at least 3 Pokémon with moves.' : `${source.pokemon.length.toLocaleString()} Pokémon ready`}
+            {tooFew ? 'Needs at least 3 Pokémon.' : `${sizeOf(source).toLocaleString()} Pokémon ready`}
           </p>
         </Step>
       </section>
@@ -178,7 +186,7 @@ function SourcePicker({
         const { speciesId, atkIv, defIv, staIv, level, shadow } = p
         return [{ speciesId, atkIv, defIv, staIv, level, shadow, fastMove: moves.fast, chargedMoves }]
       })
-      onFile({ kind: 'file', fileName: file.name, pokemon, withoutMoves: preview.pokemon.length - pokemon.length })
+      onFile({ kind: 'file', fileName: file.name, pokemon, species: [], withoutMoves: preview.pokemon.length - pokemon.length })
     } catch (error: unknown) {
       setFileError(error instanceof Error ? error.message : String(error))
     } finally {
@@ -209,7 +217,7 @@ function SourcePicker({
       {collection.status === 'ready' && (
         <div className="grid grid-cols-2 gap-2">
           <Choice active={!useFile} onClick={() => onUseFile(false)}>
-            My Collection <span className={useFile ? 'text-subtle' : 'text-brand'}>({collection.source.pokemon.length.toLocaleString()})</span>
+            My Collection <span className={useFile ? 'text-subtle' : 'text-brand'}>({sizeOf(collection.source).toLocaleString()})</span>
           </Choice>
           <Choice active={useFile} onClick={() => onUseFile(true)}>
             An export file
@@ -236,13 +244,18 @@ function SourcePicker({
 
       <SourceNote source={useFile || collection.status !== 'ready' ? fileSource : collection.source} />
 
-      {collection.status === 'ready' && !useFile && collection.source.pokemon.length < 3 && (
+      {collection.status === 'ready' && !useFile && sizeOf(collection.source) < 3 && (
         <p className="mt-3 text-sm text-ink-soft">
-          {collection.source.pokemon.length === 0 ? 'No Pokémon yet.' : `${collection.source.pokemon.length} so far; a team needs 3.`}{' '}
+          {sizeOf(collection.source) === 0 ? 'No Pokémon yet.' : `${sizeOf(collection.source)} so far; a team needs 3.`}{' '}
           <Link to="/collection" className="text-brand underline">
-            Add them by name, IVs and CP
+            Tick the ones you have
           </Link>
-          , it takes a few seconds each.
+          , it takes a minute.
+        </p>
+      )}
+      {collection.status === 'ready' && !useFile && collection.source.species.length > 0 && (
+        <p className="mt-2 text-xs text-subtle">
+          {collection.source.species.length.toLocaleString()} ticked on your checklist battle with good IVs for the league.
         </p>
       )}
       {collection.status === 'ready' && collection.inBrowser && !useFile && (
@@ -317,6 +330,16 @@ function Results({ result, source }: { result: TeamBuilderResult; source: Source
           <p className="mt-1 text-sm text-subtle">
             From {result.eligible.toLocaleString()} eligible · vs {result.metaSize} meta Pokémon (PvPoke, {result.metaDate})
           </p>
+          {result.teams.some((t) => t.members.some((m) => m.assumed)) && (
+            <p className="mt-3 max-w-2xl text-sm text-ink-soft">
+              <span className="font-semibold text-ink">Assumed IVs</span> marks a Pokémon from your checklist, battled with a
+              good spread for this league. If yours is weaker, the odds will be a little lower;{' '}
+              <Link to="/collection?view=exact" className="text-brand underline">
+                add its exact IVs
+              </Link>{' '}
+              to check.
+            </p>
+          )}
           <ol className="mt-6 grid gap-6">
             {result.teams.map((team, i) => (
               <TeamCard key={team.members.map((m) => m.index).join('-')} rank={i + 1} team={team} delayMs={i * 140} />
@@ -333,7 +356,7 @@ function Results({ result, source }: { result: TeamBuilderResult; source: Source
           <ul className="mt-3 max-h-72 overflow-y-auto text-sm">
             {result.skipped.map((s) => (
               <li key={s.index} className="flex gap-3 border-t border-line/60 py-1.5">
-                <span className="w-40 shrink-0 truncate text-ink-soft">{nameOf(source.pokemon[s.index]?.speciesId ?? '')}</span>
+                <span className="w-40 shrink-0 truncate text-ink-soft">{nameOf(speciesAt(source, s.index))}</span>
                 <span className="text-subtle">{s.reason}</span>
               </li>
             ))}
@@ -414,6 +437,11 @@ function MemberCard({ member, lead }: { member: TeamMember; lead: boolean }) {
           {member.shadow && (
             <span className="rounded bg-violet-500/25 px-1.5 py-0.5 text-[10px] font-bold uppercase text-violet-200">Shadow</span>
           )}
+          {member.assumed && (
+            <span className="rounded bg-raised-strong px-1.5 py-0.5 text-[10px] font-bold uppercase text-ink-soft ring-1 ring-line-strong">
+              Assumed IVs
+            </span>
+          )}
         </div>
         <div className="mt-0.5 text-xs text-subtle">
           Lv <span className="tabular-nums text-ink-soft">{formatLevel(member.level)}</span> ·{' '}
@@ -440,6 +468,11 @@ function HowItWorks() {
         <p>
           Each Pokémon is built to the highest level that fits the league (at most 50, never below its current level), then
           battled 1v1 against every Pokémon in PvPoke's meta for that league to find your strongest ten.
+        </p>
+        <p>
+          Pokémon ticked on your checklist have no IVs yet, so each gets a good spread for the league: the line where the top 10%
+          of all 4,096 IV spreads begins, by stat product. Its moves are PvPoke's recommended ones. Any you've added with exact
+          IVs use those instead.
         </p>
         <p>
           Teams of those ten are ranked by how well they cover the meta together. The best few then play full 3v3 battles, with

@@ -10,8 +10,10 @@ import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
 
 import com.pokemonoptimizer.pokemon_optimizer_backend.dto.CaughtPokemonRequest;
+import com.pokemonoptimizer.pokemon_optimizer_backend.dto.OwnedSpecies;
 import com.pokemonoptimizer.pokemon_optimizer_backend.gamemaster.MoveLookup;
 import com.pokemonoptimizer.pokemon_optimizer_backend.gamemaster.SpeciesLookup;
+import com.pokemonoptimizer.pokemon_optimizer_backend.gamemaster.SuggestedMovesets;
 
 public class TeamBuilderTest
 {
@@ -19,7 +21,8 @@ public class TeamBuilderTest
     private static final MoveLookup MOVES = new MoveLookup();
     // narrower than the real search so the suite stays fast; same stages
     private static final TeamBuilder.Settings SMALL = new TeamBuilder.Settings(6, 6, 3, 40, 80, 2, 7);
-    private static final TeamBuilder BUILDER = new TeamBuilder(SPECIES, MOVES, new MetaLookup(SPECIES, MOVES), SMALL);
+    private static final TeamBuilder BUILDER = new TeamBuilder(SPECIES, MOVES, new MetaLookup(SPECIES, MOVES),
+        new GoodIvs(SPECIES, new SuggestedMovesets(SPECIES)), SMALL);
 
     private static CaughtPokemonRequest pokemon(String id, int atk, int def, int sta, double level, String fast, String... charged)
     {
@@ -106,5 +109,54 @@ public class TeamBuilderTest
             new SkippedPokemon(3, "Obstruct isn't simulated yet")), result.skipped());
         assertEquals(0, result.eligible());
         assertEquals(List.of(), result.teams());
+    }
+
+    private static OwnedSpecies owned(String id)
+    {
+        return new OwnedSpecies(id, false);
+    }
+
+    private static TeamMember memberOf(TeamResult team, String speciesId)
+    {
+        return team.members().stream().filter(m -> m.speciesId().equals(speciesId)).findFirst().orElseThrow();
+    }
+
+    @Test
+    public void tickedSpeciesBuildATeamWithAssumedIvs()
+    {   // nothing entered exactly: indexes count from 0 in the species list
+        List<OwnedSpecies> ticked = List.of(owned("medicham"), owned("registeel"), owned("azumarill"));
+
+        TeamBuilderResult result = BUILDER.build(League.GREAT, List.of(), ticked);
+
+        TeamResult best = result.teams().get(0);
+        assertEquals(Set.of("medicham", "registeel", "azumarill"), species(best));
+        assertTrue(best.members().stream().allMatch(TeamMember::assumed));
+        assertEquals(0, memberOf(best, "medicham").index());
+        assertEquals(3, result.eligible());
+    }
+
+    @Test
+    public void anEnteredPokemonOverridesItsTickedSpecies()
+    {   // the Trainer's real (poor) Medicham is used even though the assumed good one would rate higher
+        List<CaughtPokemonRequest> entered = List.of(pokemon("medicham", 15, 0, 0, 20, "COUNTER", "ICE_PUNCH", "DYNAMIC_PUNCH"));
+        List<OwnedSpecies> ticked = List.of(owned("medicham"), owned("registeel"), owned("azumarill"));
+
+        TeamBuilderResult result = BUILDER.build(League.GREAT, entered, ticked);
+
+        TeamMember medicham = memberOf(result.teams().get(0), "medicham");
+        assertEquals(0, medicham.index());
+        assertEquals(false, medicham.assumed());
+        assertEquals(15, medicham.atkIv());
+        TeamMember registeel = memberOf(result.teams().get(0), "registeel");
+        assertEquals(1 + 1, registeel.index());   // pokemon.size() + its place in the species list
+        assertTrue(registeel.assumed());
+    }
+
+    @Test
+    public void aTickedSpeciesWithNoPvpMovesetIsSkipped()
+    {   // PvPoke doesn't rank Charmander, so there's no moveset to assume
+        TeamBuilderResult result = BUILDER.build(League.GREAT, List.of(), List.of(owned("medicham"), owned("charmander")));
+
+        assertEquals(List.of(new SkippedPokemon(1, "No PvP moveset to assume; add it with its moves instead")), result.skipped());
     }
 }
