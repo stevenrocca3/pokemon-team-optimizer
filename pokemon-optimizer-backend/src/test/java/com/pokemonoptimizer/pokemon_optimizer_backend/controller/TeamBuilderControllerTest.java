@@ -3,6 +3,9 @@ package com.pokemonoptimizer.pokemon_optimizer_backend.controller;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.List;
@@ -16,11 +19,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.assertj.MockMvcTester;
+import org.springframework.test.web.servlet.request.RequestPostProcessor;
 
 import com.pokemonoptimizer.pokemon_optimizer_backend.cups.Cup;
 import com.pokemonoptimizer.pokemon_optimizer_backend.cups.CupCatalog;
 import com.pokemonoptimizer.pokemon_optimizer_backend.cups.CupRules;
 import com.pokemonoptimizer.pokemon_optimizer_backend.dto.OwnedSpecies;
+import com.pokemonoptimizer.pokemon_optimizer_backend.persistence.TeamBuildRepository;
 import com.pokemonoptimizer.pokemon_optimizer_backend.security.SecurityConfig;
 import com.pokemonoptimizer.pokemon_optimizer_backend.teambuilder.League;
 import com.pokemonoptimizer.pokemon_optimizer_backend.teambuilder.TeamBuilder;
@@ -39,6 +44,9 @@ public class TeamBuilderControllerTest
 
     @MockitoBean
     private CupCatalog cups;   // the search itself is TeamBuilderTest's job
+
+    @MockitoBean
+    private TeamBuildRepository teamBuilds;
 
     private static final String BODY = """
             {"league":"ULTRA","pokemon":[
@@ -125,5 +133,33 @@ public class TeamBuilderControllerTest
                 {"league":"ULTRA","cup":"fantasy-1500","species":[{"speciesId":"azumarill"}]}
                 """))
             .hasStatus(HttpStatus.BAD_REQUEST);
+    }
+
+    @Test
+    public void aFinishedBuildIsCounted()
+    {
+        when(teamBuilder.build(eq(League.ULTRA), any(), any())).thenReturn(new TeamBuilderResult(League.ULTRA, 45, "2026-10-04", 1, List.of(), List.of(), null));
+
+        assertThat(mvc.post().uri("/api/team-builder").with(fromIp("10.0.0.1")).contentType(MediaType.APPLICATION_JSON).content(BODY))
+            .hasStatusOk();
+        verify(teamBuilds).save(argThat(b -> b.getLeague() == League.ULTRA && b.getCup() == null
+            && b.getPokemonCount() == 1 && b.getCreatedAt() != null));
+    }
+
+    @Test
+    public void aRejectedBuildIsNotCounted()
+    {   // a Cup that's gone is a 400, not a build
+        when(cups.find("gone")).thenReturn(Optional.empty());
+
+        assertThat(mvc.post().uri("/api/team-builder").with(fromIp("10.0.0.2")).contentType(MediaType.APPLICATION_JSON)
+                .content(BODY.replace("\"league\":\"ULTRA\",", "\"league\":\"ULTRA\",\"cup\":\"gone\",")))
+            .hasStatus(HttpStatus.BAD_REQUEST);
+        verify(teamBuilds, never()).save(any());
+    }
+
+    /** Its own client, so the Team Builder's burst limit (8 per IP) isn't used up by the other tests in this class. */
+    private static RequestPostProcessor fromIp(String ip)
+    {
+        return request -> { request.setRemoteAddr(ip); return request; };
     }
 }

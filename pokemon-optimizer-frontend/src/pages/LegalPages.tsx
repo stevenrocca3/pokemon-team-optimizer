@@ -66,6 +66,14 @@ export function PrivacyPage() {
         </p>
       </Section>
 
+      <Section title="Team Builder Runs">
+        <p>
+          Each time the Team Builder finishes, we count it: the league or Cup, how many Pokémon went in, and when. Not which
+          Pokémon, and nothing that links the run to you, your account, your IP address or your browser. Totals may be shown
+          on the site.
+        </p>
+      </Section>
+
       <Section title="Cookies and Browser Storage">
         <p>DexPresso uses two cookies, both needed for the site to work, so there's no cookie banner:</p>
         <ul>

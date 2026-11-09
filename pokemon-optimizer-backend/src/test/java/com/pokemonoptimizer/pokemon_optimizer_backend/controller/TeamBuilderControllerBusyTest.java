@@ -16,6 +16,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.assertj.MockMvcTester;
 
 import com.pokemonoptimizer.pokemon_optimizer_backend.cups.CupCatalog;
+import com.pokemonoptimizer.pokemon_optimizer_backend.persistence.TeamBuildRepository;
 import com.pokemonoptimizer.pokemon_optimizer_backend.security.SecurityConfig;
 import com.pokemonoptimizer.pokemon_optimizer_backend.teambuilder.TeamBuilder;
 import com.pokemonoptimizer.pokemon_optimizer_backend.teambuilder.TeamBuilderGate;
@@ -35,6 +36,9 @@ public class TeamBuilderControllerBusyTest
     @MockitoBean
     private TeamBuilder teamBuilder;
 
+    @MockitoBean
+    private TeamBuildRepository teamBuilds;
+
     @Test
     public void aFullTeamBuilderAnswers503WithRetryAfterAndNeverStartsTheSearch()
     {
@@ -48,5 +52,6 @@ public class TeamBuilderControllerBusyTest
             .bodyJson().extractingPath("$.detail").asString().contains("busy");
 
         verify(teamBuilder, never()).build(any(), any());
+        verify(teamBuilds, never()).save(any());   // a turned-away search isn't a team built
     }
 }
