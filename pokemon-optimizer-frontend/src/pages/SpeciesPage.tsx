@@ -7,6 +7,7 @@ import { PokemonArt } from '../components/PokemonArt'
 import { IvTriple } from '../components/IvTriple'
 import { AddToCollection } from '../components/AddToCollection'
 import { CompareCopies } from '../components/CompareCopies'
+import { BreakpointTable } from '../components/BreakpointTable'
 import { formatDex, formatLevel } from '../lib/species'
 import { useMoves } from '../moves/moves-context'
 import { DEFAULT_LEAGUE, LEAGUES, leagueFromKey, type League } from '../lib/leagues'
@@ -227,6 +228,13 @@ function SpeciesView({ id, option }: { id: string; option?: SpeciesOption }) {
             </div>
 
             <CompareCopies speciesId={id} leagueKey={league.key} leagueLabel={league.label} rankOf={rankOf} />
+
+            <BreakpointTable
+              detail={detail === 'error' ? null : detail}
+              ivs={myIvs}
+              leagueKey={league.key}
+              leagueLabel={league.label}
+            />
 
             {/* Rankings table */}
             <h2 className="mb-4 mt-10 flex items-center gap-3 text-2xl font-bold">

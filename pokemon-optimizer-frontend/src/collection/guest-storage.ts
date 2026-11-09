@@ -34,7 +34,7 @@ function isCaughtPokemon(value: unknown): value is CaughtPokemon {
     typeof p.atkIv === 'number' &&
     typeof p.defIv === 'number' &&
     typeof p.staIv === 'number' &&
-    typeof p.level === 'number' &&
+    (typeof p.level === 'number' || p.level === null) &&
     typeof p.fastMove === 'string' &&
     Array.isArray(p.chargedMoves) &&
     typeof p.shadow === 'boolean'

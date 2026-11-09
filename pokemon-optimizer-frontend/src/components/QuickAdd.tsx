@@ -22,8 +22,9 @@ const IV_FIELDS: { key: IvKey; label: string }[] = [
 type Feedback = { kind: 'added' | 'duplicate'; name: string } | { kind: 'error'; message: string } | null
 
 /**
- * The fast way in: name → IVs → CP from the game screen → Enter, then straight on to the next Pokémon.
- * The game shows CP, not level, so the level is worked out from CP and IVs.
+ * The fast way in: name → IVs → Enter, then straight on to the next Pokémon. CP is optional: the game shows CP,
+ * not level, so when it's typed the level is worked out from CP and IVs; left blank, the level stays unknown
+ * and the Team Builder powers the Pokémon to the best level for the league.
  */
 export function QuickAdd() {
   const collection = useCollection()
@@ -77,7 +78,9 @@ export function QuickAdd() {
     [detail, ivsDone, ivs.atk, ivs.def, ivs.sta, cpText],
   )
   const level = levels.length === 0 ? null : levels.includes(levelChoice ?? -1) ? levelChoice! : levels[0]
-  const ready = species !== null && detail !== null && ivsDone && level !== null && moves.fast !== '' && moves.charged1 !== ''
+  // a typed CP has to make sense; a blank one is fine
+  const cpOk = cpText === '' || level !== null
+  const ready = species !== null && detail !== null && ivsDone && cpOk && moves.fast !== '' && moves.charged1 !== ''
 
   const nameOf = (id: string) => (moveList.status === 'ready' ? moveList.byId.get(id)?.name : undefined) ?? id
   const moveLabel = (id: string) => (detail?.learnset.eliteMoves.includes(id) ? `${nameOf(id)} ★` : nameOf(id))
@@ -107,7 +110,7 @@ export function QuickAdd() {
 
   async function submit(e: FormEvent) {
     e.preventDefault()
-    if (!ready || collection.status !== 'ready' || level === null) return
+    if (!ready || collection.status !== 'ready') return
     setSaving(true)
     try {
       const chargedMoves = moves.charged2 && moves.charged2 !== moves.charged1 ? [moves.charged1, moves.charged2] : [moves.charged1]
@@ -116,7 +119,7 @@ export function QuickAdd() {
         atkIv: ivValues.atk,
         defIv: ivValues.def,
         staIv: ivValues.sta,
-        level,
+        level: cpText === '' ? null : level,
         fastMove: moves.fast,
         chargedMoves,
         shadow: shadow && detail.shadowEligible,
@@ -138,7 +141,7 @@ export function QuickAdd() {
     <form onSubmit={submit} className="card p-5 sm:p-6" aria-label="Quick add a Pokémon">
       <div className="flex items-baseline justify-between gap-3">
         <h2 className="text-lg font-bold">Add a Pokémon</h2>
-        <span className="hidden text-xs text-subtle sm:inline">Name → Enter → IVs → CP → Enter</span>
+        <span className="hidden text-xs text-subtle sm:inline">Name → Enter → IVs → Enter</span>
       </div>
 
       <div className="mt-3 grid gap-3 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-end">
@@ -165,7 +168,9 @@ export function QuickAdd() {
             </label>
           ))}
           <label>
-            <span className={LABEL}>CP</span>
+            <span className={LABEL}>
+              CP <span className="normal-case text-subtle">(optional)</span>
+            </span>
             <input
               ref={cpInput}
               value={cpText}
@@ -261,7 +266,15 @@ function LevelLine({
   level: number | null
   onChoose: (level: number) => void
 }) {
-  if (!detail || !ivsDone || cpText === '') return <p className="mt-2 h-5 text-xs text-subtle" />
+  if (!detail || !ivsDone) return <p className="mt-2 h-5 text-xs text-subtle" />
+  if (cpText === '') {
+    return (
+      <p className="mt-2 min-h-5 text-xs text-subtle">
+        No CP needed: the Team Builder powers it to the best level for each league. Add the CP to see what powering up
+        gets you.
+      </p>
+    )
+  }
   if (levels.length === 0) {
     return (
       <p className="mt-2 min-h-5 text-xs text-red-400">

@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router'
 import { compareCopies } from '../api'
 import { useCollection } from '../collection/collection-context'
-import { useSpecies } from '../species/species-context'
+import { useMetaName } from '../species/meta-name'
 import { copyLabel, MAX_COMPARED, pickCopies, shieldsLabel, winnersLabel } from '../lib/compare'
 import { formatLevel } from '../lib/species'
 import type { LeagueKey } from '../lib/leagues'
@@ -30,7 +30,7 @@ export function CompareCopies({
   rankOf: ((p: CaughtPokemon) => number | undefined) | null
 }) {
   const collection = useCollection()
-  const species = useSpecies()
+  const metaName = useMetaName()
   const [answer, setAnswer] = useState<Answer | null>(null)
   const [showAll, setShowAll] = useState(false)
 
@@ -67,12 +67,6 @@ export function CompareCopies({
     seen.set(label, n)
     return n === 1 ? label : `${label} (#${n})`
   })
-  const metaName = (id: string) => {
-    const shadow = id.endsWith('_shadow')
-    const base = shadow ? id.slice(0, -'_shadow'.length) : id
-    const name = (species.status === 'ready' ? species.byId.get(base)?.name : undefined) ?? base
-    return shadow ? `Shadow ${name}` : name
-  }
 
   const current = answer?.request === request ? answer : null
 

@@ -249,7 +249,13 @@ function CaughtCard({ pokemon, delayMs, onRemove }: { pokemon: CaughtPokemon; de
           <IvTriple atk={pokemon.atkIv} def={pokemon.defIv} sta={pokemon.staIv} />
           <div className="text-right">
             <div className="text-xs uppercase text-subtle">Level</div>
-            <div className="font-semibold tabular-nums">{formatLevel(pokemon.level)}</div>
+            {pokemon.level === null ? (
+              <div className="text-sm text-subtle" title="Added without a CP. The Team Builder powers it to the best level for each league.">
+                Not set
+              </div>
+            ) : (
+              <div className="font-semibold tabular-nums">{formatLevel(pokemon.level)}</div>
+            )}
           </div>
         </div>
         {/* Pokémon saved before movesets existed have no moves */}
