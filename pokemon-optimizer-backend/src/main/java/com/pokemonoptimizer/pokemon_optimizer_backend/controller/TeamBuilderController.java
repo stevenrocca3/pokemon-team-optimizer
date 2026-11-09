@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.pokemonoptimizer.pokemon_optimizer_backend.dto.TeamBuilderRequest;
 import com.pokemonoptimizer.pokemon_optimizer_backend.teambuilder.TeamBuilder;
+import com.pokemonoptimizer.pokemon_optimizer_backend.teambuilder.TeamBuilderGate;
 import com.pokemonoptimizer.pokemon_optimizer_backend.teambuilder.TeamBuilderResult;
 
 import jakarta.validation.Valid;
@@ -20,15 +21,18 @@ import jakarta.validation.Valid;
 public class TeamBuilderController
 {
     private final TeamBuilder teamBuilder;
+    private final TeamBuilderGate gate;
 
-    public TeamBuilderController(TeamBuilder teamBuilder)
+    public TeamBuilderController(TeamBuilder teamBuilder, TeamBuilderGate gate)
     {
         this.teamBuilder = teamBuilder;
+        this.gate = gate;
     }
 
     @PostMapping("/team-builder")
     public TeamBuilderResult build(@Valid @RequestBody TeamBuilderRequest request)
     {
-        return teamBuilder.build(request.league(), request.pokemon());
+        // a search takes every core for seconds, so only a few run at once; the rest wait, then get a 503
+        return gate.run(() -> teamBuilder.build(request.league(), request.pokemon()));
     }
 }
