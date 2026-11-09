@@ -5,6 +5,7 @@ import { PokemonArt } from "../components/PokemonArt";
 import { Reveal } from "../components/Reveal";
 import { CreamerRule, LogoText } from "../components/Creamer";
 import { DemoPhone } from "../components/DemoPhone";
+import { BrewCarousel } from "../components/BrewCarousel";
 import { DEMO_RUN, type DemoPhase } from "../lib/demo-run";
 import { useScrollVariable } from "../lib/motion";
 import { useSpecies } from "../species/species-context";
@@ -53,26 +54,6 @@ const DEMO_STEPS: { title: string; body: string; phases: DemoPhase[] }[] = [
   { title: "Pick a League or Cup", body: "Great, Ultra, Master, or any Cup running now.", phases: ["league", "tap"] },
   { title: "It Battles Thousands of 3v3s", body: "Against teams drawn from PvPoke's meta, every lineup tried.", phases: ["brew"] },
   { title: "Your Best Three, in Order", body: "Lead, safe swap and closer, with honest win odds.", phases: ["result"] },
-];
-
-// What the Team Builder does, in order (ADR 0005); the same steps it shows while it runs
-const BREW_STEPS = [
-  {
-    title: "Grind",
-    body: "Each of your Pokémon battles every meta Pokémon 1v1 at the best level the league allows.",
-  },
-  {
-    title: "Dose",
-    body: "Your ten strongest are combined into teams, ranked by how well they cover the meta together.",
-  },
-  {
-    title: "Pull",
-    body: "The best teams play full 3v3s, with switching and shields, against 100 meta teams, in every lineup of lead, safe swap and closer.",
-  },
-  {
-    title: "Taste",
-    body: "Win odds come from 400 fresh battles the teams were never picked on, with a 95% range around them.",
-  },
 ];
 
 export function HomePage() {
@@ -247,32 +228,9 @@ export function HomePage() {
               title="From Beans to a Cup in Four Steps"
             />
           </Reveal>
-          <div className="relative mt-14">
-            <div
-              className="absolute top-6 right-[12%] left-[12%] hidden h-px bg-gradient-to-r from-transparent via-line-strong to-transparent md:block"
-              aria-hidden="true"
-            />
-            <ol className="relative grid gap-6 md:grid-cols-4">
-              {BREW_STEPS.map((step, i) => (
-                <Reveal
-                  as="li"
-                  key={step.title}
-                  delayMs={i * 140}
-                  className="relative text-center"
-                >
-                  <span className="relative mx-auto grid h-12 w-12 place-items-center rounded-full bg-canvas font-display text-lg font-black text-brand ring-2 ring-brand/70">
-                    {i + 1}
-                  </span>
-                  <h3 className="mt-4 font-display text-xl font-black">
-                    {step.title}
-                  </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-ink-soft">
-                    {step.body}
-                  </p>
-                </Reveal>
-              ))}
-            </ol>
-          </div>
+          <Reveal className="mt-10">
+            <BrewCarousel />
+          </Reveal>
         </div>
       </section>
 
