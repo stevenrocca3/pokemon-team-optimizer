@@ -1,0 +1,14 @@
+# Caddy gets and renews the Let's Encrypt certificate by itself once DNS points here.
+# .app domains only work over HTTPS (the whole TLD is HSTS-preloaded), so this is required, not optional.
+
+dexpresso.app {
+	reverse_proxy app:8080 {
+		# Caddy ignores X-Forwarded-For sent by visitors, so this can't be spoofed to dodge rate limits.
+		# If Cloudflare's proxy (orange cloud) is ever turned on, this becomes Cloudflare's IP: see docs/DEPLOY.md.
+		header_up X-Real-IP {remote_host}
+	}
+}
+
+www.dexpresso.app {
+	redir https://dexpresso.app{uri} permanent
+}
