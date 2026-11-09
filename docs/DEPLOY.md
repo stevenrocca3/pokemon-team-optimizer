@@ -19,6 +19,13 @@ and migrates the schema on startup (`resources/db/migration`), and Hibernate onl
 | `DB_USER`, `DB_PASSWORD` | the database's credentials |
 | `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` | from the Google Cloud console |
 | `PORT` | set by most hosts; defaults to 8080 |
+| `APP_CLIENT_IP_HEADER` | the header your host puts the visitor's real IP in, e.g. `Fly-Client-IP` or `CF-Connecting-IP`. Rate limits are per IP, so without it every visitor shares the proxy's IP and one limit |
+
+Optional tuning (defaults in brackets): `APP_TEAM_BUILDER_MAX_CONCURRENT` [2] searches at once, each already
+using every core; `APP_TEAM_BUILDER_QUEUE_WAIT` [30s] before a 503.
+
+Optional analytics: build with `--build-arg VITE_GOATCOUNTER_URL=https://<code>.goatcounter.com/count`
+(cookieless, so no consent banner). Without it, no analytics script loads.
 
 `SPRING_PROFILES_ACTIVE=prod` is already set in the image (`application-prod.properties`).
 
@@ -40,3 +47,29 @@ Then open http://localhost:8090. (Google login won't work on 8090 unless that re
 ## Reading feedback
 
 `SELECT created_at, page, message FROM feedback ORDER BY created_at DESC;`
+
+## Uptime monitoring
+
+Point a free monitor (UptimeRobot, Better Stack, ...) at `https://<your-domain>/actuator/health` every 5 minutes.
+It answers `{"status":"UP"}` only when the app and its database are both fine; every other actuator endpoint is
+off. Unexpected errors are logged as `Unhandled error <id>`, and that id is what a player sees, so a report like
+"error 3fa9c2d1" finds its stack trace in the host's logs.
+
+## Backups
+
+Most managed Postgres hosts take daily backups; turn them on and check the retention. To take your own:
+
+```
+pg_dump "postgresql://<user>:<password>@<host>:5432/<db>" -Fc -f dexpresso-$(date +%F).dump
+```
+
+Restore into a fresh database (never straight over the live one), check it, then point the app at it:
+
+```
+createdb restore_check
+pg_restore -d restore_check --no-owner dexpresso-2026-11-08.dump
+psql -d restore_check -c "select count(*) from caught_pokemon"
+```
+
+Tested 2026-11-08 against the local database: every table's row count, the Flyway history and
+`caught_pokemon_seq` came back identical. Repeat the restore once on the real host before launch.

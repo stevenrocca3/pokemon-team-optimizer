@@ -20,9 +20,10 @@ import com.pokemonoptimizer.pokemon_optimizer_backend.security.SecurityConfig;
 import com.pokemonoptimizer.pokemon_optimizer_backend.teambuilder.League;
 import com.pokemonoptimizer.pokemon_optimizer_backend.teambuilder.TeamBuilder;
 import com.pokemonoptimizer.pokemon_optimizer_backend.teambuilder.TeamBuilderResult;
+import com.pokemonoptimizer.pokemon_optimizer_backend.teambuilder.TeamBuilderGate;
 
 @WebMvcTest(TeamBuilderController.class)
-@Import(SecurityConfig.class)
+@Import({SecurityConfig.class, TeamBuilderGate.class})
 public class TeamBuilderControllerTest
 {
     @Autowired

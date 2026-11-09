@@ -26,6 +26,9 @@
   --color-subtle: #ad9884;
   --color-faint: #64524a;
 
+  --color-danger: #c4282d; /* destructive buttons only: white text 5.7:1, edge vs surface 3.1:1 */
+  --color-on-danger: #ffffff;
+
   --color-field: #f3e9dc; /* search input */
   --color-on-field: #1f1814;
 
@@ -117,6 +120,9 @@ h1 {
   }
   .btn-secondary {
     @apply bg-raised text-ink ring-1 ring-line-strong ring-inset hover:bg-raised-strong;
+  }
+  .btn-danger {
+    @apply bg-danger font-bold text-on-danger hover:brightness-110 active:brightness-95;
   }
   .btn-ghost {
     @apply text-ink-soft hover:bg-raised hover:text-ink;

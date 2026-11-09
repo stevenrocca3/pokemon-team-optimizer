@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router'
+import { Link, Route, Routes } from 'react-router'
 import { Header } from './components/Header'
 import { SpeciesProvider } from './species/SpeciesProvider'
 import { MovesProvider } from './moves/MovesProvider'
@@ -10,8 +10,11 @@ import { ImportPage } from './pages/ImportPage'
 import { TeamBuilderPage } from './pages/TeamBuilderPage'
 import { NotFoundPage } from './pages/NotFoundPage'
 import { Feedback } from './components/Feedback'
+import { PrivacyPage, TermsPage } from './pages/LegalPages'
+import { usePageViews } from './lib/analytics'
 
 function App() {
+  usePageViews()
   return (
     <SpeciesProvider>
       <CollectionProvider>
@@ -52,11 +55,26 @@ function App() {
                   </MovesProvider>
                 }
               />
+              <Route path="/privacy" element={<PrivacyPage />} />
+              <Route path="/terms" element={<TermsPage />} />
               <Route path="*" element={<NotFoundPage />} />
             </Routes>
           </main>
-          <footer className="border-t border-line py-6 text-center text-xs text-subtle">
-            <Feedback variant="link" /> · Artwork from PokéAPI · Not affiliated with Niantic or The Pokémon Company
+          <footer className="border-t border-line px-4 py-6 text-center text-xs leading-6 text-subtle">
+            <p>
+              <Feedback variant="link" /> ·{' '}
+              <Link to="/privacy" className="hover:text-ink">
+                Privacy
+              </Link>{' '}
+              ·{' '}
+              <Link to="/terms" className="hover:text-ink">
+                Terms
+              </Link>
+            </p>
+            <p>
+              Unofficial fan site, not affiliated with Niantic, Nintendo or The Pokémon Company. Pokémon is a trademark of
+              Nintendo, Creatures and GAME FREAK. Artwork from PokéAPI.
+            </p>
           </footer>
           <Feedback variant="corner" />
         </div>

@@ -48,6 +48,16 @@ public class CaughtPokemonController
         trainerRepository = tr;
     }
 
+    /** The Team Builder's input limit (TeamBuilderRequest): a Collection can always be built from in one go. */
+    static final int MAX_COLLECTION = 10_000;
+
+    private static ResponseStatusException full(int room)
+    {
+        return new ResponseStatusException(HttpStatus.BAD_REQUEST, room == 0
+            ? "Your Collection is full (10,000 Pokémon). Remove some to add more."
+            : "A Collection holds up to 10,000 Pokémon, and yours has room for " + room + " more.");
+    }
+
     private Trainer currentTrainer(OidcUser user)
     {
         return trainerRepository.findByGoogleId(user.getSubject()).orElseThrow();
@@ -67,7 +77,12 @@ public class CaughtPokemonController
         {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, problem);
         }
-        return caughtPokemonRepository.save(toEntity(request, currentTrainer(user)));
+        Trainer trainer = currentTrainer(user);
+        if (caughtPokemonRepository.countByTrainer(trainer) >= MAX_COLLECTION)
+        {
+            throw full(0);
+        }
+        return caughtPokemonRepository.save(toEntity(request, trainer));
     }
 
     @PostMapping("/collection/batch")
@@ -89,7 +104,8 @@ public class CaughtPokemonController
         // Importing the same export twice must not double the Collection. Same species, IVs and shadow
         // means the same Pokémon: two identical ones are very rare and couldn't share a team anyway.
         Map<String, CaughtPokemon> owned = new HashMap<>();
-        for (CaughtPokemon pokemon : caughtPokemonRepository.findByTrainer(trainer))
+        List<CaughtPokemon> alreadyOwned = caughtPokemonRepository.findByTrainer(trainer);
+        for (CaughtPokemon pokemon : alreadyOwned)
         {
             owned.putIfAbsent(sameness(pokemon.getSpeciesId(), pokemon.getAtkIv(), pokemon.getDefIv(), pokemon.getStaIv(), pokemon.isShadow()), pokemon);
         }
@@ -109,6 +125,12 @@ public class CaughtPokemonController
                 match.raiseLevelTo(request.level());
                 toSave.put(key, match);
             }
+        }
+        long added = toSave.values().stream().filter(p -> p.getId() == null).count();
+        int room = Math.max(0, MAX_COLLECTION - alreadyOwned.size());
+        if (added > room)
+        {   // all or nothing, like a bad row: a half-saved import is harder to make sense of than a clear refusal
+            throw full(room);
         }
         return caughtPokemonRepository.saveAll(new ArrayList<>(toSave.values()));
     }

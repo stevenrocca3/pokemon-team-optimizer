@@ -8,14 +8,18 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
 
 
 
 @Entity
 public class CaughtPokemon 
 {
+    // ids come 50 at a time from a sequence (V6), so an import's INSERTs go out in JDBC batches; IDENTITY
+    // made Hibernate send each row alone to learn its id, ~3 s for a 5,000-Pokémon import even on localhost
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "caught_pokemon_ids")
+    @SequenceGenerator(name = "caught_pokemon_ids", sequenceName = "caught_pokemon_seq", allocationSize = 50)
     private Long id;
     private String speciesId; 
     private int atkIv, defIv, staIv;

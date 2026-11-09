@@ -7,8 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpStatus;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.assertj.MockMvcTester;
 
+import com.pokemonoptimizer.pokemon_optimizer_backend.account.AccountService;
 import com.pokemonoptimizer.pokemon_optimizer_backend.controller.MeController;
 import com.pokemonoptimizer.pokemon_optimizer_backend.security.SecurityConfig;
 
@@ -16,8 +18,9 @@ import com.pokemonoptimizer.pokemon_optimizer_backend.security.SecurityConfig;
  * In production Spring serves the built React app (src/test/resources/static stands in for it here).
  * React Router owns the page URLs, so a reload on /team-builder must get the app, not a 404.
  */
-@WebMvcTest(MeController.class)   // a controller with no dependencies: the fallback is what is under test
+@WebMvcTest(MeController.class)   // any small controller: the fallback is what is under test
 @Import({SecurityConfig.class, SinglePageApp.class})
+@MockitoBean(types = AccountService.class)
 public class SinglePageAppTest
 {
     @Autowired
@@ -51,5 +54,20 @@ public class SinglePageAppTest
     public void aMissingFileIsStillA404()
     {   // an old hashed bundle after a deploy: HTML in its place would break the page in confusing ways
         assertThat(mvc.get().uri("/assets/index-old.js")).hasStatus(HttpStatus.NOT_FOUND);
+    }
+
+    @Test
+    public void hashedBuildFilesAreCachedForAYearAsImmutable()
+    {   // Vite puts a content hash in every /assets file name, so a new build always means a new URL
+        assertThat(mvc.get().uri("/assets/index-Ab12Cd34.js"))
+            .hasStatusOk()
+            .hasHeader("Cache-Control", "max-age=31536000, public, immutable");
+    }
+
+    @Test
+    public void theAppShellIsAlwaysRevalidatedSoANewDeployShowsUpAtOnce()
+    {
+        assertThat(mvc.get().uri("/team-builder")).hasStatusOk()
+            .headers().hasValue("Cache-Control", "no-cache");
     }
 }

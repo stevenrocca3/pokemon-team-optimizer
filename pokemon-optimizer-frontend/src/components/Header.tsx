@@ -1,6 +1,7 @@
 import { Link, NavLink, useLocation } from 'react-router'
 import { SearchBar } from './SearchBar'
 import { LogoMark } from './Logo'
+import { AccountMenu } from './AccountMenu'
 
 function navClass({ isActive }: { isActive: boolean }) {
   return `transition ${isActive ? 'text-brand' : 'text-ink-soft hover:text-ink'}`
@@ -33,6 +34,7 @@ export function Header() {
           <NavLink to="/collection" className={navClass}>
             Collection
           </NavLink>
+          <AccountMenu />
         </nav>
       </div>
     </header>

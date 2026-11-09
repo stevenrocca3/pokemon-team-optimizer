@@ -10,6 +10,7 @@ import { formatDex, formatLevel } from '../lib/species'
 import { useMoves } from '../moves/moves-context'
 import { DEFAULT_LEAGUE, LEAGUES, leagueFromKey, type League } from '../lib/leagues'
 import { NotFoundPage } from './NotFoundPage'
+import { usePageTitle } from '../lib/page-title'
 
 const PAGE_SIZE = 50
 const IV_VALUES = Array.from({ length: 16 }, (_, i) => i)
@@ -17,11 +18,14 @@ const IV_VALUES = Array.from({ length: 16 }, (_, i) => i)
 export function SpeciesPage() {
   const { id = '' } = useParams()
   const species = useSpecies()
+  const notFound = species.status === 'ready' && !species.byId.has(id)
+  const option = species.status === 'ready' ? species.byId.get(id) : undefined
+  // the parent's effect runs after NotFoundPage's, so this one decides the title in both cases
+  usePageTitle(notFound ? 'Page not found' : option ? `${option.name} PvP IVs` : null)
 
-  if (species.status === 'ready' && !species.byId.has(id)) {
+  if (notFound) {
     return <NotFoundPage message={`No Pokémon with ID “${id}”.`} />
   }
-  const option = species.status === 'ready' ? species.byId.get(id) : undefined
 
   // key resets the page's local state (IV checker, rows shown) when switching species
   return <SpeciesView key={id} id={id} option={option} />
@@ -158,7 +162,10 @@ function SpeciesView({ id, option }: { id: string; option?: SpeciesOption }) {
         {current && 'error' in current ? (
           <div role="alert" className="rounded-lg border border-red-900 bg-red-950/50 p-5 text-red-200">
             <p className="font-semibold">Couldn't load rankings</p>
-            <p className="mt-1 text-sm text-red-200">{current.error}. Check that the Spring backend is running on port 8080.</p>
+            <p className="mt-1 text-sm text-red-200">{current.error}</p>
+            <button type="button" onClick={() => window.location.reload()} className="btn btn-secondary btn-sm mt-4">
+              Try again
+            </button>
           </div>
         ) : (
           <>

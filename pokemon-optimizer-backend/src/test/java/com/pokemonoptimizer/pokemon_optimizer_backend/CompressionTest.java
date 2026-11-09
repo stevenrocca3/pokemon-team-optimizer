@@ -29,4 +29,23 @@ class CompressionTest
         assertThat(response.statusCode()).isEqualTo(200);
         assertThat(response.headers().firstValue("Content-Encoding")).hasValue("gzip");
     }
+
+    @Test
+    void cachedGameDataIsStillGzippedAndRevalidatesTo304() throws Exception
+    {   // the ETag must not cost compression: Tomcat skips gzip when an ETag is strong
+        HttpClient client = HttpClient.newHttpClient();
+        HttpResponse<byte[]> first = client.send(
+            HttpRequest.newBuilder(URI.create("http://localhost:" + port + "/api/moves"))
+                .header("Accept-Encoding", "gzip").build(),
+            HttpResponse.BodyHandlers.ofByteArray());
+        String etag = first.headers().firstValue("ETag").orElseThrow();
+
+        HttpResponse<byte[]> again = client.send(
+            HttpRequest.newBuilder(URI.create("http://localhost:" + port + "/api/moves"))
+                .header("Accept-Encoding", "gzip").header("If-None-Match", etag).build(),
+            HttpResponse.BodyHandlers.ofByteArray());
+
+        assertThat(first.headers().firstValue("Content-Encoding")).hasValue("gzip");
+        assertThat(again.statusCode()).isEqualTo(304);
+    }
 }
