@@ -1,0 +1,58 @@
+# DexPresso on one server (Oracle Cloud Always Free, ARM): the app, its Postgres, and Caddy for HTTPS.
+# On the server:  cd deploy && docker compose up -d --build
+# Secrets live in deploy/.env (copy .env.example), which git ignores.
+
+services:
+  db:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: dexpresso
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U \"$${POSTGRES_USER}\" -d dexpresso"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    # no ports: only the app reaches it, over Compose's private network
+
+  app:
+    build:
+      context: ..
+      args:
+        VITE_GOATCOUNTER_URL: ${VITE_GOATCOUNTER_URL:-}
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: jdbc:postgresql://db:5432/dexpresso
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+      # Caddy puts the visitor's real IP here; rate limits are per IP
+      APP_CLIENT_IP_HEADER: X-Real-IP
+    # no ports: Caddy is the only way in
+
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    depends_on:
+      - app
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"   # HTTP/3
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data   # the HTTPS certificates; keep this volume or Caddy re-requests them
+      - caddy_config:/config
+
+volumes:
+  pgdata:
+  caddy_data:
+  caddy_config:
