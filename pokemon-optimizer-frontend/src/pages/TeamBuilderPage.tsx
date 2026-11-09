@@ -568,7 +568,7 @@ function TeamCard({
         <div>
           <ul className="grid gap-3 md:grid-cols-3">
             {team.members.map((member, i) => (
-              <MemberCard key={member.index} member={member} lead={i === 0} />
+              <MemberCard key={member.index} member={member} role={i} />
             ))}
           </ul>
           {known > 0 && (
@@ -606,7 +606,15 @@ function TeamCard({
   )
 }
 
-function MemberCard({ member, lead }: { member: TeamMember; lead: boolean }) {
+/** A team's lineup, by position: who starts, who a switch-out goes to, who's saved for the end. */
+const ROLES = [
+  { name: 'Lead', hint: 'Starts the battle' },
+  { name: 'Safe swap', hint: 'Comes in when you switch out' },
+  { name: 'Closer', hint: 'Saved for the end' },
+]
+
+function MemberCard({ member, role }: { member: TeamMember; role: number }) {
+  const lead = role === 0
   const species = useSpecies()
   const moves = useMoves()
   const option = species.status === 'ready' ? species.byId.get(member.speciesId) : undefined
@@ -620,7 +628,16 @@ function MemberCard({ member, lead }: { member: TeamMember; lead: boolean }) {
       <div className="min-w-0 flex-1">
         <div className="flex flex-wrap items-center gap-1.5">
           <span className="truncate font-semibold">{option?.name ?? member.speciesId}</span>
-          {lead && <span className="rounded bg-brand px-1.5 py-0.5 text-[10px] font-bold uppercase text-on-brand">Lead</span>}
+          {ROLES[role] && (
+            <span
+              title={ROLES[role].hint}
+              className={`rounded px-1.5 py-0.5 text-[10px] font-bold uppercase ${
+                lead ? 'bg-brand text-on-brand' : 'bg-raised-strong text-ink-soft ring-1 ring-line-strong'
+              }`}
+            >
+              {ROLES[role].name}
+            </span>
+          )}
           {member.shadow && (
             <span className="rounded bg-violet-500/25 px-1.5 py-0.5 text-[10px] font-bold uppercase text-violet-200">Shadow</span>
           )}
@@ -716,8 +733,9 @@ function HowItWorks() {
         </p>
         <p>
           Teams of those ten are ranked by how well they cover the meta together. The best few then play full 3v3 battles, with
-          switching and shared shields, against randomly drawn meta teams. Each one is tried with every lead, and the best lead
-          is kept.
+          switching and shared shields, against randomly drawn meta teams. Each one is tried in all six lineups: a lead, a safe
+          swap that comes in whenever you switch out, and a closer saved for the end. After a faint, whoever handles their
+          Pokémon best comes in. The best lineup is kept, and the cards show it in order.
         </p>
         <p>
           The odds shown come from a fresh set of 400 battles, separate from the ones used to pick the teams, so a lucky streak

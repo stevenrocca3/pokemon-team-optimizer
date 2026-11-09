@@ -13,6 +13,16 @@ public final class TeamBattle
         return simulate(teamA, movesetsA, new TrainingAi(), teamB, movesetsB, new TrainingAi());
     }
 
+    /**
+     * Side A plays its list as a lineup: lead, safe swap, closer. Switching out goes to the safe swap while it's
+     * alive; after a faint the best matchup comes in. Side B plays as PvPoke's AI.
+     */
+    public static TeamBattleResult simulateWithRoles(List<Combatant> teamA, List<Moveset> movesetsA,
+                                                     List<Combatant> teamB, List<Moveset> movesetsB)
+    {
+        return simulate(teamA, movesetsA, new TrainingAi(true), teamB, movesetsB, new TrainingAi());
+    }
+
     private static List<BattlePokemon> buildSide(List<Combatant> team, List<Moveset> movesets, int index)
     {
         List<BattlePokemon> side = new ArrayList<>();

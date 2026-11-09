@@ -290,6 +290,17 @@ public class TeamBuilderTest
     }
 
     @Test
+    public void everyTeamIsTriedInAllSixLineups()
+    {   // lead, safe swap, closer: each member leads once with each of the other two as the safe swap
+        List<List<Integer>> lineups = TeamBuilder.lineups(new int[] { 7, 8, 9 }).stream()
+            .map(order -> java.util.Arrays.stream(order).boxed().toList())
+            .toList();
+
+        assertEquals(List.of(List.of(7, 8, 9), List.of(7, 9, 8), List.of(8, 7, 9), List.of(8, 9, 7), List.of(9, 7, 8), List.of(9, 8, 7)),
+            lineups);
+    }
+
+    @Test
     public void theLeadShortcutKeepsTheBestFewTrials()
     {   // 3 Teams to show + 2 more: the five best trials go on, whichever Teams they belong to
         List<TeamBuilder.Trial> ranked = List.of(trial(0, 0, 20), trial(1, 0, 19), trial(2, 0, 18), trial(0, 1, 17), trial(1, 1, 16),

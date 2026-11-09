@@ -22,6 +22,22 @@ final class TrainingAi implements TeamPolicy
 {
     private static final int[] SHIELD_WEIGHTS = { 4, 4, 1 };
 
+    /** The team's position 1, which a voluntary switch-out goes to while it's alive. */
+    static final int SAFE_SWAP = 1;
+
+    /** Our side's lineup: switching out goes to the safe swap. Faints still bring in the best matchup. */
+    private final boolean followsRoles;
+
+    TrainingAi()
+    {
+        this(false);
+    }
+
+    TrainingAi(boolean followsRoles)
+    {
+        this.followsRoles = followsRoles;
+    }
+
     private String currentStrategy = "DEFAULT";
     private String previousStrategy = "DEFAULT";
     private double noBaitAverage = 0; // scenarios.noBait.average from the last evaluation
@@ -267,7 +283,7 @@ final class TrainingAi implements TeamPolicy
             }
             if (performSwitch)
             {
-                return decideSwitch(me, them);
+                return switchTarget(me, them);
             }
         }
 
@@ -463,6 +479,20 @@ final class TrainingAi implements TeamPolicy
     }
 
     // ---- decideSwitch: who comes in ----
+
+    /** Who a voluntary switch-out brings in. */
+    int switchTarget(TeamView me, TeamView them)
+    {
+        if (followsRoles && me.team().size() > SAFE_SWAP)
+        {
+            BattlePokemon safeSwap = me.team().get(SAFE_SWAP);
+            if (safeSwap.hp > 0 && safeSwap != me.active())
+            {
+                return SAFE_SWAP;
+            }
+        }
+        return decideSwitch(me, them);
+    }
 
     @Override
     public int chooseReplacement(TeamView me, TeamView them)
