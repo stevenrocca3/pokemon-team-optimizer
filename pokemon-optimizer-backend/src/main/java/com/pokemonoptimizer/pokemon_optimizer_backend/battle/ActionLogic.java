@@ -49,7 +49,8 @@ final class ActionLogic
 
     private static List<BattleMove> plus(List<BattleMove> moves, BattleMove move)
     {
-        List<BattleMove> copy = new ArrayList<>(moves);
+        List<BattleMove> copy = new ArrayList<>(moves.size() + 1);
+        copy.addAll(moves);
         copy.add(move);
         return copy;
     }
@@ -58,7 +59,7 @@ final class ActionLogic
     static Integer decideAction(Battle.Engine battle, BattlePokemon poke, BattlePokemon opponent)
     {
         int turns = battle.turns;
-        List<Double> chargedMoveReady = new ArrayList<>();
+        List<Double> chargedMoveReady = new ArrayList<>(4);
         boolean winsCMP = poke.statAtk >= opponent.statAtk;
 
         int fastDamage = damage(poke, opponent, poke.fastMove);
@@ -444,7 +445,7 @@ final class ActionLogic
         BattleMove fast = poke.fastMove;
 
         int stateCount = 0;
-        List<PlanState> dpQueue = new ArrayList<>();
+        List<PlanState> dpQueue = new ArrayList<>(64);
         dpQueue.add(new PlanState(poke.energy, opponent.hp, 0, opponent.shields, new ArrayList<>(), 0, 1));
         List<PlanState> stateList = new ArrayList<>();
 
@@ -458,7 +459,7 @@ final class ActionLogic
             stateCount++;
 
             PlanState curr = dpQueue.remove(0);
-            List<Double> dpChargedMoveReady = new ArrayList<>();
+            List<Double> dpChargedMoveReady = new ArrayList<>(4);
 
             // Set cap of 4 for buffs
             curr.buffs = Math.max(-4, Math.min(4, curr.buffs));

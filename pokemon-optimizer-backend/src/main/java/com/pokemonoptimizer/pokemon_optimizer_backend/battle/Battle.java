@@ -221,7 +221,7 @@ public final class Battle
         {
             roundChargedMoveUsed = 0;
             roundShieldUsed = false;
-            List<Action> turnActions = new ArrayList<>();
+            List<Action> turnActions = new ArrayList<>(4);
 
             // Reduce cooldown for both Pokemon
             for (BattlePokemon poke : pokemon)
@@ -235,7 +235,11 @@ public final class Battle
                 switching.tick(DELTA_TIME);
             }
 
-            boolean chargedMoveLastTurn = previousTurnActions.stream().anyMatch(action -> action.charged);
+            boolean chargedMoveLastTurn = false;
+            for (Action action : previousTurnActions)
+            {
+                chargedMoveLastTurn |= action.charged;
+            }
             // Cooldowns are set after decisions, because decisions read the current cooldowns
             int[] cooldownsToSet = { pokemon[0].cooldown, pokemon[1].cooldown };
 

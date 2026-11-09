@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * PvPoke's 3v3 practice bot at Champion level (src/js/training/TrainingAI.js, commit e02bde7), made deterministic.
@@ -511,7 +512,69 @@ final class TrainingAi implements TeamPolicy
     // ---- runScenario ----
 
     /** runScenario: 1v1s from the current state over every shield split, weighted 4/4/1 per side; the average rating. */
+    /**
+     * A scenario's inputs: which two Pokémon (by identity: Team Builder reuses the same Combatant and Moveset objects
+     * across thousands of battles), the state a copy carries (HP, energy, cooldown, stat stages) and the shields.
+     * The result depends on nothing else, so it can be remembered.
+     */
+    private record ScenarioKey(String type, Combatant self, Moveset selfMoves, long selfState, int shields,
+                               Combatant other, Moveset otherMoves, long otherState, int otherShields)
+    {
+        @Override
+        public boolean equals(Object o)
+        {
+            return o instanceof ScenarioKey k && type.equals(k.type) && self == k.self && selfMoves == k.selfMoves
+                && selfState == k.selfState && shields == k.shields && other == k.other && otherMoves == k.otherMoves
+                && otherState == k.otherState && otherShields == k.otherShields;
+        }
+
+        @Override
+        public int hashCode()
+        {
+            int h = type.hashCode();
+            h = 31 * h + System.identityHashCode(self);
+            h = 31 * h + System.identityHashCode(selfMoves);
+            h = 31 * h + Long.hashCode(selfState);
+            h = 31 * h + shields;
+            h = 31 * h + System.identityHashCode(other);
+            h = 31 * h + System.identityHashCode(otherMoves);
+            h = 31 * h + Long.hashCode(otherState);
+            return 31 * h + otherShields;
+        }
+
+        /** HP, energy, cooldown and both stat stages packed into one number (each fits in its bits). */
+        static long state(BattlePokemon p)
+        {
+            return ((long) p.hp << 40) | ((long) p.energy << 32) | ((long) (p.cooldown & 0xFFFF) << 16)
+                | ((long) (p.statBuffs[0] + 128) << 8) | (p.statBuffs[1] + 128);
+        }
+    }
+
+    /** Remembered scenario ratings; shared by every battle on every thread, emptied when it grows past the cap. */
+    private static final Map<ScenarioKey, Double> SCENARIOS = new ConcurrentHashMap<>();
+    static final int SCENARIO_CACHE_CAP = 500_000;
+
     static double scenario(String type, BattlePokemon pokemon, int shields, BattlePokemon opponent)
+    {
+        // NEITHER_BAIT and NO_BAIT set up the same battles (bait off on both sides); PvPoke runs both
+        String setup = "NO_BAIT".equals(type) ? "NEITHER_BAIT" : type;
+        ScenarioKey key = new ScenarioKey(setup, pokemon.combatant, pokemon.moveset, ScenarioKey.state(pokemon), shields,
+            opponent.combatant, opponent.moveset, ScenarioKey.state(opponent), opponent.shields);
+        Double known = SCENARIOS.get(key);
+        if (known != null)
+        {
+            return known;
+        }
+        double rating = simulateScenario(type, pokemon, shields, opponent);
+        if (SCENARIOS.size() >= SCENARIO_CACHE_CAP)
+        {
+            SCENARIOS.clear();
+        }
+        SCENARIOS.put(key, rating);
+        return rating;
+    }
+
+    static double simulateScenario(String type, BattlePokemon pokemon, int shields, BattlePokemon opponent)
     {
         double total = 0;
         int totalWeight = 0;
