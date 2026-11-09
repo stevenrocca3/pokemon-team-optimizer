@@ -4,6 +4,8 @@ import { SearchBar } from "../components/SearchBar";
 import { PokemonArt } from "../components/PokemonArt";
 import { Reveal } from "../components/Reveal";
 import { CreamerRule, LogoText } from "../components/Creamer";
+import { DemoPhone } from "../components/DemoPhone";
+import { DEMO_RUN, type DemoPhase } from "../lib/demo-run";
 import { useScrollVariable } from "../lib/motion";
 import { useSpecies } from "../species/species-context";
 import { formatDex } from "../lib/species";
@@ -25,7 +27,7 @@ const POPULAR_IDS = [
 const SECTIONS = [
   { id: "top", label: "Search" },
   { id: "popular", label: "Popular" },
-  { id: "menu", label: "What it does" },
+  { id: "menu", label: "Watch it brew" },
   { id: "brew", label: "How teams are built" },
   { id: "glossary", label: "Glossary" },
 ];
@@ -43,6 +45,14 @@ const GLOSSARY = [
     title: "League Caps",
     body: "Great League caps at 1500 CP and Ultra at 2500, so low Attack IVs often let a Pokémon level higher and end up stronger.",
   },
+];
+
+// The demo's steps beside the phone, lit up as it reaches each one
+const DEMO_STEPS: { title: string; body: string; phases: DemoPhase[] }[] = [
+  { title: "Tick Your Pokémon", body: "No IVs needed: each gets a good spread for the league.", phases: ["pick"] },
+  { title: "Pick a League or Cup", body: "Great, Ultra, Master, or any Cup running now.", phases: ["league", "tap"] },
+  { title: "It Battles Thousands of 3v3s", body: "Against teams drawn from PvPoke's meta, every lineup tried.", phases: ["brew"] },
+  { title: "Your Best Three, in Order", body: "Lead, safe swap and closer, with honest win odds.", phases: ["result"] },
 ];
 
 // What the Team Builder does, in order (ADR 0005); the same steps it shows while it runs
@@ -68,6 +78,7 @@ const BREW_STEPS = [
 export function HomePage() {
   usePageTitle(null);
   const species = useSpecies();
+  const [demoPhase, setDemoPhase] = useState<DemoPhase>("pick");
   const hero = useScrollVariable<HTMLElement>();
   const popular = POPULAR_IDS.map((id) => ({
     id,
@@ -171,60 +182,55 @@ export function HomePage() {
         </div>
       </section>
 
-      {/* 3. About: what the tool does */}
+      {/* 3. The Team Builder itself, running on a pixel phone */}
       <section id="menu" className="scroll-mt-16 py-24">
         <div className="mx-auto max-w-6xl px-4">
           <Reveal>
-            <SectionTitle
-              eyebrow="About DexPresso"
-              title="Three Things, Done Properly"
-            >
-              A free tool for Pokémon GO battlers. No account needed to try any
-              of it.
+            <SectionTitle eyebrow="The Team Builder" title="Watch It Brew">
+              A real run, played back: eight Pokémon in, the best three out.
             </SectionTitle>
           </Reveal>
-
-          <div className="mt-16 grid gap-20">
-            <Feature
-              number="01"
-              title="IV Rankings for Every Species"
-              body="Search any Pokémon and see all 4,096 of its IV spreads ranked by stat product for each league, with the level each one reaches under the cap. Enter your own IVs to see where yours lands."
-              to="/species/medicham"
-              cta="Try Medicham"
-              visual={
-                <BigStat
-                  value="4,096"
-                  label="spreads ranked per species, per league"
-                />
-              }
-            />
-            <Feature
-              flip
-              number="02"
-              title="A Collection of Your Pokémon"
-              body="Add Pokémon by name, appraisal IVs and CP, and the level works itself out. Or import a whole box from a Poké Genie or Calcy IV export. Without logging in, they stay in your browser."
-              to="/collection"
-              cta="Open your Collection"
-              visual={
-                <BigStat
-                  value="CP → Lv"
-                  label="levels found from the CP you see in game"
-                />
-              }
-            />
-            <Feature
-              number="03"
-              title="A Team Builder That Actually Battles"
-              body="It plays full 3v3 battles with your Pokémon against teams drawn from PvPoke's current meta, and tells you how often each team wins, with an honest range around the number."
-              to="/team-builder"
-              cta="Build a team"
-              visual={
-                <BigStat
-                  value="400"
-                  label="fresh battles behind every team's win odds"
-                />
-              }
-            />
+          <div className="mt-14 grid items-center gap-12 md:grid-cols-[auto_1fr] md:gap-16">
+            <Reveal>
+              <DemoPhone onFrame={(frame) => setDemoPhase(frame.phase === "fade" ? "result" : frame.phase)} />
+            </Reveal>
+            <Reveal delayMs={150}>
+              <ol className="grid gap-3">
+                {DEMO_STEPS.map((step) => {
+                  const now = step.phases.includes(demoPhase);
+                  return (
+                    <li
+                      key={step.title}
+                      className={`rounded-xl p-4 ring-1 transition-[background-color,box-shadow,transform] duration-300 ${
+                        now ? "translate-x-2 bg-surface ring-brand/70 inset-shadow-[0_2px_0] inset-shadow-creamer/40" : "ring-transparent"
+                      }`}
+                    >
+                      <p className={`font-display text-xl transition-colors duration-300 ${now ? "text-brand" : "text-ink-soft"}`}>
+                        {step.title}
+                      </p>
+                      <p className="mt-1 text-sm text-ink-soft">{step.body}</p>
+                    </li>
+                  );
+                })}
+              </ol>
+              <div className="mt-8 flex flex-wrap gap-3">
+                <Link to="/team-builder" className="btn btn-primary btn-lg">
+                  Build Your Team
+                </Link>
+                <Link to="/collection" className="btn btn-secondary btn-lg">
+                  Add Your Pokémon
+                </Link>
+              </div>
+              <p className="mt-6 text-sm text-subtle">
+                Also here: <Link to="/species/medicham" className="text-brand underline">IV rankings for any species</Link>, all
+                4,096 spreads per league, and{" "}
+                <Link to="/import" className="text-brand underline">importing a Poké Genie or Calcy IV export</Link>.
+              </p>
+              <p className="mt-2 text-xs text-subtle">
+                Saved from a real run on PvPoke's {DEMO_RUN.league} meta of {DEMO_RUN.metaDate}, with good league IVs
+                assumed for each Pokémon.
+              </p>
+            </Reveal>
           </div>
         </div>
       </section>
@@ -370,65 +376,7 @@ function PopularCard({ id, option }: { id: string; option?: SpeciesOption }) {
   );
 }
 
-function Feature({
-  number,
-  title,
-  body,
-  to,
-  cta,
-  visual,
-  flip = false,
-}: {
-  number: string;
-  title: string;
-  body: string;
-  to: string;
-  cta: string;
-  visual: React.ReactNode;
-  flip?: boolean;
-}) {
-  return (
-    <div className="grid items-center gap-10 md:grid-cols-2 md:gap-16">
-      <Reveal className={flip ? "md:order-2" : ""}>
-        <span className="font-display text-6xl font-black text-brand/40">
-          {number}
-        </span>
-        <h3 className="mt-2 font-display text-3xl font-black tracking-tight">
-          {title}
-        </h3>
-        <p className="mt-4 leading-relaxed text-ink-soft">{body}</p>
-        <Link to={to} className="btn btn-secondary mt-6">
-          {cta} <span aria-hidden="true">→</span>
-        </Link>
-      </Reveal>
-      <Reveal delayMs={150}>{visual}</Reveal>
-    </div>
-  );
-}
 
-/** A big figure in a cup-rim ring, for the About rows. Every number on it is a real property of the tool. */
-function BigStat({ value, label }: { value: string; label: string }) {
-  return (
-    <div className="card relative mx-auto grid aspect-[4/3] max-w-md place-items-center overflow-hidden p-8 text-center">
-      <div
-        className="absolute -top-24 -right-24 h-64 w-64 rounded-full bg-brand/10 blur-2xl"
-        aria-hidden="true"
-      />
-      <div
-        className="absolute -bottom-16 -left-16 h-48 w-48 rounded-full border-[14px] border-brand/10"
-        aria-hidden="true"
-      />
-      <div className="relative">
-        <div className="font-display text-6xl font-black tracking-tight text-brand sm:text-7xl">
-          {value}
-        </div>
-        <p className="mx-auto mt-3 max-w-[16rem] text-sm text-ink-soft">
-          {label}
-        </p>
-      </div>
-    </div>
-  );
-}
 
 /**
  * The highlands again, brighter than the page backdrop: the overlay stays at 78%+ down to the search bar so text
