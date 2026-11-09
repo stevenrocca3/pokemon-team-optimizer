@@ -67,7 +67,7 @@ function App() {
               <Route path="*" element={<NotFoundPage />} />
             </Routes>
           </main>
-          <footer className="border-t border-line px-4 py-6 text-center text-xs leading-6 text-subtle">
+          <footer className="border-t border-line px-4 py-6 text-center text-xs leading-6 text-muted">
             <p>
               <Feedback variant="link" /> ·{' '}
               <Link to="/privacy" className="hover:text-ink">
