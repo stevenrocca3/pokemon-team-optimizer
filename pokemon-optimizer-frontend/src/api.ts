@@ -1,4 +1,4 @@
-import type {SpeciesOption, RankRequest, RankedIvResult, SpeciesDetail, Move, CaughtPokemon, CaughtPokemonRequest, BreakpointReport, ImportPreview, IvComparisonResult, OwnedSpecies, TeamBuilderLeague, TeamBuilderRequest, TeamBuilderResult} from './types'
+import type {SpeciesOption, RankRequest, RankedIvResult, SpeciesDetail, Move, CaughtPokemon, CaughtPokemonRequest, BreakpointReport, CupSummary, ImportPreview, IvComparisonResult, OwnedSpecies, TeamBuilderLeague, TeamBuilderRequest, TeamBuilderResult} from './types'
 import { apiFetch } from './lib/http'
 
 export { NotLoggedInError } from './lib/http'
@@ -82,6 +82,13 @@ export async function saveChecklist(species: OwnedSpecies[]): Promise<OwnedSpeci
 export async function getMeta(league: TeamBuilderLeague): Promise<OwnedSpecies[]>
 {
     const response = await apiFetch(`/api/meta/${league}`);
+    return await response.json();
+}
+
+/** The Cups running now, from PvPoke's data (refreshed nightly on the server). */
+export async function getCups(): Promise<CupSummary[]>
+{
+    const response = await apiFetch('/api/cups');
     return await response.json();
 }
 

@@ -101,4 +101,25 @@ public class SpeciesLookupTest
         assertEquals(List.of("normal", "none"), sl.findById("lickitung").orElseThrow().types());
     }
 
+    @Test
+    public void traitsCarryPvPokesTags()
+    {
+        assertTrue(sl.traits("mewtwo").orElseThrow().tags().contains("legendary"));
+        assertTrue(sl.traits("venusaur_mega").orElseThrow().tags().contains("mega"));
+    }
+
+    @Test
+    public void traitsGiveTheEvolutionStagePvPokesFilterUses()
+    {
+        assertEquals(1, sl.traits("bulbasaur").orElseThrow().evolutionStage());
+        assertEquals(2, sl.traits("ivysaur").orElseThrow().evolutionStage());
+        assertEquals(3, sl.traits("venusaur").orElseThrow().evolutionStage());
+        assertEquals(0, sl.traits("skarmory").orElseThrow().evolutionStage());
+    }
+
+    @Test
+    public void unknownSpeciesHasNoTraits()
+    {
+        assertTrue(sl.traits("missingno").isEmpty());
+    }
 }

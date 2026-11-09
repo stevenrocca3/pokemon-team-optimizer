@@ -23,6 +23,8 @@ import com.pokemonoptimizer.pokemon_optimizer_backend.battle.ShieldScenario;
 import com.pokemonoptimizer.pokemon_optimizer_backend.battle.TeamBattle;
 import com.pokemonoptimizer.pokemon_optimizer_backend.battle.Winner;
 import com.pokemonoptimizer.pokemon_optimizer_backend.calculator.PowerUpCost;
+import com.pokemonoptimizer.pokemon_optimizer_backend.cups.Cup;
+import com.pokemonoptimizer.pokemon_optimizer_backend.cups.CupEntrant;
 import com.pokemonoptimizer.pokemon_optimizer_backend.dto.CaughtPokemonRequest;
 import com.pokemonoptimizer.pokemon_optimizer_backend.dto.OwnedSpecies;
 import com.pokemonoptimizer.pokemon_optimizer_backend.gamemaster.Move;
@@ -88,18 +90,30 @@ public class TeamBuilder
         return build(league, pokemon, List.of());
     }
 
+    /** Teams for a Cup: its meta, and only the Pokémon its rules let in. */
+    public TeamBuilderResult build(Cup cup, List<CaughtPokemonRequest> pokemon, List<OwnedSpecies> species)
+    {
+        return search(cup.league(), cup.meta(), cup.updated(), cup, pokemon, species);
+    }
+
     /**
      * Teams from the Trainer's exact Pokémon plus the species they ticked on the checklist. Indexes in the result
      * count {@code pokemon} first, then {@code species}: species {@code s} is index {@code pokemon.size() + s}.
      */
     public TeamBuilderResult build(League league, List<CaughtPokemonRequest> pokemon, List<OwnedSpecies> species)
     {
-        List<MetaPokemon> meta = metaLookup.meta(league);
+        return search(league, metaLookup.meta(league), metaLookup.snapshotDate(), null, pokemon, species);
+    }
+
+    /** {@code cup} is null for the open League. */
+    private TeamBuilderResult search(League league, List<MetaPokemon> meta, String metaDate, Cup cup,
+                                     List<CaughtPokemonRequest> pokemon, List<OwnedSpecies> species)
+    {
         List<SkippedPokemon> skipped = new ArrayList<>();
         List<Candidate> eligible = new ArrayList<>();
         for (int i = 0; i < pokemon.size(); i++)
         {
-            consider(i, pokemon.get(i), false, league, eligible, skipped);
+            consider(i, pokemon.get(i), false, league, cup, eligible, skipped);
         }
         // a ticked species the Trainer also entered exactly is theirs already; the real one counts, not a guess
         Set<String> entered = new HashSet<>();
@@ -120,7 +134,7 @@ public class TeamBuilder
             }
             else
             {
-                consider(index, assumed.get(), true, league, eligible, skipped);
+                consider(index, assumed.get(), true, league, cup, eligible, skipped);
             }
         }
 
@@ -139,7 +153,7 @@ public class TeamBuilder
         }
         if (bestPerDex.size() < 3)
         {
-            return new TeamBuilderResult(league, meta.size(), metaLookup.snapshotDate(), eligible.size(), List.of(), skipped);
+            return new TeamBuilderResult(league, meta.size(), metaDate, eligible.size(), List.of(), skipped, cup == null ? null : cup.key());
         }
         List<Integer> pool = bestPerDex.values().stream()
             .sorted(Comparator.comparingDouble((Integer c) -> -average(screen[c])).thenComparingInt(c -> c))
@@ -219,12 +233,18 @@ public class TeamBuilder
             teams.add(new TeamResult(members, odds, toughest(order, ratings, meta)));
         }
         teams.sort(Comparator.comparingDouble((TeamResult team) -> -team.winRate().rate()));
-        return new TeamBuilderResult(league, meta.size(), metaLookup.snapshotDate(), eligible.size(), teams, skipped);
+        return new TeamBuilderResult(league, meta.size(), metaDate, eligible.size(), teams, skipped, cup == null ? null : cup.key());
     }
 
     // ---- eligibility ----
 
     String problemWith(CaughtPokemonRequest request, League league)
+    {
+        return problemWith(request, league, null);
+    }
+
+    /** Why this Pokémon can't battle here, or null. In a Cup, the Cup's own rules decide who may enter, Megas included. */
+    String problemWith(CaughtPokemonRequest request, League league, Cup cup)
     {
         Optional<SpeciesType> found = speciesLookup.findById(request.speciesId());
         if (found.isEmpty())
@@ -233,7 +253,15 @@ public class TeamBuilder
         }
         SpeciesType species = found.get();
         // PvPoke tags these "mega"; our species data keeps them (ADR 0003) but GBL's open Leagues don't allow them
-        if (species.speciesId().contains("_mega") || species.speciesId().endsWith("_primal"))
+        if (cup != null)
+        {
+            CupEntrant entrant = CupEntrant.of(species, speciesLookup.traits(species.speciesId()).orElseThrow(), request.shadow());
+            if (!cup.eligibility().allows(entrant, cup.cpCap()))
+            {
+                return "Not allowed in " + cup.title();
+            }
+        }
+        else if (species.speciesId().contains("_mega") || species.speciesId().endsWith("_primal"))
         {
             return "Megas can't battle in GO Battle League";
         }
@@ -260,10 +288,10 @@ public class TeamBuilder
         return null;
     }
 
-    private void consider(int index, CaughtPokemonRequest request, boolean assumed, League league,
+    private void consider(int index, CaughtPokemonRequest request, boolean assumed, League league, Cup cup,
                           List<Candidate> eligible, List<SkippedPokemon> skipped)
     {
-        String problem = problemWith(request, league);
+        String problem = problemWith(request, league, cup);
         if (problem != null)
         {
             skipped.add(new SkippedPokemon(index, problem));

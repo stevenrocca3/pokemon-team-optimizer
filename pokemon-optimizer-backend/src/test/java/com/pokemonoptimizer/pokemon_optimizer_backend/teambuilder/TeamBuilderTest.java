@@ -10,6 +10,9 @@ import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
 
 import com.pokemonoptimizer.pokemon_optimizer_backend.calculator.PowerUpCost;
+import com.pokemonoptimizer.pokemon_optimizer_backend.cups.Cup;
+import com.pokemonoptimizer.pokemon_optimizer_backend.cups.CupFilter;
+import com.pokemonoptimizer.pokemon_optimizer_backend.cups.CupRules;
 import com.pokemonoptimizer.pokemon_optimizer_backend.dto.CaughtPokemonRequest;
 import com.pokemonoptimizer.pokemon_optimizer_backend.dto.OwnedSpecies;
 import com.pokemonoptimizer.pokemon_optimizer_backend.gamemaster.MoveLookup;
@@ -218,5 +221,66 @@ public class TeamBuilderTest
         assertTrue(registeel.cost().stardust() > 0);
         assertEquals(null, memberOf(best, "medicham").cost());
         assertEquals(null, memberOf(best, "azumarill").cost());
+    }
+
+    // ---- Cups ----
+
+    private static Cup cup(String key, String title, CupRules rules)
+    {   // the Great League meta's first 20, so a Cup's meta is visibly its own
+        List<MetaPokemon> meta = new MetaLookup(SPECIES, MOVES).meta(League.GREAT).subList(0, 20);
+        return new Cup(key, title, League.GREAT, 1500, 3, List.of(), rules, meta, "2026-11-03");
+    }
+
+    private static final Cup FANTASY = cup("fantasy-1500", "Fantasy Cup", new CupRules(
+        List.of(new CupFilter("type", List.of("steel", "dragon", "fairy"), List.of(), false)),
+        List.of(new CupFilter("tag", List.of("mega"), List.of(), false))));
+
+    @Test
+    public void aCupLeavesOutWhatItsRulesDontAllow()
+    {   // Medicham is fighting/psychic; Registeel, Azumarill and a ticked Altaria are steel, fairy and dragon
+        List<CaughtPokemonRequest> box = List.of(
+            pokemon("medicham", 0, 15, 15, 20, "COUNTER", "ICE_PUNCH", "DYNAMIC_PUNCH"),
+            pokemon("registeel", 0, 14, 15, 20, "LOCK_ON", "FOCUS_BLAST", "FLASH_CANNON"),
+            pokemon("azumarill", 0, 14, 15, 20, "BUBBLE", "ICE_BEAM", "PLAY_ROUGH"));
+
+        TeamBuilderResult result = BUILDER.build(FANTASY, box, List.of(owned("altaria")));
+
+        assertTrue(result.skipped().contains(new SkippedPokemon(0, "Not allowed in Fantasy Cup")));
+        assertEquals(Set.of("registeel", "azumarill", "altaria"), species(result.teams().get(0)));
+    }
+
+    @Test
+    public void aCupBattlesItsOwnMetaAndSaysWhichCupItWas()
+    {
+        List<CaughtPokemonRequest> box = List.of(
+            pokemon("registeel", 0, 14, 15, 20, "LOCK_ON", "FOCUS_BLAST", "FLASH_CANNON"),
+            pokemon("azumarill", 0, 14, 15, 20, "BUBBLE", "ICE_BEAM", "PLAY_ROUGH"));
+
+        TeamBuilderResult result = BUILDER.build(FANTASY, box, List.of(owned("altaria")));
+
+        assertEquals(20, result.metaSize());
+        assertEquals("2026-11-03", result.metaDate());
+        assertEquals("fantasy-1500", result.cup());
+        assertEquals(null, BUILDER.build(League.GREAT, box).cup());
+    }
+
+    @Test
+    public void aCupDecidesForItselfWhetherMegasMayEnter()
+    {   // the open Leagues ban Megas; a Mega Cup lets them in, and one tagged "mega" out keeps them out
+        CaughtPokemonRequest mega = pokemon("venusaur_mega", 0, 0, 0, 1, "VINE_WHIP", "SLUDGE_BOMB");
+        Cup megaCup = cup("mega-1500", "Mega Great League", new CupRules(List.of(), List.of()));
+
+        assertEquals("Megas can't battle in GO Battle League", BUILDER.problemWith(mega, League.GREAT));
+        assertEquals(null, BUILDER.problemWith(mega, League.GREAT, megaCup));
+        assertEquals("Not allowed in Fantasy Cup", BUILDER.problemWith(mega, League.GREAT, FANTASY));
+    }
+
+    @Test
+    public void aShadowIsCheckedAsAShadow()
+    {
+        Cup noShadows = cup("spectral-1500", "Spectral Cup", new CupRules(List.of(), List.of(new CupFilter("tag", List.of("shadow"), List.of(), false))));
+        CaughtPokemonRequest shadow = new CaughtPokemonRequest("registeel", 0, 14, 15, 20.0, "LOCK_ON", List.of("FOCUS_BLAST"), true);
+
+        assertEquals("Not allowed in Spectral Cup", BUILDER.problemWith(shadow, League.GREAT, noShadows));
     }
 }

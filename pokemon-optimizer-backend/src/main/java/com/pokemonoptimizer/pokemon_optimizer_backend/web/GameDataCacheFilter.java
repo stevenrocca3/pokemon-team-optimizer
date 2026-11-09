@@ -14,7 +14,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 /**
- * Species, move and meta lists come from the data bundled with the build, so they only change on a deploy.
+ * Species, move and meta lists come from the data bundled with the build, so they only change on a deploy; Cups
+ * change at most nightly.
  * Browsers keep them for an hour, then revalidate with the ETag: an unchanged list costs a 304 with no body
  * instead of hundreds of KB. Runs before Spring Security, whose default "no-store" only applies when no
  * Cache-Control is set yet.
@@ -37,7 +38,7 @@ public class GameDataCacheFilter extends ShallowEtagHeaderFilter
     {
         String path = request.getRequestURI();
         boolean gameData = path.equals("/api/moves") || path.equals("/api/species") || path.startsWith("/api/species/")
-            || path.startsWith("/api/meta/");
+            || path.startsWith("/api/meta/") || path.equals("/api/cups");
         return !gameData || !("GET".equals(request.getMethod()) || "HEAD".equals(request.getMethod()));
     }
 

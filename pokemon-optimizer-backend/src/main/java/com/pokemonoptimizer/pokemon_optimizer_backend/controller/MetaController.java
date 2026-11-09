@@ -16,8 +16,6 @@ import com.pokemonoptimizer.pokemon_optimizer_backend.teambuilder.MetaLookup;
 @RequestMapping("/api")
 public class MetaController
 {
-    private static final String SHADOW_SUFFIX = "_shadow";
-
     private final MetaLookup metaLookup;
 
     public MetaController(MetaLookup metaLookup)
@@ -29,8 +27,6 @@ public class MetaController
     @GetMapping("/meta/{league}")
     public List<OwnedSpecies> meta(@PathVariable League league)
     {
-        return metaLookup.meta(league).stream().map(m -> m.id().endsWith(SHADOW_SUFFIX)
-            ? new OwnedSpecies(m.id().substring(0, m.id().length() - SHADOW_SUFFIX.length()), true)
-            : new OwnedSpecies(m.id(), false)).toList();
+        return metaLookup.meta(league).stream().map(m -> OwnedSpecies.ofPvpokeId(m.id())).toList();
     }
 }
