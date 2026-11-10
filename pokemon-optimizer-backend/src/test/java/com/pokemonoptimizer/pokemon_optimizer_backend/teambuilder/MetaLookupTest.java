@@ -1,5 +1,7 @@
 package com.pokemonoptimizer.pokemon_optimizer_backend.teambuilder;
 
+import com.pokemonoptimizer.pokemon_optimizer_backend.gamemaster.RawGamemaster;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.List;
@@ -60,7 +62,7 @@ public class MetaLookupTest
 
     @Test
     public void snapshotDateComesFromTheGamemaster()
-    {   // gamemaster.json "timestamp": "2026-10-04 00:17:21"; results show which meta they were built against
-        assertEquals("2026-10-04", META.snapshotDate());
+    {   // gamemaster.json "timestamp": "2026-10-04 00:17:21" → "2026-10-04"; results show which meta they were built against
+        assertEquals(RawGamemaster.timestamp().substring(0, 10), META.snapshotDate());
     }
 }

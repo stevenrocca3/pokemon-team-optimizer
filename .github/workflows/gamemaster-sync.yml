@@ -1,0 +1,122 @@
+# Keeps the species and move snapshot (ADR 0004) current: every night, if PvPoke's Pokémon or moves changed, this
+# copies the new gamemaster.json in, runs the backend tests, and opens (or refreshes) one PR saying what changed.
+# Merging and shipping stay by hand. Run it now from the Actions tab with "Run workflow".
+name: Gamemaster sync
+
+on:
+  schedule:
+    - cron: "0 6 * * *"   # UTC, after PvPoke's evening updates (US time)
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency: gamemaster-sync
+
+env:
+  SNAPSHOT: pokemon-optimizer-backend/src/main/resources/gamemaster.json
+  SOURCE: https://raw.githubusercontent.com/pvpoke/pvpoke/master/src/data/gamemaster.json
+  BRANCH: gamemaster-sync
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    # the backend tests need a real Postgres, like production
+    services:
+      db:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_DB: dexpresso
+          POSTGRES_USER: dexpresso
+          POSTGRES_PASSWORD: dexpresso
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U dexpresso" --health-interval 5s --health-timeout 5s --health-retries 10
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch PvPoke's gamemaster and compare
+        id: compare
+        run: |
+          curl --fail --silent --show-error --location --max-time 60 --max-filesize 20000000 \
+            --output "$RUNNER_TEMP/live.json" "$SOURCE"
+          set +e
+          python3 -I tools/gamemaster-sync/summarize.py "$SNAPSHOT" "$RUNNER_TEMP/live.json" > "$RUNNER_TEMP/summary.md"
+          code=$?
+          set -e
+          if [ "$code" -eq 10 ]; then
+            echo "Nothing we use changed."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          elif [ "$code" -eq 0 ]; then
+            cat "$RUNNER_TEMP/summary.md"
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "stamp=$(python3 -I -c 'import json,sys; print(json.load(open(sys.argv[1]))["timestamp"][:10])' "$RUNNER_TEMP/live.json")" >> "$GITHUB_OUTPUT"
+            cp "$RUNNER_TEMP/live.json" "$SNAPSHOT"
+          else
+            exit "$code"
+          fi
+
+      - uses: actions/setup-java@v4
+        if: steps.compare.outputs.changed == 'true'
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: maven
+
+      - name: Run the backend tests on the new data
+        id: tests
+        if: steps.compare.outputs.changed == 'true'
+        working-directory: pokemon-optimizer-backend
+        env:
+          DB_USER: dexpresso
+          DB_PASSWORD: dexpresso
+          GOOGLE_CLIENT_ID: ci
+          GOOGLE_CLIENT_SECRET: ci
+        run: |
+          if ./mvnw --batch-mode --no-transfer-progress test > "$RUNNER_TEMP/tests.log" 2>&1; then
+            echo "result=pass" >> "$GITHUB_OUTPUT"
+          else
+            echo "result=fail" >> "$GITHUB_OUTPUT"
+            grep -E "Tests run:|FAIL|ERROR" "$RUNNER_TEMP/tests.log" | tail -40 || true
+          fi
+
+      - name: Open or refresh the PR
+        if: steps.compare.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          STAMP: ${{ steps.compare.outputs.stamp }}
+          TESTS: ${{ steps.tests.outputs.result }}
+        run: |
+          title="Gamemaster: PvPoke $STAMP"
+          {
+            cat "$RUNNER_TEMP/summary.md"
+            echo
+            if [ "$TESTS" = pass ]; then
+              echo "Backend tests pass on the new data."
+            else
+              echo "**Backend tests fail on the new data.** From the run log:"
+              echo '```'
+              grep -E "Tests run:.*(Fail|Err)|FAIL|ERROR\]" "$RUNNER_TEMP/tests.log" | head -30 || true
+              echo '```'
+            fi
+          } > "$RUNNER_TEMP/body.md"
+          [ "$TESTS" = pass ] || title="$title (tests fail)"
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -C "$BRANCH"
+          git add "$SNAPSHOT"
+          git commit --quiet --message "$title"
+          # one branch, rebuilt from main each night, so there's only ever one gamemaster PR to look at
+          git push --force origin "$BRANCH"
+
+          if [ -n "$(gh pr list --head "$BRANCH" --state open --json number --jq '.[].number')" ]; then
+            gh pr edit "$BRANCH" --title "$title" --body-file "$RUNNER_TEMP/body.md"
+          else
+            gh pr create --head "$BRANCH" --base main --title "$title" --body-file "$RUNNER_TEMP/body.md"
+          fi

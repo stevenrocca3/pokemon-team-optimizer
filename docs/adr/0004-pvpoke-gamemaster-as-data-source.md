@@ -10,4 +10,4 @@ Caught Pokémon need Movesets chosen from real Learnsets, including Elite Moves,
 
 ## Consequences
 
-Existing IDs, URLs and tests that use `706-hisuian`-style IDs change. The data must be refreshed by hand when the game adds Species or moves.
+Existing IDs, URLs and tests that use `706-hisuian`-style IDs change. The data must be refreshed when the game adds Species or moves. Since 2026-11-10 a nightly GitHub Action (`.github/workflows/gamemaster-sync.yml`) does the pulling: when PvPoke's Pokémon or moves change, it copies the new file in, runs the backend tests and opens one PR summarizing the change. Merging and deploying stay deliberate steps, so the snapshot decision above still holds. Tests check the loaders against the committed file (`RawGamemaster`) rather than pinning its counts or date. The meta groups and movesets in `resources/meta/` are still refreshed by hand.

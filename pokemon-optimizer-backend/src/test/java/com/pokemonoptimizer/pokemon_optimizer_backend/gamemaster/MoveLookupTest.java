@@ -12,7 +12,7 @@ public class MoveLookupTest
     @Test
     public void testMoveCount() 
     {   //testing to make sure all moves that should be loaded are
-        assertEquals(352, ml.findAll().size());
+        assertEquals(RawGamemaster.moveCount(), ml.findAll().size());
 
     }
 

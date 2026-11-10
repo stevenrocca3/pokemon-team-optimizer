@@ -16,7 +16,7 @@ public class SpeciesLookupTest
     @Test
     public void testCount() 
     {   //testing to make sure all pokemon that should be loaded are
-        assertEquals(1132, sl.findAll().size());
+        assertEquals(RawGamemaster.releasedSpeciesCount(), sl.findAll().size());
 
     }
 

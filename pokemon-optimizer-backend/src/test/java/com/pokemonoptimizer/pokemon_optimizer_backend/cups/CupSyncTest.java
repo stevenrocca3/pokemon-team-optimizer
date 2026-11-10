@@ -1,5 +1,7 @@
 package com.pokemonoptimizer.pokemon_optimizer_backend.cups;
 
+import com.pokemonoptimizer.pokemon_optimizer_backend.gamemaster.RawGamemaster;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -39,14 +41,14 @@ public class CupSyncTest
         CupSyncRun run = sync.sync();
 
         assertThat(run.isSucceeded()).isTrue();
-        assertThat(run.getSourceTimestamp()).isEqualTo("2026-10-04 00:17:21");
+        assertThat(run.getSourceTimestamp()).isEqualTo(RawGamemaster.timestamp());
         Cup fantasy = catalog.find("fantasy-1500").orElseThrow();
         assertThat(fantasy.title()).isEqualTo("Fantasy Cup");
         assertThat(fantasy.league()).isEqualTo(League.GREAT);
         assertThat(fantasy.meta()).hasSize(44);
         assertThat(fantasy.meta().get(1).id()).isEqualTo("annihilape_shadow");
         assertThat(fantasy.meta().get(1).combatant().level()).isEqualTo(17);
-        assertThat(fantasy.updated()).isEqualTo("2026-10-04");
+        assertThat(fantasy.updated()).isEqualTo(RawGamemaster.timestamp().substring(0, 10));
         assertThat(catalog.lastSynced()).contains(run.getFinishedAt());
     }
 

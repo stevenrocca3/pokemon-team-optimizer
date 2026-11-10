@@ -1,5 +1,7 @@
 package com.pokemonoptimizer.pokemon_optimizer_backend.cups;
 
+import com.pokemonoptimizer.pokemon_optimizer_backend.gamemaster.RawGamemaster;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -66,7 +68,7 @@ public class PvpokeCupsTest
     {
         ParsedCups parsed = parse(gamemaster("[" + FANTASY_FORMAT + "]", "[" + FANTASY_CUP + "]"));
 
-        assertThat(parsed.sourceTimestamp()).isEqualTo("2026-10-04 00:17:21");
+        assertThat(parsed.sourceTimestamp()).isEqualTo(RawGamemaster.timestamp());
         assertThat(parsed.formats()).hasSize(1);
         CupFormat fantasy = parsed.formats().get(0);
         assertThat(fantasy.key()).isEqualTo("fantasy-1500");
