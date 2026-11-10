@@ -7,8 +7,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 /**
- * Only the Google ID, which ties a login to its Collection. The name and email stay with Google: the app reads
- * them from the login session when it needs them, so there's nothing personal here to leak or keep up to date.
+ * Only the Google ID, which ties a login to its Collection. The name stays with the login session (Google is never
+ * asked for the email), so there's nothing personal here to leak or keep up to date.
  */
 @Entity
 public class Trainer

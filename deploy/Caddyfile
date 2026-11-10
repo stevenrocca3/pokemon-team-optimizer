@@ -6,6 +6,11 @@ dexpresso.app {
 		# Caddy ignores X-Forwarded-For sent by visitors, so this can't be spoofed to dodge rate limits.
 		# If Cloudflare's proxy (orange cloud) is ever turned on, this becomes Cloudflare's IP: see docs/DEPLOY.md.
 		header_up X-Real-IP {remote_host}
+		# A deploy replaces the app container, which takes ~25 s to boot. Hold requests and keep retrying until it
+		# answers instead of failing them with a 502 ("DexPresso isn't answering"). Retries only happen when the
+		# app couldn't be reached at all, so a request is never run twice.
+		lb_try_duration 45s
+		lb_try_interval 500ms
 	}
 }
 
