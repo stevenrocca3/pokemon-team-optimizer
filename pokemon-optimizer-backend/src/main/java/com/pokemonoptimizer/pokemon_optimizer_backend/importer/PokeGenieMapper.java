@@ -1,6 +1,7 @@
 package com.pokemonoptimizer.pokemon_optimizer_backend.importer;
 
 import java.text.Normalizer;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -63,6 +64,12 @@ public class PokeGenieMapper
 
         for (PokeGenieRow row : parsed.rows())
         {
+            String impossible = impossibleStats(row);
+            if (impossible != null)
+            {
+                rejected.add(new RejectedRow(row.index(), impossible));
+                continue;
+            }
             Optional<SpeciesType> found = findSpecies(row.name(), row.form());
             if (found.isEmpty())
             {
@@ -97,6 +104,39 @@ public class PokeGenieMapper
 
         rejected.sort(Comparator.comparingInt(RejectedRow::index));
         return new ImportPreview(pokemon, rejected, learnsets, suggestions);
+    }
+
+    /**
+     * Saving refuses IVs outside 0 to 15 and levels outside 1 to 51 or between halves (CaughtPokemonRequest and
+     * CaughtPokemonController), and refuses the whole import with them. Apps that write Genie-style files don't always
+     * keep to that, so those rows are turned away here, where the player sees which ones and the rest still save.
+     */
+    private static String impossibleStats(PokeGenieRow row)
+    {
+        if (!isIv(row.atkIv()) || !isIv(row.defIv()) || !isIv(row.staIv()))
+        {
+            return "IVs " + row.atkIv() + "/" + row.defIv() + "/" + row.staIv() + " aren't possible (each is 0 to 15)";
+        }
+        if (row.level() < 1 || row.level() > 51)
+        {
+            return "Level " + level(row.level()) + " isn't possible (1 to 51)";
+        }
+        if (row.level() * 2 != Math.floor(row.level() * 2))
+        {
+            return "Level " + level(row.level()) + " isn't possible (levels go up in halves)";
+        }
+        return null;
+    }
+
+    private static boolean isIv(int iv)
+    {
+        return iv >= 0 && iv <= 15;
+    }
+
+    /** 0.0 → "0", 20.25 → "20.25" */
+    private static String level(double level)
+    {
+        return BigDecimal.valueOf(level).stripTrailingZeros().toPlainString();
     }
 
     private Optional<SpeciesType> findSpecies(String name, String form)
