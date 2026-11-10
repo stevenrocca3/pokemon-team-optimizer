@@ -11,6 +11,7 @@ import { IvTriple } from '../components/IvTriple'
 import { formatLevel } from '../lib/species'
 import { startingMoves } from '../lib/moves'
 import { usePageTitle } from '../lib/page-title'
+import { ScreenshotImport } from '../components/ScreenshotImport'
 
 const PAGE_SIZE = 20
 
@@ -26,8 +27,9 @@ type SaveStatus = { kind: 'idle' } | { kind: 'saving' } | ({ kind: 'saved' } & A
 type Picked = { fast: string; charged1: string; charged2: string }
 
 export function ImportPage() {
-  usePageTitle('Import from Poké Genie or Calcy IV')
+  usePageTitle('Import from Poké Genie, Calcy IV or Screenshots')
   const collection = useCollection()
+  const [source, setSource] = useState<Source>('csv')
   const [stage, setStage] = useState<Stage>({ kind: 'pick' })
   const [picked, setPicked] = useState<Record<number, Picked>>({})
   const [save, setSave] = useState<SaveStatus>({ kind: 'idle' })
@@ -53,12 +55,33 @@ export function ImportPage() {
     <div className="mx-auto max-w-6xl px-4 py-10">
       <h1 className="text-4xl font-black tracking-tight">Import Your Pokémon</h1>
       <CreamerRule align="left" className="mt-3" />
-      <p className="mt-2 max-w-2xl text-ink-soft">
-        Export a CSV from Poké Genie (menu → Back Up &amp; Restore → Export CSV) or from Calcy IV (your scan history → Export), then choose that file here. Nothing is saved until you
-        press Save.
-      </p>
+      {stage.kind !== 'preview' && <SourceTabs source={source} onChange={setSource} />}
 
-      {stage.kind !== 'preview' && (
+      {stage.kind !== 'preview' && source === 'csv' && (
+        <p className="mt-4 max-w-2xl text-ink-soft">
+          Export a CSV from Poké Genie (menu → Back Up &amp; Restore → Export CSV) or from Calcy IV (your scan history → Export), then choose that file here. Nothing is saved until
+          you press Save.
+        </p>
+      )}
+      {stage.kind !== 'preview' && source === 'screenshots' && (
+        <>
+          <p className="mt-4 max-w-2xl text-ink-soft">
+            In Pokémon GO, open a Pokémon, tap ☰ then Appraise, and tap until the three bars show. Screenshot that, then choose the screenshots here. They're read on your
+            device and never uploaded. Nothing is saved until you press Save.
+          </p>
+          <ScreenshotImport
+            onPreview={(preview, label) => {
+              const start: Record<number, Picked> = {}
+              for (const p of preview.pokemon) start[p.index] = startingMoves(p, preview.suggestedMoves[p.speciesId])
+              setPicked(start)
+              setSave({ kind: 'idle' })
+              setStage({ kind: 'preview', fileName: label, preview })
+            }}
+          />
+        </>
+      )}
+
+      {stage.kind !== 'preview' && source === 'csv' && (
         <FilePicker
           busy={stage.kind === 'reading'}
           label={stage.kind === 'reading' ? `Reading ${stage.fileName}…` : undefined}
@@ -66,7 +89,7 @@ export function ImportPage() {
         />
       )}
 
-      {stage.kind === 'error' && (
+      {stage.kind === 'error' && source === 'csv' && (
         <div role="alert" className="mt-6 max-w-2xl rounded-lg border border-red-900 bg-red-950/50 p-5 text-red-200">
           <p className="font-semibold">Couldn't read that file</p>
           <p className="mt-1 text-sm text-red-200">{stage.message}</p>
@@ -98,6 +121,31 @@ export function ImportPage() {
           }}
         />
       )}
+    </div>
+  )
+}
+
+type Source = 'csv' | 'screenshots'
+
+function SourceTabs({ source, onChange }: { source: Source; onChange: (source: Source) => void }) {
+  const tabs: [Source, string][] = [
+    ['csv', 'Poké Genie / Calcy IV CSV'],
+    ['screenshots', 'Appraisal Screenshots'],
+  ]
+  return (
+    <div role="tablist" aria-label="Import from" className="mt-6 inline-flex gap-1 rounded-lg bg-surface p-1 ring-1 ring-line">
+      {tabs.map(([id, label]) => (
+        <button
+          key={id}
+          role="tab"
+          aria-selected={source === id}
+          onClick={() => onChange(id)}
+          className={`rounded-md px-3 py-2 font-display text-sm transition sm:px-4 ${source === id ? 'bg-brand text-on-brand' : 'text-ink-soft hover:bg-raised hover:text-ink'}`}
+        >
+          {label}
+          {id === 'screenshots' && <span className={`ml-2 text-[10px] uppercase ${source === id ? 'text-on-brand/80' : 'text-brand'}`}>New</span>}
+        </button>
+      ))}
     </div>
   )
 }
@@ -185,13 +233,13 @@ function Preview({ fileName, preview, picked, onPick, save, onSave, onStartOver 
           From <span className="text-ink-soft">{fileName}</span>
         </p>
         <button onClick={onStartOver} className="text-sm text-muted underline-offset-2 hover:text-ink hover:underline">
-          Choose a different file
+          Start over
         </button>
       </div>
 
       <dl className="mt-3 grid gap-3 sm:grid-cols-3">
         <Count label="Ready to save" value={readyFromFile} />
-        <Count label="Moves to check" value={needing.length} note="Not in the export; each starts on PvPoke's suggested moveset" />
+        <Count label="Moves to check" value={needing.length} note="Not known yet; each starts on PvPoke's suggested moveset" />
         <Count label="Can't import" value={preview.rejected.length} note="Listed at the bottom" />
       </dl>
 

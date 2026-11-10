@@ -52,3 +52,9 @@ export function levelsForCp(base: BaseStats, ivs: Ivs, target: number): number[]
   }
   return levels
 }
+
+/** Max HP: stamina times the CP multiplier, rounded down, at least 10. The appraisal screen shows it as "268 / 268 HP". */
+export function hp(base: BaseStats, ivs: Ivs, level: number): number {
+  const cpm = CPM[Math.round((level - 1) * 2)]
+  return Math.max(10, Math.floor((base.baseSta + ivs.sta) * cpm))
+}
