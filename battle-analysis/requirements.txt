@@ -1,0 +1,11 @@
+# CV engine (Step 1) and analysis (Step 2)
+numpy==2.5.4
+opencv-python-headless==5.0.0.93
+pillow==13.0.0
+jsonschema==4.26.0
+# service (Step 3)
+fastapi==0.162.4
+uvicorn[standard]==0.54.0
+python-multipart==0.0.33
+celery==5.7.0
+redis==8.1.0

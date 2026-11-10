@@ -1,0 +1,6 @@
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+markers = [
+    "recordings: needs the gitignored real GBL recordings; skipped when they aren't on this machine",
+]
