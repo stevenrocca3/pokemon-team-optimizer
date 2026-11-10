@@ -3,7 +3,8 @@ Prototype: read the top HUD of GO Battle League videos (both Pokémon's names an
 
 Usage, from anywhere: python3 -I tools/gbl-reader-prototype/read_battle.py [videos or folders...] [--frames]
 With no arguments it reads every video in the repo's gitignored Screenrecordings folder.
---frames prints every frame's reading, not just the timeline.
+--frames prints every frame's reading, not just the timeline. Readings are saved next to each video
+(VIDEO.readings.json) so later runs skip the OCR; --reread does it again.
 
 Needs numpy, Pillow, ffmpeg and the tesseract CLI. Videos stay local: never commit them or frames from them.
 """
@@ -134,38 +135,105 @@ def stamp(i):
     return f'{int(s // 60)}:{s % 60:04.1f}'
 
 
-def summary(side):
-    return f"{side['species'] or '?' + side['name']!s:<18} CP {side['cp'] or '?':<5} balls {side['balls']} shields {side['shields']}"
+LEAGUE_CAPS = [(1500, 'Great League'), (2500, 'Ultra League'), (10**6, 'Master League')]
 
 
-def read_video(video, show_frames):
-    tally = Counter()
-    timeline = []  # (first frame, last frame, left species, right species)
+def read_raw(video):
+    """Every frame's HUD reading, or None where there's no HUD. OCR is slow, so this is saved next to the video."""
+    cache = video.with_name(video.stem + '.readings.json')
+    if cache.exists() and '--reread' not in sys.argv:
+        return json.loads(cache.read_text())
+    readings = []
     with tempfile.TemporaryDirectory() as tmp:
-        frames = frames_of(video, tmp)
-        for i, path in enumerate(frames):
-            a = np.asarray(Image.open(path).convert('RGB'))
-            sides = read_frame(a)
-            if not sides:
-                tally['no HUD'] += 1
-                if show_frames:
-                    print(f'  {stamp(i)}  no HUD')
-                continue
-            left, right = sides
-            tally['HUD'] += 1
-            for side in (left, right):
-                tally['name matched' if side['species'] else 'name unmatched'] += 1
-                tally['cp read' if side['cp'] else 'cp unread'] += 1
-            if show_frames:
-                print(f"  {stamp(i)}  {summary(left)}  |  {summary(right)}")
-            # a name OCR misses for a frame keeps the side's last reading: Pokémon don't flicker in and out
-            known = tuple(timeline[-1][2:]) if timeline else ('?', '?')
-            pair = (left['species'] or known[0], right['species'] or known[1])
-            if timeline and tuple(timeline[-1][2:]) == pair:
-                timeline[-1][1] = i
-            else:
-                timeline.append([i, i, *pair])
-    return len(frames), tally, timeline
+        for path in frames_of(video, tmp):
+            sides = read_frame(np.asarray(Image.open(path).convert('RGB')))
+            readings.append(list(sides) if sides else None)
+    cache.write_text(json.dumps(readings))
+    return readings
+
+
+def median(values):
+    """The middle value; with an even count the lower one, so a real drop (a shield used) shows from its first frame."""
+    s = sorted(values)
+    return s[(len(s) - 1) // 2]
+
+
+def clean(readings):
+    """
+    Fixes what OCR gets wrong in single frames, using what can't change mid-battle:
+    - a side's Pokémon doesn't flicker: a name OCR missed keeps the last one read;
+    - a Pokémon's CP is fixed: each Pokémon gets the CP read most often for it, and any other reading is replaced;
+    - Poké Balls and shields only go down: each count is the median of it and its neighbours (two HUD frames each
+      way), which drops one-frame misreads; a frame showing no balls at all had its icons hidden and doesn't vote.
+      A rise that lasts is a new battle (Shorts cut between battles).
+    Returns the HUD frames as (frame index, battle number, left, right) and a tally of what was fixed.
+    """
+    fixes = Counter()
+    hud = [(i, [dict(s) for s in r]) for i, r in enumerate(readings) if r]
+    for side in (0, 1):
+        last = None
+        for _, sides in hud:
+            if sides[side]['species']:
+                last = sides[side]['species']
+            elif last:
+                sides[side]['species'] = last
+                fixes['name carried over'] += 1
+        cps = {}
+        for _, sides in hud:
+            if sides[side]['species'] and sides[side]['cp']:
+                cps.setdefault(sides[side]['species'], Counter())[sides[side]['cp']] += 1
+        for _, sides in hud:
+            counts = cps.get(sides[side]['species'])
+            if counts:
+                cp = counts.most_common(1)[0][0]
+                if sides[side]['cp'] != cp:
+                    fixes['CP corrected'] += 1
+                    sides[side]['cp'] = cp
+        # no balls can't be right while the HUD shows (the battle ends then): the icon row was hidden by an effect,
+        # so neither count from that frame is trusted
+        seen = [sides[side]['balls'] > 0 for _, sides in hud]
+        for key in ('balls', 'shields'):
+            raw = [sides[side][key] if ok else None for (_, sides), ok in zip(hud, seen)]
+            previous = None
+            for k, (_, sides) in enumerate(hud):
+                near = [v for v in raw[max(0, k - 2): k + 3] if v is not None]
+                smooth = median(near) if near else previous
+                if smooth is None:
+                    smooth = sides[side][key]
+                if smooth != sides[side][key]:
+                    fixes[f'{key} smoothed'] += 1
+                sides[side][key] = previous = smooth
+    out, battle = [], 1
+    for k, (i, sides) in enumerate(hud):
+        if k and any(sides[s][key] > hud[k - 1][1][s][key] for s in (0, 1) for key in ('balls', 'shields')):
+            battle += 1
+        out.append((i, battle, sides[0], sides[1]))
+    return out, fixes
+
+
+def league_of(frames):
+    top = median([max(l['cp'] or 0, r['cp'] or 0) for _, _, l, r in frames])
+    return next(name for cap, name in LEAGUE_CAPS if top <= cap)
+
+
+def describe(first, last):
+    """'Serperior CP 1498, 3 left, shields 2→1' for one side over a stretch of the timeline."""
+    def count(key, word):
+        a, b = first[key], last[key]
+        return f'{word} {a}' if a == b else f'{word} {a}→{b}'
+    return f"{first['species'] or '?'} CP {first['cp'] or '?'} ({count('balls', 'left')}, {count('shields', 'shields')})"
+
+
+def timeline_of(frames):
+    """Stretches where the same two Pokémon are out, in one battle."""
+    stretches = []
+    for i, battle, l, r in frames:
+        key = (battle, l['species'], r['species'])
+        if stretches and stretches[-1]['key'] == key:
+            stretches[-1].update(last=i, end=(l, r))
+        else:
+            stretches.append({'key': key, 'first': i, 'last': i, 'start': (l, r), 'end': (l, r)})
+    return stretches
 
 
 def main():
@@ -179,13 +247,25 @@ def main():
         sys.exit(f'No videos found in {", ".join(map(str, paths))}')
     total = Counter()
     for video in videos:
-        print(f'\n{video.parent.name}/{video.name}')
-        n, tally, timeline = read_video(video, show_frames)
-        total += tally
-        for first, last, l, r in timeline:
-            print(f'  {stamp(first)}–{stamp(last)}  {l} vs {r}')
-        print(f'  {n} frames: {dict(tally)}')
-    print(f'\nAll videos: {dict(total)}')
+        readings = read_raw(video)
+        frames, fixes = clean(readings)
+        print(f'\n{video.parent.name}/{video.name}: {len(frames)} of {len(readings)} frames show the HUD')
+        if not frames:
+            continue
+        print(f'  {league_of(frames)}')
+        if show_frames:
+            for i, battle, l, r in frames:
+                print(f'    {stamp(i)}  battle {battle}  {describe(l, l)}  |  {describe(r, r)}')
+        battle = 0
+        for s in timeline_of(frames):
+            if s['key'][0] != battle:
+                battle = s['key'][0]
+                print(f'  Battle {battle}')
+            (l0, r0), (l1, r1) = s['start'], s['end']
+            print(f"    {stamp(s['first'])}–{stamp(s['last'])}  {describe(l0, l1)}  vs  {describe(r0, r1)}")
+        print(f'  Fixed: {dict(fixes) or "nothing"}')
+        total += fixes
+    print(f'\nAll videos, fixed: {dict(total)}')
 
 
 main()
