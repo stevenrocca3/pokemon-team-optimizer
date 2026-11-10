@@ -47,7 +47,7 @@ def read_turn(turn: int, timestamp_ms: int, img: np.ndarray, match: detection.Ma
 
 
 def analyze_video(path: str | Path, match_id: str, progress: Progress | None = None, workers: int = 4) -> dict:
-    """The turn_log for a recording. `progress(share, stage)` is called as turns are read (share 0..0.9)."""
+    """The turn_log for a recording. `progress(share, stage)` is called as turns are read (share of the CV pass, 0..1)."""
     match = detection.species_matcher()
     total = max(1, video_info(path)['turns'])
     readings: list[TurnReading] = []
@@ -62,7 +62,7 @@ def analyze_video(path: str | Path, match_id: str, progress: Progress | None = N
             reading.flash = flash
             readings.append(reading)
             if progress and len(readings) % 10 == 0:
-                progress(0.9 * min(1.0, len(readings) / total), 'processing_cv')
+                progress(min(1.0, len(readings) / total), 'processing_cv')
 
     with ThreadPoolExecutor(max_workers=workers) as pool:
         for tick in read_ticks(path):
@@ -85,7 +85,7 @@ def analyze_video(path: str | Path, match_id: str, progress: Progress | None = N
 
     _read_move_labels(readings, label_frames)
     if progress:
-        progress(0.95, 'reconstructing')
+        progress(1.0, 'reconstructing')
     log = build_turn_log(readings, match_id)
     info = video_info(path)
     log['video'] = {'fps': round(info['fps'], 2), 'duration_ms': int(info['duration_ms']), 'turns_read': len(readings),
