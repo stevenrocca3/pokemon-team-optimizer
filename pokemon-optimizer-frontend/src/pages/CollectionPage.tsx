@@ -29,9 +29,15 @@ export function CollectionPage() {
         title="Your Pokémon"
         actions={
           collection.status === 'ready' && (
-            <Link to="/team-builder" className="btn btn-primary">
-              Build teams
-            </Link>
+            <>
+              {/* phones hide Import in the top bar, so this is their way in from either tab */}
+              <Link to="/import" className="btn btn-secondary">
+                Import
+              </Link>
+              <Link to="/team-builder" className="btn btn-primary">
+                Build teams
+              </Link>
+            </>
           )
         }
       >
@@ -102,14 +108,9 @@ export function CollectionPage() {
 
       {collection.status === 'ready' && view === 'exact' && (
         <>
-          <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-            <p className="max-w-2xl text-sm text-ink-soft">
-              Pokémon with their real IVs. The Team Builder uses these instead of a checklist tick for the same species.
-            </p>
-            <Link to="/import" className="btn btn-secondary">
-              Import from Screenshots
-            </Link>
-          </div>
+          <p className="mb-4 max-w-2xl text-sm text-ink-soft">
+            Pokémon with their real IVs. The Team Builder uses these instead of a checklist tick for the same species.
+          </p>
           <QuickAdd />
 
           {collection.list.length === 0 ? (
