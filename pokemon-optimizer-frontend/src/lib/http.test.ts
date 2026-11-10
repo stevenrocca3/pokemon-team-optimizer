@@ -26,6 +26,14 @@ describe('apiFetch', () => {
     await expect(apiFetch('/api/feedback')).rejects.toThrow("You're going a bit fast. Try again in 42 seconds.")
   })
 
+  it('says the login ran out when the server answers 401, instead of an empty message', async () => {
+    // seen as "Couldn't save ()" when a login was lost between an import's preview and its save
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(new Response('', { status: 401 })))
+    const failure = apiFetch('/api/collection/batch')
+    await expect(failure).rejects.toBeInstanceOf(NotLoggedInError)
+    await expect(failure).rejects.toThrow("You're logged out. Log in again, then try once more.")
+  })
+
   it('never shows a bare status code for a server error without details', async () => {
     vi.stubGlobal('fetch', vi.fn().mockResolvedValue(new Response('<html>Bad Gateway</html>', { status: 502 })))
     await expect(apiFetch('/api/species')).rejects.toThrow(

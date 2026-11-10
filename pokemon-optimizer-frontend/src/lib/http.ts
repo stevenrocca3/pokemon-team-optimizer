@@ -1,5 +1,11 @@
 /** The request needs a login (401). Pages switch to guest mode or show a Log in link. */
-export class NotLoggedInError extends Error {}
+export class NotLoggedInError extends Error {
+  // pages that just show error.message (an import's Save) need a sentence, not ""
+  constructor() {
+    super("You're logged out. Log in again, then try once more.")
+    this.name = 'NotLoggedInError'
+  }
+}
 
 const DEFAULT_TIMEOUT_MS = 20_000
 
