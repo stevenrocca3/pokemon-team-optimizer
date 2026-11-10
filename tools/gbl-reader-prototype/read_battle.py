@@ -185,13 +185,23 @@ def hp_bars(a):
     return sorted(bars, key=lambda b: b[2])
 
 
+def shield_prompt(a):
+    """True on the "Attack incoming! Use a Protect Shield?" screen, which covers the HUD while you decide."""
+    h = a.shape[0]
+    text = ' '.join(w[4] for w in words_in(Image.fromarray(a[int(0.66 * h): int(0.98 * h)])))
+    return 'Protect' in text or 'Shield?' in text
+
+
 def read_frame(a):
-    """Both sides of the HUD, or None when it isn't on screen (intros, charged-move animations)."""
+    """
+    Both sides of the HUD as [left, right]; {'shield_prompt': True} when you're being asked whether to shield;
+    None when there's no HUD otherwise (intros, charged-move animations).
+    """
     h = a.shape[0]
     words = words_in(Image.fromarray(a[: int(0.35 * h)]))
     left, right = read_side(a, words, True), read_side(a, words, False)
     if not (left and right):
-        return None
+        return {'shield_prompt': True} if shield_prompt(a) else None
     # your Pokémon is nearer the camera, so its bar is the lower one; one bar alone is sorted out later from HP
     bars = hp_bars(a)
     left['hp'] = right['hp'] = left['lone_hp'] = None
@@ -199,7 +209,7 @@ def read_frame(a):
         right['hp'], left['hp'] = round(bars[0][3], 3), round(bars[-1][3], 3)
     elif bars:
         left['lone_hp'] = round(bars[0][3], 3)
-    return left, right
+    return [left, right]
 
 
 # --- videos ----------------------------------------------------------------------------------------------
@@ -214,22 +224,21 @@ def stamp(i):
     return f'{int(s // 60)}:{s % 60:04.1f}'
 
 
+CACHE_VERSION = 2  # 2: shield prompts
+
 LEAGUE_CAPS = [(1500, 'Great League'), (2500, 'Ultra League'), (10**6, 'Master League')]
 
 
 def read_raw(video):
-    """Every frame's HUD reading, or None where there's no HUD. OCR is slow, so this is saved next to the video."""
+    """Every frame's reading (see read_frame). OCR is slow, so this is saved next to the video."""
     cache = video.with_name(video.stem + '.readings.json')
     if cache.exists() and '--reread' not in sys.argv:
-        readings = json.loads(cache.read_text())
-        if all('hp' in r[0] for r in readings if r):  # saved before HP was read: read again
-            return readings
-    readings = []
+        saved = json.loads(cache.read_text())
+        if isinstance(saved, dict) and saved.get('version') == CACHE_VERSION:  # older ones lack what's read now
+            return saved['frames']
     with tempfile.TemporaryDirectory() as tmp:
-        for path in frames_of(video, tmp):
-            sides = read_frame(np.asarray(Image.open(path).convert('RGB')))
-            readings.append(list(sides) if sides else None)
-    cache.write_text(json.dumps(readings))
+        readings = [read_frame(np.asarray(Image.open(path).convert('RGB'))) for path in frames_of(video, tmp)]
+    cache.write_text(json.dumps({'version': CACHE_VERSION, 'frames': readings}))
     return readings
 
 
@@ -244,7 +253,7 @@ def clean(readings):
     Returns the HUD frames as (frame index, battle number, left, right) and a tally of what was fixed.
     """
     fixes = Counter()
-    hud = [(i, [dict(s) for s in r]) for i, r in enumerate(readings) if r]
+    hud = [(i, [dict(s) for s in r]) for i, r in enumerate(readings) if isinstance(r, list)]
     for side in (0, 1):
         last = None
         for _, sides in hud:
@@ -363,6 +372,38 @@ def timeline_of(frames):
     return stretches
 
 
+def shield_decisions(readings, frames):
+    """
+    Each time you were asked to shield: whether you did (your shield count drops by the next HUD frame) and your
+    Pokémon's HP just before and just after, from the cleaned frames. Returns dicts in time order.
+    """
+    prompts = [i for i, r in enumerate(readings) if isinstance(r, dict) and r.get('shield_prompt')]
+    runs = []
+    for i in prompts:
+        if runs and i - runs[-1][-1] <= 2:
+            runs[-1].append(i)
+        else:
+            runs.append([i])
+    decisions = []
+    for k, run in enumerate(runs):
+        until = runs[k + 1][0] if k + 1 < len(runs) else run[-1] + 21
+        before = [f for f in frames if run[0] - 20 <= f[0] < run[0]]
+        if not before:
+            continue  # the battle around it wasn't read
+        mon = before[-1][2]['species']
+        after = [f for f in frames if run[-1] < f[0] < until and f[2]['species'] == mon]
+        if not after:
+            continue
+        # the shield icon updates a moment after the HUD comes back, so look a few seconds on
+        soon = [f for f in after if f[0] <= after[0][0] + 4 * FPS]
+        hp_before = next((f[2]['hp'] for f in reversed(before) if f[2]['species'] == mon and f[2]['hp'] is not None), None)
+        hp_after = next((f[2]['hp'] for f in after if f[2]['hp'] is not None), None)
+        decisions.append({'first': run[0], 'last': run[-1], 'mon': mon,
+                          'shielded': min(f[2]['shields'] for f in soon) < before[-1][2]['shields'],
+                          'hp_before': hp_before, 'hp_after': hp_after})
+    return decisions
+
+
 def main():
     args = [x for x in sys.argv[1:] if not x.startswith('--')]
     show_frames = '--frames' in sys.argv
@@ -390,6 +431,11 @@ def main():
                 print(f'  Battle {battle}')
             (l0, r0), (l1, r1) = s['start'], s['end']
             print(f"    {stamp(s['first'])}–{stamp(s['last'])}  {describe(l0, l1)}  vs  {describe(r0, r1)}")
+        for d in shield_decisions(readings, frames):
+            hp = ''
+            if d['hp_before'] is not None and d['hp_after'] is not None:
+                hp = f", HP {d['hp_before']:.0%}→{d['hp_after']:.0%}"
+            print(f"  {stamp(d['first'])}  Shield prompt on {d['mon']}: {'shielded' if d['shielded'] else 'declined'}{hp}")
         print(f'  Fixed: {dict(fixes) or "nothing"}')
         total += fixes
     print(f'\nAll videos, fixed: {dict(total)}')
