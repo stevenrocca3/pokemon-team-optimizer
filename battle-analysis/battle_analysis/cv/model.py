@@ -18,6 +18,7 @@ class TurnReading:
     timestamp_ms: int
     user: SideReading | None = None  # top-left panel, bottom HP bar
     opp: SideReading | None = None   # top-right panel, top HP bar
+    lone_hp: float | None = None     # the one HP bar on screen when only one shows (side not known yet)
     banner: object | None = None     # a detection.Banner read in the middle of the screen
     flash: bool = False              # the screen whited out (a switch-in)
     shield_prompt: bool = False      # "Use a Protect Shield?" is up

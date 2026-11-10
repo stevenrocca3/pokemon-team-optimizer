@@ -263,6 +263,10 @@ def _side_events(readings: Sequence[TurnReading], side: str) -> list[Event]:
         sp = active[i]
         if start is not None and sp != active[start]:
             prev = active[start]
+            # the lost Poké Ball can first show on the new Pokémon's panel, so look a few readings on
+            soon = [getattr(q, side).balls for q in readings[i: i + 4] if getattr(q, side) and getattr(q, side).balls]
+            if ball_drop_at is None and last_balls is not None and soon and min(soon) < last_balls:
+                ball_drop_at = max(start, i - 1)
             fainted = ball_drop_at is not None or (hp_zero_at is not None and i - hp_zero_at <= 8)
             if fainted:
                 at = hp_zero_at if hp_zero_at is not None else ball_drop_at
