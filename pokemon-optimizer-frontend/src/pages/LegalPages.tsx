@@ -5,7 +5,7 @@ import { Feedback } from '../components/Feedback'
 import { usePageTitle } from '../lib/page-title'
 import { ANALYTICS_ENABLED } from '../lib/analytics'
 
-const UPDATED = 'November 8, 2026'
+const UPDATED = 'November 10, 2026'
 
 function Section({ title, children }: { title: string; children: ReactNode }) {
   return (
@@ -54,8 +54,10 @@ export function PrivacyPage() {
           <li>the Pokémon you save: species, IVs, level, moves and whether it's shadow.</li>
         </ul>
         <p>
-          Google also tells us your name and email address when you log in. They're held only for your login session,
-          to show your name in the menu, and are <strong>never saved to our database</strong>.
+          Google also tells us your name when you log in, to show it in the menu. It's kept with your login session,
+          which is stored in our database so a site update doesn't log you out, and{' '}
+          <strong>deleted when you sign out or after 30 days without a visit</strong>. We don't ask Google for your
+          email address.
         </p>
       </Section>
 
@@ -78,7 +80,7 @@ export function PrivacyPage() {
         <p>DexPresso uses two cookies, both needed for the site to work, so there's no cookie banner:</p>
         <ul>
           <li>
-            <strong>JSESSIONID</strong> keeps you logged in until you sign out or stop using the site for a while.
+            <strong>JSESSIONID</strong> keeps you logged in until you sign out, or for 30 days after your last visit.
           </li>
           <li>
             <strong>XSRF-TOKEN</strong> stops other sites from making changes to your account on your behalf.

@@ -19,7 +19,7 @@ import jakarta.servlet.http.HttpServletResponse;
 @RestController
 public class MeController
 {
-    /** Just what the header shows. The email and Google ID never leave the server. */
+    /** Just what the header shows. The Google ID never leaves the server. */
     record Me(String name) {}
 
     private final AccountService accountService;
