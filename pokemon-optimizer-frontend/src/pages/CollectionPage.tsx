@@ -107,7 +107,7 @@ export function CollectionPage() {
               Pokémon with their real IVs. The Team Builder uses these instead of a checklist tick for the same species.
             </p>
             <Link to="/import" className="btn btn-secondary">
-              Import a file
+              Import from Screenshots
             </Link>
           </div>
           <QuickAdd />
@@ -159,7 +159,7 @@ function EmptyShelf() {
       </ol>
       <div className="mt-6 flex flex-wrap justify-center gap-3">
         <Link to="/import" className="btn btn-secondary">
-          Import a file
+          Import from Screenshots
         </Link>
         <Link to="/team-builder" className="btn btn-ghost">
           See the Team Builder

@@ -209,7 +209,7 @@ export function HomePage() {
               <p className="mt-6 text-sm text-subtle">
                 Also here: <Link to="/species/medicham" className="text-brand underline">IV rankings for any species</Link>, all
                 4,096 spreads per league, and{" "}
-                <Link to="/import" className="text-brand underline">importing a Poké Genie or Calcy IV export</Link>.
+                <Link to="/import" className="text-brand underline">importing from appraisal screenshots</Link> or a Poké Genie or Calcy IV export.
               </p>
               <p className="mt-2 text-xs text-subtle">
                 Saved from a real run on PvPoke's {DEMO_RUN.league} meta of {DEMO_RUN.metaDate}, with good league IVs

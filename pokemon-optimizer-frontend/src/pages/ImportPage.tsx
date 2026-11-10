@@ -12,6 +12,7 @@ import { formatLevel } from '../lib/species'
 import { startingMoves } from '../lib/moves'
 import { usePageTitle } from '../lib/page-title'
 import { ScreenshotImport } from '../components/ScreenshotImport'
+import { ImportDemoPhone } from '../components/ImportDemoPhone'
 
 const PAGE_SIZE = 20
 
@@ -29,7 +30,7 @@ type Picked = { fast: string; charged1: string; charged2: string }
 export function ImportPage() {
   usePageTitle('Import from Poké Genie, Calcy IV or Screenshots')
   const collection = useCollection()
-  const [source, setSource] = useState<Source>('csv')
+  const [source, setSource] = useState<Source>('screenshots')
   const [stage, setStage] = useState<Stage>({ kind: 'pick' })
   const [picked, setPicked] = useState<Record<number, Picked>>({})
   const [save, setSave] = useState<SaveStatus>({ kind: 'idle' })
@@ -53,46 +54,62 @@ export function ImportPage() {
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10">
-      <h1 className="text-4xl font-black tracking-tight">Import Your Pokémon</h1>
-      <CreamerRule align="left" className="mt-3" />
-      {stage.kind !== 'preview' && <SourceTabs source={source} onChange={setSource} />}
+      {/* centred on phones and tablets; left-aligned beside the demo phone on wide screens */}
+      <h1 className="text-center text-4xl font-black tracking-tight lg:text-left">Import Your Pokémon</h1>
+      <div className="lg:hidden">
+        <CreamerRule className="mt-3" />
+      </div>
+      <div className="hidden lg:block">
+        <CreamerRule align="left" className="mt-3" />
+      </div>
+      {stage.kind !== 'preview' && (
+        <div className={source === 'screenshots' ? 'lg:grid lg:grid-cols-[minmax(0,1fr)_300px] lg:gap-12' : ''}>
+          <div className="min-w-0">
+            <SourceTabs source={source} onChange={setSource} />
 
-      {stage.kind !== 'preview' && source === 'csv' && (
-        <p className="mt-4 max-w-2xl text-ink-soft">
-          Export a CSV from Poké Genie (menu → Back Up &amp; Restore → Export CSV) or from Calcy IV (your scan history → Export), then choose that file here. Nothing is saved until
-          you press Save.
-        </p>
-      )}
-      {stage.kind !== 'preview' && source === 'screenshots' && (
-        <>
-          <p className="mt-4 max-w-2xl text-ink-soft">
-            In Pokémon GO, open a Pokémon, tap ☰ then Appraise, and tap until the three bars show. Screenshot that, then choose the screenshots here. They're read on your
-            device and never uploaded. Nothing is saved until you press Save.
-          </p>
-          <ScreenshotImport
-            onPreview={(preview, label) => {
-              const start: Record<number, Picked> = {}
-              for (const p of preview.pokemon) start[p.index] = startingMoves(p, preview.suggestedMoves[p.speciesId])
-              setPicked(start)
-              setSave({ kind: 'idle' })
-              setStage({ kind: 'preview', fileName: label, preview })
-            }}
-          />
-        </>
-      )}
+            {source === 'screenshots' && (
+              <>
+                <p className="mx-auto mt-4 max-w-2xl text-center text-ink-soft lg:mx-0 lg:text-left">
+                  In Pokémon GO, open a Pokémon, tap ☰ then Appraise, and tap until the three bars show. Screenshot that, then choose the screenshots here. They're read on
+                  your device and never uploaded. Nothing is saved until you press Save.
+                </p>
+                <ScreenshotImport
+                  onPreview={(preview, label) => {
+                    const start: Record<number, Picked> = {}
+                    for (const p of preview.pokemon) start[p.index] = startingMoves(p, preview.suggestedMoves[p.speciesId])
+                    setPicked(start)
+                    setSave({ kind: 'idle' })
+                    setStage({ kind: 'preview', fileName: label, preview })
+                  }}
+                />
+              </>
+            )}
 
-      {stage.kind !== 'preview' && source === 'csv' && (
-        <FilePicker
-          busy={stage.kind === 'reading'}
-          label={stage.kind === 'reading' ? `Reading ${stage.fileName}…` : undefined}
-          onFile={read}
-        />
-      )}
+            {source === 'csv' && (
+              <>
+                <p className="mx-auto mt-4 max-w-2xl text-center text-ink-soft lg:mx-0 lg:text-left">
+                  Export a CSV from Poké Genie (menu → Back Up &amp; Restore → Export CSV) or from Calcy IV (your scan history → Export), then choose that file here. Nothing is
+                  saved until you press Save.
+                </p>
+                <FilePicker busy={stage.kind === 'reading'} label={stage.kind === 'reading' ? `Reading ${stage.fileName}…` : undefined} onFile={read} />
+                {stage.kind === 'error' && (
+                  <div role="alert" className="mx-auto mt-6 max-w-2xl rounded-lg border border-red-900 lg:mx-0 bg-red-950/50 p-5 text-red-200">
+                    <p className="font-semibold">Couldn't read that file</p>
+                    <p className="mt-1 text-sm text-red-200">{stage.message}</p>
+                  </div>
+                )}
+              </>
+            )}
+          </div>
 
-      {stage.kind === 'error' && source === 'csv' && (
-        <div role="alert" className="mt-6 max-w-2xl rounded-lg border border-red-900 bg-red-950/50 p-5 text-red-200">
-          <p className="font-semibold">Couldn't read that file</p>
-          <p className="mt-1 text-sm text-red-200">{stage.message}</p>
+          {/* a live preview of the screenshot import, beside it on wide screens */}
+          {source === 'screenshots' && (
+            <aside className="hidden lg:block">
+              <div className="sticky top-24 -mt-16">
+                <ImportDemoPhone />
+              </div>
+            </aside>
+          )}
         </div>
       )}
 
@@ -129,21 +146,17 @@ type Source = 'csv' | 'screenshots'
 
 function SourceTabs({ source, onChange }: { source: Source; onChange: (source: Source) => void }) {
   const tabs: [Source, string][] = [
-    ['csv', 'Poké Genie / Calcy IV CSV'],
     ['screenshots', 'Appraisal Screenshots'],
+    ['csv', 'Poké Genie / Calcy IV CSV'],
   ]
   return (
-    <div role="tablist" aria-label="Import from" className="mt-6 inline-flex gap-1 rounded-lg bg-surface p-1 ring-1 ring-line">
+    <div role="tablist" aria-label="Import from" className="mt-6 flex flex-wrap justify-center gap-3 lg:justify-start">
       {tabs.map(([id, label]) => (
-        <button
-          key={id}
-          role="tab"
-          aria-selected={source === id}
-          onClick={() => onChange(id)}
-          className={`rounded-md px-3 py-2 font-display text-sm transition sm:px-4 ${source === id ? 'bg-brand text-on-brand' : 'text-ink-soft hover:bg-raised hover:text-ink'}`}
-        >
+        <button key={id} role="tab" aria-selected={source === id} onClick={() => onChange(id)} className={`btn ${source === id ? 'btn-primary' : 'btn-secondary'}`}>
           {label}
-          {id === 'screenshots' && <span className={`ml-2 text-[10px] uppercase ${source === id ? 'text-on-brand/80' : 'text-brand'}`}>New</span>}
+          {id === 'screenshots' && (
+            <span className={`rounded px-1.5 py-0.5 text-[10px] font-bold uppercase ${source === id ? 'bg-on-brand/15 text-on-brand' : 'bg-brand/15 text-brand'}`}>New</span>
+          )}
         </button>
       ))}
     </div>
@@ -166,7 +179,7 @@ function FilePicker({ busy, label, onFile }: { busy: boolean; label?: string; on
         const file = e.dataTransfer.files[0]
         if (file && !busy) onFile(file)
       }}
-      className={`mt-8 flex max-w-2xl cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed px-6 py-12 text-center transition ${
+      className={`mx-auto mt-8 flex max-w-2xl cursor-pointer lg:mx-0 flex-col items-center justify-center rounded-xl border-2 border-dashed px-6 py-12 text-center transition ${
         dragging ? 'border-brand bg-brand/10' : 'border-line-strong bg-surface hover:border-brand/60'
       } ${busy ? 'pointer-events-none opacity-60' : ''}`}
     >

@@ -31,6 +31,10 @@ export function Header() {
           <NavLink to="/team-builder" className={navClass}>
             Teams
           </NavLink>
+          {/* phones need the room for search; there the Collection page links to Import */}
+          <NavLink to="/import" className={(state) => `hidden sm:inline ${navClass(state)}`}>
+            Import
+          </NavLink>
           <NavLink to="/collection" className={navClass}>
             Collection
           </NavLink>

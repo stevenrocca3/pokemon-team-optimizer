@@ -362,3 +362,66 @@ button {
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
+
+/* A sword's glint, as in anime: a bright streak runs across, then a star twinkles where it ends. Then a pause. */
+.sword-shine {
+  position: relative;
+  overflow: hidden;
+}
+.sword-shine::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  bottom: -50%;
+  left: 0;
+  width: 30%;
+  pointer-events: none;
+  background: linear-gradient(
+    100deg,
+    transparent 20%,
+    color-mix(in srgb, var(--color-creamer) 25%, transparent) 40%,
+    rgb(255 250 240 / 0.7) 50%,
+    color-mix(in srgb, var(--color-creamer) 25%, transparent) 60%,
+    transparent 80%
+  );
+  transform: translateX(-150%) skewX(-20deg);
+  animation: shine-sweep 3.8s cubic-bezier(0.5, 0, 0.25, 1) infinite;
+}
+.shine-star {
+  position: absolute;
+  pointer-events: none;
+  scale: 0;
+  animation: shine-twinkle 3.8s ease-out infinite;
+}
+@keyframes shine-sweep {
+  0% {
+    transform: translateX(-150%) skewX(-20deg);
+  }
+  32%,
+  100% {
+    transform: translateX(380%) skewX(-20deg);
+  }
+}
+@keyframes shine-twinkle {
+  0%,
+  26% {
+    scale: 0;
+    rotate: -45deg;
+  }
+  33% {
+    scale: 1.15;
+    rotate: 0deg;
+  }
+  44%,
+  100% {
+    scale: 0;
+    rotate: 45deg;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sword-shine::before,
+  .shine-star {
+    animation: none;
+    display: none;
+  }
+}

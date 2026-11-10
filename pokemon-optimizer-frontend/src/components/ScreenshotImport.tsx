@@ -161,7 +161,7 @@ export function ScreenshotImport({ onPreview }: { onPreview: (preview: ImportPre
             {reading && done === 0 && <span className="text-xs text-subtle">The first one takes longest while the reader loads.</span>}
           </div>
 
-          <ul className="mt-4 grid gap-3 lg:grid-cols-2">
+          <ul className="mt-4 grid gap-3 xl:grid-cols-2">
             {shots.map((shot) => (
               <ShotCard
                 key={shot.key}
@@ -208,10 +208,16 @@ function ShotPicker({ compact, disabled, onFiles }: { compact: boolean; disabled
         setDragging(false)
         if (!disabled) onFiles([...e.dataTransfer.files])
       }}
-      className={`flex max-w-2xl cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed px-6 text-center transition ${
-        compact ? 'mt-6 py-5' : 'mt-8 py-12'
-      } ${dragging ? 'border-brand bg-brand/10' : 'border-line-strong bg-surface hover:border-brand/60'} ${disabled ? 'pointer-events-none opacity-60' : ''}`}
+      className={`mx-auto flex max-w-2xl cursor-pointer lg:mx-0 flex-col items-center justify-center rounded-xl border-2 border-dashed px-6 text-center transition ${
+        compact ? 'mt-6 py-5' : 'sword-shine mt-8 py-12'
+      } ${dragging ? 'border-brand bg-brand/10' : compact ? 'border-line-strong bg-surface hover:border-brand/60' : 'border-brand/60 bg-surface hover:border-brand hover:bg-brand/5'} ${disabled ? 'pointer-events-none opacity-60' : ''}`}
     >
+      {!compact && (
+        <>
+          <PixelStar className="shine-star top-3 right-5 h-7 w-7" />
+          <PixelStar className="shine-star bottom-4 left-6 h-4 w-4 [animation-delay:-0.25s]" />
+        </>
+      )}
       <span className="text-lg font-semibold">{compact ? 'Add more screenshots' : 'Choose appraisal screenshots'}</span>
       <span className="mt-1 text-sm text-subtle">or drop them here. Pick as many as you like.</span>
       <input
@@ -226,6 +232,18 @@ function ShotPicker({ compact, disabled, onFiles }: { compact: boolean; disabled
         }}
       />
     </label>
+  )
+}
+
+/** A four-point twinkle in pixels, for the shine on the picker. */
+function PixelStar({ className }: { className: string }) {
+  const rows = ['...C...', '...C...', '..CWC..', 'CCWWWCC', '..CWC..', '...C...', '...C...']
+  return (
+    <svg viewBox="0 0 7 7" className={className} shapeRendering="crispEdges" aria-hidden="true">
+      {rows.flatMap((row, y) =>
+        [...row].map((c, x) => (c === '.' ? null : <rect key={`${x}-${y}`} x={x} y={y} width="1" height="1" fill={c === 'W' ? '#fffaf0' : '#f1dcc0'} />)),
+      )}
+    </svg>
   )
 }
 
