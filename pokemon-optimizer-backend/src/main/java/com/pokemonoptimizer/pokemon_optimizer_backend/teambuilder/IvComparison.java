@@ -41,7 +41,7 @@ public class IvComparison
                 return new ComparedPokemon(p, 0, 0, 0, battles, 0, problem);
             }
             TeamBuilder.Candidate candidate = teamBuilder.candidate(p, pokemon.get(p), false, league);
-            MetaBattles.Record record = MetaBattles.against(candidate.combatant(), candidate.moveset(), meta);
+            MetaBattles.Record record = MetaBattles.against(candidate.combatant(), candidate.moveset(), meta, league.battleCp());
             won[p] = record.won();
             rating[p] = record.rating();
             return new ComparedPokemon(p, candidate.combatant().level(), candidate.cp(), record.wins(), battles,

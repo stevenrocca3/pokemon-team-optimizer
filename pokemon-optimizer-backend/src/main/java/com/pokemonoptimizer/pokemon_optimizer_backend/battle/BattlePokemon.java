@@ -16,9 +16,16 @@ final class BattlePokemon
     final int index;
     final List<String> types;
     final String speciesName;
+    final String speciesId;
+    /** PvPoke's activeFormId: the species id, or a form it changed into mid-battle (Cramorant's Gulping / Gorging). */
+    String formId;
+    /** The league's CP cap (PvPoke's battle.getCP()): Aegislash's Blade form stats depend on it. */
+    int battleCp = Battle.NO_CP_CAP;
+    private double[] bladeStats;
 
-    /** PvPoke's stats.atk: cpm x (base + IV), no Shadow or buffs. */
-    final double statAtk;
+    /** PvPoke's stats.atk and stats.def: cpm x (base + IV), no Shadow or buffs. Aegislash's form changes them. */
+    double statAtk;
+    double statDef;
     final int maxHp;
 
     int hp;
@@ -39,7 +46,8 @@ final class BattlePokemon
     boolean optimizeMoveTiming = true;
     boolean farmEnergy = false;
 
-    final BattleMove fastMove;
+    /** Aegislash swaps it when it changes form. */
+    BattleMove fastMove;
     final List<BattleMove> chargedMoves;
     List<BattleMove> activeChargedMoves = new ArrayList<>();
     BattleMove fastestChargedMove;
@@ -52,7 +60,10 @@ final class BattlePokemon
         this.index = index;
         this.types = combatant.species().types();
         this.speciesName = combatant.species().speciesName();
+        this.speciesId = combatant.species().speciesId();
+        this.formId = speciesId;
         this.statAtk = combatant.attackStat();
+        this.statDef = combatant.defenseStat();
         this.maxHp = combatant.maxHp();
         this.hp = maxHp;
         this.shields = shields;
@@ -63,28 +74,41 @@ final class BattlePokemon
         {
             chargedMoves.add(new BattleMove(move));
         }
+        Aegislash.markDefaultMoves(this);
     }
 
     /** A fresh Pokémon in this one's current state (HP, energy, shields, stat stages, cooldown), for side simulations. */
     BattlePokemon copy(int newIndex)
     {
         BattlePokemon copy = new BattlePokemon(combatant, moveset, shields, newIndex);
+        copy.battleCp = battleCp;
         copy.hp = hp;
         copy.energy = energy;
         copy.cooldown = cooldown;
         copy.setStatBuffs(statBuffs);
+        FormChanges.copyForm(this, copy);   // TrainingAI starts its side simulations in the current form (startFormId = activeFormId)
         return copy;
     }
 
     /** getEffectiveStat(0): stats.atk x (buff multiplier x Shadow multiplier). */
     double effectiveAttack()
     {
-        return combatant.attack(statBuffs[0]);
+        return StatStages.multiplier(statBuffs[0]) * (combatant.shadow() ? Combatant.SHADOW_ATK : 1.0) * statAtk;
     }
 
     double effectiveDefense()
     {
-        return combatant.defense(statBuffs[1]);
+        return StatStages.multiplier(statBuffs[1]) * (combatant.shadow() ? Combatant.SHADOW_DEF : 1.0) * statDef;
+    }
+
+    /** Aegislash's Blade form { atk, def }, worked out once (getFormStats only depends on level, IVs and the cap). */
+    double[] bladeStats()
+    {
+        if (bladeStats == null)
+        {
+            bladeStats = Aegislash.formStats(this, Aegislash.BLADE);
+        }
+        return bladeStats;
     }
 
     void applyStatBuffs(int attackChange, int defenseChange)
@@ -185,6 +209,15 @@ final class BattlePokemon
         List<BattleMove> active = activeChargedMoves;
         if (active.size() > 1)
         {
+            // Behavior for Aegislash to build energy in shield mode. PvPoke marks these inside the loop below, after
+            // the Zap Cannon clause, but the marks stay on the moves and it resets moves more than once before a
+            // battle starts, so every pass that counts already sees them; marking first gives the same result.
+            // (Aegislash.markDefaultMoves covers the moves PvPoke marks even with one Charged Move.)
+            if (Aegislash.SHIELD.equals(formId))
+            {
+                active.forEach(Aegislash::markSelfDebuffing);
+            }
+
             for (int i = 1; i < active.size(); i++)
             {
                 if (active.get(i).energy == active.get(0).energy && !active.get(i).selfDebuffing)

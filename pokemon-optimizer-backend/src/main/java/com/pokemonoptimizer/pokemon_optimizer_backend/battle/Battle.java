@@ -17,17 +17,35 @@ public final class Battle
         return simulate(a, movesetA, b, movesetB, new ShieldScenario(0, 0));
     }
 
+    /** PvPoke's CP limit for a battle with no cap (Master League). */
+    public static final int NO_CP_CAP = 10000;
+
     public static BattleResult simulate(Combatant a, Moveset movesetA, Combatant b, Moveset movesetB, ShieldScenario shields)
     {
-        return simulate(a, movesetA, b, movesetB, shields, true);
+        return simulate(a, movesetA, b, movesetB, shields, NO_CP_CAP);
+    }
+
+    /** battleCp is the league's CP cap (NO_CP_CAP for none): Aegislash's Blade form stats depend on it. */
+    public static BattleResult simulate(Combatant a, Moveset movesetA, Combatant b, Moveset movesetB, ShieldScenario shields,
+        int battleCp)
+    {
+        return simulate(a, movesetA, b, movesetB, shields, true, battleCp);
     }
 
     /** optimizeMoveTiming is PvPoke's per-Pokémon setting (on by default on the site). */
     static BattleResult simulate(Combatant a, Moveset movesetA, Combatant b, Moveset movesetB, ShieldScenario shields,
         boolean optimizeMoveTiming)
     {
+        return simulate(a, movesetA, b, movesetB, shields, optimizeMoveTiming, NO_CP_CAP);
+    }
+
+    static BattleResult simulate(Combatant a, Moveset movesetA, Combatant b, Moveset movesetB, ShieldScenario shields,
+        boolean optimizeMoveTiming, int battleCp)
+    {
         BattlePokemon pokeA = new BattlePokemon(a, movesetA, shields.shieldsA(), 0);
         BattlePokemon pokeB = new BattlePokemon(b, movesetB, shields.shieldsB(), 1);
+        pokeA.battleCp = battleCp;
+        pokeB.battleCp = battleCp;
         pokeA.optimizeMoveTiming = optimizeMoveTiming;
         pokeB.optimizeMoveTiming = optimizeMoveTiming;
 
@@ -54,6 +72,8 @@ public final class Battle
         final int actor;
         final int turn;
         final int value; // index into chargedMoves, or the team index to switch to
+        /** A Charged Move outside chargedMoves (Gulp Missile); PvPoke gives these by move id instead of index. */
+        BattleMove extraMove;
         int priority;
         boolean valid = false;
         boolean processed = false;
@@ -76,6 +96,18 @@ public final class Battle
         static Action switchTo(int actor, int turn, int teamIndex, int priority)
         {
             return new Action(false, true, actor, turn, teamIndex, priority);
+        }
+
+        static Action extra(int actor, int turn, BattleMove move, int priority)
+        {
+            Action action = new Action(true, false, actor, turn, -1, priority);
+            action.extraMove = move;
+            return action;
+        }
+
+        BattleMove chargedMove(BattlePokemon poke)
+        {
+            return extraMove != null ? extraMove : poke.chargedMoves.get(value);
         }
 
         boolean isFast()
@@ -133,6 +165,9 @@ public final class Battle
         private List<Action> previousTurnActions = new ArrayList<>();
         private int roundChargedMoveUsed;
         private boolean roundShieldUsed;
+        /** This turn's actions and the next one to process: useMove can insert a Gulp Missile right after the current one. */
+        private List<Action> turnActions = new ArrayList<>();
+        private int actionIndex;
 
         Engine(BattlePokemon a, BattlePokemon b)
         {
@@ -145,7 +180,13 @@ public final class Battle
             this.pokemon = new BattlePokemon[] { a, b };
             a.resetMoves(b);
             b.resetMoves(a);
-            this.usePriority = a.statAtk != b.statAtk;
+            this.usePriority = usesPriority(a, b);
+        }
+
+        /** Battle.start: Charged Move ties go by Attack, and a Cramorant mirror always uses priority. */
+        private static boolean usesPriority(BattlePokemon a, BattlePokemon b)
+        {
+            return a.statAtk != b.statAtk || (Cramorant.SPECIES.equals(a.speciesId) && Cramorant.SPECIES.equals(b.speciesId));
         }
 
         /** Fast actions this Pokémon has queued but not yet resolved. */
@@ -205,6 +246,7 @@ public final class Battle
                 {
                     pokemon[side] = switching.replaceFainted(side, next[side]);
                     pokemon[side].faintSource = "";
+                    FormChanges.applyNativeStatBuffs(pokemon[side]);
                 }
                 pokemon[side].cooldown = 0;
             }
@@ -212,7 +254,7 @@ public final class Battle
             previousTurnActions = new ArrayList<>();
             pokemon[0].resetMoves(pokemon[1]);
             pokemon[1].resetMoves(pokemon[0]);
-            usePriority = pokemon[0].statAtk != pokemon[1].statAtk;
+            usePriority = usesPriority(pokemon[0], pokemon[1]);
             switching.matchupChanged();
             return true;
         }
@@ -221,7 +263,7 @@ public final class Battle
         {
             roundChargedMoveUsed = 0;
             roundShieldUsed = false;
-            List<Action> turnActions = new ArrayList<>(4);
+            turnActions = new ArrayList<>(4);
 
             // Reduce cooldown for both Pokemon
             for (BattlePokemon poke : pokemon)
@@ -297,8 +339,10 @@ public final class Battle
             // Stable sort, highest priority first
             turnActions.sort((x, y) -> Integer.compare(y.priority, x.priority));
 
-            for (Action action : turnActions)
+            actionIndex = 0;
+            while (actionIndex < turnActions.size())
             {
+                Action action = turnActions.get(actionIndex++);
                 BattlePokemon poke = pokemon[action.actor];
                 BattlePokemon opponent = pokemon[1 - action.actor];
 
@@ -311,13 +355,13 @@ public final class Battle
                 }
                 else if (action.charged)
                 {
-                    BattleMove move = poke.chargedMoves.get(action.value);
+                    BattleMove move = action.chargedMove(poke);
                     if (poke.energy >= move.energy)
                     {
                         action.valid = true;
                     }
-                    // Knocked out by a Charged Move that went first
-                    if (usePriority && poke.hp <= 0 && "charged".equals(poke.faintSource))
+                    // Knocked out by a Charged Move that went first (Gulp Missile fires anyway)
+                    if (usePriority && poke.hp <= 0 && "charged".equals(poke.faintSource) && !move.ignoresFaint)
                     {
                         action.valid = false;
                     }
@@ -421,7 +465,7 @@ public final class Battle
                 return;
             }
 
-            BattleMove move = poke.chargedMoves.get(action.value);
+            BattleMove move = action.chargedMove(poke);
             if (poke.energy >= move.energy)
             {
                 useMove(poke, opponent, move, true);
@@ -437,9 +481,13 @@ public final class Battle
         /** processAction's "switch" case, for a Pokémon still standing. */
         private void processSwitch(int side, int teamIndex)
         {
+            // the one going out reverts to its original form (Cramorant's and Morpeko's have resetOnSwitch)
+            FormChanges.revertOnSwitch(pokemon[side]);
+
             BattlePokemon incoming = switching.switchIn(side, teamIndex);
             incoming.cooldown = 0;
             incoming.faintSource = "";
+            FormChanges.applyNativeStatBuffs(incoming);
             pokemon[side] = incoming;
 
             // Cached move damage depends on the opponent, so both sides re-initialize (setNewPokemon -> resetMoves)
@@ -458,13 +506,21 @@ public final class Battle
         {
             // 3v3: the defender's AI decides before the move resolves, on cached damage and the attacker's full energy
             TeamPolicy.Shield aiShield = TeamPolicy.Shield.DEFAULT;
-            if (charged && switching != null && defender.shields > 0)
+            if (charged && switching != null && defender.shields > 0 && !move.instant)
             {
                 aiShield = switching.decideShield(attacker, defender, move);
             }
 
+            // Pre-attack form change ("activate_charged"): Aegislash goes to Blade form before a Charged Move
+            if (charged && Aegislash.SHIELD.equals(attacker.formId))
+            {
+                Aegislash.setForm(attacker, Aegislash.BLADE);
+                attacker.resetMoves(defender);
+            }
+
             int damage = ActionLogic.damage(attacker, defender, move);
             move.damage = damage;
+            boolean defenderUsedShield = false;
 
             if (charged)
             {
@@ -472,10 +528,10 @@ public final class Battle
 
                 if (usePriority && roundChargedMoveUsed > 0 && !roundShieldUsed)
                 {
-                    time += CHARGED_MINIGAME_TIME;
+                    time += move.instant ? 3000 : CHARGED_MINIGAME_TIME;
                 }
 
-                if (defender.shields > 0)
+                if (defender.shields > 0 && !move.instant)
                 {
                     boolean useShield = aiShield == TeamPolicy.Shield.DEFAULT
                         ? shouldShield(attacker, defender, move, damage)
@@ -483,6 +539,7 @@ public final class Battle
                     if (useShield)
                     {
                         damage = 1;
+                        defenderUsedShield = true;
                         defender.shields--;
                         defender.shieldsUsed++;
                         roundShieldUsed = true;
@@ -491,17 +548,72 @@ public final class Battle
                         {
                             time += CHARGED_MINIGAME_TIME;
                         }
+
+                        // Form change on shielding ("activate_shield"): Aegislash goes back to Shield form
+                        if (Aegislash.BLADE.equals(defender.formId))
+                        {
+                            Aegislash.setForm(defender, Aegislash.SHIELD);
+                            defender.resetMoves(attacker);
+                        }
                     }
                 }
             }
             else
             {
-                attacker.energy = Math.min(100, attacker.energy + attacker.fastMove.energyGain);
+                // PvPoke hard codes 6 energy for Shield form's Fast Moves (its custom moves already give 6)
+                int energyGain = Aegislash.SHIELD.equals(attacker.formId) ? 6 : attacker.fastMove.energyGain;
+                attacker.energy = Math.min(100, attacker.energy + energyGain);
+            }
+
+            // Shield form's Fast Moves do 1 damage (their power is 0, so the formula gives 1 already)
+            if (!charged && Aegislash.SHIELD.equals(attacker.formId))
+            {
+                damage = 1;
+            }
+
+            // Mimikyu's Disguise works like a free shield against the first unshielded Charged Move
+            boolean disguiseBusted = charged && FormChanges.isDisguised(defender) && !defenderUsedShield && !move.instant;
+            if (disguiseBusted)
+            {
+                damage = 1;
+                roundShieldUsed = true;
+                if (roundChargedMoveUsed == 0)
+                {
+                    time += CHARGED_MINIGAME_TIME;
+                }
             }
 
             defender.hp = Math.max(0, defender.hp - damage);
 
             applyBuffs(attacker, defender, move);
+
+            if (charged)
+            {
+                // Post-attack form change: Surf or Dive loads Cramorant, Gulp Missile empties it
+                String newForm = Cramorant.formAfter(attacker, move);
+                if (newForm != null && !newForm.equals(attacker.formId))
+                {
+                    attacker.formId = newForm;
+                    attacker.resetMoves(defender);   // Pokemon.changeForm ends with resetMoves
+                }
+                if (FormChanges.afterChargedMove(attacker))
+                {
+                    attacker.resetMoves(defender);
+                }
+
+                // A loaded Cramorant hit by an unshielded Charged Move fires Gulp Missile next, even if it was KO'd
+                if (Cramorant.isLoaded(defender) && !defenderUsedShield && !move.instant)
+                {
+                    turnActions.add(actionIndex, Action.extra(defender.index, turns, Cramorant.gulpMissile(defender), defender.priority));
+                }
+
+                // Post-attack form change for the defender ("charged_move_damage"): the Disguise is gone
+                if (disguiseBusted)
+                {
+                    FormChanges.bustDisguise(defender);
+                    defender.resetMoves(attacker);
+                }
+            }
 
             if (defender.hp <= 0)
             {
@@ -551,6 +663,24 @@ public final class Battle
                         useShield = wouldShield;
                     }
                 }
+            }
+
+            // Save shields in Aegislash shield form to protect Blade form
+            if (Aegislash.SHIELD.equals(defender.formId) && damage * 2 < defender.hp)
+            {
+                useShield = wouldShield;
+            }
+
+            // Save shields in Cramorant gulping or gorging form to trigger Gulp Missile earlier against weak moves
+            if (Cramorant.isLoaded(defender) && damage * 2.2 < defender.hp)
+            {
+                useShield = wouldShield;
+            }
+
+            // Don't shield early Cramorant Dives or Surfs to save for later attacks
+            if (Cramorant.SPECIES.equals(attacker.speciesId) && damage / (double) defender.hp < .33)
+            {
+                useShield = wouldShield;
             }
 
             return useShield;

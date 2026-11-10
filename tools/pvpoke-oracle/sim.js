@@ -1,6 +1,6 @@
 // Usage: node sim.js <pvpoke js dir> <gamemaster.json> '<config json | array of configs>'
 // config: {a:{id,ivs:[a,d,h],level,shadow,fast,charged:[..]}, b:{...}, shields:[x,y],
-//          opts:{optimizeMoveTiming,baitShields}, log:true}
+//          opts:{optimizeMoveTiming,baitShields}, cp, log:true}  (cp: the CP cap, 10000 when left out)
 // Prints one JSON result per config (an array when given an array).
 const vm = require('vm');
 const ctx = require('./load.js');
@@ -17,7 +17,7 @@ const results = configs.map((cfg) => {
     const out = vm.runInContext(`(function(){
       var cfg = __cfg;
       var battle = new Battle();
-      battle.setCP(10000);
+      battle.setCP(cfg.cp || 10000);
       battle.setDebugMode(!!cfg.log);
 
       function make(c, i){

@@ -38,7 +38,8 @@ public class MoveLookup
                     List<Integer> buffs = move.buffs() == null ? List.of() : move.buffs();
                     String buffTarget = move.buffTarget();
                     Double buffApplyChance = move.buffApplyChance() == null ? 0.0 : Double.parseDouble(move.buffApplyChance());
-                    Move moves = new Move(moveId, name, type, power, energy, energyGain, turns, buffs, buffTarget, buffApplyChance);
+                    Move moves = new Move(moveId, name, type, power, energy, energyGain, turns, buffs, buffTarget, buffApplyChance,
+                        List.copyOf(move.tags()), move.damageMethod());
                     if (!data.containsKey(moveId))
                     {
                         data.put(moveId, moves);

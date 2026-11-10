@@ -177,7 +177,8 @@ public class TeamBuilder
 
         // Stage 1: screen everyone with 1-1 shield 1v1s against the meta, keeping each Pokédex number's best
         // (GO Battle League bans duplicate species), then fully rate the best of those at 0, 1 and 2 shields
-        double[][] screen = eligible.parallelStream().map(c -> ratingsAgainst(c, meta, SCREEN_SHIELDS)).toArray(double[][]::new);
+        int battleCp = cup == null ? league.battleCp() : cup.cpCap();
+        double[][] screen = eligible.parallelStream().map(c -> ratingsAgainst(c, meta, SCREEN_SHIELDS, battleCp)).toArray(double[][]::new);
         Map<Integer, Integer> bestPerDex = new LinkedHashMap<>();
         for (int c = 0; c < eligible.size(); c++)
         {
@@ -198,7 +199,7 @@ public class TeamBuilder
             .toList();
         double[][] ratings = new double[eligible.size()][];
         double[] metaRating = new double[eligible.size()];
-        pool.parallelStream().forEach(c -> ratings[c] = fullRatings(eligible.get(c), meta, screen[c]));
+        pool.parallelStream().forEach(c -> ratings[c] = fullRatings(eligible.get(c), meta, screen[c], battleCp));
         for (int c : pool)
         {
             metaRating[c] = average(ratings[c]);
@@ -239,14 +240,14 @@ public class TeamBuilder
         {
             for (int[] order : lineups(finalists.get(f).members()))
             {
-                trials.add(new Trial(f, order, wins(order, eligible, early)));
+                trials.add(new Trial(f, order, wins(order, eligible, early, battleCp)));
             }
         }
         trials.sort(Comparator.comparingDouble((Trial t) -> -t.wins()));   // stable: ties keep finalist, then lineup order
         List<Trial> survivors = new ArrayList<>();
         for (Trial trial : survivors(trials, settings.results()))
         {
-            survivors.add(new Trial(trial.finalist(), trial.order(), trial.wins() + wins(trial.order(), eligible, rest)));
+            survivors.add(new Trial(trial.finalist(), trial.order(), trial.wins() + wins(trial.order(), eligible, rest, battleCp)));
         }
         Map<Integer, Trial> bestPerTeam = new LinkedHashMap<>();
         for (Trial trial : survivors)
@@ -265,11 +266,11 @@ public class TeamBuilder
         Map<Integer, PowerUpImpact> powerUps = new HashMap<>();   // a Pokémon on several Teams is battled once
         for (int[] order : chosen)
         {
-            WinRate odds = WinRate.of(wins(order, eligible, estimate), estimate.size());
+            WinRate odds = WinRate.of(wins(order, eligible, estimate, battleCp), estimate.size());
             List<TeamMember> members = new ArrayList<>();
             for (int c : order)
             {
-                PowerUpImpact powerUp = powerUps.computeIfAbsent(c, k -> powerUp(eligible.get(k), meta).orElse(null));
+                PowerUpImpact powerUp = powerUps.computeIfAbsent(c, k -> powerUp(eligible.get(k), meta, battleCp).orElse(null));
                 members.add(member(eligible.get(c), metaRating[c], powerUp));
             }
             teams.add(new TeamResult(members, odds, toughest(order, ratings, meta)));
@@ -358,26 +359,26 @@ public class TeamBuilder
     // ---- 1v1 screening ----
 
     /** Battle rating against each meta Pokémon with both sides on {@code shields}. */
-    private static double[] ratingsAgainst(Candidate candidate, List<MetaPokemon> meta, int shields)
+    private static double[] ratingsAgainst(Candidate candidate, List<MetaPokemon> meta, int shields, int battleCp)
     {
         double[] ratings = new double[meta.size()];
         for (int m = 0; m < meta.size(); m++)
         {
             ratings[m] = Battle.simulate(candidate.combatant(), candidate.moveset(), meta.get(m).combatant(), meta.get(m).moveset(),
-                new ShieldScenario(shields, shields)).ratingA();
+                new ShieldScenario(shields, shields), battleCp).ratingA();
         }
         return ratings;
     }
 
     /** Ratings averaged over every even shield scenario, reusing the screen's 1-1 battles. */
-    private static double[] fullRatings(Candidate candidate, List<MetaPokemon> meta, double[] screened)
+    private static double[] fullRatings(Candidate candidate, List<MetaPokemon> meta, double[] screened, int battleCp)
     {
         double[] total = screened.clone();
         for (int shields : SHIELDS)
         {
             if (shields != SCREEN_SHIELDS)
             {
-                double[] more = ratingsAgainst(candidate, meta, shields);
+                double[] more = ratingsAgainst(candidate, meta, shields, battleCp);
                 for (int m = 0; m < total.length; m++)
                 {
                     total[m] += more[m];
@@ -448,7 +449,7 @@ public class TeamBuilder
     }
 
     /** Wins against each opposing Team, ties as half. Our side plays its lineup's roles; the meta side plays as PvPoke's AI. */
-    private static double wins(int[] order, List<Candidate> eligible, List<Opponents> opponents)
+    private static double wins(int[] order, List<Candidate> eligible, List<Opponents> opponents, int battleCp)
     {
         List<Combatant> combatants = new ArrayList<>();
         List<Moveset> movesets = new ArrayList<>();
@@ -459,7 +460,7 @@ public class TeamBuilder
         }
         return opponents.parallelStream()
             .mapToDouble(opponent -> {
-                Winner winner = TeamBattle.simulateWithRoles(combatants, movesets, opponent.combatants(), opponent.movesets()).winner();
+                Winner winner = TeamBattle.simulateWithRoles(combatants, movesets, opponent.combatants(), opponent.movesets(), battleCp).winner();
                 return winner == Winner.A ? 1 : winner == Winner.TIE ? 0.5 : 0;
             })
             .sum();
@@ -486,7 +487,7 @@ public class TeamBuilder
      * Its meta battles at its current level against those at the level it's built at. Empty for a checklist tick
      * or one added without a CP (no current level to compare), or one already at its built level.
      */
-    private static Optional<PowerUpImpact> powerUp(Candidate candidate, List<MetaPokemon> meta)
+    private static Optional<PowerUpImpact> powerUp(Candidate candidate, List<MetaPokemon> meta, int battleCp)
     {
         Double current = candidate.request().level();
         Combatant built = candidate.combatant();
@@ -495,8 +496,8 @@ public class TeamBuilder
             return Optional.empty();
         }
         Combatant now = new Combatant(built.species(), built.atkIv(), built.defIv(), built.staIv(), current, built.shadow());
-        MetaBattles.Record before = MetaBattles.against(now, candidate.moveset(), meta);
-        MetaBattles.Record after = MetaBattles.against(built, candidate.moveset(), meta);
+        MetaBattles.Record before = MetaBattles.against(now, candidate.moveset(), meta, battleCp);
+        MetaBattles.Record after = MetaBattles.against(built, candidate.moveset(), meta, battleCp);
         List<MatchupRef> gained = new ArrayList<>();
         List<MatchupRef> lost = new ArrayList<>();
         for (int b = 0; b < before.won().length; b++)

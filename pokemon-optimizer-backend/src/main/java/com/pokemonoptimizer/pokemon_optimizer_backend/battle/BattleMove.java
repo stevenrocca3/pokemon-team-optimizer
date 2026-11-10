@@ -19,6 +19,13 @@ final class BattleMove
     final int cooldown;
     final int turns;
 
+    /** No minigame and can't be shielded (Gulp Missile). */
+    final boolean instant;
+    /** Still fires if its user was knocked out by the Charged Move that triggered it (Gulp Missile). */
+    final boolean ignoresFaint;
+    /** Damage is power% of the target's max HP, not the attack formula (Gulp Missile). */
+    final boolean percentMaxHp;
+
     /** null when the move has no buffs (JS undefined). The Zap Cannon clause can set or clear it. */
     int[] buffs;
     String buffTarget;
@@ -45,6 +52,9 @@ final class BattleMove
         this.energyGain = move.energyGain();
         this.turns = move.turns();
         this.cooldown = move.turns() * 500;
+        this.instant = move.hasTag("instant");
+        this.ignoresFaint = move.hasTag("ignoresFaint");
+        this.percentMaxHp = "percentMaxHP".equals(move.damageMethod());
 
         if (!move.buffs().isEmpty())
         {

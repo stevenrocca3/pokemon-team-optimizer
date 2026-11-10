@@ -231,4 +231,54 @@ public class TeamBattleTest
     }
 
 
+
+    /** Lead Mimikyu takes a Charged Move unshielded, switches to a level 1 Medicham, and comes back when it faints. */
+    private static final class BustSwitchAndReturn implements TeamPolicy
+    {
+        boolean switchedOut;
+        Integer defenseStageOnReturn;
+
+        public int chooseAction(int turn, TeamView me, TeamView opponent)
+        {
+            BattlePokemon mimikyu = me.team().get(0);
+            if (me.active() == mimikyu && switchedOut && defenseStageOnReturn == null)
+            {
+                defenseStageOnReturn = mimikyu.statBuffs[1];
+            }
+            if (me.active() == mimikyu && !switchedOut && !FormChanges.isDisguised(mimikyu) && me.switchTimer() == 0)
+            {
+                switchedOut = true;
+                return 1;
+            }
+            return FIGHT;
+        }
+
+        public Shield decideShield(TeamView me, TeamView attacker, BattleMove move, int attackerEnergy)
+        {
+            return Shield.TAKE_IT;
+        }
+
+        public int chooseReplacement(TeamView me, TeamView opponent)
+        {
+            return me.team().get(0).hp > 0 ? 0 : -1;
+        }
+    }
+
+    @Test
+    public void bustedMimikyuComesBackInAtMinusOneDefense()
+    {   // Busted form's -1 Defense is native to the form: PvPoke's reset(true) reapplies it on every switch in,
+        // after switching out cleared the stages. Without it Mimikyu comes back one Defense stage too bulky.
+        Combatant mimikyu = new Combatant(SPECIES.findById("mimikyu").orElseThrow(), 4, 14, 15, 25, false);
+        Combatant fodder = new Combatant(SPECIES.findById("medicham").orElseThrow(), 0, 0, 0, 1, false);
+        Moveset mimikyuMoves = new Moveset(MOVES.findById("SHADOW_CLAW").orElseThrow(), List.of(MOVES.findById("PLAY_ROUGH").orElseThrow()));
+        Moveset fodderMoves = new Moveset(COUNTER, List.of());
+        BustSwitchAndReturn policy = new BustSwitchAndReturn();
+
+        TeamBattle.simulate(
+            List.of(mimikyu, fodder), List.of(mimikyuMoves, fodderMoves), policy,
+            List.of(MEDICHAM), List.of(new Moveset(COUNTER, List.of(MOVES.findById("ICE_PUNCH").orElseThrow()))), NEVER_SWITCH);
+
+        assertEquals(true, policy.switchedOut, "the Disguise never broke, so the test didn't reach the switch");
+        assertEquals(Integer.valueOf(-1), policy.defenseStageOnReturn);
+    }
 }

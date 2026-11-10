@@ -8,7 +8,9 @@ import java.util.List;
 /**
  * Port of PvPoke's ActionLogic.decideAction and ActionLogic.wouldShield (src/js/battle/actions/ActionLogic.js,
  * commit e02bde7), kept close to the original so the battle results match PvPoke, quirks included.
- * Species form-change special cases (Mimikyu, Minior, Cramorant, Aegislash) are not ported.
+ * Form-change cases are ported for Cramorant, Mimikyu, Morpeko and Aegislash (see {@link Cramorant}, {@link FormChanges},
+ * {@link Aegislash});
+ * Minior's and Aegislash's are not.
  */
 final class ActionLogic
 {
@@ -17,7 +19,15 @@ final class ActionLogic
     /** DamageCalculator.damage against the Pokémon's current stat stages. */
     static int damage(BattlePokemon attacker, BattlePokemon defender, BattleMove move)
     {
-        return DamageCalculator.damage(move.power, attacker.effectiveAttack(), defender.effectiveDefense(),
+        if (move.percentMaxHp)
+        {
+            return (int) Math.floor((move.power / 100.0) * defender.maxHp) + 1;
+        }
+        // Aegislash in Shield form throws its Charged Moves from Blade form, with Blade's Attack (PvPoke skips buffs here)
+        double attack = Aegislash.SHIELD.equals(attacker.formId) && move.energy > 0
+            ? attacker.bladeStats()[0]
+            : attacker.effectiveAttack();
+        return DamageCalculator.damage(move.power, attack, defender.effectiveDefense(),
             move.stabFor(attacker.types), move.effectivenessAgainst(defender.types));
     }
 
@@ -264,6 +274,15 @@ final class ActionLogic
             }
         }
 
+        // If opponent is Mimikyu or has similar mechanic, throw fastest Charged Attack ASAP
+        if (FormChanges.isDisguised(opponent) && opponent.shields == 0)
+        {
+            if (poke.energy >= poke.fastestChargedMove.energy && !poke.fastestChargedMove.selfDebuffing)
+            {
+                return poke.chargedMoves.indexOf(poke.fastestChargedMove);
+            }
+        }
+
         // Optimize move timing to reduce free turns
         if (poke.optimizeMoveTiming)
         {
@@ -375,6 +394,30 @@ final class ActionLogic
                 {
                     return null;
                 }
+            }
+        }
+
+        // If Cramorant has not changed form, use Dive or Surf as soon as possible if other moves aren't meaningfully more effective
+        if (Cramorant.SPECIES.equals(poke.formId))
+        {
+            BattleMove gulpMove = null;
+            BattleMove nonGulpMove = null;
+            for (BattleMove move : poke.activeChargedMoves)
+            {
+                if (gulpMove == null && (move.moveId.equals("DIVE") || move.moveId.equals("SURF")))
+                {
+                    gulpMove = move;
+                }
+                // PvPoke's check reads `move.moveID != "SURF"` (always true), so only Dive is excluded; kept to match
+                if (nonGulpMove == null && !move.moveId.equals("DIVE"))
+                {
+                    nonGulpMove = move;
+                }
+            }
+            if (gulpMove != null && nonGulpMove != null && poke.energy >= gulpMove.energy
+                && opponent.hp > nonGulpMove.damage * 1.3 && nonGulpMove.dpe / gulpMove.dpe < 1.5)
+            {
+                return poke.chargedMoves.indexOf(gulpMove);
             }
         }
 
@@ -883,8 +926,8 @@ final class ActionLogic
             }
         }
 
-        // If move is self debuffing and doesn't KO, try to stack as much as you can
-        if (moves.get(0).selfDebuffing)
+        // If move is self debuffing and doesn't KO, try to stack as much as you can (also against a loaded Cramorant)
+        if (moves.get(0).selfDebuffing || Cramorant.isLoaded(opponent))
         {
             double targetEnergy = Math.floor(100 / (double) moves.get(0).energy) * moves.get(0).energy;
 
@@ -908,11 +951,19 @@ final class ActionLogic
         }
 
         // Use the final move, or a Fast Move if not enough energy
-        if (poke.energy >= moves.get(0).energy)
+        if (poke.energy < moves.get(0).energy)
         {
-            return poke.chargedMoves.indexOf(moves.get(0));
+            return null;
         }
-        return null;
+
+        // Build energy for Aegislash Shield to reduce time spent in Blade form
+        if (Aegislash.SHIELD.equals(poke.formId) && poke.energy < 100 - (poke.fastMove.energyGain / 2.0)
+            && poke.bestChargedMove.damage < opponent.hp)
+        {
+            return null;
+        }
+
+        return poke.chargedMoves.indexOf(moves.get(0));
     }
 
     /** Port of ActionLogic.wouldShield: would the defender shield this move? Mutates move.damage like PvPoke. */
@@ -974,6 +1025,30 @@ final class ActionLogic
         if (attacker.baitShields == 2)
         {
             useShield = true;
+        }
+
+        // Save shields in Aegislash shield form to protect Blade form
+        if (Aegislash.SHIELD.equals(defender.formId) && move.damage * 2 < defender.hp)
+        {
+            useShield = false;
+        }
+
+        // Save shields in Cramorant gulping or gorging form to trigger Gulp Missile earlier against weak moves
+        if (Cramorant.isLoaded(defender) && move.damage * 2.2 < defender.hp)
+        {
+            useShield = false;
+        }
+
+        // Don't shield early Cramorant Dives or Surfs to save for later attacks
+        if (Cramorant.SPECIES.equals(attacker.speciesId) && move.damage != 0 && move.damage / (double) defender.hp < .33)
+        {
+            useShield = false;
+        }
+
+        // PvPoke compares `move.moveID == "SURF"` here (always false), so only Dive counts; kept to match
+        if (Cramorant.SPECIES.equals(attacker.speciesId) && move.moveId.equals("DIVE") && move.damage > defender.hp)
+        {
+            useShield = false;
         }
 
         return useShield;

@@ -113,4 +113,45 @@ public class PokeGenieMapperTest
 
         assertEquals(new SuggestedMoves("PSYCHO_CUT", List.of("ICE_PUNCH", "DYNAMIC_PUNCH")), preview.suggestedMoves().get("medicham"));
     }
+
+    // Saving checks IVs (0 to 15) and level (1 to 51, whole or half) for the whole import at once, so a row that would
+    // fail there has to be turned away here, or one odd row (from an app that writes Genie-style files) sinks them all.
+
+    private static PokeGenieRow stats(int atk, int def, int sta, double level)
+    {
+        return new PokeGenieRow(3, "Swampert", "", atk, def, sta, level, "Mud Shot", "Hydro Cannon", "", false);
+    }
+
+    @Test
+    public void ivAbove15IsRejected()
+    {
+        ImportPreview preview = mapOne(stats(16, 15, 14, 20.0));
+
+        assertEquals(List.of(), preview.pokemon());
+        assertEquals(List.of(new RejectedRow(3, "IVs 16/15/14 aren't possible (each is 0 to 15)")), preview.rejected());
+    }
+
+    @Test
+    public void levelZeroIsRejected()
+    {   // what an app might write when it doesn't know the level
+        ImportPreview preview = mapOne(stats(0, 15, 14, 0));
+
+        assertEquals(List.of(), preview.pokemon());
+        assertEquals(List.of(new RejectedRow(3, "Level 0 isn't possible (1 to 51)")), preview.rejected());
+    }
+
+    @Test
+    public void levelBetweenHalvesIsRejected()
+    {
+        ImportPreview preview = mapOne(stats(0, 15, 14, 20.25));
+
+        assertEquals(List.of(), preview.pokemon());
+        assertEquals(List.of(new RejectedRow(3, "Level 20.25 isn't possible (levels go up in halves)")), preview.rejected());
+    }
+
+    @Test
+    public void level51IsKept()
+    {   // best buddy
+        assertEquals(1, mapOne(stats(15, 15, 15, 51.0)).pokemon().size());
+    }
 }
