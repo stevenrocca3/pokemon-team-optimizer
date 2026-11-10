@@ -49,5 +49,5 @@ node tools/pvpoke-oracle/gen-fixture.js tools/pvpoke-oracle/.pvpoke/src/js \
 
 Not covered (the engine throws or doesn't model them): moves that buff both sides (Obstruct). Form changes on
 switching out (Cramorant, Morpeko and Aegislash revert; busted Mimikyu stays busted) are ported, but only 3v3
-battles switch and the fixtures are 1v1. One known gap there: PvPoke reapplies busted Mimikyu's -1 Defense each time
-it comes back in, and the engine doesn't yet.
+battles switch and the fixtures are 1v1. Busted Mimikyu getting its -1 Defense back when it switches in is covered
+by TeamBattleTest instead.

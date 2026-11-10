@@ -246,6 +246,7 @@ public final class Battle
                 {
                     pokemon[side] = switching.replaceFainted(side, next[side]);
                     pokemon[side].faintSource = "";
+                    FormChanges.applyNativeStatBuffs(pokemon[side]);
                 }
                 pokemon[side].cooldown = 0;
             }
@@ -486,6 +487,7 @@ public final class Battle
             BattlePokemon incoming = switching.switchIn(side, teamIndex);
             incoming.cooldown = 0;
             incoming.faintSource = "";
+            FormChanges.applyNativeStatBuffs(incoming);
             pokemon[side] = incoming;
 
             // Cached move damage depends on the opponent, so both sides re-initialize (setNewPokemon -> resetMoves)

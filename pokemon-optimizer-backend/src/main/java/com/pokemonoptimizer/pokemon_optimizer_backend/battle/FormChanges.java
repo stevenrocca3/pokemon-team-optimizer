@@ -69,6 +69,18 @@ final class FormChanges
         }
     }
 
+    /**
+     * Switching in (Pokemon.reset): a form's own stat changes go back on after switching out cleared them. Busted
+     * Mimikyu's -1 Defense is the only one; its Disguise stays broken.
+     */
+    static void applyNativeStatBuffs(BattlePokemon incoming)
+    {
+        if (MIMIKYU_BUSTED.equals(incoming.formId))
+        {
+            incoming.applyStatBuffs(0, -1);
+        }
+    }
+
     /** A copy for side simulations takes the original's form, including the moves that come with it. */
     static void copyForm(BattlePokemon from, BattlePokemon to)
     {
