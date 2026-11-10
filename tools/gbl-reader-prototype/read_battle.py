@@ -48,6 +48,12 @@ def species_for(text):
     return best[1] if best else None
 
 
+def median(values):
+    """The middle value; with an even count the lower one, so a real drop (a shield used) shows from its first frame."""
+    s = sorted(values)
+    return s[(len(s) - 1) // 2]
+
+
 # --- reading the HUD ------------------------------------------------------------------------------------
 def words_in(img):
     """Tesseract's words with their boxes: (x, y, w, h, text), sparse-text mode so the two panels read separately."""
@@ -115,12 +121,85 @@ def read_side(a, words, left_side):
     }
 
 
+def hp_bars(a):
+    """
+    The in-scene HP bars as (x0, x1, y, hp from 0 to 1), top of the screen first.
+    A bar is framed by two light border lines, top and bottom, ~0.29 of the screen wide and ~0.026 apart, with the
+    same ends: that pair is what's looked for, since attack effects and the white field lines never make one.
+    Inside, along the middle: the fill (teal when healthy, then yellow, then red), maybe a chunk of just-lost HP in
+    another colour, then the dark empty track. HP is the fill's share of the inside.
+    """
+    h, w, _ = a.shape
+    y_lo, y_hi = int(0.25 * h), int(0.8 * h)
+    band = a[y_lo:y_hi].astype(np.int16)
+    mx, mn = band.max(axis=2), band.min(axis=2)
+    r, g, b = band[..., 0], band[..., 1], band[..., 2]
+    # the border is light (tinted blue in night battles), but flashes orange while that Pokémon is being hit
+    white = (mn > 150) & (mx - mn < 60)
+    night = (mn > 110) & (b > 220) & (b >= g) & (g > r)
+    light = white | night | ((r > 200) & (g > 100) & (g < 190) & (b < 90))
+    lines = []  # (y, x0, x1): border-coloured runs as long as a bar
+    for y in range(band.shape[0]):
+        seg = np.concatenate(([False], light[y], [False]))
+        edges = np.flatnonzero(np.diff(seg.astype(np.int8)))
+        lines += [(y, int(s), int(t)) for s, t in zip(edges[0::2], edges[1::2]) if 0.25 * w <= t - s <= 0.33 * w]
+    bars, used_until = [], -1
+    for i, (y, x0, x1) in enumerate(lines):
+        if y <= used_until:
+            continue
+        for y2, u0, u1 in lines[i + 1:]:
+            gap = y2 - y
+            if gap > 0.035 * w:
+                break
+            # the two lines cover the same span (something light can run into one end, so it's overlap, not equal ends)
+            overlap = min(x1, u1) - max(x0, u0)
+            if gap >= 0.018 * w and overlap >= 0.95 * min(x1 - x0, u1 - u0):
+                x0, x1 = max(x0, u0), min(x1, u1)
+                if min(x0, u0) <= 2 or max(x1, u1) >= w - 2:
+                    break  # cut off by the screen's edge, so its fill can't be measured
+                mid = band[(y + y2) // 2, x0:x1]
+                m_mx, m_mn = mid.max(axis=1), mid.min(axis=1)
+                colour = (m_mx > 150) & (m_mx - m_mn > 80) & (m_mn < 120)  # not the (bluish at night) border
+                track = m_mx < 70
+                inside = np.flatnonzero(colour | track)
+                if len(inside) < 0.8 * (x1 - x0):
+                    break  # mostly neither fill nor track: not a bar after all
+                last = inside[-1] + 1
+                # the fill starts just inside the frame (dark outline pixels can come first); none there means 0 HP
+                m_r, m_g, m_b = mid[:, 0], mid[:, 1], mid[:, 2]
+                orange = (m_r > 200) & (m_g > 100) & (m_g < 190) & (m_b < 90)  # the hit flash or just-lost HP, never fill
+                solid = colour & ~orange
+                # a run of 4, so a blended pixel at the frame's edge isn't taken for the start
+                run4 = solid[:-3] & solid[1:-2] & solid[2:-1] & solid[3:]
+                starts = np.flatnonzero(run4[: int(0.15 * (x1 - x0))])
+                if len(starts):
+                    first = int(starts[0])
+                    fill = np.abs(mid[first:last] - mid[min(first + 4, last - 1)]).max(axis=1) < 45
+                    fill[:4] = True
+                    n = int(np.argmin(fill)) if not fill.all() else last - first
+                else:
+                    first, n = int(inside[0]), 0
+                bars.append((x0, x1, y_lo + (y + y2) // 2, n / (last - first)))
+                used_until = y2
+                break
+    return sorted(bars, key=lambda b: b[2])
+
+
 def read_frame(a):
     """Both sides of the HUD, or None when it isn't on screen (intros, charged-move animations)."""
     h = a.shape[0]
     words = words_in(Image.fromarray(a[: int(0.35 * h)]))
     left, right = read_side(a, words, True), read_side(a, words, False)
-    return (left, right) if left and right else None
+    if not (left and right):
+        return None
+    # your Pokémon is nearer the camera, so its bar is the lower one; one bar alone is sorted out later from HP
+    bars = hp_bars(a)
+    left['hp'] = right['hp'] = left['lone_hp'] = None
+    if len(bars) >= 2:
+        right['hp'], left['hp'] = round(bars[0][3], 3), round(bars[-1][3], 3)
+    elif bars:
+        left['lone_hp'] = round(bars[0][3], 3)
+    return left, right
 
 
 # --- videos ----------------------------------------------------------------------------------------------
@@ -142,7 +221,9 @@ def read_raw(video):
     """Every frame's HUD reading, or None where there's no HUD. OCR is slow, so this is saved next to the video."""
     cache = video.with_name(video.stem + '.readings.json')
     if cache.exists() and '--reread' not in sys.argv:
-        return json.loads(cache.read_text())
+        readings = json.loads(cache.read_text())
+        if all('hp' in r[0] for r in readings if r):  # saved before HP was read: read again
+            return readings
     readings = []
     with tempfile.TemporaryDirectory() as tmp:
         for path in frames_of(video, tmp):
@@ -150,12 +231,6 @@ def read_raw(video):
             readings.append(list(sides) if sides else None)
     cache.write_text(json.dumps(readings))
     return readings
-
-
-def median(values):
-    """The middle value; with an even count the lower one, so a real drop (a shield used) shows from its first frame."""
-    s = sorted(values)
-    return s[(len(s) - 1) // 2]
 
 
 def clean(readings):
@@ -203,6 +278,44 @@ def clean(readings):
                 if smooth != sides[side][key]:
                     fixes[f'{key} smoothed'] += 1
                 sides[side][key] = previous = smooth
+    # HP: a lone bar goes to the side whose Pokémon's HP it's closest to without being higher (HP never goes back
+    # up; a Pokémon not seen yet is at full). An empty bar only fits a side that loses a Poké Ball soon after.
+    last_hp = {}  # (side, species) -> HP
+    for k, (_, sides) in enumerate(hud):
+        lone = sides[0].pop('lone_hp', None)
+        if lone is not None and sides[0]['hp'] is None:
+            def faints(s):
+                return any(hud[j][1][s]['balls'] < sides[s]['balls'] for j in range(k + 1, min(k + 7, len(hud))))
+            fits = [s for s in (0, 1) if lone <= last_hp.get((s, sides[s]['species']), 1.0) + 0.05
+                    and (lone > 0.02 or faints(s))]
+            if fits:
+                side = min(fits, key=lambda s: abs(last_hp.get((s, sides[s]['species']), 1.0) - lone))
+                sides[side]['hp'] = lone
+                fixes['lone HP bar placed'] += 1
+        for s in (0, 1):
+            if sides[s]['hp'] is not None:
+                last_hp[(s, sides[s]['species'])] = sides[s]['hp']
+    # each Pokémon's HP: smoothed over its neighbouring readings, then only ever going down
+    for s in (0, 1):
+        by_species = {}
+        for k, (_, sides) in enumerate(hud):
+            if sides[s]['hp'] is not None:
+                by_species.setdefault(sides[s]['species'], []).append(k)
+        for ks in by_species.values():
+            # a charged move lands while the HUD is hidden, so HP really jumps across a gap: smooth only within stretches
+            stretches = [[ks[0]]]
+            for prev, k in zip(ks, ks[1:]):
+                if hud[k][0] - hud[prev][0] > 4:
+                    stretches.append([])
+                stretches[-1].append(k)
+            lowest = 1.0
+            for stretch in stretches:
+                raw = [hud[k][1][s]['hp'] for k in stretch]
+                for j, k in enumerate(stretch):
+                    v = min(median(raw[max(0, j - 2): j + 3]), lowest)
+                    if abs(v - raw[j]) > 0.02:
+                        fixes['HP smoothed'] += 1
+                    hud[k][1][s]['hp'] = lowest = v
     out, battle = [], 1
     for k, (i, sides) in enumerate(hud):
         if k and any(sides[s][key] > hud[k - 1][1][s][key] for s in (0, 1) for key in ('balls', 'shields')):
@@ -221,7 +334,11 @@ def describe(first, last):
     def count(key, word):
         a, b = first[key], last[key]
         return f'{word} {a}' if a == b else f'{word} {a}→{b}'
-    return f"{first['species'] or '?'} CP {first['cp'] or '?'} ({count('balls', 'left')}, {count('shields', 'shields')})"
+    hp = ''
+    if first.get('hp') is not None and last.get('hp') is not None:
+        a, b = round(100 * first['hp']), round(100 * last['hp'])
+        hp = f', HP {a}%' if a == b else f', HP {a}%→{b}%'
+    return f"{first['species'] or '?'} CP {first['cp'] or '?'} ({count('balls', 'left')}, {count('shields', 'shields')}{hp})"
 
 
 def timeline_of(frames):
@@ -230,9 +347,19 @@ def timeline_of(frames):
     for i, battle, l, r in frames:
         key = (battle, l['species'], r['species'])
         if stretches and stretches[-1]['key'] == key:
-            stretches[-1].update(last=i, end=(l, r))
+            st = stretches[-1]
+            st.update(last=i, end=(l, r))
+            for side, cur in enumerate((l, r)):  # HP from the first and last frames that showed it
+                if cur.get('hp') is not None:
+                    if st['hp_start'][side] is None:
+                        st['hp_start'][side] = cur['hp']
+                    st['hp_end'][side] = cur['hp']
         else:
-            stretches.append({'key': key, 'first': i, 'last': i, 'start': (l, r), 'end': (l, r)})
+            stretches.append({'key': key, 'first': i, 'last': i, 'start': (l, r), 'end': (l, r),
+                              'hp_start': [l.get('hp'), r.get('hp')], 'hp_end': [l.get('hp'), r.get('hp')]})
+    for st in stretches:
+        st['start'] = tuple(dict(side, hp=st['hp_start'][k]) for k, side in enumerate(st['start']))
+        st['end'] = tuple(dict(side, hp=st['hp_end'][k]) for k, side in enumerate(st['end']))
     return stretches
 
 
@@ -242,7 +369,7 @@ def main():
     paths = [Path(x) for x in args] or [DEFAULT_DIR]
     videos = []
     for p in paths:
-        videos += sorted(q for q in p.rglob('*') if q.suffix in ('.webm', '.mp4', '.mkv', '.mov')) if p.is_dir() else [p]
+        videos += sorted(q for q in p.rglob('*') if q.suffix.lower() in ('.webm', '.mp4', '.mkv', '.mov')) if p.is_dir() else [p]
     if not videos:
         sys.exit(f'No videos found in {", ".join(map(str, paths))}')
     total = Counter()
@@ -268,4 +395,5 @@ def main():
     print(f'\nAll videos, fixed: {dict(total)}')
 
 
-main()
+if __name__ == "__main__":
+    main()
