@@ -16,3 +16,9 @@ target/
 
 # PvPoke oracle checkout
 tools/pvpoke-oracle/.pvpoke/
+
+# appraisal screenshots for the IV importer: they show where each Pokémon was caught, never commit them
+pokemon-optimizer-backend/src/main/python/Screenshots/
+# gameplay recordings for training: other people's videos, never redistribute them
+pokemon-optimizer-backend/src/main/python/Screenrecordings/
+.DS_Store

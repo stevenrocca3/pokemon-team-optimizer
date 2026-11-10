@@ -337,7 +337,7 @@ function MoveSelect({
   )
 }
 
-function SpeciesPicker({
+export function SpeciesPicker({
   inputRef,
   selected,
   onChoose,

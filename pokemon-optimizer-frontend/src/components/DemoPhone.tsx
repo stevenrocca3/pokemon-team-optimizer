@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react'
+import { useEffect, useRef, type CSSProperties, type ReactNode } from 'react'
 import { PokemonArt } from './PokemonArt'
 import { useSpecies } from '../species/species-context'
-import { prefersReducedMotion } from '../lib/motion'
+import { useDemoClock } from '../lib/demo-clock'
 import { DEMO_RUN, demoFrame, typed, type DemoFrame } from '../lib/demo-run'
 import { pixelCorners } from '../lib/pixel'
 
@@ -42,7 +42,7 @@ function caption(frame: DemoFrame): { text: string; since: number } {
  */
 export function DemoPhone({ onFrame }: { onFrame?: (frame: DemoFrame) => void }) {
   const ref = useRef<HTMLDivElement>(null)
-  const ms = useDemoClock(ref)
+  const ms = useDemoClock(ref, STILL_MS)
   const frame = demoFrame(ms)
   const line = caption(frame)
   const species = useSpecies()
@@ -57,20 +57,7 @@ export function DemoPhone({ onFrame }: { onFrame?: (frame: DemoFrame) => void })
 
   return (
     <div ref={ref} className="relative mx-auto w-[300px] select-none" aria-label={`A Team Builder run on a phone: ${line.text}`} role="img">
-      {/* the case: a creamer outline, then the espresso body, stepped at the corners like pixel art */}
-      <div className="bg-creamer/80 p-[4px]" style={pixelCorners(8)}>
-        <div className="bg-[#2a1d15] px-4 pt-7 pb-9" style={pixelCorners(7)}>
-          <div className="mx-auto mb-3 h-[6px] w-16 bg-black/50" />
-          {/* the screen */}
-          <div className="relative h-[500px] overflow-hidden bg-canvas" style={pixelCorners(4)}>
-            <div className="flex items-center justify-between px-3 pt-2 font-display text-[11px] text-subtle">
-              <span>DEXPRESSO</span>
-              <span className="flex gap-[2px]" aria-hidden="true">
-                {[0, 1, 2].map((i) => (
-                  <span key={i} className="h-[8px] w-[4px] bg-brand" />
-                ))}
-              </span>
-            </div>
+      <PhoneCase>
             <p className="px-3 pt-1 font-display text-lg text-ink">Team Builder</p>
 
             {/* setup: the box filling up, the league, the button */}
@@ -154,11 +141,32 @@ export function DemoPhone({ onFrame }: { onFrame?: (frame: DemoFrame) => void })
                 <span className="absolute right-2 bottom-1 animate-bounce text-[10px] text-creamer">▼</span>
               )}
             </div>
-            {/* faint scanlines over the whole screen */}
-            <div className="pointer-events-none absolute inset-0 bg-[repeating-linear-gradient(to_bottom,transparent_0_2px,rgb(0_0_0/0.12)_2px_3px)]" />
+      </PhoneCase>
+    </div>
+  )
+}
+
+/** The pixel phone: a creamer outline, then the espresso body, stepped at the corners like pixel art. */
+export function PhoneCase({ children }: { children: ReactNode }) {
+  return (
+    <div className="bg-creamer/80 p-[4px]" style={pixelCorners(8)}>
+      <div className="bg-[#2a1d15] px-4 pt-7 pb-9" style={pixelCorners(7)}>
+        <div className="mx-auto mb-3 h-[6px] w-16 bg-black/50" />
+        {/* the screen */}
+        <div className="relative h-[500px] overflow-hidden bg-canvas" style={pixelCorners(4)}>
+          <div className="flex items-center justify-between px-3 pt-2 font-display text-[11px] text-subtle">
+            <span>DEXPRESSO</span>
+            <span className="flex gap-[2px]" aria-hidden="true">
+              {[0, 1, 2].map((i) => (
+                <span key={i} className="h-[8px] w-[4px] bg-brand" />
+              ))}
+            </span>
           </div>
-          <div className="mx-auto mt-4 h-[12px] w-[12px] bg-black/40" />
+          {children}
+          {/* faint scanlines over the whole screen */}
+          <div className="pointer-events-none absolute inset-0 bg-[repeating-linear-gradient(to_bottom,transparent_0_2px,rgb(0_0_0/0.12)_2px_3px)]" />
         </div>
+        <div className="mx-auto mt-4 h-[12px] w-[12px] bg-black/40" />
       </div>
     </div>
   )
@@ -291,7 +299,7 @@ function PixelCup({ level }: { level: number }) {
 }
 
 /** A pointing hand in pixels. */
-function PixelHand({ className, style }: { className: string; style: CSSProperties }) {
+export function PixelHand({ className, style }: { className: string; style: CSSProperties }) {
   const rows = ['..X.....', '.XWX....', '.XWX....', '.XWXXX..', '.XWWWWX.', 'XXWWWWX.', 'XWWWWWX.', '.XWWWX..', '..XXXX..']
   return (
     <svg viewBox="0 0 8 9" className={`h-9 w-8 ${className}`} style={style} shapeRendering="crispEdges" aria-hidden="true">
@@ -300,32 +308,4 @@ function PixelHand({ className, style }: { className: string; style: CSSProperti
       )}
     </svg>
   )
-}
-
-/** Milliseconds of demo played: runs only while the phone is on screen; frozen on the result with reduced motion. */
-function useDemoClock(ref: React.RefObject<HTMLDivElement | null>): number {
-  const [ms, setMs] = useState(() => (prefersReducedMotion() ? STILL_MS : 0))
-  useEffect(() => {
-    if (prefersReducedMotion() || !ref.current) return
-    let timer = 0
-    let last = 0
-    const tick = () => {
-      const now = performance.now()
-      setMs((m) => m + (now - last))
-      last = now
-    }
-    const observer = new IntersectionObserver(([entry]) => {
-      window.clearInterval(timer)
-      if (entry.isIntersecting) {
-        last = performance.now()
-        timer = window.setInterval(tick, 40)
-      }
-    })
-    observer.observe(ref.current)
-    return () => {
-      observer.disconnect()
-      window.clearInterval(timer)
-    }
-  }, [ref])
-  return ms
 }
