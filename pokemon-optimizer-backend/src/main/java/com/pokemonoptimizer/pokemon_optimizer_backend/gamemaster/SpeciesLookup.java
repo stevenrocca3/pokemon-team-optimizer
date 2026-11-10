@@ -17,6 +17,7 @@ public class SpeciesLookup
 {
     private final HashMap<String, SpeciesTraits> traitsById = new HashMap<>();
     private final HashMap<String, SpeciesType> speciesById;
+    private final HashMap<String, SpeciesType> unreleasedById = new HashMap<>();
     private HashMap<String, SpeciesType> loadSpecies() 
     {
         HashMap<String, SpeciesType> data = new HashMap<>();
@@ -31,7 +32,7 @@ public class SpeciesLookup
             Gamemaster gamemaster = mapper.readValue(is, Gamemaster.class); 
             for (GamemasterPokemon pokemon : gamemaster.pokemon())
                 {
-                    if (!pokemon.released() || (pokemon.tags().contains("shadow")))
+                    if (pokemon.tags().contains("shadow"))
                     {
                         continue;
                     }
@@ -50,6 +51,11 @@ public class SpeciesLookup
                     Learnset learnset = new Learnset(pokemon.fastMoves(), pokemon.chargedMoves(), finalEliteMoves);
                     boolean shadowEligible = pokemon.tags().contains("shadoweligible");
                     SpeciesType species = new SpeciesType(dex, speciesName, speciesId, baseSta, baseAtk, baseDef, learnset, pokemon.types(), shadowEligible);
+                    if (!pokemon.released())
+                    {
+                        unreleasedById.put(speciesId, species);   // forms only reached mid-battle, like Aegislash (Blade)
+                        continue;
+                    }
                     if (!data.containsKey(speciesId))
                     {
                         data.put(speciesId, species);
@@ -67,6 +73,13 @@ public class SpeciesLookup
             throw new IllegalStateException("The species data couldn't be loaded", e);
         }
           
+    }
+
+    /** Any form in the gamemaster, unreleased ones included (Aegislash's Blade form only exists mid-battle). */
+    public Optional<SpeciesType> findForm(String id)
+    {
+        SpeciesType released = speciesById.get(id);
+        return Optional.ofNullable(released != null ? released : unreleasedById.get(id));
     }
 
     public Optional<SpeciesType> findById(String id)

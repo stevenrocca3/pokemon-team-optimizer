@@ -29,5 +29,25 @@ node tools/pvpoke-oracle/gen-fixture.js tools/pvpoke-oracle/.pvpoke/src/js \
   pokemon-optimizer-backend/src/test/resources/battle/pvpoke-matchups.json 3000
 ```
 
-Not covered (the engine throws or doesn't model them): moves that buff both sides (Obstruct) and
-form-change species (Aegislash, Cramorant, Mimikyu, Morpeko).
+Four more fixtures each put one form-changing species in every matchup (either side, about 10% mirrors), for the
+mechanics only it has: `pvpoke-cramorant.json` (400, Gulp Missile), `pvpoke-mimikyu.json` (300, Disguise),
+`pvpoke-morpeko.json` (300, Hunger Switch) and `pvpoke-aegislash.json` (400, Stance Change). Pass a focus species
+to build one, and a CP cap after it when the species' mechanics depend on the league. Aegislash's does (PvPoke works
+out its Blade form level from the cap), so its fixture runs at 1500; the others run at PvPoke's default of 10000:
+
+```sh
+node tools/pvpoke-oracle/gen-fixture.js tools/pvpoke-oracle/.pvpoke/src/js \
+  pokemon-optimizer-backend/src/main/resources/gamemaster.json \
+  pokemon-optimizer-backend/src/test/resources/battle/pvpoke-cramorant.json 400 cramorant
+
+node tools/pvpoke-oracle/gen-fixture.js tools/pvpoke-oracle/.pvpoke/src/js \
+  pokemon-optimizer-backend/src/main/resources/gamemaster.json \
+  pokemon-optimizer-backend/src/test/resources/battle/pvpoke-aegislash.json 400 aegislash_shield 1500
+```
+
+(Mimikyu and Morpeko: `300 mimikyu` and `300 morpeko_full_belly`.)
+
+Not covered (the engine throws or doesn't model them): moves that buff both sides (Obstruct). Form changes on
+switching out (Cramorant, Morpeko and Aegislash revert; busted Mimikyu stays busted) are ported, but only 3v3
+battles switch and the fixtures are 1v1. One known gap there: PvPoke reapplies busted Mimikyu's -1 Defense each time
+it comes back in, and the engine doesn't yet.

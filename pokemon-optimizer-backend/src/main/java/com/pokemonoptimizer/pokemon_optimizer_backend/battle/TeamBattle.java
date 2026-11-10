@@ -10,7 +10,7 @@ public final class TeamBattle
     public static TeamBattleResult simulate(List<Combatant> teamA, List<Moveset> movesetsA,
                                             List<Combatant> teamB, List<Moveset> movesetsB)
     {
-        return simulate(teamA, movesetsA, new TrainingAi(), teamB, movesetsB, new TrainingAi());
+        return simulate(teamA, movesetsA, new TrainingAi(), teamB, movesetsB, new TrainingAi(), Battle.NO_CP_CAP);
     }
 
     /**
@@ -20,16 +20,25 @@ public final class TeamBattle
     public static TeamBattleResult simulateWithRoles(List<Combatant> teamA, List<Moveset> movesetsA,
                                                      List<Combatant> teamB, List<Moveset> movesetsB)
     {
-        return simulate(teamA, movesetsA, new TrainingAi(true), teamB, movesetsB, new TrainingAi());
+        return simulateWithRoles(teamA, movesetsA, teamB, movesetsB, Battle.NO_CP_CAP);
     }
 
-    private static List<BattlePokemon> buildSide(List<Combatant> team, List<Moveset> movesets, int index)
+    /** battleCp is the league's CP cap (Battle.NO_CP_CAP for none): Aegislash's Blade form stats depend on it. */
+    public static TeamBattleResult simulateWithRoles(List<Combatant> teamA, List<Moveset> movesetsA,
+                                                     List<Combatant> teamB, List<Moveset> movesetsB, int battleCp)
+    {
+        return simulate(teamA, movesetsA, new TrainingAi(true), teamB, movesetsB, new TrainingAi(), battleCp);
+    }
+
+    private static List<BattlePokemon> buildSide(List<Combatant> team, List<Moveset> movesets, int index, int battleCp)
     {
         List<BattlePokemon> side = new ArrayList<>();
         
         for (int i = 0; i < team.size(); i++)
         {
-            side.add(new BattlePokemon(team.get(i), movesets.get(i), i == 0 ? 2 : 0, index));
+            BattlePokemon poke = new BattlePokemon(team.get(i), movesets.get(i), i == 0 ? 2 : 0, index);
+            poke.battleCp = battleCp;
+            side.add(poke);
         }
         return side;
     }
@@ -47,8 +56,14 @@ public final class TeamBattle
     static TeamBattleResult simulate(List<Combatant> teamA, List<Moveset> movesetsA, TeamPolicy policyA,
                                      List<Combatant> teamB, List<Moveset> movesetsB, TeamPolicy policyB)
     {
-        List<BattlePokemon> sideA = buildSide(teamA, movesetsA, 0);
-        List<BattlePokemon> sideB = buildSide(teamB, movesetsB, 1);
+        return simulate(teamA, movesetsA, policyA, teamB, movesetsB, policyB, Battle.NO_CP_CAP);
+    }
+
+    static TeamBattleResult simulate(List<Combatant> teamA, List<Moveset> movesetsA, TeamPolicy policyA,
+                                     List<Combatant> teamB, List<Moveset> movesetsB, TeamPolicy policyB, int battleCp)
+    {
+        List<BattlePokemon> sideA = buildSide(teamA, movesetsA, 0, battleCp);
+        List<BattlePokemon> sideB = buildSide(teamB, movesetsB, 1, battleCp);
         List<List<BattlePokemon>> teams = List.of(sideA, sideB);
         TeamPolicy[] policies = { policyA, policyB};
         int[] active = { 0, 0 };  // list position of each side's active Pokémon (replaces activeA/activeB)

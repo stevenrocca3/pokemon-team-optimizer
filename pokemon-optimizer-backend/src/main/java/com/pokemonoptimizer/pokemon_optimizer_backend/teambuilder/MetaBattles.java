@@ -43,7 +43,8 @@ final class MetaBattles
         return new MatchupRef(meta.get(battle / SHIELDS.length).id(), SHIELDS[battle % SHIELDS.length]);
     }
 
-    static Record against(Combatant combatant, Moveset moveset, List<MetaPokemon> meta)
+    /** battleCp: the League's (or Cup's) CP cap, see League.battleCp. */
+    static Record against(Combatant combatant, Moveset moveset, List<MetaPokemon> meta, int battleCp)
     {
         boolean[] won = new boolean[battles(meta)];
         double total = 0;
@@ -52,7 +53,7 @@ final class MetaBattles
             for (int s = 0; s < SHIELDS.length; s++)
             {
                 BattleResult result = Battle.simulate(combatant, moveset, meta.get(m).combatant(), meta.get(m).moveset(),
-                    new ShieldScenario(SHIELDS[s], SHIELDS[s]));
+                    new ShieldScenario(SHIELDS[s], SHIELDS[s]), battleCp);
                 total += result.ratingA();
                 won[m * SHIELDS.length + s] = result.winner() == Winner.A;
             }

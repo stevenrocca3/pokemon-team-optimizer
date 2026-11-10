@@ -1,12 +1,16 @@
 // Builds the battle fixture: random (seeded) matchups between Great League species, each run through
 // PvPoke's real simulator. Re-run after a gamemaster update or a PvPoke bump, then review the diff.
 //
-// Usage: node gen-fixture.js <pvpoke js dir> <gamemaster.json> <out.json> [count]
+// Usage: node gen-fixture.js <pvpoke js dir> <gamemaster.json> <out.json> [count] [focus species] [cp]
+// With a focus species, every matchup has it on one side (either side, mirrors included): for mechanics only
+// that species has, like Cramorant's Gulp Missile. cp is the battle's CP cap (PvPoke's setCP), 10000 when left
+// out; it only matters for forms whose stats depend on the league, like Aegislash's Blade form.
 const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
 
-const [jsDir, gmPath, outPath, countArg] = process.argv.slice(2);
+const [jsDir, gmPath, outPath, countArg, focus, cpArg] = process.argv.slice(2);
+const CP = cpArg ? Number(cpArg) : undefined;
 const COUNT = Number(countArg || 400);
 const gm = JSON.parse(fs.readFileSync(gmPath, 'utf8'));
 
@@ -27,8 +31,7 @@ const pick = (list) => list[Math.floor(rand() * list.length)];
 
 const unsupportedMoves = new Set(gm.moves.filter(m => m.buffTarget == 'both').map(m => m.moveId));
 
-function side() {
-    const id = pick(SPECIES);
+function side(id = pick(SPECIES)) {
     const p = gm.pokemon.find(x => x.speciesId == id);
     const [level, atk, def, hp] = p.defaultIVs.cp1500;
     const charged = p.chargedMoves.filter(m => !unsupportedMoves.has(m));
@@ -48,14 +51,21 @@ function side() {
 const SHIELDS = [[0, 0], [1, 1], [2, 2], [1, 0], [0, 2], [2, 1]];
 const configs = [];
 for (let i = 0; i < COUNT; i++) {
-    configs.push({ a: side(), b: side(), shields: pick(SHIELDS) });
+    if (focus) {
+        const other = rand() < 0.1 ? side(focus) : side();
+        const mine = side(focus);
+        const [a, b] = rand() < 0.5 ? [mine, other] : [other, mine];
+        configs.push({ a, b, shields: pick(SHIELDS), cp: CP });
+    } else {
+        configs.push({ a: side(), b: side(), shields: pick(SHIELDS) });
+    }
 }
 
 const out = JSON.parse(execFileSync('node', [path.join(__dirname, 'sim.js'), jsDir, gmPath, JSON.stringify(configs)],
     { maxBuffer: 64 * 1024 * 1024 }).toString());
 
 const fixture = configs.map((cfg, i) => ({
-    a: cfg.a, b: cfg.b, shields: cfg.shields,
+    a: cfg.a, b: cfg.b, shields: cfg.shields, ...(CP ? { cp: CP } : {}),
     expected: {
         turns: out[i].turns - 1, // our BattleResult counts the KO turn; PvPoke counts one past it
         hp: out[i].hp, energy: out[i].energy, shields: out[i].shields, buffs: out[i].buffs, ratings: out[i].ratings

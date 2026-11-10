@@ -9,6 +9,10 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
+import com.pokemonoptimizer.pokemon_optimizer_backend.battle.Battle;
+import com.pokemonoptimizer.pokemon_optimizer_backend.battle.BattleResult;
+import com.pokemonoptimizer.pokemon_optimizer_backend.battle.ShieldScenario;
+import com.pokemonoptimizer.pokemon_optimizer_backend.battle.Winner;
 import com.pokemonoptimizer.pokemon_optimizer_backend.dto.CaughtPokemonRequest;
 import com.pokemonoptimizer.pokemon_optimizer_backend.gamemaster.MoveLookup;
 import com.pokemonoptimizer.pokemon_optimizer_backend.gamemaster.SpeciesLookup;
@@ -29,6 +33,38 @@ public class IvComparisonTest
 
     private static final CaughtPokemonRequest POOR = medicham(15, 0, 0, 20);
     private static final CaughtPokemonRequest GOOD = medicham(0, 15, 15, 20);
+
+    /** Meta battles won at 0, 1 and 2 shields with the battle run at this CP cap. */
+    private static int winsAtCap(CaughtPokemonRequest pokemon, int battleCp)
+    {
+        TeamBuilder.Candidate candidate = new TeamBuilder(SPECIES, MOVES, META, new GoodIvs(SPECIES, new SuggestedMovesets(SPECIES)))
+            .candidate(0, pokemon, false, League.GREAT);
+        int wins = 0;
+        for (MetaPokemon foe : META.meta(League.GREAT))
+        {
+            for (int shields = 0; shields <= 2; shields++)
+            {
+                BattleResult result = Battle.simulate(candidate.combatant(), candidate.moveset(), foe.combatant(), foe.moveset(),
+                    new ShieldScenario(shields, shields), battleCp);
+                if (result.winner() == Winner.A) wins++;
+            }
+        }
+        return wins;
+    }
+
+    @Test
+    public void battlesArePlayedAtTheLeaguesCpCap()
+    {   // Aegislash's Blade form is weaker in Great League than with no cap (PvPoke works its level out from the cap)
+        CaughtPokemonRequest aegislash = new CaughtPokemonRequest("aegislash_shield", 4, 14, 15, 46.0,
+            "AEGISLASH_CHARGE_PSYCHO_CUT", List.of("GYRO_BALL", "SHADOW_BALL"), false);
+        int greatLeague = winsAtCap(aegislash, 1500);
+        int noCap = winsAtCap(aegislash, Battle.NO_CP_CAP);
+        assertTrue(greatLeague != noCap, "the cap has to matter for this check to mean anything");
+
+        IvComparisonResult result = COMPARISON.compare(League.GREAT, List.of(aegislash));
+
+        assertEquals(greatLeague, result.pokemon().get(0).wins());
+    }
 
     @Test
     public void theBetterSpreadComesFirstBuiltForTheLeague()

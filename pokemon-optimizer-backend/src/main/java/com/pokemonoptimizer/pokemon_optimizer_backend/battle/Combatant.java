@@ -5,8 +5,8 @@ import com.pokemonoptimizer.pokemon_optimizer_backend.gamemaster.SpeciesType;
 
 public record Combatant(SpeciesType species, int atkIv, int defIv, int staIv, double level, boolean shadow)
 {
-    private static final double SHADOW_ATK = 1.2;
-    private static final double SHADOW_DEF = 0.83333331;   
+    static final double SHADOW_ATK = 1.2;
+    static final double SHADOW_DEF = 0.83333331;   
     public double attack() 
     { 
         return attack(0);
@@ -15,6 +15,11 @@ public record Combatant(SpeciesType species, int atkIv, int defIv, int staIv, do
     public double attackStat()
     {
         return cpm() * (species.baseAtk() + atkIv);
+    }
+    /** cpm x (base + IV), without Shadow or buffs. */
+    public double defenseStat()
+    {
+        return cpm() * (species.baseDef() + defIv);
     }
     public double attack(int stage)
     {

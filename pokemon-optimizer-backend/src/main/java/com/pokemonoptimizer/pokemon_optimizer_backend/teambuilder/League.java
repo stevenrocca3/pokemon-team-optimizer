@@ -2,6 +2,7 @@ package com.pokemonoptimizer.pokemon_optimizer_backend.teambuilder;
 
 import java.util.OptionalDouble;
 
+import com.pokemonoptimizer.pokemon_optimizer_backend.battle.Battle;
 import com.pokemonoptimizer.pokemon_optimizer_backend.calculator.CpCalculator;
 
 import com.pokemonoptimizer.pokemon_optimizer_backend.gamemaster.SpeciesType;
@@ -25,6 +26,12 @@ public enum League
     {
         this.key = key;
         this.cpCap = cpCap;
+    }
+
+    /** The CP cap battles are run at: PvPoke's 10000 when there's none. */
+    public int battleCp()
+    {
+        return cpCap == 0 ? Battle.NO_CP_CAP : cpCap;
     }
 
     /** The League with PvPoke's CP cap (1500, 2500, or 10000 for no cap). */

@@ -18,8 +18,9 @@ import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.json.JsonMapper;
 
 /**
- * 400 random Great League matchups, each run through PvPoke's real simulator (tools/pvpoke-oracle/gen-fixture.js).
- * Every field of the result must match PvPoke exactly.
+ * Random Great League matchups, each run through PvPoke's real simulator (tools/pvpoke-oracle/gen-fixture.js).
+ * Every field of the result must match PvPoke exactly. The other fixtures put one form-changing species in every
+ * matchup: Cramorant (Gulp Missile), Mimikyu (Disguise), Morpeko (Hunger Switch) and Aegislash (Stance Change).
  */
 public class PvPokeFixtureTest
 {
@@ -29,8 +30,38 @@ public class PvPokeFixtureTest
     @TestFactory
     Stream<DynamicTest> matchesPvPoke() throws Exception
     {
+        return fixture("/battle/pvpoke-matchups.json");
+    }
+
+    @TestFactory
+    Stream<DynamicTest> cramorantMatchesPvPoke() throws Exception
+    {
+        return fixture("/battle/pvpoke-cramorant.json");
+    }
+
+    @TestFactory
+    Stream<DynamicTest> mimikyuMatchesPvPoke() throws Exception
+    {
+        return fixture("/battle/pvpoke-mimikyu.json");
+    }
+
+    @TestFactory
+    Stream<DynamicTest> morpekoMatchesPvPoke() throws Exception
+    {
+        return fixture("/battle/pvpoke-morpeko.json");
+    }
+
+    /** Run at a 1500 CP cap: Aegislash's Blade form stats depend on the league (PvPoke's getFormStats). */
+    @TestFactory
+    Stream<DynamicTest> aegislashMatchesPvPoke() throws Exception
+    {
+        return fixture("/battle/pvpoke-aegislash.json");
+    }
+
+    private Stream<DynamicTest> fixture(String path) throws Exception
+    {
         JsonNode fixture;
-        try (InputStream in = getClass().getResourceAsStream("/battle/pvpoke-matchups.json"))
+        try (InputStream in = getClass().getResourceAsStream(path))
         {
             fixture = JsonMapper.builder().build().readTree(in);
         }
@@ -49,7 +80,8 @@ public class PvPokeFixtureTest
         BattleResult result = Battle.simulate(
             combatant(matchup.get("a")), moveset(matchup.get("a")),
             combatant(matchup.get("b")), moveset(matchup.get("b")),
-            new ShieldScenario(matchup.get("shields").get(0).asInt(), matchup.get("shields").get(1).asInt()));
+            new ShieldScenario(matchup.get("shields").get(0).asInt(), matchup.get("shields").get(1).asInt()),
+            matchup.has("cp") ? matchup.get("cp").asInt() : Battle.NO_CP_CAP);
 
         assertAll(
             () -> assertEquals(expected.get("turns").asInt(), result.turns(), "turns"),
