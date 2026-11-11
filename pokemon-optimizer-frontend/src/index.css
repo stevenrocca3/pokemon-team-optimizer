@@ -130,11 +130,14 @@ h1,
   text-shadow: 0 0.09em 0 var(--color-espresso);
 }
 
-/* every tabular figure (CP, IVs, levels, win odds) is set like a tool's readout */
-.tabular-nums {
-  font-family: var(--font-mono);
-  font-size: 0.94em;
-  letter-spacing: -0.02em;
+/* every tabular figure (CP, IVs, levels, win odds) is set like a tool's readout. Layered, so a text-* size on the
+   same element still wins: unlayered, the 0.94em beat every size and a 9px rank badge drew at 15px. */
+@layer components {
+  .tabular-nums {
+    font-family: var(--font-mono);
+    font-size: 0.94em;
+    letter-spacing: -0.02em;
+  }
 }
 input,
 select,
@@ -510,6 +513,35 @@ button {
 }
 @media (prefers-reduced-motion: reduce) {
   .undo-drain {
+    animation: none;
+  }
+}
+
+/* components/AnalyzeDemoPhone.tsx: the mistake pop-up's jolt as it lands */
+.demo-shake {
+  animation: demo-shake 0.45s steps(2, end) both;
+}
+@keyframes demo-shake {
+  0%, 100% { translate: 0 0; }
+  15% { translate: -6px 2px; }
+  30% { translate: 5px -2px; }
+  45% { translate: -4px 1px; }
+  60% { translate: 3px -1px; }
+  75% { translate: -2px 0; }
+}
+
+/* the header's Analyze link: a soft glow that breathes, so the new feature catches the eye */
+.new-glow {
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--color-brand) 55%, transparent), 0 0 14px 1px color-mix(in srgb, var(--color-brand) 35%, transparent);
+  animation: new-glow 2.6s ease-in-out infinite;
+}
+@keyframes new-glow {
+  50% {
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--color-brand) 85%, transparent), 0 0 22px 4px color-mix(in srgb, var(--color-brand) 50%, transparent);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .new-glow {
     animation: none;
   }
 }

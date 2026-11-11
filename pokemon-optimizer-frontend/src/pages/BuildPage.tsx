@@ -38,7 +38,7 @@ export function BuildPage() {
       <div
         role="tablist"
         aria-label="League"
-        className="mb-5 inline-grid grid-cols-3 gap-1 rounded-xl bg-raised p-1 ring-1 ring-line"
+        className="mb-5 grid w-full grid-cols-3 gap-1 rounded-xl bg-raised p-1 ring-1 ring-line sm:inline-grid sm:w-auto"
       >
         {LEAGUES.map((l) => (
           <button

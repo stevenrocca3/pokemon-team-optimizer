@@ -125,16 +125,17 @@ function SpeciesView({ id, option }: { id: string; option?: SpeciesOption }) {
             <PokemonArt dex={artDex} alt={option?.name ?? loadedDetail?.name ?? ''} className="h-full w-full" priority />
           </div>
           <div className="min-w-0 flex-1">
-            <div className="text-sm text-subtle">{option ? formatDex(option.dex) : '\u00a0'}</div>
-            <h1 className="mt-1 flex flex-wrap items-baseline gap-3 text-4xl font-black tracking-tight sm:text-5xl">
+            {/* the name is centred under the art on phones, like every page title there */}
+            <div className="text-center text-sm text-subtle sm:text-left">{option ? formatDex(option.dex) : '\u00a0'}</div>
+            <h1 className="mt-1 flex flex-wrap items-baseline justify-center gap-3 text-4xl font-black tracking-tight sm:justify-start sm:text-5xl">
               {title}
             </h1>
-            <CreamerRule align="left" className="mt-2" />
+            <CreamerRule align="responsive" className="mt-2" />
 
             <BaseStats detail={detail} />
 
             <div className="mt-6 flex flex-wrap items-center gap-4">
-              <div role="tablist" aria-label="League" className="inline-flex rounded-lg bg-surface p-1 ring-1 ring-line">
+              <div role="tablist" aria-label="League" className="grid w-full grid-cols-4 rounded-lg bg-surface p-1 ring-1 ring-line sm:inline-flex sm:w-auto">
                 {LEAGUES.map((l) => (
                   <button
                     key={l.key}

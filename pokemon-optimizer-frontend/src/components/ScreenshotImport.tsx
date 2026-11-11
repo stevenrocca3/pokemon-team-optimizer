@@ -236,7 +236,7 @@ function ShotPicker({ compact, disabled, onFiles }: { compact: boolean; disabled
 }
 
 /** A four-point twinkle in pixels, for the shine on the picker. */
-function PixelStar({ className }: { className: string }) {
+export function PixelStar({ className }: { className: string }) {
   const rows = ['...C...', '...C...', '..CWC..', 'CCWWWCC', '..CWC..', '...C...', '...C...']
   return (
     <svg viewBox="0 0 7 7" className={className} shapeRendering="crispEdges" aria-hidden="true">
