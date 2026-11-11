@@ -43,7 +43,7 @@ public class AnalyticsControllerTest
     {
         when(trainers.findByGoogleId("google-ash")).thenReturn(Optional.of(ash));
         when(analytics.summary(ash)).thenReturn(new AnalyticsSummary("full", 3, List.of(),
-            new AnalyticsSummary.Rank(true, 3, 10, 7, null, null)));
+            new AnalyticsSummary.Rank(true, 3, 10, 7, null, null), null, List.of()));
     }
 
     private MockMvcTester.MockMvcRequestBuilder asAsh(MockMvcTester.MockMvcRequestBuilder request)
