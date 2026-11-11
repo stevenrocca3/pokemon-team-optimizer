@@ -20,7 +20,7 @@
  },
  "turn_log": [
   {
-   "turn": 32,
+   "turn": 0,
    "timestamp_ms": 16000,
    "user_active": "Swampert",
    "opp_active": "Morpeko",
@@ -43,7 +43,7 @@
    "events": []
   },
   {
-   "turn": 33,
+   "turn": 1,
    "timestamp_ms": 16500,
    "user_active": "Swampert",
    "opp_active": "Morpeko",
@@ -68,7 +68,7 @@
    ]
   },
   {
-   "turn": 34,
+   "turn": 2,
    "timestamp_ms": 17000,
    "user_active": "Swampert",
    "opp_active": "Morpeko",
@@ -91,7 +91,7 @@
    "events": []
   },
   {
-   "turn": 35,
+   "turn": 3,
    "timestamp_ms": 17500,
    "user_active": "Swampert",
    "opp_active": "Morpeko",
@@ -116,7 +116,7 @@
    ]
   },
   {
-   "turn": 36,
+   "turn": 4,
    "timestamp_ms": 18000,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
@@ -141,7 +141,7 @@
    ]
   },
   {
-   "turn": 37,
+   "turn": 5,
    "timestamp_ms": 18500,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
@@ -164,7 +164,7 @@
    "events": []
   },
   {
-   "turn": 38,
+   "turn": 6,
    "timestamp_ms": 19000,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
@@ -187,7 +187,7 @@
    "events": []
   },
   {
-   "turn": 39,
+   "turn": 7,
    "timestamp_ms": 19500,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
@@ -212,7 +212,7 @@
    ]
   },
   {
-   "turn": 40,
+   "turn": 8,
    "timestamp_ms": 20000,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
@@ -235,7 +235,7 @@
    "events": []
   },
   {
-   "turn": 41,
+   "turn": 9,
    "timestamp_ms": 20500,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
@@ -261,7 +261,7 @@
    ]
   },
   {
-   "turn": 42,
+   "turn": 10,
    "timestamp_ms": 21000,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
@@ -286,16 +286,16 @@
    ]
   },
   {
-   "turn": 43,
+   "turn": 11,
    "timestamp_ms": 21500,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
    "user_hp_pct": 85.3,
-   "opp_hp_pct": 85.3,
+   "opp_hp_pct": 90.2,
    "user_energy": 40,
    "opp_energy": null,
-   "action_detected": "FAST_MOVE_HIT",
-   "actor": "user",
+   "action_detected": "NONE",
+   "actor": null,
    "move_name": null,
    "move_id": null,
    "shield_used": false,
@@ -306,17 +306,15 @@
    "opp_remaining": 3,
    "switch_clock_s": 0.0,
    "hud_visible": true,
-   "events": [
-    "FAST_MOVE_HIT"
-   ]
+   "events": []
   },
   {
-   "turn": 44,
+   "turn": 12,
    "timestamp_ms": 22000,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
    "user_hp_pct": 85.3,
-   "opp_hp_pct": 85.3,
+   "opp_hp_pct": 90.2,
    "user_energy": 40,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -334,12 +332,12 @@
    "events": []
   },
   {
-   "turn": 45,
+   "turn": 13,
    "timestamp_ms": 22500,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
    "user_hp_pct": 85.3,
-   "opp_hp_pct": 85.3,
+   "opp_hp_pct": 90.2,
    "user_energy": 16,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -357,12 +355,12 @@
    "events": []
   },
   {
-   "turn": 46,
+   "turn": 14,
    "timestamp_ms": 23000,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
    "user_hp_pct": 85.3,
-   "opp_hp_pct": 85.3,
+   "opp_hp_pct": 90.2,
    "user_energy": 16,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -380,12 +378,12 @@
    "events": []
   },
   {
-   "turn": 47,
+   "turn": 15,
    "timestamp_ms": 23500,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
    "user_hp_pct": 85.3,
-   "opp_hp_pct": 85.3,
+   "opp_hp_pct": 90.2,
    "user_energy": 16,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -403,12 +401,12 @@
    "events": []
   },
   {
-   "turn": 48,
+   "turn": 16,
    "timestamp_ms": 24000,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
    "user_hp_pct": 85.3,
-   "opp_hp_pct": 85.3,
+   "opp_hp_pct": 90.2,
    "user_energy": 16,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -426,12 +424,12 @@
    "events": []
   },
   {
-   "turn": 49,
+   "turn": 17,
    "timestamp_ms": 24500,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
    "user_hp_pct": 85.3,
-   "opp_hp_pct": 85.3,
+   "opp_hp_pct": 90.2,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -449,12 +447,12 @@
    "events": []
   },
   {
-   "turn": 50,
+   "turn": 18,
    "timestamp_ms": 25000,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
    "user_hp_pct": 85.3,
-   "opp_hp_pct": 85.3,
+   "opp_hp_pct": 90.2,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -472,12 +470,12 @@
    "events": []
   },
   {
-   "turn": 51,
+   "turn": 19,
    "timestamp_ms": 25500,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
    "user_hp_pct": 85.3,
-   "opp_hp_pct": 85.3,
+   "opp_hp_pct": 90.2,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -495,12 +493,12 @@
    "events": []
   },
   {
-   "turn": 52,
+   "turn": 20,
    "timestamp_ms": 26000,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
    "user_hp_pct": 85.3,
-   "opp_hp_pct": 85.3,
+   "opp_hp_pct": 90.2,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -518,12 +516,12 @@
    "events": []
   },
   {
-   "turn": 53,
+   "turn": 21,
    "timestamp_ms": 26500,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
    "user_hp_pct": 85.3,
-   "opp_hp_pct": 85.3,
+   "opp_hp_pct": 90.2,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -541,12 +539,12 @@
    "events": []
   },
   {
-   "turn": 54,
+   "turn": 22,
    "timestamp_ms": 27000,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
    "user_hp_pct": 85.3,
-   "opp_hp_pct": 85.3,
+   "opp_hp_pct": 90.2,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -564,12 +562,12 @@
    "events": []
   },
   {
-   "turn": 55,
+   "turn": 23,
    "timestamp_ms": 27500,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
    "user_hp_pct": 85.3,
-   "opp_hp_pct": 85.3,
+   "opp_hp_pct": 90.2,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -587,12 +585,12 @@
    "events": []
   },
   {
-   "turn": 56,
+   "turn": 24,
    "timestamp_ms": 28000,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
    "user_hp_pct": 85.3,
-   "opp_hp_pct": 85.3,
+   "opp_hp_pct": 90.2,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -610,12 +608,12 @@
    "events": []
   },
   {
-   "turn": 57,
+   "turn": 25,
    "timestamp_ms": 28500,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
    "user_hp_pct": 85.3,
-   "opp_hp_pct": 85.3,
+   "opp_hp_pct": 90.2,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -633,12 +631,12 @@
    "events": []
   },
   {
-   "turn": 58,
+   "turn": 26,
    "timestamp_ms": 29000,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
    "user_hp_pct": 76.8,
-   "opp_hp_pct": 85.3,
+   "opp_hp_pct": 90.2,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "CHARGE_MOVE_THROWN",
@@ -658,12 +656,12 @@
    ]
   },
   {
-   "turn": 59,
+   "turn": 27,
    "timestamp_ms": 29500,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
    "user_hp_pct": 76.8,
-   "opp_hp_pct": 85.3,
+   "opp_hp_pct": 90.2,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -681,12 +679,12 @@
    "events": []
   },
   {
-   "turn": 60,
+   "turn": 28,
    "timestamp_ms": 30000,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
    "user_hp_pct": 76.8,
-   "opp_hp_pct": 85.3,
+   "opp_hp_pct": 90.2,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -704,12 +702,12 @@
    "events": []
   },
   {
-   "turn": 61,
+   "turn": 29,
    "timestamp_ms": 30500,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
    "user_hp_pct": 76.8,
-   "opp_hp_pct": 85.3,
+   "opp_hp_pct": 90.2,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -727,12 +725,12 @@
    "events": []
   },
   {
-   "turn": 62,
+   "turn": 30,
    "timestamp_ms": 31000,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
    "user_hp_pct": 76.8,
-   "opp_hp_pct": 85.3,
+   "opp_hp_pct": 87.8,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -750,12 +748,12 @@
    "events": []
   },
   {
-   "turn": 63,
+   "turn": 31,
    "timestamp_ms": 31500,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
    "user_hp_pct": 76.8,
-   "opp_hp_pct": 85.3,
+   "opp_hp_pct": 87.8,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -773,16 +771,16 @@
    "events": []
   },
   {
-   "turn": 64,
+   "turn": 32,
    "timestamp_ms": 32000,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
    "user_hp_pct": 76.7,
-   "opp_hp_pct": 85.3,
+   "opp_hp_pct": 86.0,
    "user_energy": null,
    "opp_energy": null,
-   "action_detected": "NONE",
-   "actor": null,
+   "action_detected": "FAST_MOVE_HIT",
+   "actor": "user",
    "move_name": null,
    "move_id": null,
    "shield_used": false,
@@ -793,15 +791,17 @@
    "opp_remaining": 3,
    "switch_clock_s": 0.0,
    "hud_visible": true,
-   "events": []
+   "events": [
+    "FAST_MOVE_HIT"
+   ]
   },
   {
-   "turn": 65,
+   "turn": 33,
    "timestamp_ms": 32500,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
    "user_hp_pct": 76.7,
-   "opp_hp_pct": 85.3,
+   "opp_hp_pct": 86.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -819,12 +819,12 @@
    "events": []
   },
   {
-   "turn": 66,
+   "turn": 34,
    "timestamp_ms": 33000,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
    "user_hp_pct": 76.7,
-   "opp_hp_pct": 85.3,
+   "opp_hp_pct": 86.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -842,12 +842,12 @@
    "events": []
   },
   {
-   "turn": 67,
+   "turn": 35,
    "timestamp_ms": 33500,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
    "user_hp_pct": 76.7,
-   "opp_hp_pct": 85.3,
+   "opp_hp_pct": 86.0,
    "user_energy": 24,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -865,12 +865,12 @@
    "events": []
   },
   {
-   "turn": 68,
+   "turn": 36,
    "timestamp_ms": 34000,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
    "user_hp_pct": 76.7,
-   "opp_hp_pct": 85.3,
+   "opp_hp_pct": 86.0,
    "user_energy": 24,
    "opp_energy": null,
    "action_detected": "OPP_CHARGE_MOVE_THROWN",
@@ -890,12 +890,12 @@
    ]
   },
   {
-   "turn": 69,
+   "turn": 37,
    "timestamp_ms": 34500,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
    "user_hp_pct": 76.7,
-   "opp_hp_pct": 85.3,
+   "opp_hp_pct": 86.0,
    "user_energy": 24,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -913,12 +913,12 @@
    "events": []
   },
   {
-   "turn": 70,
+   "turn": 38,
    "timestamp_ms": 35000,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
    "user_hp_pct": 76.7,
-   "opp_hp_pct": 85.3,
+   "opp_hp_pct": 86.0,
    "user_energy": 24,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -936,12 +936,12 @@
    "events": []
   },
   {
-   "turn": 71,
+   "turn": 39,
    "timestamp_ms": 35500,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
    "user_hp_pct": 76.7,
-   "opp_hp_pct": 85.3,
+   "opp_hp_pct": 86.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -959,12 +959,12 @@
    "events": []
   },
   {
-   "turn": 72,
+   "turn": 40,
    "timestamp_ms": 36000,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
    "user_hp_pct": 76.7,
-   "opp_hp_pct": 85.3,
+   "opp_hp_pct": 86.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -982,12 +982,12 @@
    "events": []
   },
   {
-   "turn": 73,
+   "turn": 41,
    "timestamp_ms": 36500,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
    "user_hp_pct": 76.7,
-   "opp_hp_pct": 85.3,
+   "opp_hp_pct": 86.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -1005,12 +1005,12 @@
    "events": []
   },
   {
-   "turn": 74,
+   "turn": 42,
    "timestamp_ms": 37000,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
    "user_hp_pct": 76.7,
-   "opp_hp_pct": 85.3,
+   "opp_hp_pct": 86.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -1028,12 +1028,12 @@
    "events": []
   },
   {
-   "turn": 75,
+   "turn": 43,
    "timestamp_ms": 37500,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
    "user_hp_pct": 76.7,
-   "opp_hp_pct": 85.3,
+   "opp_hp_pct": 86.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -1051,12 +1051,12 @@
    "events": []
   },
   {
-   "turn": 76,
+   "turn": 44,
    "timestamp_ms": 38000,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
    "user_hp_pct": 76.7,
-   "opp_hp_pct": 85.3,
+   "opp_hp_pct": 86.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -1074,12 +1074,12 @@
    "events": []
   },
   {
-   "turn": 77,
+   "turn": 45,
    "timestamp_ms": 38500,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
    "user_hp_pct": 76.7,
-   "opp_hp_pct": 85.3,
+   "opp_hp_pct": 86.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -1097,12 +1097,12 @@
    "events": []
   },
   {
-   "turn": 78,
+   "turn": 46,
    "timestamp_ms": 39000,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
    "user_hp_pct": 76.7,
-   "opp_hp_pct": 85.3,
+   "opp_hp_pct": 86.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -1120,12 +1120,12 @@
    "events": []
   },
   {
-   "turn": 79,
+   "turn": 47,
    "timestamp_ms": 39500,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
    "user_hp_pct": 76.7,
-   "opp_hp_pct": 85.3,
+   "opp_hp_pct": 86.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -1143,12 +1143,12 @@
    "events": []
   },
   {
-   "turn": 80,
+   "turn": 48,
    "timestamp_ms": 40000,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
    "user_hp_pct": 76.7,
-   "opp_hp_pct": 85.3,
+   "opp_hp_pct": 86.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -1166,12 +1166,12 @@
    "events": []
   },
   {
-   "turn": 81,
+   "turn": 49,
    "timestamp_ms": 40500,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
    "user_hp_pct": 76.7,
-   "opp_hp_pct": 85.3,
+   "opp_hp_pct": 86.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -1189,16 +1189,16 @@
    "events": []
   },
   {
-   "turn": 82,
+   "turn": 50,
    "timestamp_ms": 41000,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
    "user_hp_pct": 76.7,
-   "opp_hp_pct": 85.3,
+   "opp_hp_pct": 85.5,
    "user_energy": null,
    "opp_energy": null,
-   "action_detected": "NONE",
-   "actor": null,
+   "action_detected": "FAST_MOVE_HIT",
+   "actor": "user",
    "move_name": null,
    "move_id": null,
    "shield_used": false,
@@ -1209,15 +1209,17 @@
    "opp_remaining": 3,
    "switch_clock_s": 0.0,
    "hud_visible": false,
-   "events": []
+   "events": [
+    "FAST_MOVE_HIT"
+   ]
   },
   {
-   "turn": 83,
+   "turn": 51,
    "timestamp_ms": 41500,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
    "user_hp_pct": 76.7,
-   "opp_hp_pct": 85.3,
+   "opp_hp_pct": 85.5,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -1235,7 +1237,7 @@
    "events": []
   },
   {
-   "turn": 84,
+   "turn": 52,
    "timestamp_ms": 42000,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
@@ -1258,7 +1260,7 @@
    "events": []
   },
   {
-   "turn": 85,
+   "turn": 53,
    "timestamp_ms": 42500,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
@@ -1281,7 +1283,7 @@
    "events": []
   },
   {
-   "turn": 86,
+   "turn": 54,
    "timestamp_ms": 43000,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
@@ -1304,7 +1306,7 @@
    "events": []
   },
   {
-   "turn": 87,
+   "turn": 55,
    "timestamp_ms": 43500,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
@@ -1327,7 +1329,7 @@
    "events": []
   },
   {
-   "turn": 88,
+   "turn": 56,
    "timestamp_ms": 44000,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
@@ -1350,7 +1352,7 @@
    "events": []
   },
   {
-   "turn": 89,
+   "turn": 57,
    "timestamp_ms": 44500,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
@@ -1375,7 +1377,7 @@
    ]
   },
   {
-   "turn": 90,
+   "turn": 58,
    "timestamp_ms": 45000,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
@@ -1398,7 +1400,7 @@
    "events": []
   },
   {
-   "turn": 91,
+   "turn": 59,
    "timestamp_ms": 45500,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
@@ -1423,7 +1425,7 @@
    ]
   },
   {
-   "turn": 92,
+   "turn": 60,
    "timestamp_ms": 46000,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
@@ -1448,7 +1450,7 @@
    ]
   },
   {
-   "turn": 93,
+   "turn": 61,
    "timestamp_ms": 46500,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
@@ -1471,7 +1473,7 @@
    "events": []
   },
   {
-   "turn": 94,
+   "turn": 62,
    "timestamp_ms": 47000,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
@@ -1494,7 +1496,7 @@
    "events": []
   },
   {
-   "turn": 95,
+   "turn": 63,
    "timestamp_ms": 47500,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
@@ -1517,7 +1519,7 @@
    "events": []
   },
   {
-   "turn": 96,
+   "turn": 64,
    "timestamp_ms": 48000,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
@@ -1540,7 +1542,7 @@
    "events": []
   },
   {
-   "turn": 97,
+   "turn": 65,
    "timestamp_ms": 48500,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
@@ -1563,7 +1565,7 @@
    "events": []
   },
   {
-   "turn": 98,
+   "turn": 66,
    "timestamp_ms": 49000,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
@@ -1586,7 +1588,7 @@
    "events": []
   },
   {
-   "turn": 99,
+   "turn": 67,
    "timestamp_ms": 49500,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
@@ -1609,7 +1611,7 @@
    "events": []
   },
   {
-   "turn": 100,
+   "turn": 68,
    "timestamp_ms": 50000,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
@@ -1632,7 +1634,7 @@
    "events": []
   },
   {
-   "turn": 101,
+   "turn": 69,
    "timestamp_ms": 50500,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
@@ -1655,7 +1657,7 @@
    "events": []
   },
   {
-   "turn": 102,
+   "turn": 70,
    "timestamp_ms": 51000,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
@@ -1678,7 +1680,7 @@
    "events": []
   },
   {
-   "turn": 103,
+   "turn": 71,
    "timestamp_ms": 51500,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
@@ -1701,7 +1703,7 @@
    "events": []
   },
   {
-   "turn": 104,
+   "turn": 72,
    "timestamp_ms": 52000,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
@@ -1724,7 +1726,7 @@
    "events": []
   },
   {
-   "turn": 105,
+   "turn": 73,
    "timestamp_ms": 52500,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
@@ -1747,7 +1749,7 @@
    "events": []
   },
   {
-   "turn": 106,
+   "turn": 74,
    "timestamp_ms": 53000,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
@@ -1770,7 +1772,7 @@
    "events": []
   },
   {
-   "turn": 107,
+   "turn": 75,
    "timestamp_ms": 53500,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
@@ -1793,7 +1795,7 @@
    "events": []
   },
   {
-   "turn": 108,
+   "turn": 76,
    "timestamp_ms": 54000,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
@@ -1818,7 +1820,7 @@
    ]
   },
   {
-   "turn": 109,
+   "turn": 77,
    "timestamp_ms": 54500,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
@@ -1841,7 +1843,7 @@
    "events": []
   },
   {
-   "turn": 110,
+   "turn": 78,
    "timestamp_ms": 55000,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
@@ -1864,7 +1866,7 @@
    "events": []
   },
   {
-   "turn": 111,
+   "turn": 79,
    "timestamp_ms": 55500,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
@@ -1887,7 +1889,7 @@
    "events": []
   },
   {
-   "turn": 112,
+   "turn": 80,
    "timestamp_ms": 56000,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
@@ -1912,7 +1914,7 @@
    ]
   },
   {
-   "turn": 113,
+   "turn": 81,
    "timestamp_ms": 56500,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
@@ -1935,7 +1937,7 @@
    "events": []
   },
   {
-   "turn": 114,
+   "turn": 82,
    "timestamp_ms": 57000,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
@@ -1960,7 +1962,7 @@
    ]
   },
   {
-   "turn": 115,
+   "turn": 83,
    "timestamp_ms": 57500,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
@@ -1985,7 +1987,7 @@
    ]
   },
   {
-   "turn": 116,
+   "turn": 84,
    "timestamp_ms": 58000,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
@@ -2008,7 +2010,7 @@
    "events": []
   },
   {
-   "turn": 117,
+   "turn": 85,
    "timestamp_ms": 58500,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
@@ -2033,7 +2035,7 @@
    ]
   },
   {
-   "turn": 118,
+   "turn": 86,
    "timestamp_ms": 59000,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
@@ -2056,7 +2058,7 @@
    "events": []
   },
   {
-   "turn": 119,
+   "turn": 87,
    "timestamp_ms": 59500,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
@@ -2079,7 +2081,7 @@
    "events": []
   },
   {
-   "turn": 120,
+   "turn": 88,
    "timestamp_ms": 60000,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
@@ -2104,7 +2106,7 @@
    ]
   },
   {
-   "turn": 121,
+   "turn": 89,
    "timestamp_ms": 60500,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
@@ -2130,7 +2132,7 @@
    ]
   },
   {
-   "turn": 122,
+   "turn": 90,
    "timestamp_ms": 61000,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
@@ -2153,7 +2155,7 @@
    "events": []
   },
   {
-   "turn": 123,
+   "turn": 91,
    "timestamp_ms": 61500,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
@@ -2176,7 +2178,7 @@
    "events": []
   },
   {
-   "turn": 124,
+   "turn": 92,
    "timestamp_ms": 62000,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
@@ -2199,7 +2201,7 @@
    "events": []
   },
   {
-   "turn": 125,
+   "turn": 93,
    "timestamp_ms": 62500,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
@@ -2222,7 +2224,7 @@
    "events": []
   },
   {
-   "turn": 126,
+   "turn": 94,
    "timestamp_ms": 63000,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
@@ -2245,7 +2247,7 @@
    "events": []
   },
   {
-   "turn": 127,
+   "turn": 95,
    "timestamp_ms": 63500,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
@@ -2268,7 +2270,7 @@
    "events": []
   },
   {
-   "turn": 128,
+   "turn": 96,
    "timestamp_ms": 64000,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
@@ -2291,7 +2293,7 @@
    "events": []
   },
   {
-   "turn": 129,
+   "turn": 97,
    "timestamp_ms": 64500,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
@@ -2314,7 +2316,7 @@
    "events": []
   },
   {
-   "turn": 130,
+   "turn": 98,
    "timestamp_ms": 65000,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
@@ -2337,7 +2339,7 @@
    "events": []
   },
   {
-   "turn": 131,
+   "turn": 99,
    "timestamp_ms": 65500,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
@@ -2360,7 +2362,7 @@
    "events": []
   },
   {
-   "turn": 132,
+   "turn": 100,
    "timestamp_ms": 66000,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
@@ -2383,7 +2385,7 @@
    "events": []
   },
   {
-   "turn": 133,
+   "turn": 101,
    "timestamp_ms": 66500,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
@@ -2406,7 +2408,7 @@
    "events": []
   },
   {
-   "turn": 134,
+   "turn": 102,
    "timestamp_ms": 67000,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
@@ -2429,7 +2431,7 @@
    "events": []
   },
   {
-   "turn": 135,
+   "turn": 103,
    "timestamp_ms": 67500,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
@@ -2452,7 +2454,7 @@
    "events": []
   },
   {
-   "turn": 136,
+   "turn": 104,
    "timestamp_ms": 68000,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
@@ -2475,7 +2477,7 @@
    "events": []
   },
   {
-   "turn": 137,
+   "turn": 105,
    "timestamp_ms": 68500,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
@@ -2500,7 +2502,7 @@
    ]
   },
   {
-   "turn": 138,
+   "turn": 106,
    "timestamp_ms": 69000,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
@@ -2523,7 +2525,7 @@
    "events": []
   },
   {
-   "turn": 139,
+   "turn": 107,
    "timestamp_ms": 69500,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
@@ -2546,7 +2548,7 @@
    "events": []
   },
   {
-   "turn": 140,
+   "turn": 108,
    "timestamp_ms": 70000,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
@@ -2569,7 +2571,7 @@
    "events": []
   },
   {
-   "turn": 141,
+   "turn": 109,
    "timestamp_ms": 70500,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
@@ -2592,7 +2594,7 @@
    "events": []
   },
   {
-   "turn": 142,
+   "turn": 110,
    "timestamp_ms": 71000,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
@@ -2615,7 +2617,7 @@
    "events": []
   },
   {
-   "turn": 143,
+   "turn": 111,
    "timestamp_ms": 71500,
    "user_active": "Swampert",
    "opp_active": "Gastrodon",
@@ -2638,7 +2640,7 @@
    "events": []
   },
   {
-   "turn": 144,
+   "turn": 112,
    "timestamp_ms": 72000,
    "user_active": "Cradily",
    "opp_active": "Gastrodon",
@@ -2663,7 +2665,7 @@
    ]
   },
   {
-   "turn": 145,
+   "turn": 113,
    "timestamp_ms": 72500,
    "user_active": "Cradily",
    "opp_active": "Gastrodon",
@@ -2686,7 +2688,7 @@
    "events": []
   },
   {
-   "turn": 146,
+   "turn": 114,
    "timestamp_ms": 73000,
    "user_active": "Cradily",
    "opp_active": "Gastrodon",
@@ -2709,7 +2711,7 @@
    "events": []
   },
   {
-   "turn": 147,
+   "turn": 115,
    "timestamp_ms": 73500,
    "user_active": "Cradily",
    "opp_active": "Gastrodon",
@@ -2734,7 +2736,7 @@
    ]
   },
   {
-   "turn": 148,
+   "turn": 116,
    "timestamp_ms": 74000,
    "user_active": "Cradily",
    "opp_active": "Gastrodon",
@@ -2759,7 +2761,7 @@
    ]
   },
   {
-   "turn": 149,
+   "turn": 117,
    "timestamp_ms": 74500,
    "user_active": "Cradily",
    "opp_active": "Gastrodon",
@@ -2782,7 +2784,7 @@
    "events": []
   },
   {
-   "turn": 150,
+   "turn": 118,
    "timestamp_ms": 75000,
    "user_active": "Cradily",
    "opp_active": "Gastrodon",
@@ -2807,7 +2809,7 @@
    ]
   },
   {
-   "turn": 151,
+   "turn": 119,
    "timestamp_ms": 75500,
    "user_active": "Cradily",
    "opp_active": "Gastrodon",
@@ -2830,7 +2832,7 @@
    "events": []
   },
   {
-   "turn": 152,
+   "turn": 120,
    "timestamp_ms": 76000,
    "user_active": "Cradily",
    "opp_active": "Gastrodon",
@@ -2853,7 +2855,7 @@
    "events": []
   },
   {
-   "turn": 153,
+   "turn": 121,
    "timestamp_ms": 76500,
    "user_active": "Cradily",
    "opp_active": "Gastrodon",
@@ -2878,7 +2880,7 @@
    ]
   },
   {
-   "turn": 154,
+   "turn": 122,
    "timestamp_ms": 77000,
    "user_active": "Cradily",
    "opp_active": "Gastrodon",
@@ -2903,7 +2905,7 @@
    ]
   },
   {
-   "turn": 155,
+   "turn": 123,
    "timestamp_ms": 77500,
    "user_active": "Cradily",
    "opp_active": "Doublade",
@@ -2928,7 +2930,7 @@
    ]
   },
   {
-   "turn": 156,
+   "turn": 124,
    "timestamp_ms": 78000,
    "user_active": "Cradily",
    "opp_active": "Doublade",
@@ -2953,7 +2955,7 @@
    ]
   },
   {
-   "turn": 157,
+   "turn": 125,
    "timestamp_ms": 78500,
    "user_active": "Cradily",
    "opp_active": "Doublade",
@@ -2976,7 +2978,7 @@
    "events": []
   },
   {
-   "turn": 158,
+   "turn": 126,
    "timestamp_ms": 79000,
    "user_active": "Cradily",
    "opp_active": "Doublade",
@@ -2999,7 +3001,7 @@
    "events": []
   },
   {
-   "turn": 159,
+   "turn": 127,
    "timestamp_ms": 79500,
    "user_active": "Cradily",
    "opp_active": "Doublade",
@@ -3022,7 +3024,7 @@
    "events": []
   },
   {
-   "turn": 160,
+   "turn": 128,
    "timestamp_ms": 80000,
    "user_active": "Cradily",
    "opp_active": "Doublade",
@@ -3047,7 +3049,7 @@
    ]
   },
   {
-   "turn": 161,
+   "turn": 129,
    "timestamp_ms": 80500,
    "user_active": "Cradily",
    "opp_active": "Doublade",
@@ -3070,7 +3072,7 @@
    "events": []
   },
   {
-   "turn": 162,
+   "turn": 130,
    "timestamp_ms": 81000,
    "user_active": "Cradily",
    "opp_active": "Doublade",
@@ -3093,7 +3095,7 @@
    "events": []
   },
   {
-   "turn": 163,
+   "turn": 131,
    "timestamp_ms": 81500,
    "user_active": "Cradily",
    "opp_active": "Doublade",
@@ -3116,7 +3118,7 @@
    "events": []
   },
   {
-   "turn": 164,
+   "turn": 132,
    "timestamp_ms": 82000,
    "user_active": "Cradily",
    "opp_active": "Doublade",
@@ -3139,7 +3141,7 @@
    "events": []
   },
   {
-   "turn": 165,
+   "turn": 133,
    "timestamp_ms": 82500,
    "user_active": "Cradily",
    "opp_active": "Doublade",
@@ -3162,7 +3164,7 @@
    "events": []
   },
   {
-   "turn": 166,
+   "turn": 134,
    "timestamp_ms": 83000,
    "user_active": "Cradily",
    "opp_active": "Doublade",
@@ -3185,7 +3187,7 @@
    "events": []
   },
   {
-   "turn": 167,
+   "turn": 135,
    "timestamp_ms": 83500,
    "user_active": "Cradily",
    "opp_active": "Doublade",
@@ -3208,7 +3210,7 @@
    "events": []
   },
   {
-   "turn": 168,
+   "turn": 136,
    "timestamp_ms": 84000,
    "user_active": "Cradily",
    "opp_active": "Doublade",
@@ -3231,7 +3233,7 @@
    "events": []
   },
   {
-   "turn": 169,
+   "turn": 137,
    "timestamp_ms": 84500,
    "user_active": "Cradily",
    "opp_active": "Doublade",
@@ -3254,7 +3256,7 @@
    "events": []
   },
   {
-   "turn": 170,
+   "turn": 138,
    "timestamp_ms": 85000,
    "user_active": "Cradily",
    "opp_active": "Doublade",
@@ -3277,7 +3279,7 @@
    "events": []
   },
   {
-   "turn": 171,
+   "turn": 139,
    "timestamp_ms": 85500,
    "user_active": "Cradily",
    "opp_active": "Doublade",
@@ -3300,7 +3302,7 @@
    "events": []
   },
   {
-   "turn": 172,
+   "turn": 140,
    "timestamp_ms": 86000,
    "user_active": "Cradily",
    "opp_active": "Doublade",
@@ -3323,7 +3325,7 @@
    "events": []
   },
   {
-   "turn": 173,
+   "turn": 141,
    "timestamp_ms": 86500,
    "user_active": "Cradily",
    "opp_active": "Doublade",
@@ -3346,7 +3348,7 @@
    "events": []
   },
   {
-   "turn": 174,
+   "turn": 142,
    "timestamp_ms": 87000,
    "user_active": "Cradily",
    "opp_active": "Doublade",
@@ -3371,7 +3373,7 @@
    ]
   },
   {
-   "turn": 175,
+   "turn": 143,
    "timestamp_ms": 87500,
    "user_active": "Cradily",
    "opp_active": "Doublade",
@@ -3394,7 +3396,7 @@
    "events": []
   },
   {
-   "turn": 176,
+   "turn": 144,
    "timestamp_ms": 88000,
    "user_active": "Cradily",
    "opp_active": "Doublade",
@@ -3417,7 +3419,7 @@
    "events": []
   },
   {
-   "turn": 177,
+   "turn": 145,
    "timestamp_ms": 88500,
    "user_active": "Cradily",
    "opp_active": "Doublade",
@@ -3442,7 +3444,7 @@
    ]
   },
   {
-   "turn": 178,
+   "turn": 146,
    "timestamp_ms": 89000,
    "user_active": "Cradily",
    "opp_active": "Doublade",
@@ -3465,7 +3467,7 @@
    "events": []
   },
   {
-   "turn": 179,
+   "turn": 147,
    "timestamp_ms": 89500,
    "user_active": "Cradily",
    "opp_active": "Doublade",
@@ -3488,7 +3490,7 @@
    "events": []
   },
   {
-   "turn": 180,
+   "turn": 148,
    "timestamp_ms": 90000,
    "user_active": "Cradily",
    "opp_active": "Doublade",
@@ -3511,7 +3513,7 @@
    "events": []
   },
   {
-   "turn": 181,
+   "turn": 149,
    "timestamp_ms": 90500,
    "user_active": "Cradily",
    "opp_active": "Doublade",
@@ -3536,7 +3538,7 @@
    ]
   },
   {
-   "turn": 182,
+   "turn": 150,
    "timestamp_ms": 91000,
    "user_active": "Cradily",
    "opp_active": "Doublade",
@@ -3559,7 +3561,7 @@
    "events": []
   },
   {
-   "turn": 183,
+   "turn": 151,
    "timestamp_ms": 91500,
    "user_active": "Cradily",
    "opp_active": "Doublade",
@@ -3582,7 +3584,7 @@
    "events": []
   },
   {
-   "turn": 184,
+   "turn": 152,
    "timestamp_ms": 92000,
    "user_active": "Cradily",
    "opp_active": "Doublade",
@@ -3605,7 +3607,7 @@
    "events": []
   },
   {
-   "turn": 185,
+   "turn": 153,
    "timestamp_ms": 92500,
    "user_active": "Cradily",
    "opp_active": "Doublade",
@@ -3628,7 +3630,7 @@
    "events": []
   },
   {
-   "turn": 186,
+   "turn": 154,
    "timestamp_ms": 93000,
    "user_active": "Cradily",
    "opp_active": "Doublade",
@@ -3653,7 +3655,7 @@
    ]
   },
   {
-   "turn": 187,
+   "turn": 155,
    "timestamp_ms": 93500,
    "user_active": "Cradily",
    "opp_active": "Doublade",
@@ -3676,7 +3678,7 @@
    "events": []
   },
   {
-   "turn": 188,
+   "turn": 156,
    "timestamp_ms": 94000,
    "user_active": "Cradily",
    "opp_active": "Doublade",
@@ -3699,7 +3701,7 @@
    "events": []
   },
   {
-   "turn": 189,
+   "turn": 157,
    "timestamp_ms": 94500,
    "user_active": "Cradily",
    "opp_active": "Doublade",
@@ -3722,7 +3724,7 @@
    "events": []
   },
   {
-   "turn": 190,
+   "turn": 158,
    "timestamp_ms": 95000,
    "user_active": "Cradily",
    "opp_active": "Doublade",
@@ -3745,7 +3747,7 @@
    "events": []
   },
   {
-   "turn": 191,
+   "turn": 159,
    "timestamp_ms": 95500,
    "user_active": "Cradily",
    "opp_active": "Doublade",
@@ -3768,7 +3770,7 @@
    "events": []
   },
   {
-   "turn": 192,
+   "turn": 160,
    "timestamp_ms": 96000,
    "user_active": "Cradily",
    "opp_active": "Doublade",
@@ -3791,7 +3793,7 @@
    "events": []
   },
   {
-   "turn": 193,
+   "turn": 161,
    "timestamp_ms": 96500,
    "user_active": "Cradily",
    "opp_active": "Doublade",
@@ -3814,7 +3816,7 @@
    "events": []
   },
   {
-   "turn": 194,
+   "turn": 162,
    "timestamp_ms": 97000,
    "user_active": "Cradily",
    "opp_active": "Doublade",
@@ -3837,7 +3839,7 @@
    "events": []
   },
   {
-   "turn": 195,
+   "turn": 163,
    "timestamp_ms": 97500,
    "user_active": "Cradily",
    "opp_active": "Doublade",
@@ -3860,7 +3862,7 @@
    "events": []
   },
   {
-   "turn": 196,
+   "turn": 164,
    "timestamp_ms": 98000,
    "user_active": "Cradily",
    "opp_active": "Doublade",
@@ -3883,7 +3885,7 @@
    "events": []
   },
   {
-   "turn": 197,
+   "turn": 165,
    "timestamp_ms": 98500,
    "user_active": "Cradily",
    "opp_active": "Doublade",
@@ -3906,7 +3908,7 @@
    "events": []
   },
   {
-   "turn": 198,
+   "turn": 166,
    "timestamp_ms": 99000,
    "user_active": "Cradily",
    "opp_active": "Doublade",
@@ -3929,7 +3931,7 @@
    "events": []
   },
   {
-   "turn": 199,
+   "turn": 167,
    "timestamp_ms": 99500,
    "user_active": "Cradily",
    "opp_active": "Doublade",
@@ -3952,7 +3954,7 @@
    "events": []
   },
   {
-   "turn": 200,
+   "turn": 168,
    "timestamp_ms": 100000,
    "user_active": "Cradily",
    "opp_active": "Doublade",
@@ -3975,7 +3977,7 @@
    "events": []
   },
   {
-   "turn": 201,
+   "turn": 169,
    "timestamp_ms": 100500,
    "user_active": "Cradily",
    "opp_active": "Doublade",
@@ -3998,7 +4000,7 @@
    "events": []
   },
   {
-   "turn": 202,
+   "turn": 170,
    "timestamp_ms": 101000,
    "user_active": "Cradily",
    "opp_active": "Doublade",
@@ -4021,7 +4023,7 @@
    "events": []
   },
   {
-   "turn": 203,
+   "turn": 171,
    "timestamp_ms": 101500,
    "user_active": "Cradily",
    "opp_active": "Doublade",
@@ -4044,7 +4046,7 @@
    "events": []
   },
   {
-   "turn": 204,
+   "turn": 172,
    "timestamp_ms": 102000,
    "user_active": "Cradily",
    "opp_active": "Doublade",
@@ -4067,7 +4069,7 @@
    "events": []
   },
   {
-   "turn": 205,
+   "turn": 173,
    "timestamp_ms": 102500,
    "user_active": "Cradily",
    "opp_active": "Doublade",
@@ -4090,7 +4092,7 @@
    "events": []
   },
   {
-   "turn": 206,
+   "turn": 174,
    "timestamp_ms": 103000,
    "user_active": "Cradily",
    "opp_active": "Doublade",
@@ -4113,7 +4115,7 @@
    "events": []
   },
   {
-   "turn": 207,
+   "turn": 175,
    "timestamp_ms": 103500,
    "user_active": "Cradily",
    "opp_active": "Doublade",
@@ -4136,7 +4138,7 @@
    "events": []
   },
   {
-   "turn": 208,
+   "turn": 176,
    "timestamp_ms": 104000,
    "user_active": "Cradily",
    "opp_active": "Doublade",
@@ -4159,12 +4161,12 @@
    "events": []
   },
   {
-   "turn": 209,
+   "turn": 177,
    "timestamp_ms": 104500,
    "user_active": "Cradily",
    "opp_active": "Doublade",
    "user_hp_pct": 30.2,
-   "opp_hp_pct": 11.0,
+   "opp_hp_pct": 14.0,
    "user_energy": 34,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -4182,12 +4184,12 @@
    "events": []
   },
   {
-   "turn": 210,
+   "turn": 178,
    "timestamp_ms": 105000,
    "user_active": "Cradily",
    "opp_active": "Doublade",
    "user_hp_pct": 30.2,
-   "opp_hp_pct": 11.0,
+   "opp_hp_pct": 14.0,
    "user_energy": 34,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -4205,12 +4207,12 @@
    "events": []
   },
   {
-   "turn": 211,
+   "turn": 179,
    "timestamp_ms": 105500,
    "user_active": "Cradily",
    "opp_active": "Doublade",
    "user_hp_pct": 30.2,
-   "opp_hp_pct": 11.0,
+   "opp_hp_pct": 14.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -4228,12 +4230,12 @@
    "events": []
   },
   {
-   "turn": 212,
+   "turn": 180,
    "timestamp_ms": 106000,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
    "user_hp_pct": 27.2,
-   "opp_hp_pct": 11.0,
+   "opp_hp_pct": 14.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "SWITCH",
@@ -4253,12 +4255,12 @@
    ]
   },
   {
-   "turn": 213,
+   "turn": 181,
    "timestamp_ms": 106500,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
    "user_hp_pct": 27.2,
-   "opp_hp_pct": 11.0,
+   "opp_hp_pct": 14.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -4276,12 +4278,12 @@
    "events": []
   },
   {
-   "turn": 214,
+   "turn": 182,
    "timestamp_ms": 107000,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
    "user_hp_pct": 27.2,
-   "opp_hp_pct": 11.0,
+   "opp_hp_pct": 14.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -4299,12 +4301,12 @@
    "events": []
   },
   {
-   "turn": 215,
+   "turn": 183,
    "timestamp_ms": 107500,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
    "user_hp_pct": 27.2,
-   "opp_hp_pct": 11.0,
+   "opp_hp_pct": 14.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "OPP_CHARGE_MOVE_THROWN",
@@ -4324,12 +4326,12 @@
    ]
   },
   {
-   "turn": 216,
+   "turn": 184,
    "timestamp_ms": 108000,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
    "user_hp_pct": 27.2,
-   "opp_hp_pct": 11.0,
+   "opp_hp_pct": 14.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -4347,12 +4349,12 @@
    "events": []
   },
   {
-   "turn": 217,
+   "turn": 185,
    "timestamp_ms": 108500,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
    "user_hp_pct": 27.2,
-   "opp_hp_pct": 11.0,
+   "opp_hp_pct": 14.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -4370,12 +4372,12 @@
    "events": []
   },
   {
-   "turn": 218,
+   "turn": 186,
    "timestamp_ms": 109000,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
    "user_hp_pct": 27.2,
-   "opp_hp_pct": 11.0,
+   "opp_hp_pct": 14.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -4393,12 +4395,12 @@
    "events": []
   },
   {
-   "turn": 219,
+   "turn": 187,
    "timestamp_ms": 109500,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
    "user_hp_pct": 27.2,
-   "opp_hp_pct": 11.0,
+   "opp_hp_pct": 14.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -4416,12 +4418,12 @@
    "events": []
   },
   {
-   "turn": 220,
+   "turn": 188,
    "timestamp_ms": 110000,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
    "user_hp_pct": 26.7,
-   "opp_hp_pct": 11.0,
+   "opp_hp_pct": 14.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -4439,12 +4441,12 @@
    "events": []
   },
   {
-   "turn": 221,
+   "turn": 189,
    "timestamp_ms": 110500,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
    "user_hp_pct": 26.7,
-   "opp_hp_pct": 11.0,
+   "opp_hp_pct": 14.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -4462,12 +4464,12 @@
    "events": []
   },
   {
-   "turn": 222,
+   "turn": 190,
    "timestamp_ms": 111000,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
    "user_hp_pct": 26.7,
-   "opp_hp_pct": 11.0,
+   "opp_hp_pct": 14.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -4485,12 +4487,12 @@
    "events": []
   },
   {
-   "turn": 223,
+   "turn": 191,
    "timestamp_ms": 111500,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
    "user_hp_pct": 26.7,
-   "opp_hp_pct": 11.0,
+   "opp_hp_pct": 14.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -4508,12 +4510,12 @@
    "events": []
   },
   {
-   "turn": 224,
+   "turn": 192,
    "timestamp_ms": 112000,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
    "user_hp_pct": 26.7,
-   "opp_hp_pct": 11.0,
+   "opp_hp_pct": 14.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -4531,12 +4533,12 @@
    "events": []
   },
   {
-   "turn": 225,
+   "turn": 193,
    "timestamp_ms": 112500,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
-   "user_hp_pct": 26.5,
-   "opp_hp_pct": 11.0,
+   "user_hp_pct": 26.7,
+   "opp_hp_pct": 14.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -4554,12 +4556,12 @@
    "events": []
   },
   {
-   "turn": 226,
+   "turn": 194,
    "timestamp_ms": 113000,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
-   "user_hp_pct": 26.5,
-   "opp_hp_pct": 11.0,
+   "user_hp_pct": 26.7,
+   "opp_hp_pct": 14.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -4577,12 +4579,12 @@
    "events": []
   },
   {
-   "turn": 227,
+   "turn": 195,
    "timestamp_ms": 113500,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
-   "user_hp_pct": 26.5,
-   "opp_hp_pct": 11.0,
+   "user_hp_pct": 26.7,
+   "opp_hp_pct": 14.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -4600,12 +4602,12 @@
    "events": []
   },
   {
-   "turn": 228,
+   "turn": 196,
    "timestamp_ms": 114000,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
-   "user_hp_pct": 26.5,
-   "opp_hp_pct": 11.0,
+   "user_hp_pct": 26.7,
+   "opp_hp_pct": 14.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -4623,12 +4625,12 @@
    "events": []
   },
   {
-   "turn": 229,
+   "turn": 197,
    "timestamp_ms": 114500,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
-   "user_hp_pct": 26.5,
-   "opp_hp_pct": 11.0,
+   "user_hp_pct": 26.7,
+   "opp_hp_pct": 14.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -4646,12 +4648,12 @@
    "events": []
   },
   {
-   "turn": 230,
+   "turn": 198,
    "timestamp_ms": 115000,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
-   "user_hp_pct": 26.5,
-   "opp_hp_pct": 11.0,
+   "user_hp_pct": 26.7,
+   "opp_hp_pct": 14.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -4669,12 +4671,12 @@
    "events": []
   },
   {
-   "turn": 231,
+   "turn": 199,
    "timestamp_ms": 115500,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
-   "user_hp_pct": 26.5,
-   "opp_hp_pct": 11.0,
+   "user_hp_pct": 26.7,
+   "opp_hp_pct": 14.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -4692,12 +4694,12 @@
    "events": []
   },
   {
-   "turn": 232,
+   "turn": 200,
    "timestamp_ms": 116000,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
-   "user_hp_pct": 26.5,
-   "opp_hp_pct": 11.0,
+   "user_hp_pct": 26.7,
+   "opp_hp_pct": 14.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -4715,12 +4717,12 @@
    "events": []
   },
   {
-   "turn": 233,
+   "turn": 201,
    "timestamp_ms": 116500,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
-   "user_hp_pct": 26.5,
-   "opp_hp_pct": 11.0,
+   "user_hp_pct": 26.7,
+   "opp_hp_pct": 14.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -4738,12 +4740,12 @@
    "events": []
   },
   {
-   "turn": 234,
+   "turn": 202,
    "timestamp_ms": 117000,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
-   "user_hp_pct": 26.5,
-   "opp_hp_pct": 11.0,
+   "user_hp_pct": 26.7,
+   "opp_hp_pct": 14.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -4761,12 +4763,12 @@
    "events": []
   },
   {
-   "turn": 235,
+   "turn": 203,
    "timestamp_ms": 117500,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
-   "user_hp_pct": 26.5,
-   "opp_hp_pct": 11.0,
+   "user_hp_pct": 26.7,
+   "opp_hp_pct": 14.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -4784,12 +4786,12 @@
    "events": []
   },
   {
-   "turn": 236,
+   "turn": 204,
    "timestamp_ms": 118000,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
-   "user_hp_pct": 26.5,
-   "opp_hp_pct": 11.0,
+   "user_hp_pct": 26.7,
+   "opp_hp_pct": 14.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -4807,12 +4809,12 @@
    "events": []
   },
   {
-   "turn": 237,
+   "turn": 205,
    "timestamp_ms": 118500,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
-   "user_hp_pct": 26.5,
-   "opp_hp_pct": 11.0,
+   "user_hp_pct": 26.7,
+   "opp_hp_pct": 14.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -4830,12 +4832,12 @@
    "events": []
   },
   {
-   "turn": 238,
+   "turn": 206,
    "timestamp_ms": 119000,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
-   "user_hp_pct": 26.5,
-   "opp_hp_pct": 11.0,
+   "user_hp_pct": 26.7,
+   "opp_hp_pct": 14.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -4853,12 +4855,12 @@
    "events": []
   },
   {
-   "turn": 239,
+   "turn": 207,
    "timestamp_ms": 119500,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
-   "user_hp_pct": 26.5,
-   "opp_hp_pct": 11.0,
+   "user_hp_pct": 26.7,
+   "opp_hp_pct": 14.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -4876,12 +4878,12 @@
    "events": []
   },
   {
-   "turn": 240,
+   "turn": 208,
    "timestamp_ms": 120000,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
-   "user_hp_pct": 26.5,
-   "opp_hp_pct": 11.0,
+   "user_hp_pct": 26.7,
+   "opp_hp_pct": 14.0,
    "user_energy": 27,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -4899,12 +4901,12 @@
    "events": []
   },
   {
-   "turn": 241,
+   "turn": 209,
    "timestamp_ms": 120500,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
-   "user_hp_pct": 26.5,
-   "opp_hp_pct": 11.0,
+   "user_hp_pct": 26.7,
+   "opp_hp_pct": 14.0,
    "user_energy": 27,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -4922,12 +4924,12 @@
    "events": []
   },
   {
-   "turn": 242,
+   "turn": 210,
    "timestamp_ms": 121000,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
-   "user_hp_pct": 26.5,
-   "opp_hp_pct": 11.0,
+   "user_hp_pct": 26.7,
+   "opp_hp_pct": 14.0,
    "user_energy": 27,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -4945,12 +4947,12 @@
    "events": []
   },
   {
-   "turn": 243,
+   "turn": 211,
    "timestamp_ms": 121500,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
-   "user_hp_pct": 26.5,
-   "opp_hp_pct": 11.0,
+   "user_hp_pct": 26.7,
+   "opp_hp_pct": 14.0,
    "user_energy": 27,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -4968,12 +4970,12 @@
    "events": []
   },
   {
-   "turn": 244,
+   "turn": 212,
    "timestamp_ms": 122000,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
-   "user_hp_pct": 26.5,
-   "opp_hp_pct": 11.0,
+   "user_hp_pct": 26.7,
+   "opp_hp_pct": 14.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -4991,12 +4993,12 @@
    "events": []
   },
   {
-   "turn": 245,
+   "turn": 213,
    "timestamp_ms": 122500,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
-   "user_hp_pct": 26.5,
-   "opp_hp_pct": 11.0,
+   "user_hp_pct": 26.7,
+   "opp_hp_pct": 14.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -5014,12 +5016,12 @@
    "events": []
   },
   {
-   "turn": 246,
+   "turn": 214,
    "timestamp_ms": 123000,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
-   "user_hp_pct": 26.5,
-   "opp_hp_pct": 11.0,
+   "user_hp_pct": 26.7,
+   "opp_hp_pct": 14.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -5037,12 +5039,12 @@
    "events": []
   },
   {
-   "turn": 247,
+   "turn": 215,
    "timestamp_ms": 123500,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
-   "user_hp_pct": 26.5,
-   "opp_hp_pct": 11.0,
+   "user_hp_pct": 26.7,
+   "opp_hp_pct": 14.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -5060,12 +5062,12 @@
    "events": []
   },
   {
-   "turn": 248,
+   "turn": 216,
    "timestamp_ms": 124000,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
-   "user_hp_pct": 26.5,
-   "opp_hp_pct": 11.0,
+   "user_hp_pct": 26.7,
+   "opp_hp_pct": 14.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "OPP_CHARGE_MOVE_THROWN",
@@ -5085,12 +5087,12 @@
    ]
   },
   {
-   "turn": 249,
+   "turn": 217,
    "timestamp_ms": 124500,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
-   "user_hp_pct": 26.5,
-   "opp_hp_pct": 11.0,
+   "user_hp_pct": 26.7,
+   "opp_hp_pct": 14.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -5108,12 +5110,12 @@
    "events": []
   },
   {
-   "turn": 250,
+   "turn": 218,
    "timestamp_ms": 125000,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
-   "user_hp_pct": 26.5,
-   "opp_hp_pct": 11.0,
+   "user_hp_pct": 26.7,
+   "opp_hp_pct": 14.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -5131,12 +5133,12 @@
    "events": []
   },
   {
-   "turn": 251,
+   "turn": 219,
    "timestamp_ms": 125500,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
-   "user_hp_pct": 26.5,
-   "opp_hp_pct": 11.0,
+   "user_hp_pct": 26.7,
+   "opp_hp_pct": 14.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -5154,12 +5156,12 @@
    "events": []
   },
   {
-   "turn": 252,
+   "turn": 220,
    "timestamp_ms": 126000,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
-   "user_hp_pct": 26.5,
-   "opp_hp_pct": 11.0,
+   "user_hp_pct": 26.7,
+   "opp_hp_pct": 14.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -5177,12 +5179,12 @@
    "events": []
   },
   {
-   "turn": 253,
+   "turn": 221,
    "timestamp_ms": 126500,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
-   "user_hp_pct": 26.5,
-   "opp_hp_pct": 11.0,
+   "user_hp_pct": 26.7,
+   "opp_hp_pct": 14.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -5200,12 +5202,12 @@
    "events": []
   },
   {
-   "turn": 254,
+   "turn": 222,
    "timestamp_ms": 127000,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
-   "user_hp_pct": 26.5,
-   "opp_hp_pct": 11.0,
+   "user_hp_pct": 26.7,
+   "opp_hp_pct": 14.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -5223,12 +5225,12 @@
    "events": []
   },
   {
-   "turn": 255,
+   "turn": 223,
    "timestamp_ms": 127500,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
-   "user_hp_pct": 26.5,
-   "opp_hp_pct": 11.0,
+   "user_hp_pct": 26.7,
+   "opp_hp_pct": 14.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -5246,12 +5248,12 @@
    "events": []
   },
   {
-   "turn": 256,
+   "turn": 224,
    "timestamp_ms": 128000,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
-   "user_hp_pct": 26.5,
-   "opp_hp_pct": 11.0,
+   "user_hp_pct": 26.7,
+   "opp_hp_pct": 14.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -5269,12 +5271,12 @@
    "events": []
   },
   {
-   "turn": 257,
+   "turn": 225,
    "timestamp_ms": 128500,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
-   "user_hp_pct": 26.5,
-   "opp_hp_pct": 11.0,
+   "user_hp_pct": 26.7,
+   "opp_hp_pct": 14.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -5292,12 +5294,12 @@
    "events": []
   },
   {
-   "turn": 258,
+   "turn": 226,
    "timestamp_ms": 129000,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
-   "user_hp_pct": 26.5,
-   "opp_hp_pct": 11.0,
+   "user_hp_pct": 26.7,
+   "opp_hp_pct": 14.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -5315,12 +5317,12 @@
    "events": []
   },
   {
-   "turn": 259,
+   "turn": 227,
    "timestamp_ms": 129500,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
-   "user_hp_pct": 26.5,
-   "opp_hp_pct": 11.0,
+   "user_hp_pct": 26.7,
+   "opp_hp_pct": 14.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -5338,12 +5340,12 @@
    "events": []
   },
   {
-   "turn": 260,
+   "turn": 228,
    "timestamp_ms": 130000,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
-   "user_hp_pct": 26.5,
-   "opp_hp_pct": 11.0,
+   "user_hp_pct": 26.7,
+   "opp_hp_pct": 14.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -5361,12 +5363,12 @@
    "events": []
   },
   {
-   "turn": 261,
+   "turn": 229,
    "timestamp_ms": 130500,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
-   "user_hp_pct": 26.5,
-   "opp_hp_pct": 11.0,
+   "user_hp_pct": 26.7,
+   "opp_hp_pct": 14.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -5384,12 +5386,12 @@
    "events": []
   },
   {
-   "turn": 262,
+   "turn": 230,
    "timestamp_ms": 131000,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
-   "user_hp_pct": 26.5,
-   "opp_hp_pct": 11.0,
+   "user_hp_pct": 26.7,
+   "opp_hp_pct": 14.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -5407,12 +5409,12 @@
    "events": []
   },
   {
-   "turn": 263,
+   "turn": 231,
    "timestamp_ms": 131500,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
-   "user_hp_pct": 26.5,
-   "opp_hp_pct": 11.0,
+   "user_hp_pct": 26.7,
+   "opp_hp_pct": 14.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -5430,12 +5432,12 @@
    "events": []
   },
   {
-   "turn": 264,
+   "turn": 232,
    "timestamp_ms": 132000,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
-   "user_hp_pct": 26.5,
-   "opp_hp_pct": 11.0,
+   "user_hp_pct": 26.7,
+   "opp_hp_pct": 14.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -5453,12 +5455,12 @@
    "events": []
   },
   {
-   "turn": 265,
+   "turn": 233,
    "timestamp_ms": 132500,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
-   "user_hp_pct": 26.5,
-   "opp_hp_pct": 11.0,
+   "user_hp_pct": 26.7,
+   "opp_hp_pct": 14.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -5476,12 +5478,12 @@
    "events": []
   },
   {
-   "turn": 266,
+   "turn": 234,
    "timestamp_ms": 133000,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
-   "user_hp_pct": 26.5,
-   "opp_hp_pct": 11.0,
+   "user_hp_pct": 26.7,
+   "opp_hp_pct": 14.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -5499,12 +5501,12 @@
    "events": []
   },
   {
-   "turn": 267,
+   "turn": 235,
    "timestamp_ms": 133500,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
-   "user_hp_pct": 26.5,
-   "opp_hp_pct": 11.0,
+   "user_hp_pct": 26.7,
+   "opp_hp_pct": 14.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -5522,12 +5524,12 @@
    "events": []
   },
   {
-   "turn": 268,
+   "turn": 236,
    "timestamp_ms": 134000,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
-   "user_hp_pct": 26.5,
-   "opp_hp_pct": 11.0,
+   "user_hp_pct": 26.7,
+   "opp_hp_pct": 14.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -5545,12 +5547,12 @@
    "events": []
   },
   {
-   "turn": 269,
+   "turn": 237,
    "timestamp_ms": 134500,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
-   "user_hp_pct": 26.5,
-   "opp_hp_pct": 11.0,
+   "user_hp_pct": 26.7,
+   "opp_hp_pct": 14.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -5568,12 +5570,12 @@
    "events": []
   },
   {
-   "turn": 270,
+   "turn": 238,
    "timestamp_ms": 135000,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
-   "user_hp_pct": 26.5,
-   "opp_hp_pct": 11.0,
+   "user_hp_pct": 26.7,
+   "opp_hp_pct": 14.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -5591,12 +5593,12 @@
    "events": []
   },
   {
-   "turn": 271,
+   "turn": 239,
    "timestamp_ms": 135500,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
-   "user_hp_pct": 26.5,
-   "opp_hp_pct": 11.0,
+   "user_hp_pct": 26.7,
+   "opp_hp_pct": 14.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -5614,12 +5616,12 @@
    "events": []
   },
   {
-   "turn": 272,
+   "turn": 240,
    "timestamp_ms": 136000,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
-   "user_hp_pct": 26.5,
-   "opp_hp_pct": 11.0,
+   "user_hp_pct": 26.7,
+   "opp_hp_pct": 14.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -5637,12 +5639,12 @@
    "events": []
   },
   {
-   "turn": 273,
+   "turn": 241,
    "timestamp_ms": 136500,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
-   "user_hp_pct": 26.5,
-   "opp_hp_pct": 11.0,
+   "user_hp_pct": 26.7,
+   "opp_hp_pct": 14.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -5660,12 +5662,12 @@
    "events": []
   },
   {
-   "turn": 274,
+   "turn": 242,
    "timestamp_ms": 137000,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
-   "user_hp_pct": 26.5,
-   "opp_hp_pct": 11.0,
+   "user_hp_pct": 26.7,
+   "opp_hp_pct": 14.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -5683,12 +5685,12 @@
    "events": []
   },
   {
-   "turn": 275,
+   "turn": 243,
    "timestamp_ms": 137500,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
-   "user_hp_pct": 26.5,
-   "opp_hp_pct": 11.0,
+   "user_hp_pct": 26.7,
+   "opp_hp_pct": 14.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -5706,12 +5708,12 @@
    "events": []
   },
   {
-   "turn": 276,
+   "turn": 244,
    "timestamp_ms": 138000,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
-   "user_hp_pct": 26.5,
-   "opp_hp_pct": 11.0,
+   "user_hp_pct": 26.7,
+   "opp_hp_pct": 14.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -5729,12 +5731,12 @@
    "events": []
   },
   {
-   "turn": 277,
+   "turn": 245,
    "timestamp_ms": 138500,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
-   "user_hp_pct": 26.5,
-   "opp_hp_pct": 11.0,
+   "user_hp_pct": 26.7,
+   "opp_hp_pct": 14.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -5752,12 +5754,12 @@
    "events": []
   },
   {
-   "turn": 278,
+   "turn": 246,
    "timestamp_ms": 139000,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
-   "user_hp_pct": 26.5,
-   "opp_hp_pct": 11.0,
+   "user_hp_pct": 26.7,
+   "opp_hp_pct": 14.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -5775,12 +5777,12 @@
    "events": []
   },
   {
-   "turn": 279,
+   "turn": 247,
    "timestamp_ms": 139500,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
-   "user_hp_pct": 26.5,
-   "opp_hp_pct": 11.0,
+   "user_hp_pct": 26.7,
+   "opp_hp_pct": 14.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -5798,12 +5800,12 @@
    "events": []
   },
   {
-   "turn": 280,
+   "turn": 248,
    "timestamp_ms": 140000,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
-   "user_hp_pct": 26.5,
-   "opp_hp_pct": 11.0,
+   "user_hp_pct": 26.7,
+   "opp_hp_pct": 14.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -5821,12 +5823,12 @@
    "events": []
   },
   {
-   "turn": 281,
+   "turn": 249,
    "timestamp_ms": 140500,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
-   "user_hp_pct": 26.5,
-   "opp_hp_pct": 11.0,
+   "user_hp_pct": 26.7,
+   "opp_hp_pct": 14.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -5844,12 +5846,12 @@
    "events": []
   },
   {
-   "turn": 282,
+   "turn": 250,
    "timestamp_ms": 141000,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
-   "user_hp_pct": 26.5,
-   "opp_hp_pct": 11.0,
+   "user_hp_pct": 26.7,
+   "opp_hp_pct": 14.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -5867,12 +5869,12 @@
    "events": []
   },
   {
-   "turn": 283,
+   "turn": 251,
    "timestamp_ms": 141500,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
-   "user_hp_pct": 26.5,
-   "opp_hp_pct": 11.0,
+   "user_hp_pct": 26.7,
+   "opp_hp_pct": 14.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -5890,12 +5892,12 @@
    "events": []
   },
   {
-   "turn": 284,
+   "turn": 252,
    "timestamp_ms": 142000,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
-   "user_hp_pct": 26.5,
-   "opp_hp_pct": 11.0,
+   "user_hp_pct": 26.7,
+   "opp_hp_pct": 14.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -5913,12 +5915,12 @@
    "events": []
   },
   {
-   "turn": 285,
+   "turn": 253,
    "timestamp_ms": 142500,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
-   "user_hp_pct": 26.5,
-   "opp_hp_pct": 11.0,
+   "user_hp_pct": 26.7,
+   "opp_hp_pct": 14.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -5936,12 +5938,12 @@
    "events": []
   },
   {
-   "turn": 286,
+   "turn": 254,
    "timestamp_ms": 143000,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
-   "user_hp_pct": 26.5,
-   "opp_hp_pct": 11.0,
+   "user_hp_pct": 26.7,
+   "opp_hp_pct": 14.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -5959,12 +5961,12 @@
    "events": []
   },
   {
-   "turn": 287,
+   "turn": 255,
    "timestamp_ms": 143500,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
-   "user_hp_pct": 26.5,
-   "opp_hp_pct": 11.0,
+   "user_hp_pct": 26.7,
+   "opp_hp_pct": 14.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -5982,12 +5984,12 @@
    "events": []
   },
   {
-   "turn": 288,
+   "turn": 256,
    "timestamp_ms": 144000,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
-   "user_hp_pct": 26.5,
-   "opp_hp_pct": 11.0,
+   "user_hp_pct": 26.7,
+   "opp_hp_pct": 14.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -6005,12 +6007,12 @@
    "events": []
   },
   {
-   "turn": 289,
+   "turn": 257,
    "timestamp_ms": 144500,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
-   "user_hp_pct": 26.5,
-   "opp_hp_pct": 11.0,
+   "user_hp_pct": 26.7,
+   "opp_hp_pct": 14.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "CHARGE_MOVE_THROWN",
@@ -6030,12 +6032,12 @@
    ]
   },
   {
-   "turn": 290,
+   "turn": 258,
    "timestamp_ms": 145000,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
-   "user_hp_pct": 26.5,
-   "opp_hp_pct": 11.0,
+   "user_hp_pct": 26.7,
+   "opp_hp_pct": 14.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -6053,12 +6055,12 @@
    "events": []
   },
   {
-   "turn": 291,
+   "turn": 259,
    "timestamp_ms": 145500,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
-   "user_hp_pct": 26.5,
-   "opp_hp_pct": 11.0,
+   "user_hp_pct": 26.7,
+   "opp_hp_pct": 14.0,
    "user_energy": null,
    "opp_energy": null,
    "action_detected": "NONE",
@@ -6076,11 +6078,11 @@
    "events": []
   },
   {
-   "turn": 292,
+   "turn": 260,
    "timestamp_ms": 146000,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
-   "user_hp_pct": 26.5,
+   "user_hp_pct": 26.7,
    "opp_hp_pct": 0.0,
    "user_energy": null,
    "opp_energy": null,
@@ -6101,11 +6103,11 @@
    ]
   },
   {
-   "turn": 293,
+   "turn": 261,
    "timestamp_ms": 146500,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
-   "user_hp_pct": 26.5,
+   "user_hp_pct": 26.7,
    "opp_hp_pct": 0.0,
    "user_energy": null,
    "opp_energy": null,
@@ -6124,11 +6126,11 @@
    "events": []
   },
   {
-   "turn": 294,
+   "turn": 262,
    "timestamp_ms": 147000,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
-   "user_hp_pct": 26.5,
+   "user_hp_pct": 26.7,
    "opp_hp_pct": 0.0,
    "user_energy": null,
    "opp_energy": null,
@@ -6147,11 +6149,11 @@
    "events": []
   },
   {
-   "turn": 295,
+   "turn": 263,
    "timestamp_ms": 147500,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
-   "user_hp_pct": 26.5,
+   "user_hp_pct": 26.7,
    "opp_hp_pct": 0.0,
    "user_energy": null,
    "opp_energy": null,
@@ -6170,11 +6172,11 @@
    "events": []
   },
   {
-   "turn": 296,
+   "turn": 264,
    "timestamp_ms": 148000,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
-   "user_hp_pct": 26.5,
+   "user_hp_pct": 26.7,
    "opp_hp_pct": 0.0,
    "user_energy": null,
    "opp_energy": null,
@@ -6193,11 +6195,11 @@
    "events": []
   },
   {
-   "turn": 297,
+   "turn": 265,
    "timestamp_ms": 148500,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
-   "user_hp_pct": 26.5,
+   "user_hp_pct": 26.7,
    "opp_hp_pct": 0.0,
    "user_energy": null,
    "opp_energy": null,
@@ -6216,11 +6218,11 @@
    "events": []
   },
   {
-   "turn": 298,
+   "turn": 266,
    "timestamp_ms": 149000,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
-   "user_hp_pct": 26.5,
+   "user_hp_pct": 26.7,
    "opp_hp_pct": 0.0,
    "user_energy": null,
    "opp_energy": null,
@@ -6239,11 +6241,11 @@
    "events": []
   },
   {
-   "turn": 299,
+   "turn": 267,
    "timestamp_ms": 149500,
    "user_active": "Clodsire",
    "opp_active": "Doublade",
-   "user_hp_pct": 26.5,
+   "user_hp_pct": 26.7,
    "opp_hp_pct": 0.0,
    "user_energy": null,
    "opp_energy": null,
@@ -6262,11 +6264,11 @@
    "events": []
   },
   {
-   "turn": 300,
+   "turn": 268,
    "timestamp_ms": 150000,
    "user_active": "Clodsire",
    "opp_active": "Gastrodon",
-   "user_hp_pct": 26.5,
+   "user_hp_pct": 26.7,
    "opp_hp_pct": 72.0,
    "user_energy": null,
    "opp_energy": null,
@@ -6287,11 +6289,11 @@
    ]
   },
   {
-   "turn": 301,
+   "turn": 269,
    "timestamp_ms": 150500,
    "user_active": "Clodsire",
    "opp_active": "Gastrodon",
-   "user_hp_pct": 26.5,
+   "user_hp_pct": 26.7,
    "opp_hp_pct": 72.0,
    "user_energy": null,
    "opp_energy": null,
@@ -6310,11 +6312,11 @@
    "events": []
   },
   {
-   "turn": 302,
+   "turn": 270,
    "timestamp_ms": 151000,
    "user_active": "Clodsire",
    "opp_active": "Gastrodon",
-   "user_hp_pct": 26.5,
+   "user_hp_pct": 26.7,
    "opp_hp_pct": 72.0,
    "user_energy": null,
    "opp_energy": null,
@@ -6333,7 +6335,7 @@
    "events": []
   },
   {
-   "turn": 303,
+   "turn": 271,
    "timestamp_ms": 151500,
    "user_active": "Clodsire",
    "opp_active": "Gastrodon",
@@ -6358,7 +6360,7 @@
    ]
   },
   {
-   "turn": 304,
+   "turn": 272,
    "timestamp_ms": 152000,
    "user_active": "Clodsire",
    "opp_active": "Gastrodon",
@@ -6381,7 +6383,7 @@
    "events": []
   },
   {
-   "turn": 305,
+   "turn": 273,
    "timestamp_ms": 152500,
    "user_active": "Clodsire",
    "opp_active": "Gastrodon",
@@ -6404,7 +6406,7 @@
    "events": []
   },
   {
-   "turn": 306,
+   "turn": 274,
    "timestamp_ms": 153000,
    "user_active": "Clodsire",
    "opp_active": "Gastrodon",
@@ -6427,7 +6429,7 @@
    "events": []
   },
   {
-   "turn": 307,
+   "turn": 275,
    "timestamp_ms": 153500,
    "user_active": "Clodsire",
    "opp_active": "Gastrodon",
@@ -6452,7 +6454,7 @@
    ]
   },
   {
-   "turn": 308,
+   "turn": 276,
    "timestamp_ms": 154000,
    "user_active": "Clodsire",
    "opp_active": "Gastrodon",
@@ -6475,7 +6477,7 @@
    "events": []
   },
   {
-   "turn": 309,
+   "turn": 277,
    "timestamp_ms": 154500,
    "user_active": "Clodsire",
    "opp_active": "Gastrodon",
@@ -6498,7 +6500,7 @@
    "events": []
   },
   {
-   "turn": 310,
+   "turn": 278,
    "timestamp_ms": 155000,
    "user_active": "Clodsire",
    "opp_active": "Gastrodon",
@@ -6521,7 +6523,7 @@
    "events": []
   },
   {
-   "turn": 311,
+   "turn": 279,
    "timestamp_ms": 155500,
    "user_active": "Clodsire",
    "opp_active": "Gastrodon",
@@ -6544,7 +6546,7 @@
    "events": []
   },
   {
-   "turn": 312,
+   "turn": 280,
    "timestamp_ms": 156000,
    "user_active": "Clodsire",
    "opp_active": "Gastrodon",
@@ -6567,7 +6569,7 @@
    "events": []
   },
   {
-   "turn": 313,
+   "turn": 281,
    "timestamp_ms": 156500,
    "user_active": "Clodsire",
    "opp_active": "Gastrodon",
@@ -6590,7 +6592,7 @@
    "events": []
   },
   {
-   "turn": 314,
+   "turn": 282,
    "timestamp_ms": 157000,
    "user_active": "Clodsire",
    "opp_active": "Gastrodon",
@@ -6613,7 +6615,7 @@
    "events": []
   },
   {
-   "turn": 315,
+   "turn": 283,
    "timestamp_ms": 157500,
    "user_active": "Clodsire",
    "opp_active": "Gastrodon",
@@ -6636,7 +6638,7 @@
    "events": []
   },
   {
-   "turn": 316,
+   "turn": 284,
    "timestamp_ms": 158000,
    "user_active": "Clodsire",
    "opp_active": "Gastrodon",
@@ -6659,7 +6661,7 @@
    "events": []
   },
   {
-   "turn": 317,
+   "turn": 285,
    "timestamp_ms": 158500,
    "user_active": "Clodsire",
    "opp_active": "Gastrodon",
@@ -6682,7 +6684,7 @@
    "events": []
   },
   {
-   "turn": 318,
+   "turn": 286,
    "timestamp_ms": 159000,
    "user_active": "Clodsire",
    "opp_active": "Gastrodon",
@@ -6705,7 +6707,7 @@
    "events": []
   },
   {
-   "turn": 319,
+   "turn": 287,
    "timestamp_ms": 159500,
    "user_active": "Clodsire",
    "opp_active": "Gastrodon",
@@ -6728,7 +6730,7 @@
    "events": []
   },
   {
-   "turn": 320,
+   "turn": 288,
    "timestamp_ms": 160000,
    "user_active": "Clodsire",
    "opp_active": "Gastrodon",
@@ -6751,7 +6753,7 @@
    "events": []
   },
   {
-   "turn": 321,
+   "turn": 289,
    "timestamp_ms": 160500,
    "user_active": "Clodsire",
    "opp_active": "Gastrodon",
@@ -6774,7 +6776,7 @@
    "events": []
   },
   {
-   "turn": 322,
+   "turn": 290,
    "timestamp_ms": 161000,
    "user_active": "Clodsire",
    "opp_active": "Gastrodon",
@@ -6797,7 +6799,7 @@
    "events": []
   },
   {
-   "turn": 323,
+   "turn": 291,
    "timestamp_ms": 161500,
    "user_active": "Clodsire",
    "opp_active": "Gastrodon",
@@ -6822,7 +6824,7 @@
    ]
   },
   {
-   "turn": 324,
+   "turn": 292,
    "timestamp_ms": 162000,
    "user_active": "Clodsire",
    "opp_active": "Gastrodon",
@@ -6845,7 +6847,7 @@
    "events": []
   },
   {
-   "turn": 325,
+   "turn": 293,
    "timestamp_ms": 162500,
    "user_active": "Clodsire",
    "opp_active": "Gastrodon",
@@ -6868,7 +6870,7 @@
    "events": []
   },
   {
-   "turn": 326,
+   "turn": 294,
    "timestamp_ms": 163000,
    "user_active": "Clodsire",
    "opp_active": "Gastrodon",
@@ -6891,7 +6893,7 @@
    "events": []
   },
   {
-   "turn": 327,
+   "turn": 295,
    "timestamp_ms": 163500,
    "user_active": "Clodsire",
    "opp_active": "Gastrodon",
@@ -6914,7 +6916,7 @@
    "events": []
   },
   {
-   "turn": 328,
+   "turn": 296,
    "timestamp_ms": 164000,
    "user_active": "Cradily",
    "opp_active": "Gastrodon",
@@ -6939,7 +6941,7 @@
    ]
   },
   {
-   "turn": 329,
+   "turn": 297,
    "timestamp_ms": 164500,
    "user_active": "Cradily",
    "opp_active": "Gastrodon",
@@ -6964,7 +6966,7 @@
    ]
   },
   {
-   "turn": 330,
+   "turn": 298,
    "timestamp_ms": 165000,
    "user_active": "Cradily",
    "opp_active": "Gastrodon",
@@ -6987,7 +6989,7 @@
    "events": []
   },
   {
-   "turn": 331,
+   "turn": 299,
    "timestamp_ms": 165500,
    "user_active": "Cradily",
    "opp_active": "Gastrodon",
@@ -7010,7 +7012,7 @@
    "events": []
   },
   {
-   "turn": 332,
+   "turn": 300,
    "timestamp_ms": 166000,
    "user_active": "Cradily",
    "opp_active": "Gastrodon",
@@ -7033,7 +7035,7 @@
    "events": []
   },
   {
-   "turn": 333,
+   "turn": 301,
    "timestamp_ms": 166500,
    "user_active": "Cradily",
    "opp_active": "Gastrodon",
@@ -7056,7 +7058,7 @@
    "events": []
   },
   {
-   "turn": 334,
+   "turn": 302,
    "timestamp_ms": 167000,
    "user_active": "Cradily",
    "opp_active": "Gastrodon",
@@ -7079,7 +7081,7 @@
    "events": []
   },
   {
-   "turn": 335,
+   "turn": 303,
    "timestamp_ms": 167500,
    "user_active": "Cradily",
    "opp_active": "Gastrodon",
@@ -7102,7 +7104,7 @@
    "events": []
   },
   {
-   "turn": 336,
+   "turn": 304,
    "timestamp_ms": 168000,
    "user_active": "Cradily",
    "opp_active": "Gastrodon",
@@ -7125,7 +7127,7 @@
    "events": []
   },
   {
-   "turn": 337,
+   "turn": 305,
    "timestamp_ms": 168500,
    "user_active": "Cradily",
    "opp_active": "Gastrodon",
@@ -7148,7 +7150,7 @@
    "events": []
   },
   {
-   "turn": 338,
+   "turn": 306,
    "timestamp_ms": 169000,
    "user_active": "Cradily",
    "opp_active": "Gastrodon",
@@ -7171,7 +7173,7 @@
    "events": []
   },
   {
-   "turn": 339,
+   "turn": 307,
    "timestamp_ms": 169500,
    "user_active": "Cradily",
    "opp_active": "Gastrodon",
@@ -7194,7 +7196,7 @@
    "events": []
   },
   {
-   "turn": 340,
+   "turn": 308,
    "timestamp_ms": 170000,
    "user_active": "Cradily",
    "opp_active": "Gastrodon",
@@ -7217,7 +7219,7 @@
    "events": []
   },
   {
-   "turn": 341,
+   "turn": 309,
    "timestamp_ms": 170500,
    "user_active": "Cradily",
    "opp_active": "Gastrodon",
@@ -7240,7 +7242,7 @@
    "events": []
   },
   {
-   "turn": 342,
+   "turn": 310,
    "timestamp_ms": 171000,
    "user_active": "Cradily",
    "opp_active": "Gastrodon",
@@ -7263,7 +7265,7 @@
    "events": []
   },
   {
-   "turn": 343,
+   "turn": 311,
    "timestamp_ms": 171500,
    "user_active": "Cradily",
    "opp_active": "Gastrodon",
@@ -7286,7 +7288,7 @@
    "events": []
   },
   {
-   "turn": 344,
+   "turn": 312,
    "timestamp_ms": 172000,
    "user_active": "Cradily",
    "opp_active": "Gastrodon",
@@ -7309,7 +7311,7 @@
    "events": []
   },
   {
-   "turn": 345,
+   "turn": 313,
    "timestamp_ms": 172500,
    "user_active": "Cradily",
    "opp_active": "Gastrodon",
@@ -7332,7 +7334,7 @@
    "events": []
   },
   {
-   "turn": 346,
+   "turn": 314,
    "timestamp_ms": 173000,
    "user_active": "Cradily",
    "opp_active": "Gastrodon",
@@ -7357,7 +7359,7 @@
    ]
   },
   {
-   "turn": 347,
+   "turn": 315,
    "timestamp_ms": 173500,
    "user_active": "Cradily",
    "opp_active": "Gastrodon",
@@ -7380,7 +7382,7 @@
    "events": []
   },
   {
-   "turn": 348,
+   "turn": 316,
    "timestamp_ms": 174000,
    "user_active": "Cradily",
    "opp_active": "Gastrodon",
@@ -7405,7 +7407,7 @@
    ]
   },
   {
-   "turn": 349,
+   "turn": 317,
    "timestamp_ms": 174500,
    "user_active": "Cradily",
    "opp_active": "Gastrodon",
@@ -7428,7 +7430,7 @@
    "events": []
   },
   {
-   "turn": 350,
+   "turn": 318,
    "timestamp_ms": 175000,
    "user_active": "Cradily",
    "opp_active": "Gastrodon",
@@ -7451,7 +7453,7 @@
    "events": []
   },
   {
-   "turn": 351,
+   "turn": 319,
    "timestamp_ms": 175500,
    "user_active": "Cradily",
    "opp_active": "Gastrodon",
@@ -7474,7 +7476,7 @@
    "events": []
   },
   {
-   "turn": 352,
+   "turn": 320,
    "timestamp_ms": 176000,
    "user_active": "Cradily",
    "opp_active": "Gastrodon",
@@ -7497,7 +7499,7 @@
    "events": []
   },
   {
-   "turn": 353,
+   "turn": 321,
    "timestamp_ms": 176500,
    "user_active": "Cradily",
    "opp_active": "Morpeko",
@@ -7523,7 +7525,7 @@
    ]
   },
   {
-   "turn": 354,
+   "turn": 322,
    "timestamp_ms": 177000,
    "user_active": "Cradily",
    "opp_active": "Morpeko",
@@ -7546,7 +7548,7 @@
    "events": []
   },
   {
-   "turn": 355,
+   "turn": 323,
    "timestamp_ms": 177500,
    "user_active": "Cradily",
    "opp_active": "Morpeko",
@@ -7569,7 +7571,7 @@
    "events": []
   },
   {
-   "turn": 356,
+   "turn": 324,
    "timestamp_ms": 178000,
    "user_active": "Cradily",
    "opp_active": "Morpeko",
@@ -7592,7 +7594,7 @@
    "events": []
   },
   {
-   "turn": 357,
+   "turn": 325,
    "timestamp_ms": 178500,
    "user_active": "Cradily",
    "opp_active": "Morpeko",
@@ -7615,7 +7617,7 @@
    "events": []
   },
   {
-   "turn": 358,
+   "turn": 326,
    "timestamp_ms": 179000,
    "user_active": "Cradily",
    "opp_active": "Morpeko",
@@ -7638,7 +7640,7 @@
    "events": []
   },
   {
-   "turn": 359,
+   "turn": 327,
    "timestamp_ms": 179500,
    "user_active": "Cradily",
    "opp_active": "Morpeko",
@@ -7661,7 +7663,7 @@
    "events": []
   },
   {
-   "turn": 360,
+   "turn": 328,
    "timestamp_ms": 180000,
    "user_active": "Cradily",
    "opp_active": "Morpeko",

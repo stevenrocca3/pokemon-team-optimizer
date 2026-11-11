@@ -1,15 +1,17 @@
 import { useState } from 'react'
-import { Link } from 'react-router'
+import { Link, useLocation } from 'react-router'
 import { useAnalysisJob } from './analysis-job'
 
 /**
  * The floating card in the bottom-left corner (Feedback has the right) that follows the battle analysis on every
- * page, until the player dismisses the finished result. It collapses to its one progress line.
+ * page but /analyze (which shows the full scan), until the player dismisses the finished result. It collapses to its one progress line.
  */
 export function AnalysisWidget() {
   const { job, clear } = useAnalysisJob()
   const [open, setOpen] = useState(true)
-  if (!job) return null
+  const { pathname } = useLocation()
+  // /analyze shows the full scan, and the finished job's own breakdown page needs no reminder of it
+  if (!job || pathname === '/analyze' || pathname === `/match/${job.jobId}`) return null
 
   const running = job.status !== 'complete' && job.status !== 'failed'
   const headline = running

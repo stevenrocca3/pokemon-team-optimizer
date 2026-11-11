@@ -40,7 +40,7 @@ def test_shielding_a_knockout_is_justified():
 def test_real_battle_shield_is_justified():
     log = json.loads((Path(__file__).parent / 'fixtures/rec1_turn_log.json').read_text())
     report = audit_shields(log)
-    assert [(s['turn'], s['verdict']) for s in report['shields']] == [(364, 'JUSTIFIED')]
+    assert [(s['turn'], s['verdict']) for s in report['shields']] == [(211, 'JUSTIFIED')]  # battle turn 211
 
 
 def lag_battle(n=20, clock=0.0, remaining=3, you_lose_hp=True):

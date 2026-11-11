@@ -157,10 +157,28 @@ def _place_lone_bars(readings: list[TurnReading], active: dict[str, list], throw
                 last[(side, active[side][i])] = s.hp
 
 
+CONTRADICTED = 0.1  # HP never rises: a read this far under the next few reads of the same Pokémon was a misread
+
+
+def _drop_contradicted(idx: list[int], hp: list[float]) -> list[int]:
+    """
+    A Pokémon's reading turns without the reads that every one of the next few clearly beats: the bar filling up as
+    it comes in, or a frame caught mid-animation. Any later read near a low one confirms it, so stray high misreads
+    (another bar read as this one) can't overrule a real drop.
+    """
+    keep = []
+    for j, i in enumerate(idx):
+        after = hp[j + 1: j + 4]
+        if len(after) < 2 or min(after) <= hp[j] + CONTRADICTED:
+            keep.append(i)
+    return keep
+
+
 def _smooth_hp(readings: list[TurnReading], active: dict[str, list]) -> dict[str, list[float | None]]:
     """
     Each Pokémon's HP: median over neighbouring readings within a stretch (a charged move lands while the HUD is
-    hidden, so HP really jumps across a gap of 5+ turns), and never above its lowest so far. Returns the cleaned
+    hidden, so HP really jumps across a gap of 5+ turns), and never above its lowest so far. Reads that the following
+    reads beat are left out (the bar filling up on entry, a frame caught mid-animation). Returns the cleaned
     readings per side (None where that turn had no reading).
     """
     out = {}
@@ -172,6 +190,9 @@ def _smooth_hp(readings: list[TurnReading], active: dict[str, list]) -> dict[str
             if s and s.hp is not None and active[side][i]:
                 by_species.setdefault(active[side][i], []).append(i)
         for idx in by_species.values():
+            idx = _drop_contradicted(idx, [getattr(readings[i], side).hp for i in idx])
+            if not idx:
+                continue
             stretches = [[idx[0]]]
             for prev, i in zip(idx, idx[1:]):
                 if i - prev > 4:
@@ -352,7 +373,7 @@ def build_turn_log(readings: Sequence[TurnReading], match_id: str) -> dict:
         ordered = sorted(actions[i], key=lambda a: ACTIONS.index(a[0]))
         action, actor, move_id = ordered[0] if ordered else ('NONE', None, None)
         log.append({
-            'turn': r.turn,
+            'turn': r.turn - rs[0].turn,  # battle turns: 0 is the first turn with the battle HUD up
             'timestamp_ms': r.timestamp_ms,
             'user_active': active['user'][i],
             'opp_active': active['opp'][i],

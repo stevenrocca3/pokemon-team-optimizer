@@ -35,8 +35,10 @@ function renderApp(path = '/analyze') {
 
 const video = () => new File(['not really a video'], 'gbl-set-3.mp4', { type: 'video/mp4' })
 
+/** Uploads a video on /analyze, then (if it was accepted) steps to the home page: the widget stays off /analyze. */
 async function uploadVideo(user = userEvent.setup()) {
   await user.upload(screen.getByLabelText(/battle recording/i), video())
+  if (FakeEventSource.all.length > 0) await user.click(screen.getByRole('link', { name: 'Home' }))
   return user
 }
 
@@ -200,5 +202,17 @@ describe('AnalysisJobProvider and the floating widget', () => {
     expect(await screen.findByText(/Upload an MP4 or MOV screen recording/)).toBeTruthy()
     expect(screen.queryByRole('region', { name: /battle analysis/i })).toBeNull()
     expect(FakeEventSource.all).toHaveLength(0)
+  })
+
+  // On the finished job's own breakdown page the widget would only cover it, so it stays away there (it still shows
+  // on other pages until dismissed).
+  it('stays off the finished job’s own match page', async () => {
+    fakeServer()
+    renderApp()
+    const user = await uploadVideo()
+    FakeEventSource.latest().emit(status('complete', 100, { score: 72 }))
+    await user.click(within(widget()).getByRole('link', { name: 'View breakdown' }))
+    expect(screen.getByTestId('where').textContent).toBe(`/match/${JOB}`)
+    expect(screen.queryByRole('region', { name: /battle analysis/i })).toBeNull()
   })
 })

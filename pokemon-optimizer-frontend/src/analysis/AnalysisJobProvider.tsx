@@ -4,6 +4,11 @@ import type { AnalysisStatus } from '../types'
 import { AnalysisJobContext, isFinal, type ActiveJob, type AnalysisJobState, type PastMatch } from './analysis-job'
 import { loadJob, loadMatches, saveJob, saveMatches, withMatch } from './job-storage'
 
+/** the log with this status line added, unless it's the line already showing (progress within one stage) */
+function withLine(log: string[] = [], line: string): string[] {
+  return log.at(-1) === line ? log : [...log, line]
+}
+
 /**
  * Follows the player's battle analysis from the app root, so it keeps going (and stays on screen) whichever page
  * they move to. The job's event stream stays open across page changes; the job is kept in localStorage, so a reload
@@ -36,6 +41,7 @@ export function AnalysisJobProvider({ children }: { children: ReactNode }) {
             score: status.score,
             tier: status.tier,
             error: status.error,
+            log: withLine(prev.log, status.status === 'failed' ? (status.error ?? status.message) : status.message),
             notified: prev.notified || announce,
           }
         : prev,
@@ -88,6 +94,7 @@ export function AnalysisJobProvider({ children }: { children: ReactNode }) {
         tier: null,
         error: null,
         notified: false,
+        log: ['Waiting for a free worker...'],
       })
     },
     [job],

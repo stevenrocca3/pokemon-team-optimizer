@@ -11,6 +11,8 @@ export interface ActiveJob {
   score: number | null
   tier: string | null
   error: string | null
+  /** every distinct status line so far, oldest first: the live log on /analyze */
+  log?: string[]
   /** the completion toast was shown (or the player already saw the result), so it isn't shown again */
   notified: boolean
 }

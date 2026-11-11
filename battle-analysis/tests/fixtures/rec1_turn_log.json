@@ -18,7 +18,7 @@
  },
  "turn_log": [
   {
-   "turn": 153,
+   "turn": 0,
    "timestamp_ms": 76500,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -41,7 +41,7 @@
    "events": []
   },
   {
-   "turn": 154,
+   "turn": 1,
    "timestamp_ms": 77000,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -64,7 +64,7 @@
    "events": []
   },
   {
-   "turn": 155,
+   "turn": 2,
    "timestamp_ms": 77500,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -87,7 +87,7 @@
    "events": []
   },
   {
-   "turn": 156,
+   "turn": 3,
    "timestamp_ms": 78000,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -110,7 +110,7 @@
    "events": []
   },
   {
-   "turn": 157,
+   "turn": 4,
    "timestamp_ms": 78500,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -133,7 +133,7 @@
    "events": []
   },
   {
-   "turn": 158,
+   "turn": 5,
    "timestamp_ms": 79000,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -156,13 +156,38 @@
    "events": []
   },
   {
-   "turn": 159,
+   "turn": 6,
    "timestamp_ms": 79500,
    "user_active": "Swampert",
    "opp_active": "Weezing",
    "user_hp_pct": 96.9,
-   "opp_hp_pct": 96.3,
+   "opp_hp_pct": 98.8,
    "user_energy": null,
+   "opp_energy": null,
+   "action_detected": "OPP_FAST_MOVE_HIT",
+   "actor": "opp",
+   "move_name": null,
+   "move_id": null,
+   "shield_used": false,
+   "opp_shield_used": false,
+   "user_shields": 2,
+   "opp_shields": 2,
+   "user_remaining": 3,
+   "opp_remaining": 3,
+   "switch_clock_s": 0.0,
+   "hud_visible": true,
+   "events": [
+    "OPP_FAST_MOVE_HIT"
+   ]
+  },
+  {
+   "turn": 7,
+   "timestamp_ms": 80000,
+   "user_active": "Swampert",
+   "opp_active": "Weezing",
+   "user_hp_pct": 96.9,
+   "opp_hp_pct": 96.3,
+   "user_energy": 0,
    "opp_energy": null,
    "action_detected": "FAST_MOVE_HIT",
    "actor": "user",
@@ -177,35 +202,11 @@
    "switch_clock_s": 0.0,
    "hud_visible": true,
    "events": [
-    "FAST_MOVE_HIT",
-    "OPP_FAST_MOVE_HIT"
+    "FAST_MOVE_HIT"
    ]
   },
   {
-   "turn": 160,
-   "timestamp_ms": 80000,
-   "user_active": "Swampert",
-   "opp_active": "Weezing",
-   "user_hp_pct": 96.9,
-   "opp_hp_pct": 96.3,
-   "user_energy": 0,
-   "opp_energy": null,
-   "action_detected": "NONE",
-   "actor": null,
-   "move_name": null,
-   "move_id": null,
-   "shield_used": false,
-   "opp_shield_used": false,
-   "user_shields": 2,
-   "opp_shields": 2,
-   "user_remaining": 3,
-   "opp_remaining": 3,
-   "switch_clock_s": 0.0,
-   "hud_visible": true,
-   "events": []
-  },
-  {
-   "turn": 161,
+   "turn": 8,
    "timestamp_ms": 80500,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -228,7 +229,7 @@
    "events": []
   },
   {
-   "turn": 162,
+   "turn": 9,
    "timestamp_ms": 81000,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -253,7 +254,7 @@
    ]
   },
   {
-   "turn": 163,
+   "turn": 10,
    "timestamp_ms": 81500,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -276,7 +277,7 @@
    "events": []
   },
   {
-   "turn": 164,
+   "turn": 11,
    "timestamp_ms": 82000,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -299,7 +300,7 @@
    "events": []
   },
   {
-   "turn": 165,
+   "turn": 12,
    "timestamp_ms": 82500,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -324,7 +325,7 @@
    ]
   },
   {
-   "turn": 166,
+   "turn": 13,
    "timestamp_ms": 83000,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -350,7 +351,7 @@
    ]
   },
   {
-   "turn": 167,
+   "turn": 14,
    "timestamp_ms": 83500,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -375,7 +376,7 @@
    ]
   },
   {
-   "turn": 168,
+   "turn": 15,
    "timestamp_ms": 84000,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -400,7 +401,7 @@
    ]
   },
   {
-   "turn": 169,
+   "turn": 16,
    "timestamp_ms": 84500,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -423,7 +424,7 @@
    "events": []
   },
   {
-   "turn": 170,
+   "turn": 17,
    "timestamp_ms": 85000,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -446,7 +447,7 @@
    "events": []
   },
   {
-   "turn": 171,
+   "turn": 18,
    "timestamp_ms": 85500,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -469,7 +470,7 @@
    "events": []
   },
   {
-   "turn": 172,
+   "turn": 19,
    "timestamp_ms": 86000,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -492,7 +493,7 @@
    "events": []
   },
   {
-   "turn": 173,
+   "turn": 20,
    "timestamp_ms": 86500,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -515,7 +516,7 @@
    "events": []
   },
   {
-   "turn": 174,
+   "turn": 21,
    "timestamp_ms": 87000,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -538,7 +539,7 @@
    "events": []
   },
   {
-   "turn": 175,
+   "turn": 22,
    "timestamp_ms": 87500,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -561,7 +562,7 @@
    "events": []
   },
   {
-   "turn": 176,
+   "turn": 23,
    "timestamp_ms": 88000,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -584,7 +585,7 @@
    "events": []
   },
   {
-   "turn": 177,
+   "turn": 24,
    "timestamp_ms": 88500,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -607,7 +608,7 @@
    "events": []
   },
   {
-   "turn": 178,
+   "turn": 25,
    "timestamp_ms": 89000,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -630,7 +631,7 @@
    "events": []
   },
   {
-   "turn": 179,
+   "turn": 26,
    "timestamp_ms": 89500,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -653,7 +654,7 @@
    "events": []
   },
   {
-   "turn": 180,
+   "turn": 27,
    "timestamp_ms": 90000,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -676,7 +677,7 @@
    "events": []
   },
   {
-   "turn": 181,
+   "turn": 28,
    "timestamp_ms": 90500,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -699,7 +700,7 @@
    "events": []
   },
   {
-   "turn": 182,
+   "turn": 29,
    "timestamp_ms": 91000,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -722,7 +723,7 @@
    "events": []
   },
   {
-   "turn": 183,
+   "turn": 30,
    "timestamp_ms": 91500,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -745,7 +746,7 @@
    "events": []
   },
   {
-   "turn": 184,
+   "turn": 31,
    "timestamp_ms": 92000,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -768,7 +769,7 @@
    "events": []
   },
   {
-   "turn": 185,
+   "turn": 32,
    "timestamp_ms": 92500,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -793,7 +794,7 @@
    ]
   },
   {
-   "turn": 186,
+   "turn": 33,
    "timestamp_ms": 93000,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -816,7 +817,7 @@
    "events": []
   },
   {
-   "turn": 187,
+   "turn": 34,
    "timestamp_ms": 93500,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -839,7 +840,7 @@
    "events": []
   },
   {
-   "turn": 188,
+   "turn": 35,
    "timestamp_ms": 94000,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -862,7 +863,7 @@
    "events": []
   },
   {
-   "turn": 189,
+   "turn": 36,
    "timestamp_ms": 94500,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -885,7 +886,7 @@
    "events": []
   },
   {
-   "turn": 190,
+   "turn": 37,
    "timestamp_ms": 95000,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -908,7 +909,7 @@
    "events": []
   },
   {
-   "turn": 191,
+   "turn": 38,
    "timestamp_ms": 95500,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -933,7 +934,7 @@
    ]
   },
   {
-   "turn": 192,
+   "turn": 39,
    "timestamp_ms": 96000,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -956,7 +957,7 @@
    "events": []
   },
   {
-   "turn": 193,
+   "turn": 40,
    "timestamp_ms": 96500,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -981,7 +982,7 @@
    ]
   },
   {
-   "turn": 194,
+   "turn": 41,
    "timestamp_ms": 97000,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -1006,7 +1007,7 @@
    ]
   },
   {
-   "turn": 195,
+   "turn": 42,
    "timestamp_ms": 97500,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -1029,7 +1030,7 @@
    "events": []
   },
   {
-   "turn": 196,
+   "turn": 43,
    "timestamp_ms": 98000,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -1052,7 +1053,7 @@
    "events": []
   },
   {
-   "turn": 197,
+   "turn": 44,
    "timestamp_ms": 98500,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -1075,7 +1076,7 @@
    "events": []
   },
   {
-   "turn": 198,
+   "turn": 45,
    "timestamp_ms": 99000,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -1098,7 +1099,7 @@
    "events": []
   },
   {
-   "turn": 199,
+   "turn": 46,
    "timestamp_ms": 99500,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -1121,7 +1122,7 @@
    "events": []
   },
   {
-   "turn": 200,
+   "turn": 47,
    "timestamp_ms": 100000,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -1144,7 +1145,7 @@
    "events": []
   },
   {
-   "turn": 201,
+   "turn": 48,
    "timestamp_ms": 100500,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -1167,7 +1168,7 @@
    "events": []
   },
   {
-   "turn": 202,
+   "turn": 49,
    "timestamp_ms": 101000,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -1190,7 +1191,7 @@
    "events": []
   },
   {
-   "turn": 203,
+   "turn": 50,
    "timestamp_ms": 101500,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -1213,7 +1214,7 @@
    "events": []
   },
   {
-   "turn": 204,
+   "turn": 51,
    "timestamp_ms": 102000,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -1236,7 +1237,7 @@
    "events": []
   },
   {
-   "turn": 205,
+   "turn": 52,
    "timestamp_ms": 102500,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -1259,7 +1260,7 @@
    "events": []
   },
   {
-   "turn": 206,
+   "turn": 53,
    "timestamp_ms": 103000,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -1282,7 +1283,7 @@
    "events": []
   },
   {
-   "turn": 207,
+   "turn": 54,
    "timestamp_ms": 103500,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -1305,7 +1306,7 @@
    "events": []
   },
   {
-   "turn": 208,
+   "turn": 55,
    "timestamp_ms": 104000,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -1328,7 +1329,7 @@
    "events": []
   },
   {
-   "turn": 209,
+   "turn": 56,
    "timestamp_ms": 104500,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -1351,7 +1352,7 @@
    "events": []
   },
   {
-   "turn": 210,
+   "turn": 57,
    "timestamp_ms": 105000,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -1374,7 +1375,7 @@
    "events": []
   },
   {
-   "turn": 211,
+   "turn": 58,
    "timestamp_ms": 105500,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -1397,7 +1398,7 @@
    "events": []
   },
   {
-   "turn": 212,
+   "turn": 59,
    "timestamp_ms": 106000,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -1420,7 +1421,7 @@
    "events": []
   },
   {
-   "turn": 213,
+   "turn": 60,
    "timestamp_ms": 106500,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -1443,7 +1444,7 @@
    "events": []
   },
   {
-   "turn": 214,
+   "turn": 61,
    "timestamp_ms": 107000,
    "user_active": "Swampert",
    "opp_active": "Togekiss",
@@ -1468,7 +1469,7 @@
    ]
   },
   {
-   "turn": 215,
+   "turn": 62,
    "timestamp_ms": 107500,
    "user_active": "Swampert",
    "opp_active": "Togekiss",
@@ -1491,7 +1492,7 @@
    "events": []
   },
   {
-   "turn": 216,
+   "turn": 63,
    "timestamp_ms": 108000,
    "user_active": "Swampert",
    "opp_active": "Togekiss",
@@ -1514,7 +1515,7 @@
    "events": []
   },
   {
-   "turn": 217,
+   "turn": 64,
    "timestamp_ms": 108500,
    "user_active": "Swampert",
    "opp_active": "Togekiss",
@@ -1537,7 +1538,7 @@
    "events": []
   },
   {
-   "turn": 218,
+   "turn": 65,
    "timestamp_ms": 109000,
    "user_active": "Swampert",
    "opp_active": "Togekiss",
@@ -1560,7 +1561,7 @@
    "events": []
   },
   {
-   "turn": 219,
+   "turn": 66,
    "timestamp_ms": 109500,
    "user_active": "Swampert",
    "opp_active": "Togekiss",
@@ -1583,7 +1584,7 @@
    "events": []
   },
   {
-   "turn": 220,
+   "turn": 67,
    "timestamp_ms": 110000,
    "user_active": "Swampert",
    "opp_active": "Togekiss",
@@ -1606,7 +1607,7 @@
    "events": []
   },
   {
-   "turn": 221,
+   "turn": 68,
    "timestamp_ms": 110500,
    "user_active": "Swampert",
    "opp_active": "Togekiss",
@@ -1629,7 +1630,7 @@
    "events": []
   },
   {
-   "turn": 222,
+   "turn": 69,
    "timestamp_ms": 111000,
    "user_active": "Swampert",
    "opp_active": "Togekiss",
@@ -1652,7 +1653,7 @@
    "events": []
   },
   {
-   "turn": 223,
+   "turn": 70,
    "timestamp_ms": 111500,
    "user_active": "Swampert",
    "opp_active": "Togekiss",
@@ -1675,7 +1676,7 @@
    "events": []
   },
   {
-   "turn": 224,
+   "turn": 71,
    "timestamp_ms": 112000,
    "user_active": "Swampert",
    "opp_active": "Togekiss",
@@ -1698,7 +1699,7 @@
    "events": []
   },
   {
-   "turn": 225,
+   "turn": 72,
    "timestamp_ms": 112500,
    "user_active": "Swampert",
    "opp_active": "Togekiss",
@@ -1721,7 +1722,7 @@
    "events": []
   },
   {
-   "turn": 226,
+   "turn": 73,
    "timestamp_ms": 113000,
    "user_active": "Swampert",
    "opp_active": "Togekiss",
@@ -1744,7 +1745,7 @@
    "events": []
   },
   {
-   "turn": 227,
+   "turn": 74,
    "timestamp_ms": 113500,
    "user_active": "Swampert",
    "opp_active": "Togekiss",
@@ -1767,7 +1768,7 @@
    "events": []
   },
   {
-   "turn": 228,
+   "turn": 75,
    "timestamp_ms": 114000,
    "user_active": "Swampert",
    "opp_active": "Togekiss",
@@ -1790,7 +1791,7 @@
    "events": []
   },
   {
-   "turn": 229,
+   "turn": 76,
    "timestamp_ms": 114500,
    "user_active": "Swampert",
    "opp_active": "Togekiss",
@@ -1813,7 +1814,7 @@
    "events": []
   },
   {
-   "turn": 230,
+   "turn": 77,
    "timestamp_ms": 115000,
    "user_active": "Swampert",
    "opp_active": "Togekiss",
@@ -1836,7 +1837,7 @@
    "events": []
   },
   {
-   "turn": 231,
+   "turn": 78,
    "timestamp_ms": 115500,
    "user_active": "Swampert",
    "opp_active": "Togekiss",
@@ -1859,7 +1860,7 @@
    "events": []
   },
   {
-   "turn": 232,
+   "turn": 79,
    "timestamp_ms": 116000,
    "user_active": "Swampert",
    "opp_active": "Togekiss",
@@ -1884,7 +1885,7 @@
    ]
   },
   {
-   "turn": 233,
+   "turn": 80,
    "timestamp_ms": 116500,
    "user_active": "Swampert",
    "opp_active": "Togekiss",
@@ -1909,7 +1910,7 @@
    ]
   },
   {
-   "turn": 234,
+   "turn": 81,
    "timestamp_ms": 117000,
    "user_active": "Swampert",
    "opp_active": "Togekiss",
@@ -1932,7 +1933,7 @@
    "events": []
   },
   {
-   "turn": 235,
+   "turn": 82,
    "timestamp_ms": 117500,
    "user_active": "Swampert",
    "opp_active": "Togekiss",
@@ -1955,7 +1956,7 @@
    "events": []
   },
   {
-   "turn": 236,
+   "turn": 83,
    "timestamp_ms": 118000,
    "user_active": "Swampert",
    "opp_active": "Togekiss",
@@ -1978,7 +1979,7 @@
    "events": []
   },
   {
-   "turn": 237,
+   "turn": 84,
    "timestamp_ms": 118500,
    "user_active": "Swampert",
    "opp_active": "Togekiss",
@@ -2001,7 +2002,7 @@
    "events": []
   },
   {
-   "turn": 238,
+   "turn": 85,
    "timestamp_ms": 119000,
    "user_active": "Cradily",
    "opp_active": "Togekiss",
@@ -2026,7 +2027,7 @@
    ]
   },
   {
-   "turn": 239,
+   "turn": 86,
    "timestamp_ms": 119500,
    "user_active": "Cradily",
    "opp_active": "Togekiss",
@@ -2051,7 +2052,7 @@
    ]
   },
   {
-   "turn": 240,
+   "turn": 87,
    "timestamp_ms": 120000,
    "user_active": "Cradily",
    "opp_active": "Togekiss",
@@ -2074,7 +2075,7 @@
    "events": []
   },
   {
-   "turn": 241,
+   "turn": 88,
    "timestamp_ms": 120500,
    "user_active": "Cradily",
    "opp_active": "Togekiss",
@@ -2097,7 +2098,7 @@
    "events": []
   },
   {
-   "turn": 242,
+   "turn": 89,
    "timestamp_ms": 121000,
    "user_active": "Cradily",
    "opp_active": "Togekiss",
@@ -2120,7 +2121,7 @@
    "events": []
   },
   {
-   "turn": 243,
+   "turn": 90,
    "timestamp_ms": 121500,
    "user_active": "Cradily",
    "opp_active": "Togekiss",
@@ -2143,7 +2144,7 @@
    "events": []
   },
   {
-   "turn": 244,
+   "turn": 91,
    "timestamp_ms": 122000,
    "user_active": "Cradily",
    "opp_active": "Togekiss",
@@ -2169,7 +2170,7 @@
    ]
   },
   {
-   "turn": 245,
+   "turn": 92,
    "timestamp_ms": 122500,
    "user_active": "Cradily",
    "opp_active": "Togekiss",
@@ -2192,7 +2193,7 @@
    "events": []
   },
   {
-   "turn": 246,
+   "turn": 93,
    "timestamp_ms": 123000,
    "user_active": "Cradily",
    "opp_active": "Togekiss",
@@ -2217,7 +2218,7 @@
    ]
   },
   {
-   "turn": 247,
+   "turn": 94,
    "timestamp_ms": 123500,
    "user_active": "Cradily",
    "opp_active": "Togekiss",
@@ -2240,7 +2241,7 @@
    "events": []
   },
   {
-   "turn": 248,
+   "turn": 95,
    "timestamp_ms": 124000,
    "user_active": "Cradily",
    "opp_active": "Togekiss",
@@ -2263,7 +2264,7 @@
    "events": []
   },
   {
-   "turn": 249,
+   "turn": 96,
    "timestamp_ms": 124500,
    "user_active": "Cradily",
    "opp_active": "Togekiss",
@@ -2286,7 +2287,7 @@
    "events": []
   },
   {
-   "turn": 250,
+   "turn": 97,
    "timestamp_ms": 125000,
    "user_active": "Cradily",
    "opp_active": "Togekiss",
@@ -2309,7 +2310,7 @@
    "events": []
   },
   {
-   "turn": 251,
+   "turn": 98,
    "timestamp_ms": 125500,
    "user_active": "Cradily",
    "opp_active": "Togekiss",
@@ -2334,7 +2335,7 @@
    ]
   },
   {
-   "turn": 252,
+   "turn": 99,
    "timestamp_ms": 126000,
    "user_active": "Cradily",
    "opp_active": "Togekiss",
@@ -2357,7 +2358,7 @@
    "events": []
   },
   {
-   "turn": 253,
+   "turn": 100,
    "timestamp_ms": 126500,
    "user_active": "Cradily",
    "opp_active": "Togekiss",
@@ -2380,7 +2381,7 @@
    "events": []
   },
   {
-   "turn": 254,
+   "turn": 101,
    "timestamp_ms": 127000,
    "user_active": "Cradily",
    "opp_active": "Togekiss",
@@ -2403,7 +2404,7 @@
    "events": []
   },
   {
-   "turn": 255,
+   "turn": 102,
    "timestamp_ms": 127500,
    "user_active": "Cradily",
    "opp_active": "Togekiss",
@@ -2426,7 +2427,7 @@
    "events": []
   },
   {
-   "turn": 256,
+   "turn": 103,
    "timestamp_ms": 128000,
    "user_active": "Cradily",
    "opp_active": "Togekiss",
@@ -2449,7 +2450,7 @@
    "events": []
   },
   {
-   "turn": 257,
+   "turn": 104,
    "timestamp_ms": 128500,
    "user_active": "Cradily",
    "opp_active": "Togekiss",
@@ -2472,7 +2473,7 @@
    "events": []
   },
   {
-   "turn": 258,
+   "turn": 105,
    "timestamp_ms": 129000,
    "user_active": "Cradily",
    "opp_active": "Togekiss",
@@ -2495,7 +2496,7 @@
    "events": []
   },
   {
-   "turn": 259,
+   "turn": 106,
    "timestamp_ms": 129500,
    "user_active": "Cradily",
    "opp_active": "Togekiss",
@@ -2518,7 +2519,7 @@
    "events": []
   },
   {
-   "turn": 260,
+   "turn": 107,
    "timestamp_ms": 130000,
    "user_active": "Cradily",
    "opp_active": "Togekiss",
@@ -2541,7 +2542,7 @@
    "events": []
   },
   {
-   "turn": 261,
+   "turn": 108,
    "timestamp_ms": 130500,
    "user_active": "Cradily",
    "opp_active": "Togekiss",
@@ -2564,7 +2565,7 @@
    "events": []
   },
   {
-   "turn": 262,
+   "turn": 109,
    "timestamp_ms": 131000,
    "user_active": "Cradily",
    "opp_active": "Togekiss",
@@ -2587,7 +2588,7 @@
    "events": []
   },
   {
-   "turn": 263,
+   "turn": 110,
    "timestamp_ms": 131500,
    "user_active": "Cradily",
    "opp_active": "Togekiss",
@@ -2610,7 +2611,7 @@
    "events": []
   },
   {
-   "turn": 264,
+   "turn": 111,
    "timestamp_ms": 132000,
    "user_active": "Cradily",
    "opp_active": "Togekiss",
@@ -2633,7 +2634,7 @@
    "events": []
   },
   {
-   "turn": 265,
+   "turn": 112,
    "timestamp_ms": 132500,
    "user_active": "Cradily",
    "opp_active": "Togekiss",
@@ -2656,7 +2657,7 @@
    "events": []
   },
   {
-   "turn": 266,
+   "turn": 113,
    "timestamp_ms": 133000,
    "user_active": "Cradily",
    "opp_active": "Togekiss",
@@ -2679,7 +2680,7 @@
    "events": []
   },
   {
-   "turn": 267,
+   "turn": 114,
    "timestamp_ms": 133500,
    "user_active": "Cradily",
    "opp_active": "Togekiss",
@@ -2702,7 +2703,7 @@
    "events": []
   },
   {
-   "turn": 268,
+   "turn": 115,
    "timestamp_ms": 134000,
    "user_active": "Cradily",
    "opp_active": "Togekiss",
@@ -2725,7 +2726,7 @@
    "events": []
   },
   {
-   "turn": 269,
+   "turn": 116,
    "timestamp_ms": 134500,
    "user_active": "Cradily",
    "opp_active": "Togekiss",
@@ -2748,7 +2749,7 @@
    "events": []
   },
   {
-   "turn": 270,
+   "turn": 117,
    "timestamp_ms": 135000,
    "user_active": "Cradily",
    "opp_active": "Togekiss",
@@ -2771,7 +2772,7 @@
    "events": []
   },
   {
-   "turn": 271,
+   "turn": 118,
    "timestamp_ms": 135500,
    "user_active": "Cradily",
    "opp_active": "Togekiss",
@@ -2794,7 +2795,7 @@
    "events": []
   },
   {
-   "turn": 272,
+   "turn": 119,
    "timestamp_ms": 136000,
    "user_active": "Cradily",
    "opp_active": "Togekiss",
@@ -2817,7 +2818,7 @@
    "events": []
   },
   {
-   "turn": 273,
+   "turn": 120,
    "timestamp_ms": 136500,
    "user_active": "Cradily",
    "opp_active": "Togekiss",
@@ -2842,7 +2843,7 @@
    ]
   },
   {
-   "turn": 274,
+   "turn": 121,
    "timestamp_ms": 137000,
    "user_active": "Cradily",
    "opp_active": "Togekiss",
@@ -2865,7 +2866,7 @@
    "events": []
   },
   {
-   "turn": 275,
+   "turn": 122,
    "timestamp_ms": 137500,
    "user_active": "Cradily",
    "opp_active": "Togekiss",
@@ -2888,7 +2889,7 @@
    "events": []
   },
   {
-   "turn": 276,
+   "turn": 123,
    "timestamp_ms": 138000,
    "user_active": "Cradily",
    "opp_active": "Togekiss",
@@ -2911,7 +2912,7 @@
    "events": []
   },
   {
-   "turn": 277,
+   "turn": 124,
    "timestamp_ms": 138500,
    "user_active": "Cradily",
    "opp_active": "Togekiss",
@@ -2934,7 +2935,7 @@
    "events": []
   },
   {
-   "turn": 278,
+   "turn": 125,
    "timestamp_ms": 139000,
    "user_active": "Cradily",
    "opp_active": "Togekiss",
@@ -2957,7 +2958,7 @@
    "events": []
   },
   {
-   "turn": 279,
+   "turn": 126,
    "timestamp_ms": 139500,
    "user_active": "Cradily",
    "opp_active": "Charizard",
@@ -2982,7 +2983,7 @@
    ]
   },
   {
-   "turn": 280,
+   "turn": 127,
    "timestamp_ms": 140000,
    "user_active": "Cradily",
    "opp_active": "Charizard",
@@ -3005,7 +3006,7 @@
    "events": []
   },
   {
-   "turn": 281,
+   "turn": 128,
    "timestamp_ms": 140500,
    "user_active": "Cradily",
    "opp_active": "Charizard",
@@ -3028,7 +3029,7 @@
    "events": []
   },
   {
-   "turn": 282,
+   "turn": 129,
    "timestamp_ms": 141000,
    "user_active": "Cradily",
    "opp_active": "Charizard",
@@ -3051,7 +3052,7 @@
    "events": []
   },
   {
-   "turn": 283,
+   "turn": 130,
    "timestamp_ms": 141500,
    "user_active": "Cradily",
    "opp_active": "Charizard",
@@ -3074,7 +3075,7 @@
    "events": []
   },
   {
-   "turn": 284,
+   "turn": 131,
    "timestamp_ms": 142000,
    "user_active": "Cradily",
    "opp_active": "Charizard",
@@ -3097,7 +3098,7 @@
    "events": []
   },
   {
-   "turn": 285,
+   "turn": 132,
    "timestamp_ms": 142500,
    "user_active": "Cradily",
    "opp_active": "Charizard",
@@ -3120,7 +3121,7 @@
    "events": []
   },
   {
-   "turn": 286,
+   "turn": 133,
    "timestamp_ms": 143000,
    "user_active": "Cradily",
    "opp_active": "Charizard",
@@ -3143,7 +3144,7 @@
    "events": []
   },
   {
-   "turn": 287,
+   "turn": 134,
    "timestamp_ms": 143500,
    "user_active": "Cradily",
    "opp_active": "Charizard",
@@ -3166,7 +3167,7 @@
    "events": []
   },
   {
-   "turn": 288,
+   "turn": 135,
    "timestamp_ms": 144000,
    "user_active": "Cradily",
    "opp_active": "Charizard",
@@ -3189,7 +3190,7 @@
    "events": []
   },
   {
-   "turn": 289,
+   "turn": 136,
    "timestamp_ms": 144500,
    "user_active": "Cradily",
    "opp_active": "Charizard",
@@ -3212,7 +3213,7 @@
    "events": []
   },
   {
-   "turn": 290,
+   "turn": 137,
    "timestamp_ms": 145000,
    "user_active": "Cradily",
    "opp_active": "Charizard",
@@ -3235,7 +3236,7 @@
    "events": []
   },
   {
-   "turn": 291,
+   "turn": 138,
    "timestamp_ms": 145500,
    "user_active": "Cradily",
    "opp_active": "Charizard",
@@ -3258,7 +3259,7 @@
    "events": []
   },
   {
-   "turn": 292,
+   "turn": 139,
    "timestamp_ms": 146000,
    "user_active": "Cradily",
    "opp_active": "Charizard",
@@ -3281,7 +3282,7 @@
    "events": []
   },
   {
-   "turn": 293,
+   "turn": 140,
    "timestamp_ms": 146500,
    "user_active": "Cradily",
    "opp_active": "Charizard",
@@ -3304,7 +3305,7 @@
    "events": []
   },
   {
-   "turn": 294,
+   "turn": 141,
    "timestamp_ms": 147000,
    "user_active": "Cradily",
    "opp_active": "Charizard",
@@ -3327,7 +3328,7 @@
    "events": []
   },
   {
-   "turn": 295,
+   "turn": 142,
    "timestamp_ms": 147500,
    "user_active": "Cradily",
    "opp_active": "Charizard",
@@ -3350,7 +3351,7 @@
    "events": []
   },
   {
-   "turn": 296,
+   "turn": 143,
    "timestamp_ms": 148000,
    "user_active": "Cradily",
    "opp_active": "Charizard",
@@ -3375,7 +3376,7 @@
    ]
   },
   {
-   "turn": 297,
+   "turn": 144,
    "timestamp_ms": 148500,
    "user_active": "Cradily",
    "opp_active": "Charizard",
@@ -3398,7 +3399,7 @@
    "events": []
   },
   {
-   "turn": 298,
+   "turn": 145,
    "timestamp_ms": 149000,
    "user_active": "Cradily",
    "opp_active": "Charizard",
@@ -3421,7 +3422,7 @@
    "events": []
   },
   {
-   "turn": 299,
+   "turn": 146,
    "timestamp_ms": 149500,
    "user_active": "Cradily",
    "opp_active": "Charizard",
@@ -3446,7 +3447,7 @@
    ]
   },
   {
-   "turn": 300,
+   "turn": 147,
    "timestamp_ms": 150000,
    "user_active": "Cradily",
    "opp_active": "Charizard",
@@ -3469,7 +3470,7 @@
    "events": []
   },
   {
-   "turn": 301,
+   "turn": 148,
    "timestamp_ms": 150500,
    "user_active": "Cradily",
    "opp_active": "Charizard",
@@ -3492,7 +3493,7 @@
    "events": []
   },
   {
-   "turn": 302,
+   "turn": 149,
    "timestamp_ms": 151000,
    "user_active": "Cradily",
    "opp_active": "Charizard",
@@ -3515,7 +3516,7 @@
    "events": []
   },
   {
-   "turn": 303,
+   "turn": 150,
    "timestamp_ms": 151500,
    "user_active": "Cradily",
    "opp_active": "Weezing",
@@ -3540,7 +3541,7 @@
    ]
   },
   {
-   "turn": 304,
+   "turn": 151,
    "timestamp_ms": 152000,
    "user_active": "Cradily",
    "opp_active": "Weezing",
@@ -3563,7 +3564,7 @@
    "events": []
   },
   {
-   "turn": 305,
+   "turn": 152,
    "timestamp_ms": 152500,
    "user_active": "Cradily",
    "opp_active": "Weezing",
@@ -3586,7 +3587,7 @@
    "events": []
   },
   {
-   "turn": 306,
+   "turn": 153,
    "timestamp_ms": 153000,
    "user_active": "Cradily",
    "opp_active": "Weezing",
@@ -3609,7 +3610,7 @@
    "events": []
   },
   {
-   "turn": 307,
+   "turn": 154,
    "timestamp_ms": 153500,
    "user_active": "Cradily",
    "opp_active": "Weezing",
@@ -3632,7 +3633,7 @@
    "events": []
   },
   {
-   "turn": 308,
+   "turn": 155,
    "timestamp_ms": 154000,
    "user_active": "Cradily",
    "opp_active": "Weezing",
@@ -3655,7 +3656,7 @@
    "events": []
   },
   {
-   "turn": 309,
+   "turn": 156,
    "timestamp_ms": 154500,
    "user_active": "Cradily",
    "opp_active": "Weezing",
@@ -3678,7 +3679,7 @@
    "events": []
   },
   {
-   "turn": 310,
+   "turn": 157,
    "timestamp_ms": 155000,
    "user_active": "Cradily",
    "opp_active": "Weezing",
@@ -3701,7 +3702,7 @@
    "events": []
   },
   {
-   "turn": 311,
+   "turn": 158,
    "timestamp_ms": 155500,
    "user_active": "Cradily",
    "opp_active": "Weezing",
@@ -3724,7 +3725,7 @@
    "events": []
   },
   {
-   "turn": 312,
+   "turn": 159,
    "timestamp_ms": 156000,
    "user_active": "Cradily",
    "opp_active": "Weezing",
@@ -3747,7 +3748,7 @@
    "events": []
   },
   {
-   "turn": 313,
+   "turn": 160,
    "timestamp_ms": 156500,
    "user_active": "Cradily",
    "opp_active": "Weezing",
@@ -3772,7 +3773,7 @@
    ]
   },
   {
-   "turn": 314,
+   "turn": 161,
    "timestamp_ms": 157000,
    "user_active": "Cradily",
    "opp_active": "Weezing",
@@ -3795,7 +3796,7 @@
    "events": []
   },
   {
-   "turn": 315,
+   "turn": 162,
    "timestamp_ms": 157500,
    "user_active": "Cradily",
    "opp_active": "Weezing",
@@ -3818,7 +3819,7 @@
    "events": []
   },
   {
-   "turn": 316,
+   "turn": 163,
    "timestamp_ms": 158000,
    "user_active": "Cradily",
    "opp_active": "Weezing",
@@ -3841,7 +3842,7 @@
    "events": []
   },
   {
-   "turn": 317,
+   "turn": 164,
    "timestamp_ms": 158500,
    "user_active": "Cradily",
    "opp_active": "Weezing",
@@ -3864,7 +3865,7 @@
    "events": []
   },
   {
-   "turn": 318,
+   "turn": 165,
    "timestamp_ms": 159000,
    "user_active": "Cradily",
    "opp_active": "Weezing",
@@ -3887,7 +3888,7 @@
    "events": []
   },
   {
-   "turn": 319,
+   "turn": 166,
    "timestamp_ms": 159500,
    "user_active": "Cradily",
    "opp_active": "Weezing",
@@ -3910,7 +3911,7 @@
    "events": []
   },
   {
-   "turn": 320,
+   "turn": 167,
    "timestamp_ms": 160000,
    "user_active": "Cradily",
    "opp_active": "Weezing",
@@ -3933,7 +3934,7 @@
    "events": []
   },
   {
-   "turn": 321,
+   "turn": 168,
    "timestamp_ms": 160500,
    "user_active": "Cradily",
    "opp_active": "Weezing",
@@ -3956,7 +3957,7 @@
    "events": []
   },
   {
-   "turn": 322,
+   "turn": 169,
    "timestamp_ms": 161000,
    "user_active": "Cradily",
    "opp_active": "Weezing",
@@ -3979,7 +3980,7 @@
    "events": []
   },
   {
-   "turn": 323,
+   "turn": 170,
    "timestamp_ms": 161500,
    "user_active": "Cradily",
    "opp_active": "Weezing",
@@ -4002,7 +4003,7 @@
    "events": []
   },
   {
-   "turn": 324,
+   "turn": 171,
    "timestamp_ms": 162000,
    "user_active": "Cradily",
    "opp_active": "Weezing",
@@ -4025,7 +4026,7 @@
    "events": []
   },
   {
-   "turn": 325,
+   "turn": 172,
    "timestamp_ms": 162500,
    "user_active": "Cradily",
    "opp_active": "Weezing",
@@ -4048,7 +4049,7 @@
    "events": []
   },
   {
-   "turn": 326,
+   "turn": 173,
    "timestamp_ms": 163000,
    "user_active": "Cradily",
    "opp_active": "Weezing",
@@ -4071,7 +4072,7 @@
    "events": []
   },
   {
-   "turn": 327,
+   "turn": 174,
    "timestamp_ms": 163500,
    "user_active": "Cradily",
    "opp_active": "Weezing",
@@ -4094,7 +4095,7 @@
    "events": []
   },
   {
-   "turn": 328,
+   "turn": 175,
    "timestamp_ms": 164000,
    "user_active": "Cradily",
    "opp_active": "Weezing",
@@ -4117,7 +4118,7 @@
    "events": []
   },
   {
-   "turn": 329,
+   "turn": 176,
    "timestamp_ms": 164500,
    "user_active": "Cradily",
    "opp_active": "Weezing",
@@ -4140,7 +4141,7 @@
    "events": []
   },
   {
-   "turn": 330,
+   "turn": 177,
    "timestamp_ms": 165000,
    "user_active": "Cradily",
    "opp_active": "Weezing",
@@ -4163,7 +4164,7 @@
    "events": []
   },
   {
-   "turn": 331,
+   "turn": 178,
    "timestamp_ms": 165500,
    "user_active": "Cradily",
    "opp_active": "Weezing",
@@ -4186,7 +4187,7 @@
    "events": []
   },
   {
-   "turn": 332,
+   "turn": 179,
    "timestamp_ms": 166000,
    "user_active": "Cradily",
    "opp_active": "Weezing",
@@ -4209,7 +4210,7 @@
    "events": []
   },
   {
-   "turn": 333,
+   "turn": 180,
    "timestamp_ms": 166500,
    "user_active": "Cradily",
    "opp_active": "Weezing",
@@ -4234,7 +4235,7 @@
    ]
   },
   {
-   "turn": 334,
+   "turn": 181,
    "timestamp_ms": 167000,
    "user_active": "Cradily",
    "opp_active": "Weezing",
@@ -4257,7 +4258,7 @@
    "events": []
   },
   {
-   "turn": 335,
+   "turn": 182,
    "timestamp_ms": 167500,
    "user_active": "Cradily",
    "opp_active": "Weezing",
@@ -4280,7 +4281,7 @@
    "events": []
   },
   {
-   "turn": 336,
+   "turn": 183,
    "timestamp_ms": 168000,
    "user_active": "Cradily",
    "opp_active": "Weezing",
@@ -4303,7 +4304,7 @@
    "events": []
   },
   {
-   "turn": 337,
+   "turn": 184,
    "timestamp_ms": 168500,
    "user_active": "Cradily",
    "opp_active": "Weezing",
@@ -4326,7 +4327,7 @@
    "events": []
   },
   {
-   "turn": 338,
+   "turn": 185,
    "timestamp_ms": 169000,
    "user_active": "Cradily",
    "opp_active": "Weezing",
@@ -4349,7 +4350,7 @@
    "events": []
   },
   {
-   "turn": 339,
+   "turn": 186,
    "timestamp_ms": 169500,
    "user_active": "Cradily",
    "opp_active": "Weezing",
@@ -4372,7 +4373,7 @@
    "events": []
   },
   {
-   "turn": 340,
+   "turn": 187,
    "timestamp_ms": 170000,
    "user_active": "Cradily",
    "opp_active": "Weezing",
@@ -4395,7 +4396,7 @@
    "events": []
   },
   {
-   "turn": 341,
+   "turn": 188,
    "timestamp_ms": 170500,
    "user_active": "Cradily",
    "opp_active": "Weezing",
@@ -4418,7 +4419,7 @@
    "events": []
   },
   {
-   "turn": 342,
+   "turn": 189,
    "timestamp_ms": 171000,
    "user_active": "Cradily",
    "opp_active": "Weezing",
@@ -4441,7 +4442,7 @@
    "events": []
   },
   {
-   "turn": 343,
+   "turn": 190,
    "timestamp_ms": 171500,
    "user_active": "Cradily",
    "opp_active": "Weezing",
@@ -4464,7 +4465,7 @@
    "events": []
   },
   {
-   "turn": 344,
+   "turn": 191,
    "timestamp_ms": 172000,
    "user_active": "Cradily",
    "opp_active": "Weezing",
@@ -4487,7 +4488,7 @@
    "events": []
   },
   {
-   "turn": 345,
+   "turn": 192,
    "timestamp_ms": 172500,
    "user_active": "Cradily",
    "opp_active": "Weezing",
@@ -4510,7 +4511,7 @@
    "events": []
   },
   {
-   "turn": 346,
+   "turn": 193,
    "timestamp_ms": 173000,
    "user_active": "Cradily",
    "opp_active": "Weezing",
@@ -4533,7 +4534,7 @@
    "events": []
   },
   {
-   "turn": 347,
+   "turn": 194,
    "timestamp_ms": 173500,
    "user_active": "Cradily",
    "opp_active": "Weezing",
@@ -4556,7 +4557,7 @@
    "events": []
   },
   {
-   "turn": 348,
+   "turn": 195,
    "timestamp_ms": 174000,
    "user_active": "Cradily",
    "opp_active": "Weezing",
@@ -4579,7 +4580,7 @@
    "events": []
   },
   {
-   "turn": 349,
+   "turn": 196,
    "timestamp_ms": 174500,
    "user_active": "Cradily",
    "opp_active": "Weezing",
@@ -4604,7 +4605,7 @@
    ]
   },
   {
-   "turn": 350,
+   "turn": 197,
    "timestamp_ms": 175000,
    "user_active": "Cradily",
    "opp_active": "Weezing",
@@ -4627,7 +4628,7 @@
    "events": []
   },
   {
-   "turn": 351,
+   "turn": 198,
    "timestamp_ms": 175500,
    "user_active": "Cradily",
    "opp_active": "Weezing",
@@ -4650,7 +4651,7 @@
    "events": []
   },
   {
-   "turn": 352,
+   "turn": 199,
    "timestamp_ms": 176000,
    "user_active": "Cradily",
    "opp_active": "Weezing",
@@ -4673,7 +4674,7 @@
    "events": []
   },
   {
-   "turn": 353,
+   "turn": 200,
    "timestamp_ms": 176500,
    "user_active": "Cradily",
    "opp_active": "Weezing",
@@ -4696,7 +4697,7 @@
    "events": []
   },
   {
-   "turn": 354,
+   "turn": 201,
    "timestamp_ms": 177000,
    "user_active": "Cradily",
    "opp_active": "Weezing",
@@ -4721,7 +4722,7 @@
    ]
   },
   {
-   "turn": 355,
+   "turn": 202,
    "timestamp_ms": 177500,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -4746,7 +4747,7 @@
    ]
   },
   {
-   "turn": 356,
+   "turn": 203,
    "timestamp_ms": 178000,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -4769,7 +4770,7 @@
    "events": []
   },
   {
-   "turn": 357,
+   "turn": 204,
    "timestamp_ms": 178500,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -4792,7 +4793,7 @@
    "events": []
   },
   {
-   "turn": 358,
+   "turn": 205,
    "timestamp_ms": 179000,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -4817,7 +4818,7 @@
    ]
   },
   {
-   "turn": 359,
+   "turn": 206,
    "timestamp_ms": 179500,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -4840,7 +4841,7 @@
    "events": []
   },
   {
-   "turn": 360,
+   "turn": 207,
    "timestamp_ms": 180000,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -4863,7 +4864,7 @@
    "events": []
   },
   {
-   "turn": 361,
+   "turn": 208,
    "timestamp_ms": 180500,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -4888,7 +4889,7 @@
    ]
   },
   {
-   "turn": 362,
+   "turn": 209,
    "timestamp_ms": 181000,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -4911,7 +4912,7 @@
    "events": []
   },
   {
-   "turn": 363,
+   "turn": 210,
    "timestamp_ms": 181500,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -4936,7 +4937,7 @@
    ]
   },
   {
-   "turn": 364,
+   "turn": 211,
    "timestamp_ms": 182000,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -4961,7 +4962,7 @@
    ]
   },
   {
-   "turn": 365,
+   "turn": 212,
    "timestamp_ms": 182500,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -4984,7 +4985,7 @@
    "events": []
   },
   {
-   "turn": 366,
+   "turn": 213,
    "timestamp_ms": 183000,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -5007,7 +5008,7 @@
    "events": []
   },
   {
-   "turn": 367,
+   "turn": 214,
    "timestamp_ms": 183500,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -5030,7 +5031,7 @@
    "events": []
   },
   {
-   "turn": 368,
+   "turn": 215,
    "timestamp_ms": 184000,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -5053,7 +5054,7 @@
    "events": []
   },
   {
-   "turn": 369,
+   "turn": 216,
    "timestamp_ms": 184500,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -5076,7 +5077,7 @@
    "events": []
   },
   {
-   "turn": 370,
+   "turn": 217,
    "timestamp_ms": 185000,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -5099,7 +5100,7 @@
    "events": []
   },
   {
-   "turn": 371,
+   "turn": 218,
    "timestamp_ms": 185500,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -5122,7 +5123,7 @@
    "events": []
   },
   {
-   "turn": 372,
+   "turn": 219,
    "timestamp_ms": 186000,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -5145,7 +5146,7 @@
    "events": []
   },
   {
-   "turn": 373,
+   "turn": 220,
    "timestamp_ms": 186500,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -5168,7 +5169,7 @@
    "events": []
   },
   {
-   "turn": 374,
+   "turn": 221,
    "timestamp_ms": 187000,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -5191,7 +5192,7 @@
    "events": []
   },
   {
-   "turn": 375,
+   "turn": 222,
    "timestamp_ms": 187500,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -5214,7 +5215,7 @@
    "events": []
   },
   {
-   "turn": 376,
+   "turn": 223,
    "timestamp_ms": 188000,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -5237,7 +5238,7 @@
    "events": []
   },
   {
-   "turn": 377,
+   "turn": 224,
    "timestamp_ms": 188500,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -5260,7 +5261,7 @@
    "events": []
   },
   {
-   "turn": 378,
+   "turn": 225,
    "timestamp_ms": 189000,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -5283,7 +5284,7 @@
    "events": []
   },
   {
-   "turn": 379,
+   "turn": 226,
    "timestamp_ms": 189500,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -5306,7 +5307,7 @@
    "events": []
   },
   {
-   "turn": 380,
+   "turn": 227,
    "timestamp_ms": 190000,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -5329,7 +5330,7 @@
    "events": []
   },
   {
-   "turn": 381,
+   "turn": 228,
    "timestamp_ms": 190500,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -5352,7 +5353,7 @@
    "events": []
   },
   {
-   "turn": 382,
+   "turn": 229,
    "timestamp_ms": 191000,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -5375,7 +5376,7 @@
    "events": []
   },
   {
-   "turn": 383,
+   "turn": 230,
    "timestamp_ms": 191500,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -5398,7 +5399,7 @@
    "events": []
   },
   {
-   "turn": 384,
+   "turn": 231,
    "timestamp_ms": 192000,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -5421,7 +5422,7 @@
    "events": []
   },
   {
-   "turn": 385,
+   "turn": 232,
    "timestamp_ms": 192500,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -5444,7 +5445,7 @@
    "events": []
   },
   {
-   "turn": 386,
+   "turn": 233,
    "timestamp_ms": 193000,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -5467,7 +5468,7 @@
    "events": []
   },
   {
-   "turn": 387,
+   "turn": 234,
    "timestamp_ms": 193500,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -5490,7 +5491,7 @@
    "events": []
   },
   {
-   "turn": 388,
+   "turn": 235,
    "timestamp_ms": 194000,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -5513,7 +5514,7 @@
    "events": []
   },
   {
-   "turn": 389,
+   "turn": 236,
    "timestamp_ms": 194500,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -5536,7 +5537,7 @@
    "events": []
   },
   {
-   "turn": 390,
+   "turn": 237,
    "timestamp_ms": 195000,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -5559,7 +5560,7 @@
    "events": []
   },
   {
-   "turn": 391,
+   "turn": 238,
    "timestamp_ms": 195500,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -5582,7 +5583,7 @@
    "events": []
   },
   {
-   "turn": 392,
+   "turn": 239,
    "timestamp_ms": 196000,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -5605,7 +5606,7 @@
    "events": []
   },
   {
-   "turn": 393,
+   "turn": 240,
    "timestamp_ms": 196500,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -5628,7 +5629,7 @@
    "events": []
   },
   {
-   "turn": 394,
+   "turn": 241,
    "timestamp_ms": 197000,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -5651,7 +5652,7 @@
    "events": []
   },
   {
-   "turn": 395,
+   "turn": 242,
    "timestamp_ms": 197500,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -5674,7 +5675,7 @@
    "events": []
   },
   {
-   "turn": 396,
+   "turn": 243,
    "timestamp_ms": 198000,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -5697,7 +5698,7 @@
    "events": []
   },
   {
-   "turn": 397,
+   "turn": 244,
    "timestamp_ms": 198500,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -5722,7 +5723,7 @@
    ]
   },
   {
-   "turn": 398,
+   "turn": 245,
    "timestamp_ms": 199000,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -5745,7 +5746,7 @@
    "events": []
   },
   {
-   "turn": 399,
+   "turn": 246,
    "timestamp_ms": 199500,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -5768,7 +5769,7 @@
    "events": []
   },
   {
-   "turn": 400,
+   "turn": 247,
    "timestamp_ms": 200000,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -5791,7 +5792,7 @@
    "events": []
   },
   {
-   "turn": 401,
+   "turn": 248,
    "timestamp_ms": 200500,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -5816,7 +5817,7 @@
    ]
   },
   {
-   "turn": 402,
+   "turn": 249,
    "timestamp_ms": 201000,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -5839,7 +5840,7 @@
    "events": []
   },
   {
-   "turn": 403,
+   "turn": 250,
    "timestamp_ms": 201500,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -5862,7 +5863,7 @@
    "events": []
   },
   {
-   "turn": 404,
+   "turn": 251,
    "timestamp_ms": 202000,
    "user_active": "Swampert",
    "opp_active": "Weezing",
@@ -5885,7 +5886,7 @@
    "events": []
   },
   {
-   "turn": 405,
+   "turn": 252,
    "timestamp_ms": 202500,
    "user_active": "Swampert",
    "opp_active": "Weezing",

@@ -39,8 +39,12 @@ def run_job(job_id: str, path: str, store: JobStore | None = None) -> None:
             store.update(job_id, status=stage, progress=max(1, int(share * CV_SHARE)))
 
         turn_log = analyze_video(path, job_id, progress)
-        store.update(job_id, status='auditing_turns', progress=CV_SHARE + 2)
-        report = analyze_match(turn_log)
+        audit_progress = iter(range(CV_SHARE + 2, 100, 2))  # 92, 94, ... one step per audit
+
+        def audit(line: str) -> None:
+            store.update(job_id, status='auditing_turns', message=line, progress=next(audit_progress, 99))
+
+        report = analyze_match(turn_log, audit)
         store.set_result(job_id, {'turn_log': turn_log, 'report': report})
     except NoBattleFound as e:
         store.fail(job_id, str(e))
