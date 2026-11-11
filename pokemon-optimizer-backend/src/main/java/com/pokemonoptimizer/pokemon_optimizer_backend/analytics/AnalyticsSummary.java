@@ -6,8 +6,8 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.pokemonoptimizer.pokemon_optimizer_backend.history.BattleRow;
 
-/** GET /api/v1/analytics/summary for a logged-in player: their history and rank (#121). */
-public record AnalyticsSummary(String access, int battles, List<BattleRow> history, Rank rank)
+/** GET /api/v1/analytics/summary for a logged-in player: their history and rank (#121), and their trend (#122). */
+public record AnalyticsSummary(String access, int battles, List<BattleRow> history, Rank rank, Trend trend)
 {
     /** The player's rank: locked (no score, no tier, ever) until they've analysed `required` battles. */
     @JsonInclude(JsonInclude.Include.NON_NULL)

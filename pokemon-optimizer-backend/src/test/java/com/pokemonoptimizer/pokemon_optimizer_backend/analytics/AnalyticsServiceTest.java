@@ -166,6 +166,23 @@ public class AnalyticsServiceTest
         assertThat(summary.history()).hasSize(50).extracting(BattleRow::matchId).doesNotContain(oldest);
     }
 
+    // Issue #122: the summary carries the player's trend, from their own history: 15 battles at 70 then 5 at 80 is
+    // +10, improving (another player's battles don't count).
+    @Test
+    public void theSummaryCarriesThePlayersTrend()
+    {
+        battles(ash, 15, 70);
+        battles(misty, 5, 0);
+        battles(ash, 5, 80);
+
+        Trend trend = summaryOf(ash).trend();
+
+        assertThat(trend).isNotNull();
+        assertThat(trend.direction()).isEqualTo(Trend.Direction.IMPROVING);
+        assertThat(trend.velocity()).isEqualByComparingTo("10.0");
+        assertThat(trend.rolling().last10()).isEqualByComparingTo("75.0");
+    }
+
     // A stored battle's full result goes to its owner only: another player gets nothing.
     @Test
     public void aBattlesResultIsOnlyForItsOwner()

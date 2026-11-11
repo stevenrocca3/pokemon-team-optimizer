@@ -44,7 +44,7 @@ public class AnalyticsService
     {
         List<BattleRow> newestFirst = history.rowsNewestFirst(trainer);
         return new AnalyticsSummary("full", newestFirst.size(),
-            newestFirst.subList(0, Math.min(HISTORY_LIMIT, newestFirst.size())), rank(newestFirst));
+            newestFirst.subList(0, Math.min(HISTORY_LIMIT, newestFirst.size())), rank(newestFirst), TrendEngine.trend(newestFirst));
     }
 
     @Transactional(readOnly = true)
