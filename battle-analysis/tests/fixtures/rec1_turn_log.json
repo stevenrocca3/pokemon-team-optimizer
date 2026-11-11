@@ -161,8 +161,33 @@
    "user_active": "Swampert",
    "opp_active": "Weezing",
    "user_hp_pct": 96.9,
-   "opp_hp_pct": 96.3,
+   "opp_hp_pct": 98.8,
    "user_energy": null,
+   "opp_energy": null,
+   "action_detected": "OPP_FAST_MOVE_HIT",
+   "actor": "opp",
+   "move_name": null,
+   "move_id": null,
+   "shield_used": false,
+   "opp_shield_used": false,
+   "user_shields": 2,
+   "opp_shields": 2,
+   "user_remaining": 3,
+   "opp_remaining": 3,
+   "switch_clock_s": 0.0,
+   "hud_visible": true,
+   "events": [
+    "OPP_FAST_MOVE_HIT"
+   ]
+  },
+  {
+   "turn": 160,
+   "timestamp_ms": 80000,
+   "user_active": "Swampert",
+   "opp_active": "Weezing",
+   "user_hp_pct": 96.9,
+   "opp_hp_pct": 96.3,
+   "user_energy": 0,
    "opp_energy": null,
    "action_detected": "FAST_MOVE_HIT",
    "actor": "user",
@@ -177,32 +202,8 @@
    "switch_clock_s": 0.0,
    "hud_visible": true,
    "events": [
-    "FAST_MOVE_HIT",
-    "OPP_FAST_MOVE_HIT"
+    "FAST_MOVE_HIT"
    ]
-  },
-  {
-   "turn": 160,
-   "timestamp_ms": 80000,
-   "user_active": "Swampert",
-   "opp_active": "Weezing",
-   "user_hp_pct": 96.9,
-   "opp_hp_pct": 96.3,
-   "user_energy": 0,
-   "opp_energy": null,
-   "action_detected": "NONE",
-   "actor": null,
-   "move_name": null,
-   "move_id": null,
-   "shield_used": false,
-   "opp_shield_used": false,
-   "user_shields": 2,
-   "opp_shields": 2,
-   "user_remaining": 3,
-   "opp_remaining": 3,
-   "switch_clock_s": 0.0,
-   "hud_visible": true,
-   "events": []
   },
   {
    "turn": 161,

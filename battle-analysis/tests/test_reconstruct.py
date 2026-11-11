@@ -42,6 +42,29 @@ def test_hp_resets_with_a_new_pokemon():
     assert hp[:3] == [40.0] * 3 and hp[3:] == [100.0] * 3
 
 
+# When a Pokémon first comes in its HP bar fills up from empty over a second or so. Reads caught mid-fill (35%, then
+# 70%) aren't its HP: they're dropped (None), and the full 99% that follows isn't dragged down to 35% by the
+# never-rises rule.
+def test_hp_bar_filling_up_on_entry_is_not_read_as_damage():
+    rs = [reading(0, user_hp=0.3, opp_hp=0.35), reading(1, user_hp=0.7, opp_hp=0.7)]
+    rs += [reading(t, user_hp=1.0, opp_hp=0.99) for t in range(2, 10)]
+    log = build_turn_log(rs, 'm1')
+    assert [e['opp_hp_pct'] for e in log['turn_log']] == [None, None] + [99.0] * 8
+    assert [e['user_hp_pct'] for e in log['turn_log']] == [None, None] + [100.0] * 8
+
+
+# HP never rises, so a read that the following reads of the same Pokémon clearly beat was a misread: a lone 35% between
+# a full bar and a run of 99%, 96% (the pattern the container produced on rec 1) is dropped rather than held as the
+# Pokémon's HP for the rest of its time in.
+def test_isolated_low_misread_is_dropped():
+    rs = [reading(0, lone=0.99), reading(1, lone=0.35), reading(2, hud=False), reading(3, hud=False),
+          reading(4, hud=False), reading(5, hud=False)]
+    rs += [reading(t, user_hp=1.0, opp_hp=0.99 if t < 9 else 0.96) for t in range(6, 12)]
+    e = entries(build_turn_log(rs, 'm1'))
+    assert e[1]['opp_hp_pct'] != 35.0 and e[1]['user_hp_pct'] != 35.0
+    assert [e[t]['opp_hp_pct'] for t in range(6, 12)] == [99.0, 99.0, 99.0, 96.0, 96.0, 96.0]
+
+
 # With only one bar on screen, it goes to the side whose last HP it's closest to without being higher: 0.55 after
 # you were at 0.6 and the opponent at 0.9 is yours.
 def test_lone_hp_bar_goes_to_the_side_it_fits():
