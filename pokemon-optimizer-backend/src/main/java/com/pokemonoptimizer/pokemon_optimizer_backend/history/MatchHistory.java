@@ -35,7 +35,7 @@ public class MatchHistory
 
     protected MatchHistory() {}
 
-    MatchHistory(BattleLog battle, Trainer trainer, UUID guestToken, Instant recordedAt)
+    public MatchHistory(BattleLog battle, Trainer trainer, UUID guestToken, Instant recordedAt)
     {
         this.battle = battle;
         this.trainer = trainer;

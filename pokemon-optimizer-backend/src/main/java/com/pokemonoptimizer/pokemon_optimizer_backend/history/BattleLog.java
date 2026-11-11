@@ -48,7 +48,7 @@ public class BattleLog
 
     protected BattleLog() {}
 
-    BattleLog(UUID matchId, Instant createdAt, List<String> detectedUserTeam, List<String> detectedOppTeam,
+    public BattleLog(UUID matchId, Instant createdAt, List<String> detectedUserTeam, List<String> detectedOppTeam,
               BigDecimal overallExecutionScore, String tier, String outcome, Integer turnsLost,
               BigDecimal shieldEfficiencyPct, BigDecimal timingAccuracyPct, int timingErrors, int mismanagedShields,
               int suboptimalSwitches, int suboptimalCharges, String result)
