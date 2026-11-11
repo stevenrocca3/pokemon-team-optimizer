@@ -59,7 +59,7 @@ export function MatchPage() {
       )}
       {load.status === 'ready' && (
         <div className="space-y-6">
-          <div>
+          <div className="text-center sm:text-left">
             <p className="eyebrow text-brand">Match breakdown</p>
             <h1 className="mt-1 text-3xl font-black tracking-tight text-ink sm:text-4xl">
               {load.result.turn_log.user_team.join(' / ')} <span className="text-muted">vs</span>{' '}

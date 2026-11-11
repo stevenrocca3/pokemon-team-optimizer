@@ -130,11 +130,14 @@ h1,
   text-shadow: 0 0.09em 0 var(--color-espresso);
 }
 
-/* every tabular figure (CP, IVs, levels, win odds) is set like a tool's readout */
-.tabular-nums {
-  font-family: var(--font-mono);
-  font-size: 0.94em;
-  letter-spacing: -0.02em;
+/* every tabular figure (CP, IVs, levels, win odds) is set like a tool's readout. Layered, so a text-* size on the
+   same element still wins: unlayered, the 0.94em beat every size and a 9px rank badge drew at 15px. */
+@layer components {
+  .tabular-nums {
+    font-family: var(--font-mono);
+    font-size: 0.94em;
+    letter-spacing: -0.02em;
+  }
 }
 input,
 select,

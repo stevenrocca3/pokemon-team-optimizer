@@ -1,6 +1,7 @@
 import { useEffect, useRef, type RefObject } from 'react'
 
-export const prefersReducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
+/** no matchMedia (jsdom, very old browsers): treat it as reduced, so nothing animates where it can't be asked */
+export const prefersReducedMotion = () => window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? true
 
 /**
  * Writes how far the page has scrolled into a --scroll CSS variable on the element, once per frame,

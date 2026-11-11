@@ -150,7 +150,7 @@ function SourceTabs({ source, onChange }: { source: Source; onChange: (source: S
     ['csv', 'Poké Genie / Calcy IV CSV'],
   ]
   return (
-    <div role="tablist" aria-label="Import from" className="mt-6 flex flex-wrap justify-center gap-3 lg:justify-start">
+    <div role="tablist" aria-label="Import from" className="mt-6 grid gap-3 sm:flex sm:flex-wrap sm:justify-center lg:justify-start">
       {tabs.map(([id, label]) => (
         <button key={id} role="tab" aria-selected={source === id} onClick={() => onChange(id)} className={`btn ${source === id ? 'btn-primary' : 'btn-secondary'}`}>
           {label}
