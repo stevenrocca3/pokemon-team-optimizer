@@ -202,6 +202,29 @@ export interface Evolution
 {
     fromSpeciesId : string;     // what you have now
     moveWarnings : string[];    // its best moveset needs a Community Day or event move
+    cost : BuildCost;           // Candy, items and second move it takes (#139)
+}
+
+/** One evolution in Pokémon GO (#139): item and lure are null when it needs none */
+export interface EvolutionStep
+{
+    from : string;
+    into : string;
+    candy : number;
+    item : string | null;       // "Sinnoh Stone"
+    itemCount : number;         // 999 for Gimmighoul Coins
+    lure : string | null;       // "Mossy Lure Module"
+    conditions : string[];      // "Walk 10 km as your buddy"
+}
+
+/** What evolving one of your Pokémon takes beyond powering it up (#139) */
+export interface BuildCost
+{
+    family : string | null;     // its Candy family, "FAMILY_MUDKIP"
+    steps : EvolutionStep[];
+    complete : boolean;         // false when the game data lacks one step's cost
+    evolveCandy : number;
+    secondMove : PowerUpCost | null;   // unlocking its second Charged Move; null when not needed or unknown
 }
 
 export interface MatchupRef

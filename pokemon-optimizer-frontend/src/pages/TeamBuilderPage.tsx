@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router'
 import { buildTeams, getCups, LOGIN_URL, previewImport } from '../api'
+import { BuildCostDrawer } from '../components/BuildCostDrawer'
 import { useCollection } from '../collection/collection-context'
 import type { CaughtPokemon, CaughtPokemonRequest, CupSummary, Evolution, MatchupRef, OwnedSpecies, PowerUpImpact, Suggestion, TeamBuilderLeague, TeamBuilderResult, TeamMember, TeamResult } from '../types'
 import { useSpecies } from '../species/species-context'
@@ -846,6 +847,12 @@ function MemberCard({ member, role }: { member: TeamMember; role: number }) {
           <p className="mt-2 text-xs text-subtle">Already at its best level.</p>
         ))}
         {member.powerUp && <PowerUp impact={member.powerUp} toLevel={member.level} />}
+        {member.evolution && (
+          <BuildCostDrawer
+            member={member}
+            name={(id) => (species.status === 'ready' ? species.byId.get(id)?.name : undefined) ?? id}
+          />
+        )}
       </div>
     </li>
   )

@@ -333,9 +333,20 @@ function evolvedTeam(): TeamResult {
     ...member(0, 'swampert'),
     assumed: false,
     cp: 1466,
+    cost: { stardust: 200000, candy: 180, xlCandy: 20 },
     evolution: {
       fromSpeciesId: 'mudkip',
       moveWarnings: ['Swampert needs Hydro Cannon: an Elite Charged TM, or evolving it during an event that has the move, like its Community Day.'],
+      cost: {
+        family: 'FAMILY_MUDKIP',
+        steps: [
+          { from: 'mudkip', into: 'marshtomp', candy: 25, item: null, itemCount: 0, lure: null, conditions: [] },
+          { from: 'marshtomp', into: 'swampert', candy: 100, item: null, itemCount: 0, lure: null, conditions: ['Has an evolution quest'] },
+        ],
+        complete: true,
+        evolveCandy: 125,
+        secondMove: { stardust: 10000, candy: 25, xlCandy: 0 },
+      },
     },
   }
   return { ...team(0), members: [swampert, member(1, 'cradily'), member(2, 'clodsire')] }
@@ -389,6 +400,30 @@ describe('Include Pokémon you could evolve', () => {
     expect(swampert.textContent).toContain('Evolve your mudkip')
     expect(swampert.textContent).toContain('Swampert needs Hydro Cannon')
     expect(cradily.textContent).not.toContain('Evolvable')
+  })
+
+  // #139: the build cost drawer itemises evolving, powering up and the second move, and checks your stock
+  it('itemises the build cost and says what you are short of', async () => {
+    serve()
+    const user = userEvent.setup()
+    renderWithCollection()
+    await user.click(await screen.findByRole('checkbox', { name: /Include Pokémon you could evolve/ }))
+    await user.click(screen.getByRole('button', { name: 'Build teams' }))
+    await screen.findByRole('heading', { name: /Best Teams for/ })
+
+    const swampert = within(cards()[0]).getAllByRole('listitem')[0]
+    await user.click(within(swampert).getByText('Build cost'))
+    const drawer = within(swampert).getByRole('group', { name: 'Build cost' })
+    expect(drawer.textContent).toContain('mudkip → marshtomp')
+    expect(drawer.textContent).toContain('25 Candy')
+    expect(drawer.textContent).toContain('Has an evolution quest')
+    expect(drawer.textContent).toContain('10,000 Stardust')
+    expect(drawer.textContent).toContain('330 Candy')   // 125 + 180 + 25
+
+    await user.type(within(drawer).getByRole('spinbutton', { name: 'Your Candy XL' }), '5')
+    expect(drawer.textContent).toContain('Insufficient Candy XL: short 15')
+    // remembered for the family, in this browser
+    expect(JSON.parse(localStorage.getItem('dexpresso.inventory.v1') ?? '{}').families.FAMILY_MUDKIP.xlCandy).toBe(5)
   })
 })
 

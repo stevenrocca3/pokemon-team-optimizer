@@ -175,7 +175,7 @@ public class TeamBuilderControllerTest
     public void includeEvolvableAddsTheEvolvedForms()
     {
         EvolvedPokemon swampert = new EvolvedPokemon(0, new CaughtPokemonRequest("swampert", 0, 15, 15, 20.0, "MUD_SHOT",
-            List.of("HYDRO_CANNON"), false), new Evolution("mudkip", List.of()));
+            List.of("HYDRO_CANNON"), false), new Evolution("mudkip", List.of(), null));
         when(evolvable.expand(any())).thenReturn(List.of(swampert));
         when(teamBuilder.build(eq(League.GREAT), any(), any(), eq(List.of(swampert))))
             .thenReturn(new TeamBuilderResult(League.GREAT, 44, "2026-10-04", 2, List.of(), List.of(), null));

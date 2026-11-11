@@ -19,6 +19,7 @@ import com.pokemonoptimizer.pokemon_optimizer_backend.cups.CupFilter;
 import com.pokemonoptimizer.pokemon_optimizer_backend.cups.CupRules;
 import com.pokemonoptimizer.pokemon_optimizer_backend.dto.CaughtPokemonRequest;
 import com.pokemonoptimizer.pokemon_optimizer_backend.dto.OwnedSpecies;
+import com.pokemonoptimizer.pokemon_optimizer_backend.evolution.EvolutionCosts;
 import com.pokemonoptimizer.pokemon_optimizer_backend.evolution.EvolutionMoves;
 import com.pokemonoptimizer.pokemon_optimizer_backend.evolution.EvolutionTree;
 import com.pokemonoptimizer.pokemon_optimizer_backend.evolution.EvolvableCandidates;
@@ -440,7 +441,7 @@ public class TeamBuilderTest
 
     // #138: with "Include Evolvable Pokémon", the Trainer's unevolved Pokémon battle as what they'd evolve into
     private static final EvolvableCandidates EVOLVABLE = new EvolvableCandidates(new EvolutionTree(SPECIES),
-        new EvolutionMoves(SPECIES, MOVES, new SuggestedMovesets(SPECIES)));
+        new EvolutionMoves(SPECIES, MOVES, new SuggestedMovesets(SPECIES)), new EvolutionCosts(), SPECIES);
 
     @Test
     public void anUnevolvedPokemonCanJoinATeamAsItsEvolution()

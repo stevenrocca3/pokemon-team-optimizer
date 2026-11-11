@@ -1,0 +1,12397 @@
+{
+ "abomasnow": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "abra": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "kadabra": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "absol": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "accelgor": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "aegislash_blade": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "aegislash_shield": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "aerodactyl": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "aggron": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "aipom": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "ambipom": {
+    "candy": 100,
+    "item": "Sinnoh Stone",
+    "itemCount": 1,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "alakazam": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "alcremie": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "alomomola": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "altaria": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "amaura": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "aurorus": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": [
+     "Evolve at night"
+    ]
+   }
+  }
+ },
+ "ambipom": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "amoonguss": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "ampharos": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "annihilape": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "anorith": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "armaldo": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "appletun": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "applin": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "appletun": {
+    "candy": 200,
+    "item": "Black Augurite",
+    "itemCount": 20,
+    "lure": null,
+    "conditions": []
+   },
+   "dipplin": {
+    "candy": 200,
+    "item": "Linking Cord",
+    "itemCount": 20,
+    "lure": null,
+    "conditions": []
+   },
+   "flapple": {
+    "candy": 200,
+    "item": "Peat Block",
+    "itemCount": 20,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "araquanid": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "arbok": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "arboliva": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "arcanine": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "arcanine_hisuian": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "arceus": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "arceus_bug": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "arceus_dark": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "arceus_dragon": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "arceus_electric": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "arceus_fairy": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "arceus_fighting": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "arceus_fire": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "arceus_flying": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "arceus_ghost": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "arceus_grass": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "arceus_ground": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "arceus_ice": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "arceus_poison": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "arceus_psychic": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "arceus_rock": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "arceus_steel": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "arceus_water": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "archaludon": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "archen": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "archeops": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "archeops": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "arctibax": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "baxcalibur": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "arctovish": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "arctozolt": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "ariados": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "armaldo": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "armarouge": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "aromatisse": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "aron": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "lairon": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "arrokuda": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "barraskewda": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "articuno": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "articuno_galarian": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "audino": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "aurorus": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "avalugg": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "avalugg_hisuian": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "axew": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "fraxure": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "azelf": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "azumarill": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "azurill": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "marill": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "bagon": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "shelgon": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "baltoy": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "claydol": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "banette": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "barbaracle": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "barboach": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "whiscash": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "barraskewda": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "basculin": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "bastiodon": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "baxcalibur": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "bayleef": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "meganium": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "beartic": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "beautifly": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "beedrill": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "beheeyem": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "beldum": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "metang": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "bellibolt": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "bellossom": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "bellsprout": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "weepinbell": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "bergmite": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "avalugg": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "bewear": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "bibarel": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "bidoof": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "bibarel": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "binacle": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "barbaracle": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "bisharp": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "kingambit": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": [
+     "Has an evolution quest"
+    ]
+   }
+  }
+ },
+ "blacephalon": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "blastoise": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "blaziken": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "blipbug": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "dottler": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "blissey": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "blitzle": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "zebstrika": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "boldore": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "gigalith": {
+    "candy": 200,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": [
+     "Free when traded"
+    ]
+   }
+  }
+ },
+ "boltund": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "bombirdier": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "bonsly": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "sudowoodo": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": [
+     "Has an evolution quest"
+    ]
+   }
+  }
+ },
+ "bouffalant": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "bounsweet": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "steenee": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "braixen": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "delphox": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "brambleghast": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "bramblin": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "brambleghast": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "braviary": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "braviary_hisuian": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "breloom": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "brionne": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "primarina": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "bronzong": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "bronzor": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "bronzong": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "brutebonnet": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "bruxish": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "budew": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "roselia": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "buizel": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "floatzel": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "bulbasaur": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "ivysaur": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "buneary": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "lopunny": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "bunnelby": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "diggersby": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "burmy_plant": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "mothim": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   },
+   "wormadam_plant": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "burmy_sandy": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "mothim": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   },
+   "wormadam_sandy": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "burmy_trash": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "mothim": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   },
+   "wormadam_trash": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "butterfree": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "buzzwole": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "cacnea": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "cacturne": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "cacturne": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "calyrex": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "calyrex_ice_rider": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "camerupt": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "capsakid": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "scovillain": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "carbink": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "carkol": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "coalossal": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "carnivine": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "carracosta": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "carvanha": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "sharpedo": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "cascoon": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "dustox": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "castform": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "castform_rainy": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "castform_snowy": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "castform_sunny": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "caterpie": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "metapod": {
+    "candy": 12,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "celebi": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "celesteela": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "centiskorch": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "ceruledge": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "cetitan": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "cetoddle": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "cetitan": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "chandelure": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "chansey": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "blissey": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "charcadet": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "armarouge": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": [
+     "Has an evolution quest"
+    ]
+   },
+   "ceruledge": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": [
+     "Has an evolution quest"
+    ]
+   }
+  }
+ },
+ "charizard": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "charjabug": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "vikavolt": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": "Magnetic Lure Module",
+    "conditions": []
+   }
+  }
+ },
+ "charmander": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "charmeleon": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "charmeleon": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "charizard": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "chatot": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "cherrim_overcast": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "cherrim_sunny": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "cherubi": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "cherrim_overcast": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   },
+   "cherrim_sunny": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "chesnaught": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "chespin": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "quilladin": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "chewtle": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "drednaw": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "chikorita": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "bayleef": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "chimchar": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "monferno": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "chimecho": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "chinchou": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "lanturn": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "chingling": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "chimecho": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "cinccino": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "cinderace": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "clamperl": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "gorebyss": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   },
+   "huntail": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "clauncher": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "clawitzer": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "clawitzer": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "claydol": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "clefable": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "clefairy": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "clefable": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "cleffa": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "clefairy": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "clobbopus": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "grapploct": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "clodsire": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "cloyster": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "coalossal": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "cobalion": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "cofagrigus": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "combee": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "vespiquen": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "combusken": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "blaziken": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "comfey": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "conkeldurr": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "copperajah": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "corphish": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "crawdaunt": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "corsola": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "corsola_galarian": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "cursola": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "corviknight": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "corvisquire": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "corviknight": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "cosmoem": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {
+   "lunala": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": [
+     "Evolve at night"
+    ]
+   },
+   "solgaleo": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": [
+     "Evolve during the day"
+    ]
+   }
+  }
+ },
+ "cosmog": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {
+   "cosmoem": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "cottonee": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "whimsicott": {
+    "candy": 50,
+    "item": "Sun Stone",
+    "itemCount": 1,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "crabominable": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "crabrawler": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "crabominable": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": "Glacial Lure Module",
+    "conditions": []
+   }
+  }
+ },
+ "cradily": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "cramorant": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "cramorant_gorging": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "cramorant_gulping": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "cranidos": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "rampardos": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "crawdaunt": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "cresselia": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "croagunk": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "toxicroak": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "crobat": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "crocalor": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "skeledirge": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "croconaw": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "feraligatr": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "crustle": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "cryogonal": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "cubchoo": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "beartic": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "cubone": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "marowak": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "cufant": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "copperajah": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "cursola": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "cutiefly": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "ribombee": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "cyclizar": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "cyndaquil": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "quilava": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "dachsbun": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "darkrai": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "darmanitan_galarian_standard": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "darmanitan_galarian_zen": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "darmanitan_standard": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "darmanitan_zen": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "dartrix": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "decidueye": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "darumaka": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "darmanitan_standard": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "darumaka_galarian": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "darmanitan_galarian_standard": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "decidueye": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "decidueye_hisuian": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "dedenne": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "deerling": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "sawsbuck": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "deino": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "zweilous": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "delcatty": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "delibird": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "delphox": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "deoxys": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "deoxys_attack": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "deoxys_defense": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "deoxys_speed": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "dewgong": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "dewott": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "samurott": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "dewpider": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "araquanid": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "dhelmise": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "dialga": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "dialga_origin": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "diancie": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "diggersby": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "diglett": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "dugtrio": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "diglett_alolan": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "dugtrio_alolan": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "dipplin": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "hydrapple": {
+    "candy": 400,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": [
+     "Has an evolution quest"
+    ]
+   }
+  }
+ },
+ "ditto": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "dodrio": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "doduo": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "dodrio": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "dolliv": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "arboliva": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "dondozo": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "donphan": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "dottler": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "orbeetle": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "doublade": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "aegislash_shield": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "dracovish": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "dracozolt": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "dragalge": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "dragapult": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "dragonair": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "dragonite": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "dragonite": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "drakloak": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "dragapult": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "drampa": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "drapion": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "dratini": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "dragonair": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "drednaw": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "dreepy": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "drakloak": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "drifblim": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "drifloon": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "drifblim": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "drilbur": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "excadrill": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "drizzile": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "inteleon": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "drowzee": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "hypno": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "druddigon": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "dubwool": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "ducklett": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "swanna": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "dudunsparce": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "dugtrio": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "dugtrio_alolan": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "dunsparce": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "dudunsparce": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "duosion": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "reuniclus": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "duraludon": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "durant": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "dusclops": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "dusknoir": {
+    "candy": 100,
+    "item": "Sinnoh Stone",
+    "itemCount": 1,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "dusknoir": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "duskull": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "dusclops": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "dustox": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "dwebble": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "crustle": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "eelektrik": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "eelektross": {
+    "candy": 100,
+    "item": "Unova Stone",
+    "itemCount": 1,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "eelektross": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "eevee": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "espeon": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": [
+     "Walk 10 km as your buddy",
+     "Evolve during the day"
+    ]
+   },
+   "flareon": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   },
+   "glaceon": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": "Glacial Lure Module",
+    "conditions": []
+   },
+   "jolteon": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   },
+   "leafeon": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": "Mossy Lure Module",
+    "conditions": []
+   },
+   "sylveon": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": [
+     "Has an evolution quest"
+    ]
+   },
+   "umbreon": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": [
+     "Walk 10 km as your buddy",
+     "Evolve at night"
+    ]
+   },
+   "vaporeon": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "eiscue": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "eiscue_ice": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "eiscue_noice": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "ekans": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "arbok": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "eldegoss": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "electabuzz": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "electivire": {
+    "candy": 100,
+    "item": "Sinnoh Stone",
+    "itemCount": 1,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "electivire": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "electrike": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "manectric": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "electrode": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "electrode_hisuian": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "elekid": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "electabuzz": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "elgyem": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "beheeyem": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "emboar": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "emolga": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "empoleon": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "enamorus_incarnate": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "enamorus_therian": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "entei": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "escavalier": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "espathra": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "espeon": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "espurr": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "meowstic": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   },
+   "meowstic_female": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "eternatus": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "eternatus_eternamax": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "excadrill": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "exeggcute": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "exeggutor": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "exeggutor": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "exeggutor_alolan": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "exploud": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "falinks": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "farfetchd": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "farfetchd_galarian": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "sirfetchd": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": [
+     "Has an evolution quest"
+    ]
+   }
+  }
+ },
+ "farigiraf": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "fearow": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "feebas": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "milotic": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": [
+     "Has an evolution quest"
+    ]
+   }
+  }
+ },
+ "fennekin": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "braixen": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "feraligatr": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "ferroseed": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "ferrothorn": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "ferrothorn": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "fezandipiti": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "fidough": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "dachsbun": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "finizen": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "palafin": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   },
+   "palafin_zero": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "finneon": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "lumineon": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "flaaffy": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "ampharos": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "flabebe": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "floette": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "flamigo": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "flapple": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "flareon": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "fletchinder": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "talonflame": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "fletchling": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "fletchinder": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "flittle": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "espathra": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "floatzel": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "floette": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "florges": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": [
+     "Has an evolution quest"
+    ]
+   }
+  }
+ },
+ "floragato": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "meowscarada": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "florges": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "fluttermane": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "flygon": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "fomantis": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "lurantis": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": [
+     "Evolve during the day"
+    ]
+   }
+  }
+ },
+ "foongus": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "amoonguss": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "forretress": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "fraxure": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "haxorus": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "frigibax": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "arctibax": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "frillish": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "jellicent": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "froakie": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "frogadier": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "frogadier": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "greninja": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "froslass": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "frosmoth": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "fuecoco": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "crocalor": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "furfrou": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "furret": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "gabite": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "garchomp": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "gallade": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "galvantula": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "garbodor": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "garchomp": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "gardevoir": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "garganacl": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "gastly": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "haunter": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "gastrodon": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "genesect": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "genesect_burn": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "genesect_chill": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "genesect_douse": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "genesect_shock": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "gengar": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "geodude": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "graveler": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "geodude_alolan": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "graveler_alolan": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "gholdengo": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "gible": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "gabite": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "gigalith": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "gimmighoul": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "gholdengo": {
+    "candy": 0,
+    "item": "Gimmighoul Coin",
+    "itemCount": 999,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "girafarig": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "giratina_altered": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "giratina_origin": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "glaceon": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "glalie": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "glameow": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "purugly": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "glastrier": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "gligar": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "gliscor": {
+    "candy": 100,
+    "item": "Sinnoh Stone",
+    "itemCount": 1,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "glimmet": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "glimmora": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "glimmora": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "gliscor": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "gloom": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "bellossom": {
+    "candy": 100,
+    "item": "Sun Stone",
+    "itemCount": 1,
+    "lure": null,
+    "conditions": []
+   },
+   "vileplume": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "gogoat": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "golbat": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "crobat": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "goldeen": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "seaking": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "golduck": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "golem": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "golem_alolan": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "golett": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "golurk": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "golisopod": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "golurk": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "goodra": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "goomy": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "sliggoo": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "gorebyss": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "gossifleur": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "eldegoss": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "gothita": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "gothorita": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "gothitelle": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "gothorita": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "gothitelle": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "gourgeist_average": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "gourgeist_large": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "gourgeist_small": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "gourgeist_super": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "grafaiai": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "granbull": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "grapploct": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "graveler": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "golem": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": [
+     "Free when traded"
+    ]
+   }
+  }
+ },
+ "graveler_alolan": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "golem_alolan": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": [
+     "Free when traded"
+    ]
+   }
+  }
+ },
+ "greattusk": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "greavard": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "houndstone": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "greedent": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "greninja": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "grimer": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "muk": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "grimer_alolan": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "muk_alolan": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "grimmsnarl": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "grookey": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "thwackey": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "grotle": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "torterra": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "groudon": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "grovyle": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "sceptile": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "growlithe": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "arcanine": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "growlithe_hisuian": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "arcanine_hisuian": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "grubbin": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "charjabug": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "grumpig": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "gulpin": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "swalot": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "gumshoos": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "gurdurr": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "conkeldurr": {
+    "candy": 200,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": [
+     "Free when traded"
+    ]
+   }
+  }
+ },
+ "guzzlord": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "gyarados": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "hakamo_o": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "kommo_o": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "happiny": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "chansey": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": [
+     "Has an evolution quest"
+    ]
+   }
+  }
+ },
+ "hariyama": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "hatenna": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "hattrem": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "hatterene": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "hattrem": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "hatterene": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "haunter": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "gengar": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": [
+     "Free when traded"
+    ]
+   }
+  }
+ },
+ "hawlucha": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "haxorus": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "heatmor": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "heatran": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "heliolisk": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "helioptile": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "heliolisk": {
+    "candy": 50,
+    "item": "Sun Stone",
+    "itemCount": 1,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "heracross": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "herdier": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "stoutland": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "hippopotas": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "hippowdon": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "hippowdon": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "hitmonchan": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "hitmonlee": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "hitmontop": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "ho_oh": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "honchkrow": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "honedge": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "doublade": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "hoopa": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "hoopa_confined": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "hoopa_unbound": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "hoothoot": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "noctowl": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "hoppip": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "skiploom": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "horsea": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "seadra": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "houndoom": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "houndour": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "houndoom": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "houndstone": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "huntail": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "hydrapple": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "hydreigon": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "hypno": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "igglybuff": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "jigglypuff": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "illumise": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "impidimp": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "morgrem": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "incineroar": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "indeedee_female": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "indeedee_male": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "infernape": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "inkay": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "malamar": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "inteleon": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "ironbundle": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "ironhands": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "ironjugulis": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "ironmoth": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "ironthorns": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "irontreads": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "ironvaliant": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "ivysaur": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "venusaur": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "jangmo_o": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "hakamo_o": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "jellicent": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "jigglypuff": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "wigglytuff": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "jirachi": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "jolteon": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "joltik": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "galvantula": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "jumpluff": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "jynx": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "kabuto": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "kabutops": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "kabutops": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "kadabra": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "alakazam": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": [
+     "Free when traded"
+    ]
+   }
+  }
+ },
+ "kakuna": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "beedrill": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "kangaskhan": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "karrablast": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "escavalier": {
+    "candy": 200,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": [
+     "Free when traded"
+    ]
+   }
+  }
+ },
+ "kartana": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "kecleon": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "keldeo_ordinary": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "keldeo_resolute": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "kilowattrel": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "kingambit": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "kingdra": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "kingler": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "kirlia": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "gallade": {
+    "candy": 100,
+    "item": "Sinnoh Stone",
+    "itemCount": 1,
+    "lure": null,
+    "conditions": []
+   },
+   "gardevoir": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "klang": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "klinklang": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "klawf": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "kleavor": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "klefki": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "klink": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "klang": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "klinklang": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "koffing": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "weezing": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "komala": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "kommo_o": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "koraidon": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "koraidon_apex": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "krabby": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "kingler": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "kricketot": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "kricketune": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "kricketune": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "krokorok": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "krookodile": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "krookodile": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "kubfu": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {
+   "urshifu_rapid_strike": {
+    "candy": 200,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": [
+     "Has an evolution quest"
+    ]
+   },
+   "urshifu_single_strike": {
+    "candy": 200,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": [
+     "Has an evolution quest"
+    ]
+   }
+  }
+ },
+ "kyogre": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "kyurem": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "kyurem_black": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "kyurem_white": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "lairon": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "aggron": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "lampent": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "chandelure": {
+    "candy": 100,
+    "item": "Unova Stone",
+    "itemCount": 1,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "landorus_incarnate": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "landorus_therian": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "lanturn": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "lapras": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "larvesta": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "volcarona": {
+    "candy": 400,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "larvitar": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "pupitar": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "latias": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "latios": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "leafeon": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "leavanny": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "lechonk": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "oinkologne": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   },
+   "oinkologne_female": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "ledian": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "ledyba": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "ledian": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "lickilicky": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "lickitung": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "lickilicky": {
+    "candy": 100,
+    "item": "Sinnoh Stone",
+    "itemCount": 1,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "liepard": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "lileep": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "cradily": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "lilligant": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "lilligant_hisuian": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "lillipup": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "herdier": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "linoone": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "linoone_galarian": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "obstagoon": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "litleo": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "pyroar": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "litten": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "torracat": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "litwick": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "lampent": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "lokix": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "lombre": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "ludicolo": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "lopunny": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "lotad": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "lombre": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "loudred": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "exploud": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "lucario": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "ludicolo": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "lugia": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "lumineon": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "lunala": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "lunatone": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "lurantis": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "luvdisc": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "luxio": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "luxray": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "luxray": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "lycanroc_dusk": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "lycanroc_midday": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "lycanroc_midnight": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "mabosstiff": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "machamp": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "machoke": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "machamp": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": [
+     "Free when traded"
+    ]
+   }
+  }
+ },
+ "machop": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "machoke": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "magby": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "magmar": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "magcargo": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "magearna": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "magikarp": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "gyarados": {
+    "candy": 400,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "magmar": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "magmortar": {
+    "candy": 100,
+    "item": "Sinnoh Stone",
+    "itemCount": 1,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "magmortar": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "magnemite": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "magneton": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "magneton": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "magnezone": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": "Magnetic Lure Module",
+    "conditions": []
+   }
+  }
+ },
+ "magnezone": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "makuhita": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "hariyama": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "malamar": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "mamoswine": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "manaphy": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "mandibuzz": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "manectric": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "mankey": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "primeape": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "mantine": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "mantyke": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "mantine": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "maractus": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "mareanie": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "toxapex": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "mareep": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "flaaffy": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "marill": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "azumarill": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "marowak": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "marowak_alolan": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "marshadow": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "marshtomp": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "swampert": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "maschiff": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "mabosstiff": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "masquerain": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "maushold": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "mawile": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "medicham": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "meditite": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "medicham": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "meganium": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "melmetal": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "meloetta_aria": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "meloetta_pirouette": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "meltan": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {
+   "melmetal": {
+    "candy": 400,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "meowscarada": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "meowstic": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "meowstic_female": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "meowth": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "persian": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "meowth_alolan": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "persian_alolan": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "meowth_galarian": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "perrserker": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "mesprit": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "metagross": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "metang": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "metagross": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "metapod": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "butterfree": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "mew": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "mewtwo": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "mienfoo": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "mienshao": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "mienshao": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "mightyena": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "milcery": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "alcremie": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "milotic": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "miltank": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "mime_jr": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "mr_mime": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": [
+     "Has an evolution quest"
+    ]
+   }
+  }
+ },
+ "mimikyu": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "mimikyu_busted": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "minccino": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "cinccino": {
+    "candy": 50,
+    "item": "Unova Stone",
+    "itemCount": 1,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "minun": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "miraidon": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "miraidon_ultimate": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "misdreavus": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "mismagius": {
+    "candy": 100,
+    "item": "Sinnoh Stone",
+    "itemCount": 1,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "mismagius": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "moltres": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "moltres_galarian": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "monferno": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "infernape": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "morelull": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "shiinotic": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "morgrem": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "grimmsnarl": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "morpeko_full_belly": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "morpeko_hangry": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "mothim": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "mr_mime": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "mr_mime_galarian": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "mr_rime": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "mr_rime": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "mudbray": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "mudsdale": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "mudkip": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "marshtomp": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "mudsdale": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "muk": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "muk_alolan": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "munchlax": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "snorlax": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "munkidori": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "munna": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "musharna": {
+    "candy": 50,
+    "item": "Unova Stone",
+    "itemCount": 1,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "murkrow": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "honchkrow": {
+    "candy": 100,
+    "item": "Sinnoh Stone",
+    "itemCount": 1,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "musharna": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "nacli": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "naclstack": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "naclstack": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "garganacl": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "naganadel": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "natu": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "xatu": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "necrozma": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "necrozma_dawn_wings": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "necrozma_dusk_mane": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "necrozma_ultra": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "nickit": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "thievul": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "nidoking": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "nidoqueen": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "nidoran_female": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "nidorina": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "nidoran_male": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "nidorino": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "nidorina": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "nidoqueen": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "nidorino": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "nidoking": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "nihilego": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "nincada": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "ninjask": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "ninetales": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "ninetales_alolan": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "ninjask": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "noctowl": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "noibat": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "noivern": {
+    "candy": 400,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "noivern": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "nosepass": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "probopass": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": "Magnetic Lure Module",
+    "conditions": []
+   }
+  }
+ },
+ "numel": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "camerupt": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "nuzleaf": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "shiftry": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "nymble": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "lokix": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "obstagoon": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "octillery": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "oddish": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "gloom": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "ogerpon": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "oinkologne": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "oinkologne_female": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "okidogi": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "omanyte": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "omastar": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "omastar": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "onix": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "steelix": {
+    "candy": 50,
+    "item": "Metal Coat",
+    "itemCount": 1,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "oranguru": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "orbeetle": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "oricorio_baile": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "oricorio_pau": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "oricorio_sensu": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "orthworm": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "oshawott": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "dewott": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "overqwil": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "pachirisu": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "palafin": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "palafin_hero": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "palafin_zero": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "palkia": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "palkia_origin": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "palossand": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "palpitoad": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "seismitoad": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "pancham": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "pangoro": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": [
+     "Has an evolution quest"
+    ]
+   }
+  }
+ },
+ "pangoro": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "panpour": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "simipour": {
+    "candy": 50,
+    "item": "Unova Stone",
+    "itemCount": 1,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "pansage": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "simisage": {
+    "candy": 50,
+    "item": "Unova Stone",
+    "itemCount": 1,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "pansear": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "simisear": {
+    "candy": 50,
+    "item": "Unova Stone",
+    "itemCount": 1,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "paras": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "parasect": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "parasect": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "passimian": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "patrat": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "watchog": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "pawmi": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "pawmo": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "pawmo": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "pawmot": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": [
+     "Has an evolution quest"
+    ]
+   }
+  }
+ },
+ "pawmot": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "pawniard": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "bisharp": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "pecharunt": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "pelipper": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "perrserker": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "persian": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "persian_alolan": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "petilil": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "lilligant": {
+    "candy": 50,
+    "item": "Sun Stone",
+    "itemCount": 1,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "phanpy": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "donphan": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "phantump": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "trevenant": {
+    "candy": 200,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": [
+     "Free when traded"
+    ]
+   }
+  }
+ },
+ "pheromosa": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "phione": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "pichu": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "pikachu": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "pidgeot": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "pidgeotto": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "pidgeot": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "pidgey": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "pidgeotto": {
+    "candy": 12,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "pidove": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "tranquill": {
+    "candy": 12,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "pignite": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "emboar": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "pikachu": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "raichu": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "pikachu_horizons": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "pikachu_kariyushi": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "pikachu_pop_star": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "pikachu_rock_star": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "pikipek": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "trumbeak": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "piloswine": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "mamoswine": {
+    "candy": 100,
+    "item": "Sinnoh Stone",
+    "itemCount": 1,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "pincurchin": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "pineco": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "forretress": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "pinsir": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "piplup": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "prinplup": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "plusle": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "poipole": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {
+   "naganadel": {
+    "candy": 200,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": [
+     "Has an evolution quest"
+    ]
+   }
+  }
+ },
+ "politoed": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "poliwag": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "poliwhirl": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "poliwhirl": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "politoed": {
+    "candy": 100,
+    "item": "King's Rock",
+    "itemCount": 1,
+    "lure": null,
+    "conditions": []
+   },
+   "poliwrath": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "poliwrath": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "poltchageist": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "sinistcha": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "polteageist": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "ponyta": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "rapidash": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "ponyta_galarian": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "rapidash_galarian": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "poochyena": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "mightyena": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "popplio": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "brionne": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "porygon": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "porygon2": {
+    "candy": 25,
+    "item": "Up-Grade",
+    "itemCount": 1,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "porygon2": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "porygon_z": {
+    "candy": 100,
+    "item": "Sinnoh Stone",
+    "itemCount": 1,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "porygon_z": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "primarina": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "primeape": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "annihilape": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": [
+     "Has an evolution quest"
+    ]
+   }
+  }
+ },
+ "prinplup": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "empoleon": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "probopass": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "psyduck": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "golduck": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "pumpkaboo_average": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "gourgeist_average": {
+    "candy": 200,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": [
+     "Free when traded"
+    ]
+   }
+  }
+ },
+ "pumpkaboo_large": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "gourgeist_large": {
+    "candy": 200,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": [
+     "Free when traded"
+    ]
+   }
+  }
+ },
+ "pumpkaboo_small": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "gourgeist_small": {
+    "candy": 200,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": [
+     "Free when traded"
+    ]
+   }
+  }
+ },
+ "pumpkaboo_super": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "gourgeist_super": {
+    "candy": 200,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": [
+     "Free when traded"
+    ]
+   }
+  }
+ },
+ "pupitar": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "tyranitar": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "purrloin": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "liepard": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "purugly": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "pyroar": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "pyukumuku": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "quagsire": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "quaquaval": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "quaxly": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "quaxwell": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "quaxwell": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "quaquaval": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "quilava": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "typhlosion": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "quilladin": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "chesnaught": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "qwilfish": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "qwilfish_hisuian": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "overqwil": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": [
+     "Has an evolution quest"
+    ]
+   }
+  }
+ },
+ "raboot": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "cinderace": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "rabsca": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "raichu": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "raichu_alolan": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "raikou": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "ralts": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "kirlia": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "rampardos": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "rapidash": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "rapidash_galarian": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "raticate": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "raticate_alolan": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "rattata": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "raticate": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "rattata_alolan": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "raticate_alolan": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "rayquaza": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "regice": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "regidrago": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "regieleki": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "regigigas": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "regirock": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "registeel": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "relicanth": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "rellor": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "rabsca": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "remoraid": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "octillery": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "reshiram": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "reuniclus": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "revavroom": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "rhydon": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "rhyperior": {
+    "candy": 100,
+    "item": "Sinnoh Stone",
+    "itemCount": 1,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "rhyhorn": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "rhydon": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "rhyperior": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "ribombee": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "rillaboom": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "riolu": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "lucario": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "roaringmoon": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "rockruff": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "lycanroc_dusk": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   },
+   "lycanroc_midday": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": [
+     "Evolve during the day"
+    ]
+   },
+   "lycanroc_midnight": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": [
+     "Evolve at night"
+    ]
+   }
+  }
+ },
+ "roggenrola": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "boldore": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "rolycoly": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "carkol": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "rookidee": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "corvisquire": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "roselia": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "roserade": {
+    "candy": 100,
+    "item": "Sinnoh Stone",
+    "itemCount": 1,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "roserade": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "rotom": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "rotom_fan": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "rotom_frost": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "rotom_heat": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "rotom_mow": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "rotom_wash": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "rowlet": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "dartrix": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "rufflet": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "braviary": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "runerigus": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "sableye": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "salamence": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "salandit": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "salazzle": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "salazzle": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "samurott": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "samurott_hisuian": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "sandaconda": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "sandile": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "krokorok": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "sandshrew": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "sandslash": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "sandshrew_alolan": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "sandslash_alolan": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "sandslash": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "sandslash_alolan": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "sandygast": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "palossand": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "sandyshocks": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "sawk": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "sawsbuck": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "scatterbug": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "spewpa": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "sceptile": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "scizor": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "scolipede": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "scorbunny": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "raboot": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "scovillain": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "scrafty": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "scraggy": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "scrafty": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "screamtail": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "scyther": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "scizor": {
+    "candy": 50,
+    "item": "Metal Coat",
+    "itemCount": 1,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "seadra": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "kingdra": {
+    "candy": 100,
+    "item": "Dragon Scale",
+    "itemCount": 1,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "seaking": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "sealeo": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "walrein": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "seedot": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "nuzleaf": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "seel": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "dewgong": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "seismitoad": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "sentret": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "furret": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "serperior": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "servine": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "serperior": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "seviper": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "sewaddle": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "swadloon": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "sharpedo": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "shaymin_land": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "shaymin_sky": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "shedinja": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "shelgon": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "salamence": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "shellder": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "cloyster": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "shellos": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "gastrodon": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "shelmet": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "accelgor": {
+    "candy": 200,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": [
+     "Free when traded"
+    ]
+   }
+  }
+ },
+ "shieldon": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "bastiodon": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "shiftry": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "shiinotic": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "shinx": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "luxio": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "shroodle": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "grafaiai": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "shroomish": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "breloom": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "shuckle": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "shuppet": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "banette": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "sigilyph": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "silcoon": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "beautifly": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "silicobra": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "sandaconda": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "silvally": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "silvally_bug": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "silvally_dark": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "silvally_dragon": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "silvally_electric": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "silvally_fairy": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "silvally_fighting": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "silvally_fire": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "silvally_flying": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "silvally_ghost": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "silvally_grass": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "silvally_ground": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "silvally_ice": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "silvally_poison": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "silvally_psychic": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "silvally_rock": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "silvally_steel": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "silvally_water": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "simipour": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "simisage": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "simisear": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "sinistcha": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "sinistea": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "polteageist": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "sirfetchd": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "sizzlipede": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "centiskorch": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "skarmory": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "skeledirge": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "skiddo": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "gogoat": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "skiploom": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "jumpluff": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "skitty": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "delcatty": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "skorupi": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "drapion": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "skrelp": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "dragalge": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "skuntank": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "skwovet": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "greedent": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "slaking": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "slakoth": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "vigoroth": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "sliggoo": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "goodra": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": "Rainy Lure Module",
+    "conditions": []
+   }
+  }
+ },
+ "slitherwing": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "slowbro": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "slowbro_galarian": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "slowking": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "slowking_galarian": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "slowpoke": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "slowbro": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   },
+   "slowking": {
+    "candy": 50,
+    "item": "King's Rock",
+    "itemCount": 1,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "slowpoke_galarian": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "slowbro_galarian": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": [
+     "Has an evolution quest"
+    ]
+   },
+   "slowking_galarian": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": [
+     "Has an evolution quest"
+    ]
+   }
+  }
+ },
+ "slugma": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "magcargo": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "slurpuff": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "smeargle": {
+  "secondMove": null,
+  "evolutions": {}
+ },
+ "smoliv": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "dolliv": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "smoochum": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "jynx": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "sneasel": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "weavile": {
+    "candy": 100,
+    "item": "Sinnoh Stone",
+    "itemCount": 1,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "sneasel_hisuian": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "sneasler": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": [
+     "Evolve during the day",
+     "Has an evolution quest"
+    ]
+   }
+  }
+ },
+ "sneasler": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "snivy": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "servine": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "snom": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "frosmoth": {
+    "candy": 400,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": [
+     "Evolve at night",
+     "Has an evolution quest"
+    ]
+   }
+  }
+ },
+ "snorlax": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "snorunt": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "froslass": {
+    "candy": 100,
+    "item": "Sinnoh Stone",
+    "itemCount": 1,
+    "lure": null,
+    "conditions": []
+   },
+   "glalie": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "snover": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "abomasnow": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "snubbull": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "granbull": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "sobble": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "drizzile": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "solgaleo": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "solosis": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "duosion": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "solrock": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "spearow": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "fearow": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "spectrier": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "spewpa": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "vivillon": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "spheal": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "sealeo": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "spidops": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "spinarak": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "ariados": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "spinda": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "spiritomb": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "spoink": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "grumpig": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "sprigatito": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "floragato": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "spritzee": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "aromatisse": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": [
+     "Has an evolution quest"
+    ]
+   }
+  }
+ },
+ "squawkabilly": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "squirtle": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "wartortle": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "stakataka": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "stantler": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "staraptor": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "staravia": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "staraptor": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "starly": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "staravia": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "starmie": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "staryu": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "starmie": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "steelix": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "steenee": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "tsareena": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "stonjourner": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "stoutland": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "stufful": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "bewear": {
+    "candy": 400,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "stunfisk": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "stunfisk_galarian": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "stunky": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "skuntank": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "sudowoodo": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "suicune": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "sunflora": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "sunkern": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "sunflora": {
+    "candy": 50,
+    "item": "Sun Stone",
+    "itemCount": 1,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "surskit": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "masquerain": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "swablu": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "altaria": {
+    "candy": 400,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "swadloon": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "leavanny": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "swalot": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "swampert": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "swanna": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "swellow": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "swinub": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "piloswine": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "swirlix": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "slurpuff": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": [
+     "Has an evolution quest"
+    ]
+   }
+  }
+ },
+ "swoobat": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "sylveon": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "tadbulb": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "bellibolt": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "taillow": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "swellow": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "talonflame": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "tandemaus": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "maushold": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "tangela": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "tangrowth": {
+    "candy": 100,
+    "item": "Sinnoh Stone",
+    "itemCount": 1,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "tangrowth": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "tapu_bulu": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "tapu_fini": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "tapu_koko": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "tapu_lele": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "tarountula": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "spidops": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "tatsugiri_curly": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "tatsugiri_droopy": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "tatsugiri_stretchy": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "tauros": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "teddiursa": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "ursaring": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "tentacool": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "tentacruel": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "tentacruel": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "tepig": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "pignite": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "terapagos": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "terrakion": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "thievul": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "throh": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "thundurus_incarnate": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "thundurus_therian": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "thwackey": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "rillaboom": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "timburr": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "gurdurr": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "tinkatink": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "tinkatuff": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "tinkaton": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "tinkatuff": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "tinkaton": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "tirtouga": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "carracosta": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "toedscool": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "toedscruel": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "toedscruel": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "togedemaru": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "togekiss": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "togepi": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "togetic": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "togetic": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "togekiss": {
+    "candy": 100,
+    "item": "Sinnoh Stone",
+    "itemCount": 1,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "torchic": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "combusken": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "torkoal": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "tornadus_incarnate": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "tornadus_therian": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "torracat": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "incineroar": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "torterra": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "totodile": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "croconaw": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "toucannon": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "toxapex": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "toxel": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "toxtricity_amped": {
+    "candy": 400,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   },
+   "toxtricity_low_key": {
+    "candy": 400,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "toxicroak": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "toxtricity": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "toxtricity_amped": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "toxtricity_low_key": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "tranquill": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "unfezant": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "trapinch": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "vibrava": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "treecko": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "grovyle": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "trevenant": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "tropius": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "trubbish": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "garbodor": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "trumbeak": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "toucannon": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "tsareena": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "turtonator": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "turtwig": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "grotle": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "tympole": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "palpitoad": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "tynamo": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "eelektrik": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "type_null": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {
+   "silvally": {
+    "candy": 200,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "typhlosion": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "typhlosion_hisuian": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "tyranitar": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "tyrantrum": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "tyrogue": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "hitmonchan": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   },
+   "hitmonlee": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   },
+   "hitmontop": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "tyrunt": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "tyrantrum": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": [
+     "Evolve during the day"
+    ]
+   }
+  }
+ },
+ "umbreon": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "unfezant": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "unown": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "ursaluna": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "ursaring": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "ursaluna": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "urshifu_rapid_strike": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "urshifu_single_strike": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "uxie": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "vanillish": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "vanilluxe": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "vanillite": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "vanillish": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "vanilluxe": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "vaporeon": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "varoom": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "revavroom": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "veluza": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "venipede": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "whirlipede": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "venomoth": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "venonat": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "venomoth": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "venusaur": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "vespiquen": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "vibrava": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "flygon": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "victini": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "victreebel": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "vigoroth": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "slaking": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "vikavolt": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "vileplume": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "virizion": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "vivillon": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "volbeat": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "volcanion": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "volcarona": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "voltorb": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "electrode": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "voltorb_hisuian": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "electrode_hisuian": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "vullaby": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "mandibuzz": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "vulpix": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "ninetales": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "vulpix_alolan": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "ninetales_alolan": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "wailmer": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "wailord": {
+    "candy": 400,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "wailord": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "walrein": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "wartortle": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "blastoise": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "watchog": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "wattrel": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "kilowattrel": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "weavile": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "weedle": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "kakuna": {
+    "candy": 12,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "weepinbell": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "victreebel": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "weezing": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "weezing_galarian": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "whimsicott": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "whirlipede": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "scolipede": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "whiscash": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "whismur": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "loudred": {
+    "candy": 12,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "wigglytuff": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "wiglett": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "wugtrio": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "wimpod": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "golisopod": {
+    "candy": 400,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "wingull": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "pelipper": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "wishiwashi": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "wishiwashi_school": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "wishiwashi_solo": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "wobbuffet": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "woobat": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "swoobat": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": [
+     "Has an evolution quest"
+    ]
+   }
+  }
+ },
+ "wooloo": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "dubwool": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "wooper": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "quagsire": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "wooper_paldean": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "clodsire": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "wormadam_plant": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "wormadam_sandy": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "wormadam_trash": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {}
+ },
+ "wugtrio": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "wurmple": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "cascoon": {
+    "candy": 12,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   },
+   "silcoon": {
+    "candy": 12,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "wynaut": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "wobbuffet": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "wyrdeer": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "xatu": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "xerneas": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "xurkitree": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "yamask": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "cofagrigus": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "yamask_galarian": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "runerigus": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": [
+     "Has an evolution quest"
+    ]
+   }
+  }
+ },
+ "yamper": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "boltund": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "yanma": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {
+   "yanmega": {
+    "candy": 100,
+    "item": "Sinnoh Stone",
+    "itemCount": 1,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "yanmega": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "yungoos": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "gumshoos": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": [
+     "Evolve during the day"
+    ]
+   }
+  }
+ },
+ "yveltal": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "zacian_crowned_sword": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "zacian_hero": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "zamazenta_crowned_shield": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "zamazenta_hero": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "zangoose": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "zapdos": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "zapdos_galarian": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "zarude": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "zebstrika": {
+  "secondMove": {
+   "stardust": 50000,
+   "candy": 50
+  },
+  "evolutions": {}
+ },
+ "zekrom": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "zeraora": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ },
+ "zigzagoon": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "linoone": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "zigzagoon_galarian": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "linoone_galarian": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "zoroark": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "zoroark_hisuian": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {}
+ },
+ "zorua": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "zoroark": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "zorua_hisuian": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "zoroark_hisuian": {
+    "candy": 50,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "zubat": {
+  "secondMove": {
+   "stardust": 10000,
+   "candy": 25
+  },
+  "evolutions": {
+   "golbat": {
+    "candy": 25,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "zweilous": {
+  "secondMove": {
+   "stardust": 75000,
+   "candy": 75
+  },
+  "evolutions": {
+   "hydreigon": {
+    "candy": 100,
+    "item": null,
+    "itemCount": 0,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "zygarde": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {
+   "zygarde_complete": {
+    "candy": 0,
+    "item": "Beans",
+    "itemCount": 200,
+    "lure": null,
+    "conditions": []
+   }
+  }
+ },
+ "zygarde_complete": {
+  "secondMove": {
+   "stardust": 100000,
+   "candy": 100
+  },
+  "evolutions": {}
+ }
+}
