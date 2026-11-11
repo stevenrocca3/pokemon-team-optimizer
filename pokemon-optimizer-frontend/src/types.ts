@@ -210,6 +210,24 @@ export interface TeamResult
     winRate : WinRate;
     toughest : string[];      // PvPoke meta IDs, e.g. "annihilape_shadow"
     suggestions : Suggestion[];   // 5 meta swaps when it wins under 50%, best first; empty otherwise
+    coverage : TeamCoverage;
+    threats : Threat[];           // the 5 meta Pokémon it does worst against, worst first
+}
+
+// How a team covers the meta: its best answer's average battle rating per meta Pokémon (500 = even),
+// and how many meta Pokémon some member beats
+export interface TeamCoverage
+{
+    rating : number;
+    answered : number;
+    metaSize : number;
+}
+
+export interface Threat
+{
+    opponent : string;        // PvPoke meta ID
+    rating : number;          // the team's best 1v1 rating against it; under 500 loses
+    answer : string;          // species ID of the member that rates best against it
 }
 
 // Where a suggested swap plays best: shields up (Lead), one each (Safe Swap), none left (Switcher/Closer)

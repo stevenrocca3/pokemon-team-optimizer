@@ -552,6 +552,8 @@ function TeamCard({
   bestForBudget: boolean
 }) {
   const metaName = useMetaName()
+  const species = useSpecies()
+  const nameOf = (id: string) => (species.status === 'ready' ? species.byId.get(id)?.name : undefined) ?? id
   const { rate, low, high, battles } = team.winRate
   const cost = teamCost(team.members)
   const known = team.members.length - cost.unknown
@@ -602,15 +604,46 @@ function TeamCard({
               )}
             </p>
           )}
-          <p className="mt-2 text-sm text-subtle">
-            Toughest matchups:{' '}
-            {team.toughest.map((id, i) => (
-              <span key={id}>
-                {i > 0 && ', '}
-                <span className="text-ink-soft">{metaName(id)}</span>
+          {team.coverage && (
+            <p className="mt-3 text-sm text-ink-soft">
+              Beats <span className="font-semibold tabular-nums text-ink">{team.coverage.answered}</span> of{' '}
+              {team.coverage.metaSize} meta Pokémon
+              <span className="text-subtle">
+                {' '}
+                · coverage <span className="tabular-nums">{Math.round(team.coverage.rating)}</span>
               </span>
-            ))}
-          </p>
+            </p>
+          )}
+          {team.threats?.length ? (
+            <div className="mt-2 text-sm">
+              <p id={`threats-${rank}`} className="text-subtle">Toughest matchups</p>
+              <ul aria-labelledby={`threats-${rank}`} className="mt-1 flex flex-wrap gap-1.5">
+                {team.threats.map((threat) => (
+                  <li
+                    key={threat.opponent}
+                    title={`Your best answer, ${nameOf(threat.answer)}, rates ${Math.round(threat.rating)} against it (500 is even)`}
+                    className="rounded-md bg-canvas/50 px-2 py-1 text-xs ring-1 ring-line"
+                  >
+                    <span className="text-ink-soft">{metaName(threat.opponent)}</span>{' '}
+                    <span className={`font-semibold tabular-nums ${threat.rating < 500 ? 'text-tier-critical' : 'text-ink'}`}>
+                      {Math.round(threat.rating)}
+                    </span>
+                    <span className="text-subtle"> · {nameOf(threat.answer)}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : (
+            <p className="mt-2 text-sm text-subtle">
+              Toughest matchups:{' '}
+              {team.toughest.map((id, i) => (
+                <span key={id}>
+                  {i > 0 && ', '}
+                  <span className="text-ink-soft">{metaName(id)}</span>
+                </span>
+              ))}
+            </p>
+          )}
           <SwapSuggestions suggestions={team.suggestions ?? []} members={team.members} />
         </div>
       </div>

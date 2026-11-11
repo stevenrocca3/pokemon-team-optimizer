@@ -9,6 +9,10 @@ import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
 
+import com.pokemonoptimizer.pokemon_optimizer_backend.battle.Battle;
+import com.pokemonoptimizer.pokemon_optimizer_backend.battle.Combatant;
+import com.pokemonoptimizer.pokemon_optimizer_backend.battle.Moveset;
+import com.pokemonoptimizer.pokemon_optimizer_backend.battle.ShieldScenario;
 import com.pokemonoptimizer.pokemon_optimizer_backend.calculator.PowerUpCost;
 import com.pokemonoptimizer.pokemon_optimizer_backend.cups.Cup;
 import com.pokemonoptimizer.pokemon_optimizer_backend.cups.CupFilter;
@@ -342,14 +346,92 @@ public class TeamBuilderTest
     @Test
     public void onlyTheTeamUnderHalfGetsSuggestions()
     {   // the first 12 Great League meta species: the best Team wins 58.8% here, the second 46.3%
-        List<OwnedSpecies> species = new MetaLookup(SPECIES, MOVES).meta(League.GREAT).stream().limit(12)
-            .map(p -> new OwnedSpecies(p.combatant().species().speciesId(), p.combatant().shadow())).toList();
-
-        List<TeamResult> teams = BUILDER.build(League.GREAT, List.of(), species).teams();
+        List<TeamResult> teams = BUILDER.build(League.GREAT, List.of(), twelveMetaSpecies()).teams();
 
         assertTrue(teams.get(0).winRate().rate() >= 0.5, "best wins " + teams.get(0).winRate().rate());
         assertTrue(teams.get(0).suggestions().isEmpty());
         assertTrue(teams.get(1).winRate().rate() < 0.5, "second wins " + teams.get(1).winRate().rate());
         assertEquals(5, teams.get(1).suggestions().size());
+    }
+
+    /** The first 12 Great League meta species, as checklist ticks. */
+    private static List<OwnedSpecies> twelveMetaSpecies()
+    {
+        return new MetaLookup(SPECIES, MOVES).meta(League.GREAT).stream().limit(12)
+            .map(p -> new OwnedSpecies(p.combatant().species().speciesId(), p.combatant().shadow())).toList();
+    }
+
+    // #113: the real search returns 5 Teams, and simulates at least that many finalists to pick them from
+    @Test
+    public void theRealSearchReturnsFiveTeams()
+    {
+        assertEquals(5, TeamBuilder.Settings.DEFAULT.results());
+        assertTrue(TeamBuilder.Settings.DEFAULT.teamsToSimulate() > TeamBuilder.Settings.DEFAULT.results());
+    }
+
+    // #113: 5 different Teams, best odds first, each with its coverage of the meta and its 5 worst matchups
+    @Test
+    public void fiveScoredTeams()
+    {
+        TeamBuilder five = new TeamBuilder(SPECIES, MOVES, new MetaLookup(SPECIES, MOVES),
+            new GoodIvs(SPECIES, new SuggestedMovesets(SPECIES)), new TeamBuilder.Settings(8, 8, 8, 40, 80, 5, 7));
+
+        List<TeamResult> teams = five.build(League.GREAT, List.of(), twelveMetaSpecies()).teams();
+
+        assertEquals(5, teams.size());
+        assertEquals(5, teams.stream().map(TeamBuilderTest::species).distinct().count());
+        for (int t = 0; t < teams.size(); t++)
+        {
+            TeamResult team = teams.get(t);
+            if (t > 0)
+            {
+                assertTrue(team.winRate().rate() <= teams.get(t - 1).winRate().rate());
+            }
+            assertEquals(44, team.coverage().metaSize());
+            assertEquals(5, team.threats().size());
+            for (int k = 1; k < team.threats().size(); k++)
+            {
+                assertTrue(team.threats().get(k).rating() >= team.threats().get(k - 1).rating(), "worst first");
+            }
+            assertEquals(team.toughest(), team.threats().stream().limit(3).map(Threat::opponent).toList());
+            for (Threat threat : team.threats())
+            {
+                assertTrue(species(team).contains(threat.answer()), threat.answer() + " isn't on the Team");
+            }
+        }
+    }
+
+    // #113: coverage is each meta Pokémon's best answer on the Team, worked out here battle by battle at 0, 1 and 2 shields
+    @Test
+    public void coverageIsTheBestAnswerToEachMetaPokemon()
+    {
+        List<MetaPokemon> meta = new MetaLookup(SPECIES, MOVES).meta(League.GREAT);
+        TeamResult team = BUILDER.build(League.GREAT, List.of(), twelveMetaSpecies()).teams().get(0);
+
+        double total = 0;
+        int answered = 0;
+        for (MetaPokemon opponent : meta)
+        {
+            double best = 0;
+            for (TeamMember member : team.members())
+            {
+                Combatant combatant = new Combatant(SPECIES.findById(member.speciesId()).orElseThrow(), member.atkIv(), member.defIv(),
+                    member.staIv(), member.level(), member.shadow());
+                Moveset moveset = new Moveset(MOVES.findById(member.fastMove()).orElseThrow(),
+                    member.chargedMoves().stream().map(id -> MOVES.findById(id).orElseThrow()).toList());
+                double rating = 0;
+                for (int shields : new int[] { 0, 1, 2 })
+                {
+                    rating += Battle.simulate(combatant, moveset, opponent.combatant(), opponent.moveset(),
+                        new ShieldScenario(shields, shields), League.GREAT.battleCp()).ratingA();
+                }
+                best = Math.max(best, rating / 3);
+            }
+            total += best;
+            answered += best > 500 ? 1 : 0;
+        }
+
+        assertEquals(Math.round(total / meta.size() * 10) / 10.0, team.coverage().rating());
+        assertEquals(answered, team.coverage().answered());
     }
 }
