@@ -4,6 +4,7 @@ import { getAnalyticsSummary } from '../api'
 import { PageHeader } from '../components/PageHeader'
 import { usePageTitle } from '../lib/page-title'
 import { AnalyticsDashboard } from '../analysis/AnalyticsDashboard'
+import { useAnalysisJob } from '../analysis/analysis-job'
 import { GuestAnalytics } from '../analysis/GuestAnalytics'
 import type { AnalyticsSummary } from '../types'
 
@@ -14,6 +15,8 @@ type Load =
 export function AnalyticsPage() {
   usePageTitle('Battle Analytics')
   const [load, setLoad] = useState<Load>({ status: 'loading' })
+  // a battle saved while the page is open (the 10th unlocks the rank) brings fresh numbers, without a loading flash
+  const { savedBattles } = useAnalysisJob()
 
   useEffect(() => {
     let live = true
@@ -23,7 +26,7 @@ export function AnalyticsPage() {
     return () => {
       live = false
     }
-  }, [])
+  }, [savedBattles])
 
   return (
     <div className="mx-auto max-w-5xl px-4 pb-24">

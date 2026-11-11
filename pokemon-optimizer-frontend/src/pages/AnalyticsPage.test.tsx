@@ -4,7 +4,8 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { cleanup, render, screen, within } from '@testing-library/react'
 import { MemoryRouter } from 'react-router'
 import { AnalyticsPage } from './AnalyticsPage'
-import { json } from '../analysis/test-helpers'
+import { FakeEventSource, JOB, json, status } from '../analysis/test-helpers'
+import { AnalysisJobProvider } from '../analysis/AnalysisJobProvider'
 import { playerAnalytics } from '../analysis/analytics-fixture'
 import type { AnalyticsSummary } from '../types'
 
@@ -128,6 +129,53 @@ describe('AnalyticsPage', () => {
     renderWith(playerAnalytics({ battles: 0, history: [], topTeams: [] }))
     expect(await screen.findByText(/No battles saved yet/)).toBeTruthy()
     expect(screen.getByRole('link', { name: /analyze a battle/i }).getAttribute('href')).toBe('/analyze')
+  })
+
+  // Issue #125: the lock lifts by itself. The dashboard is open at 9 of 10 when the 10th battle finishes; once it's
+  // saved to the history, the dashboard asks for the summary again and the rank comes out unlocked.
+  it('unlocks the rank when the 10th battle is saved', async () => {
+    vi.stubGlobal('matchMedia', (query: string) => ({ matches: false, media: query }))
+    localStorage.setItem(
+      'dexpresso.analysis.job',
+      JSON.stringify({
+        jobId: JOB,
+        fileName: 'set.mp4',
+        status: 'auditing_turns',
+        progress: 94,
+        message: '',
+        score: null,
+        tier: null,
+        error: null,
+        notified: false,
+      }),
+    )
+    let summaries = 0
+    const locked = playerAnalytics({ battles: 9, rank: { locked: true, battles: 9, required: 10, remaining: 1 } })
+    const unlocked = playerAnalytics({ battles: 10 })
+    FakeEventSource.all = []
+    vi.stubGlobal('EventSource', FakeEventSource)
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async (url: string) => {
+        if (url === '/api/v1/analytics/summary') return json(summaries++ === 0 ? locked : unlocked)
+        if (url === '/api/v1/battles') return new Response(null, { status: 201 })
+        return json({ detail: 'not found' }, 404)
+      }),
+    )
+    render(
+      <MemoryRouter>
+        <AnalysisJobProvider>
+          <AnalyticsPage />
+        </AnalysisJobProvider>
+      </MemoryRouter>,
+    )
+    expect(await screen.findByText('9 / 10 battles analyzed — 1 more required')).toBeTruthy()
+
+    FakeEventSource.latest().emit(status('complete', 100, { score: 80 }))
+
+    expect(await screen.findByText('Ace / Mid-Ladder Execution')).toBeTruthy()
+    expect(screen.queryByText('Submit more battle videos to receive your score')).toBeNull()
+    expect(summaries).toBe(2)
   })
 
   // If the summary can't be loaded, the page says so instead of staying blank.

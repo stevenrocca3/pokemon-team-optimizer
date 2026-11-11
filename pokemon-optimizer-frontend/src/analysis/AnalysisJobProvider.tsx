@@ -21,6 +21,7 @@ export function AnalysisJobProvider({ children }: { children: ReactNode }) {
   const [toast, setToast] = useState<AnalysisJobState['toast']>(null)
   // jobs already reported to battle history this page load (a completion can arrive twice: event + status check)
   const recorded = useRef(new Set<string>())
+  const [savedBattles, setSavedBattles] = useState(0)
 
   const jobRef = useRef(job)
   useEffect(() => {
@@ -62,7 +63,9 @@ export function AnalysisJobProvider({ children }: { children: ReactNode }) {
       // fetches the result itself; reporting twice is harmless, a failure is retried on the next completion seen.
       if (!recorded.current.has(status.job_id)) {
         recorded.current.add(status.job_id)
-        recordBattle(status.job_id, guestToken()).catch(() => recorded.current.delete(status.job_id))
+        recordBattle(status.job_id, guestToken())
+          .then(() => setSavedBattles((n) => n + 1))
+          .catch(() => recorded.current.delete(status.job_id))
       }
     }
     if (announce) setToast({ jobId: status.job_id, score: status.score! })
@@ -120,8 +123,9 @@ export function AnalysisJobProvider({ children }: { children: ReactNode }) {
       pastMatches,
       toast,
       closeToast,
+      savedBattles,
     }),
-    [job, start, clear, pastMatches, toast, closeToast],
+    [job, start, clear, pastMatches, toast, closeToast, savedBattles],
   )
   return <AnalysisJobContext.Provider value={value}>{children}</AnalysisJobContext.Provider>
 }
