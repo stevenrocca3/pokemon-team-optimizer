@@ -5,6 +5,8 @@ The Legend benchmark score: every audit's errors, the spec's deduction formula, 
 
 floored at 0. Suboptimal switches are switch lag plus missed catches. The same turn_log always gives the same report.
 """
+from collections.abc import Callable
+
 from battle_analysis.analysis.alignment import audit_alignment
 from battle_analysis.analysis.bait import audit_move_choice
 from battle_analysis.analysis.tactics import audit_catches, audit_shields, audit_switch_lag
@@ -36,12 +38,28 @@ def _plural(n: int, word: str) -> str:
     return f'{n} {word}' + ('' if n == 1 else 's')
 
 
-def analyze_match(log: dict) -> dict:
+AUDIT_STAGES = {
+    'alignment': 'Auditing fast move turns...',
+    'shields': 'Evaluating shield decisions...',
+    'switches': 'Checking switch timing...',
+    'charges': 'Reviewing charged move choices...',
+    'score': 'Scoring against the Legend benchmark...',
+}
+
+
+def analyze_match(log: dict, progress: Callable[[str], None] | None = None) -> dict:
+    """The report for a turn_log. `progress(line)` hears each audit's status line just before it runs."""
+    say = progress or (lambda line: None)
+    say(AUDIT_STAGES['alignment'])
     alignment = audit_alignment(log)
+    say(AUDIT_STAGES['shields'])
     shields = audit_shields(log)
+    say(AUDIT_STAGES['switches'])
     lag = audit_switch_lag(log)
     catches = audit_catches(log)
+    say(AUDIT_STAGES['charges'])
     choice = audit_move_choice(log)
+    say(AUDIT_STAGES['score'])
 
     findings = []
 

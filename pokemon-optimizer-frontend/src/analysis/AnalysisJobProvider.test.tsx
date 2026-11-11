@@ -35,8 +35,10 @@ function renderApp(path = '/analyze') {
 
 const video = () => new File(['not really a video'], 'gbl-set-3.mp4', { type: 'video/mp4' })
 
+/** Uploads a video on /analyze, then (if it was accepted) steps to the home page: the widget stays off /analyze. */
 async function uploadVideo(user = userEvent.setup()) {
   await user.upload(screen.getByLabelText(/battle recording/i), video())
+  if (FakeEventSource.all.length > 0) await user.click(screen.getByRole('link', { name: 'Home' }))
   return user
 }
 
