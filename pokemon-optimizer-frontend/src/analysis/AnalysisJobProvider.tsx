@@ -12,6 +12,7 @@ import { loadJob, loadMatches, saveJob, saveMatches, withMatch } from './job-sto
 export function AnalysisJobProvider({ children }: { children: ReactNode }) {
   const [job, setJob] = useState<ActiveJob | null>(loadJob)
   const [pastMatches, setPastMatches] = useState<PastMatch[]>(loadMatches)
+  const [toast, setToast] = useState<AnalysisJobState['toast']>(null)
 
   const jobRef = useRef(job)
   useEffect(() => {
@@ -23,6 +24,8 @@ export function AnalysisJobProvider({ children }: { children: ReactNode }) {
   const apply = useCallback((status: AnalysisStatus) => {
     const current = jobRef.current
     if (!current || current.jobId !== status.job_id) return
+    // the toast shows once per job: live, or on the first visit after it finished in a closed tab
+    const announce = status.status === 'complete' && status.score !== null && !current.notified
     setJob((prev) =>
       prev && prev.jobId === status.job_id
         ? {
@@ -33,6 +36,7 @@ export function AnalysisJobProvider({ children }: { children: ReactNode }) {
             score: status.score,
             tier: status.tier,
             error: status.error,
+            notified: prev.notified || announce,
           }
         : prev,
     )
@@ -46,6 +50,7 @@ export function AnalysisJobProvider({ children }: { children: ReactNode }) {
       }
       setPastMatches((prev) => withMatch(prev, match))
     }
+    if (announce) setToast({ jobId: status.job_id, score: status.score! })
   }, [])
 
   // one connection per running job, opened again only if the job changes (not on page changes)
@@ -89,6 +94,7 @@ export function AnalysisJobProvider({ children }: { children: ReactNode }) {
   )
 
   const clear = useCallback(() => setJob(null), [])
+  const closeToast = useCallback(() => setToast(null), [])
 
   const value = useMemo<AnalysisJobState>(
     () => ({
@@ -96,10 +102,10 @@ export function AnalysisJobProvider({ children }: { children: ReactNode }) {
       start,
       clear,
       pastMatches,
-      toast: null,
-      closeToast: () => {},
+      toast,
+      closeToast,
     }),
-    [job, start, clear, pastMatches],
+    [job, start, clear, pastMatches, toast, closeToast],
   )
   return <AnalysisJobContext.Provider value={value}>{children}</AnalysisJobContext.Provider>
 }
