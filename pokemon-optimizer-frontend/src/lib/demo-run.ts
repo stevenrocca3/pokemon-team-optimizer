@@ -1,6 +1,6 @@
 /**
  * The home page's phone demo: a Team Builder run played back on a loop. The numbers are a real result, saved from
- * POST /api/team-builder with the eight Popular Pokémon ticked on the checklist (so each battled with good Great
+ * POST /api/team-builder with the eight Pokémon in `box` ticked on the checklist (so each battled with good Great
  * League IVs and PvPoke's moves). Rerun it and update this when the meta moves on.
  */
 export const DEMO_RUN = {

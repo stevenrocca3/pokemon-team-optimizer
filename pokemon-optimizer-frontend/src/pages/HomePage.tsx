@@ -10,25 +10,13 @@ import { ProofStrip } from "../components/ProofStrip";
 import { DEMO_RUN, type DemoPhase } from "../lib/demo-run";
 import { useScrollVariable } from "../lib/motion";
 import { useSpecies } from "../species/species-context";
-import { formatDex } from "../lib/species";
-import type { SpeciesOption } from "../types";
 import { usePageTitle } from '../lib/page-title'
 
-// Staples of GO Battle League — quick ways into the app
-const POPULAR_IDS = [
-  "medicham",
-  "azumarill",
-  "registeel",
-  "skarmory",
-  "altaria",
-  "trevenant",
-  "lickitung",
-  "giratina_altered",
-];
+// Staples of GO Battle League, floating under the hero search: quick ways into the app
+const POPULAR_IDS = ["medicham", "azumarill", "registeel", "skarmory", "altaria"];
 
 const SECTIONS = [
   { id: "top", label: "Search" },
-  { id: "popular", label: "Popular" },
   { id: "menu", label: "Watch it brew" },
   { id: "brew", label: "How teams are built" },
   { id: "glossary", label: "Glossary" },
@@ -107,7 +95,7 @@ export function HomePage() {
             className="parallax-fast mt-8 flex flex-wrap justify-center gap-3 sm:gap-5"
             aria-label="Popular picks"
           >
-            {popular.slice(0, 5).map(({ id, option }, i) => (
+            {popular.map(({ id, option }, i) => (
               <li
                 key={id}
                 className={`animate-rise ${i === 4 ? 'hidden sm:block' : ''}`}
@@ -134,7 +122,7 @@ export function HomePage() {
         <Ridge />
 
         <a
-          href="#popular"
+          href="#menu"
           className="hero-cue absolute bottom-6 left-1/2 z-10 -translate-x-1/2 text-xs font-semibold tracking-[0.25em] text-ink-soft uppercase hover:text-ink"
         >
           Scroll
@@ -148,26 +136,7 @@ export function HomePage() {
       {/* The real totals, once they're big enough to be worth showing */}
       <ProofStrip />
 
-      {/* 2. Popular */}
-      <section id="popular" className="scroll-mt-16 bg-canvas py-24">
-        <div className="mx-auto max-w-6xl px-4">
-          <Reveal>
-            <SectionTitle
-              eyebrow="On the menu today"
-              title="Popular in GO Battle League"
-            />
-          </Reveal>
-          <ul className="mt-12 grid grid-cols-2 gap-4 sm:grid-cols-4 sm:gap-6">
-            {popular.map(({ id, option }, i) => (
-              <Reveal as="li" key={id} delayMs={(i % 4) * 90}>
-                <PopularCard id={id} option={option} />
-              </Reveal>
-            ))}
-          </ul>
-        </div>
-      </section>
-
-      {/* 3. The Team Builder itself, running on a pixel phone */}
+      {/* 2. The Team Builder itself, running on a pixel phone */}
       <section id="menu" className="scroll-mt-16 py-24">
         <div className="mx-auto max-w-6xl px-4">
           <Reveal>
@@ -220,7 +189,7 @@ export function HomePage() {
         </div>
       </section>
 
-      {/* 4. How the Team Builder brews */}
+      {/* 3. How the Team Builder brews */}
       <section
         id="brew"
         className="scroll-mt-16 border-y border-line bg-surface/90 py-24"
@@ -238,7 +207,7 @@ export function HomePage() {
         </div>
       </section>
 
-      {/* 5. Glossary */}
+      {/* 4. Glossary */}
       <section id="glossary" className="scroll-mt-16 bg-canvas py-24">
         <div className="mx-auto max-w-6xl px-4">
           <Reveal>
@@ -262,7 +231,7 @@ export function HomePage() {
         </div>
       </section>
 
-      {/* 6. Closing call */}
+      {/* 5. Closing call */}
       <section className="relative py-28">
         <Reveal className="mx-auto max-w-3xl px-4 text-center">
           <p className="eyebrow tracking-[0.3em] text-brand">
@@ -308,36 +277,6 @@ function SectionTitle({
     </div>
   );
 }
-
-
-function PopularCard({ id, option }: { id: string; option?: SpeciesOption }) {
-  return (
-    <Link
-      to={`/species/${id}`}
-      className="group card block overflow-hidden transition duration-300 hover:-translate-y-1.5 hover:ring-brand/70"
-    >
-      <div className="relative aspect-square overflow-hidden bg-gradient-to-b from-raised to-surface p-5">
-        <div
-          className="absolute inset-x-6 bottom-4 h-6 rounded-full bg-black/40 blur-md transition group-hover:inset-x-10"
-          aria-hidden="true"
-        />
-        <PokemonArt
-          icon
-          dex={option?.dex}
-          alt={option?.name ?? ""}
-          className="relative h-full w-full transition duration-500 group-hover:-translate-y-2 group-hover:scale-110"
-        />
-      </div>
-      <div className="flex items-baseline justify-between gap-2 p-4">
-        <span className="truncate font-semibold">{option?.name ?? "…"}</span>
-        <span className="text-xs tabular-nums text-subtle">
-          {option ? formatDex(option.dex) : ""}
-        </span>
-      </div>
-    </Link>
-  );
-}
-
 
 
 /**
