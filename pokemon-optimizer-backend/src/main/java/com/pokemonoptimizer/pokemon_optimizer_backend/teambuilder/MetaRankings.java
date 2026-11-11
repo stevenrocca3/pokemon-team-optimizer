@@ -38,8 +38,7 @@ public class MetaRankings
                 OwnedSpecies owned = OwnedSpecies.ofPvpokeId(id.asString());
                 SpeciesType species = speciesLookup.findById(owned.speciesId())
                     .orElseThrow(() -> new IllegalStateException("Ranked Pokémon " + id.asString() + " isn't in the species data"));
-                // a single-typed species has "none" as its second type
-                top.add(new MetaPick(owned.speciesId(), owned.shadow(), species.types().stream().filter(t -> !"none".equals(t)).toList()));
+                top.add(MetaPick.of(owned, species));
             }
             topByLeague.put(league, List.copyOf(top));
         }

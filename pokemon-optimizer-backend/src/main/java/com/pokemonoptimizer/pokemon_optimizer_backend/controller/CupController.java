@@ -13,17 +13,21 @@ import com.pokemonoptimizer.pokemon_optimizer_backend.cups.Cup;
 import com.pokemonoptimizer.pokemon_optimizer_backend.cups.CupCatalog;
 import com.pokemonoptimizer.pokemon_optimizer_backend.dto.CupSummary;
 import com.pokemonoptimizer.pokemon_optimizer_backend.dto.OwnedSpecies;
+import com.pokemonoptimizer.pokemon_optimizer_backend.gamemaster.SpeciesLookup;
+import com.pokemonoptimizer.pokemon_optimizer_backend.teambuilder.MetaPick;
 
-/** The live Cups from PvPoke's data, and each one's meta for the checklist. */
+/** The live Cups from PvPoke's data, and each one's meta for the checklist's Cups tab (#117), with types. */
 @RestController
 @RequestMapping("/api")
 public class CupController
 {
     private final CupCatalog cups;
+    private final SpeciesLookup species;
 
-    public CupController(CupCatalog cups)
+    public CupController(CupCatalog cups, SpeciesLookup species)
     {
         this.cups = cups;
+        this.species = species;
     }
 
     @GetMapping("/cups")
@@ -35,9 +39,13 @@ public class CupController
     }
 
     @GetMapping("/meta/cup/{key}")
-    public List<OwnedSpecies> meta(@PathVariable String key)
+    public List<MetaPick> meta(@PathVariable String key)
     {
         Cup cup = cups.find(key).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "That Cup isn't running any more"));
-        return cup.meta().stream().map(m -> OwnedSpecies.ofPvpokeId(m.id())).toList();
+        // the Cup was built from the species data, so every one of its Pokémon is in it
+        return cup.meta().stream()
+            .map(m -> OwnedSpecies.ofPvpokeId(m.id()))
+            .flatMap(owned -> species.findById(owned.speciesId()).map(s -> MetaPick.of(owned, s)).stream())
+            .toList();
     }
 }

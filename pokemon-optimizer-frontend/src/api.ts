@@ -92,6 +92,13 @@ export async function getMeta(league: TeamBuilderLeague): Promise<OwnedSpecies[]
     return await response.json();
 }
 
+/** A live Cup's meta for the checklist's Cups tab (#117), with types. */
+export async function getCupMeta(cupKey: string): Promise<MetaPick[]>
+{
+    const response = await apiFetch(`/api/meta/cup/${encodeURIComponent(cupKey)}`);
+    return await response.json();
+}
+
 /** The Cups running now, from PvPoke's data (refreshed nightly on the server). */
 export async function getCups(): Promise<CupSummary[]>
 {
