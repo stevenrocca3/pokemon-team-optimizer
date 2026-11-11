@@ -9,3 +9,5 @@ uvicorn[standard]==0.54.0
 python-multipart==0.0.33
 celery==5.7.0
 redis==8.1.0
+# kombu's Redis transport imports it without declaring it
+packaging==26.3

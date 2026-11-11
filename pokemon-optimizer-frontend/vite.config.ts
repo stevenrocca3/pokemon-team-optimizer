@@ -48,6 +48,10 @@ export default defineConfig({
   },
   server: {
     proxy: {
+      // the battle analysis service (uvicorn battle_analysis.service.api:app --port 8090); listed first, so it wins
+      '/api/v1/analyze': {
+        target: 'http://localhost:8090',
+      },
       '/api': {
         target: 'http://localhost:8081',
       },

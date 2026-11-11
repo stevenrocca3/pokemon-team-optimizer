@@ -12,6 +12,11 @@ import { NotFoundPage } from './pages/NotFoundPage'
 import { Feedback } from './components/Feedback'
 import { PrivacyPage, TermsPage } from './pages/LegalPages'
 import { usePageViews } from './lib/analytics'
+import { AnalysisWidget } from './analysis/AnalysisWidget'
+import { AnalysisToast } from './analysis/AnalysisToast'
+import { AnalyzePage } from './pages/AnalyzePage'
+import { MatchesPage } from './pages/MatchesPage'
+import { MatchPage } from './pages/MatchPage'
 
 function App() {
   usePageViews()
@@ -62,6 +67,9 @@ function App() {
                   </MovesProvider>
                 }
               />
+              <Route path="/analyze" element={<AnalyzePage />} />
+              <Route path="/matches" element={<MatchesPage />} />
+              <Route path="/match/:jobId" element={<MatchPage />} />
               <Route path="/privacy" element={<PrivacyPage />} />
               <Route path="/terms" element={<TermsPage />} />
               <Route path="*" element={<NotFoundPage />} />
@@ -84,6 +92,8 @@ function App() {
             </p>
           </footer>
           <Feedback variant="corner" />
+          <AnalysisWidget />
+          <AnalysisToast />
         </div>
       </CollectionProvider>
     </SpeciesProvider>
