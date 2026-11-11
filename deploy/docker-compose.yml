@@ -37,6 +37,8 @@ services:
       GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
       # Caddy puts the visitor's real IP here; rate limits are per IP
       APP_CLIENT_IP_HEADER: X-Real-IP
+      # battle history: finished analyses are fetched from the analysis service over the private network
+      APP_ANALYSIS_URL: http://analysis-api:8090
     # no ports: Caddy is the only way in
 
   # the job queue and job status for battle analysis; append-only, so queued jobs survive a restart

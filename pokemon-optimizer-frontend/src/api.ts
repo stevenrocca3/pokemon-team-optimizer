@@ -235,6 +235,26 @@ export async function getAnalysisResult(jobId: string): Promise<AnalysisResult>
     return await response.json();
 }
 
+/** Saves a finished analysis to battle history (#120): the account's when logged in, else under the guest token. */
+export async function recordBattle(jobId: string, guestToken: string | null): Promise<void>
+{
+    await apiFetch('/api/v1/battles', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', ...csrfHeader(), ...(guestToken ? { 'X-Guest-Token': guestToken } : {}) },
+        body: JSON.stringify({ jobId }),
+    });
+}
+
+/** After logging in: this browser's guest battles move to the account. How many moved. */
+export async function claimGuestBattles(guestToken: string): Promise<number>
+{
+    const response = await apiFetch('/api/v1/battles/claim', {
+        method: 'POST',
+        headers: { ...csrfHeader(), 'X-Guest-Token': guestToken },
+    });
+    return (await response.json()).claimed;
+}
+
 /** Server-Sent Events: an `status` event with an AnalysisStatus on every change, until complete or failed. */
 export function analysisEventsUrl(jobId: string): string
 {
