@@ -51,14 +51,25 @@ describe('phone menu', () => {
     expect(button.getAttribute('aria-expanded')).toBe('true')
 
     const menu = screen.getByRole('navigation', { name: 'Menu' })
-    const names = within(menu)
+    const pages = within(menu)
       .getAllByRole('link')
-      .map((a) => a.textContent)
-    expect(names).toEqual(['Teams', 'Collection', 'Analyze', 'Build', 'Import'])
+      .map((a) => a.getAttribute('href'))
+    expect(pages).toEqual(['/team-builder', '/collection', '/analyze', '/build', '/import'])
 
-    await user.click(within(menu).getByRole('link', { name: 'Analyze' }))
+    await user.click(within(menu).getByRole('link', { name: /Analyze/ }))
     expect(screen.getByTestId('where').textContent).toBe('/analyze')
     expect(screen.queryByRole('navigation', { name: 'Menu' })).toBeNull()
+  })
+
+  // battle analysis is new: its link says so in the wide nav and in the phone menu
+  it('marks Analyze as new in both navs', async () => {
+    serve()
+    const user = userEvent.setup()
+    renderHeader()
+    await user.click(screen.getByRole('button', { name: 'Menu' }))
+    const links = screen.getAllByRole('link', { name: /Analyze/ })
+    expect(links).toHaveLength(2)
+    for (const link of links) expect(link.textContent).toMatch(/New/)
   })
 
   it('closes on Escape', async () => {

@@ -5,9 +5,15 @@ import { LogoText } from './Creamer'
 import { LogoMark } from './Logo'
 import { AccountMenu } from './AccountMenu'
 import { useBuildCandidates } from '../collection/use-build-candidates'
+import { PixelStar } from './ScreenshotImport'
 
 function navClass({ isActive }: { isActive: boolean }) {
   return `transition ${isActive ? 'text-brand' : 'text-ink-soft hover:text-ink'}`
+}
+
+/** Battle analysis is the newest tool: a tag says so, and a glint runs across its link now and then. */
+function NewTag() {
+  return <span className="rounded bg-brand px-1 py-px text-[9px] leading-tight font-black tracking-wider text-on-brand uppercase">New</span>
 }
 
 function BuildCount({ count }: { count: number }) {
@@ -49,8 +55,13 @@ export function Header() {
           <NavLink to="/import" className={navClass}>
             Import
           </NavLink>
-          <NavLink to="/analyze" className={navClass}>
+          <NavLink
+            to="/analyze"
+            className={(state) => `new-glow sword-shine relative -my-1 inline-flex items-center gap-1.5 rounded-full bg-brand/10 px-3 py-1 ${navClass(state)}`}
+          >
             Analyze
+            <NewTag />
+            <PixelStar className="shine-star top-0 right-1 h-3 w-3" />
           </NavLink>
           {/* #118: always in the nav; the count is how many species you have two or more copies of */}
           <NavLink
@@ -92,6 +103,8 @@ function MenuButton({ open, onToggle, badge }: { open: boolean; onToggle: () => 
       </svg>
       {/* a dot when there's a copy to decide on, since the count itself is in the menu */}
       {badge && !open && <span aria-hidden="true" className="absolute top-0 right-0 h-2.5 w-2.5 rounded-full bg-brand ring-2 ring-canvas" />}
+      {/* Analyze is new and lives in here on phones: a star twinkles on the button now and then */}
+      {!open && <PixelStar className="shine-star -bottom-1 -left-1 h-3.5 w-3.5" />}
     </button>
   )
 }
@@ -141,8 +154,10 @@ function PhoneMenu({ toBuild, onClose }: { toBuild: number; onClose: () => void 
         <NavLink to="/collection" className={item}>
           Collection
         </NavLink>
-        <NavLink to="/analyze" className={item}>
+        <NavLink to="/analyze" className={(state) => `new-glow sword-shine relative ${item(state)}`}>
           Analyze
+          <NewTag />
+          <PixelStar className="shine-star top-1 right-12 h-4 w-4" />
         </NavLink>
         <NavLink to="/build" className={item}>
           Build
