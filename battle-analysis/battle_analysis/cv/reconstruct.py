@@ -373,7 +373,7 @@ def build_turn_log(readings: Sequence[TurnReading], match_id: str) -> dict:
         ordered = sorted(actions[i], key=lambda a: ACTIONS.index(a[0]))
         action, actor, move_id = ordered[0] if ordered else ('NONE', None, None)
         log.append({
-            'turn': r.turn,
+            'turn': r.turn - rs[0].turn,  # battle turns: 0 is the first turn with the battle HUD up
             'timestamp_ms': r.timestamp_ms,
             'user_active': active['user'][i],
             'opp_active': active['opp'][i],

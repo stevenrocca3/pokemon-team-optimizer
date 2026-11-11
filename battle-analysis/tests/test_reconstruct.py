@@ -167,3 +167,12 @@ def test_real_recording_reconstructs_the_known_battle():
     opp_throws = [e for e in log['turn_log'] if e['action_detected'] == 'OPP_CHARGE_MOVE_THROWN']
     assert len(opp_throws) == 4
     assert sum(e['shield_used'] for e in opp_throws) == 1
+
+
+# Turns count from the start of the battle, not the recording: after 3 s of lobby the first logged turn is turn 0
+# (its timestamp_ms still points into the video), so a finding's "Turn 32" means 16 s into the battle.
+def test_turns_count_from_the_battle_start():
+    rs = [reading(t, hud=False) for t in range(6)] + [reading(t, user_hp=1.0, opp_hp=1.0) for t in range(6, 12)]
+    log = build_turn_log(rs, 'm1')['turn_log']
+    assert [e['turn'] for e in log] == list(range(6))
+    assert log[0]['timestamp_ms'] == 3000

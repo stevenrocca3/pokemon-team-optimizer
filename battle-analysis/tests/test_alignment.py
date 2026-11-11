@@ -100,7 +100,7 @@ FIXTURES = Path(__file__).parent / 'fixtures'
 def test_real_battle_audits_every_throw():
     log = json.loads((FIXTURES / 'rec1_turn_log.json').read_text())
     report = audit_alignment(log)
-    assert [t['turn'] for t in report['throws']] == [185, 232, 296, 349, 397]
+    assert [t['turn'] for t in report['throws']] == [32, 79, 143, 196, 244]  # battle turns (the recording opens on 76.5 s of lobby)
     assert all(t['verdict'] in ('OPTIMAL', 'TIMING_ERROR', 'NO_ALIGNMENT') for t in report['throws'])
     weezing = [t for t in report['throws'] if t['opp'] == 'Weezing (Galarian)']
     assert weezing and all(t['opp_fast_move'] in ('Fairy Wind', 'Tackle') for t in weezing)
