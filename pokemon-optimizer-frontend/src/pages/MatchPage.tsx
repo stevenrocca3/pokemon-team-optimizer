@@ -6,6 +6,7 @@ import type { AnalysisResult } from '../types'
 import { MatchTimeline } from '../analysis/MatchTimeline'
 import { CritiqueCards, ScoreHero } from '../analysis/MatchReview'
 import { TeamNudge } from '../analysis/TeamNudge'
+import { BuildNudge } from '../analysis/BuildNudge'
 import { loadResult, saveResult } from '../analysis/job-storage'
 import { LoginCta } from '../analysis/LoginCta'
 import { matchIdFor } from '../analysis/analytics'
@@ -69,6 +70,7 @@ export function MatchPage() {
           <CritiqueCards report={load.result.report} />
           <MatchTimeline result={load.result} />
           <TeamNudge result={load.result} />
+          <BuildNudge result={load.result} />
           {guest && <LoginCta compact />}
         </div>
       )}

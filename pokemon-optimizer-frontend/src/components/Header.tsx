@@ -3,6 +3,7 @@ import { SearchBar } from './SearchBar'
 import { LogoText } from './Creamer'
 import { LogoMark } from './Logo'
 import { AccountMenu } from './AccountMenu'
+import { useBuildCandidates } from '../collection/use-build-candidates'
 
 function navClass({ isActive }: { isActive: boolean }) {
   return `transition ${isActive ? 'text-brand' : 'text-ink-soft hover:text-ink'}`
@@ -10,6 +11,7 @@ function navClass({ isActive }: { isActive: boolean }) {
 
 export function Header() {
   const onHome = useLocation().pathname === '/'
+  const toBuild = useBuildCandidates().length
 
   return (
     <header className="sticky top-0 z-30 border-b border-line bg-canvas/95 backdrop-blur">
@@ -37,6 +39,15 @@ export function Header() {
           </NavLink>
           <NavLink to="/analyze" className={(state) => `hidden sm:inline ${navClass(state)}`}>
             Analyze
+          </NavLink>
+          {/* #118: always in the nav; the count is how many species you have two or more copies of */}
+          <NavLink to="/build" className={(state) => `hidden items-center gap-1.5 lg:inline-flex ${navClass(state)}`}>
+            Which to Build
+            {toBuild > 0 && (
+              <span className="grid h-5 min-w-5 place-items-center rounded-full bg-brand px-1.5 text-[11px] font-black tabular-nums text-on-brand">
+                {toBuild}
+              </span>
+            )}
           </NavLink>
           <NavLink to="/collection" className={navClass}>
             Collection

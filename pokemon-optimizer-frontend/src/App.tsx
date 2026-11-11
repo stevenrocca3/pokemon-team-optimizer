@@ -19,6 +19,7 @@ import { AnalyzePage } from './pages/AnalyzePage'
 import { MatchesPage } from './pages/MatchesPage'
 import { AnalyticsPage } from './pages/AnalyticsPage'
 import { MatchPage } from './pages/MatchPage'
+import { BuildPage } from './pages/BuildPage'
 
 function App() {
   usePageViews()
@@ -71,6 +72,7 @@ function App() {
                   </MovesProvider>
                 }
               />
+              <Route path="/build" element={<BuildPage />} />
               <Route path="/analyze" element={<AnalyzePage />} />
               <Route path="/matches" element={<MatchesPage />} />
               <Route path="/match/:jobId" element={<MatchPage />} />

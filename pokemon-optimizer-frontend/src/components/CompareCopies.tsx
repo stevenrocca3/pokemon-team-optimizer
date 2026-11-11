@@ -1,9 +1,9 @@
-import { useEffect, useMemo, useState } from 'react'
-import { Link } from 'react-router'
+import { useEffect, useMemo, useRef, useState } from 'react'
+import { Link, useLocation } from 'react-router'
 import { compareCopies } from '../api'
 import { useCollection } from '../collection/collection-context'
 import { useMetaName } from '../species/meta-name'
-import { copyLabel, MAX_COMPARED, pickCopies, shieldsLabel, winnersLabel } from '../lib/compare'
+import { copyLabel, MAX_COMPARED, pickCopies, shieldsLabel, winnersLabel, winRate, winRateEdge } from '../lib/compare'
 import { formatLevel } from '../lib/species'
 import type { LeagueKey } from '../lib/leagues'
 import type { CaughtPokemon, IvComparisonResult, TeamBuilderLeague } from '../types'
@@ -33,6 +33,13 @@ export function CompareCopies({
   const metaName = useMetaName()
   const [answer, setAnswer] = useState<Answer | null>(null)
   const [showAll, setShowAll] = useState(false)
+  const section = useRef<HTMLElement>(null)
+  const { hash } = useLocation()
+
+  // linked to from the nav, the Team Builder or a match review (#118): bring the comparison into view
+  useEffect(() => {
+    if (hash === '#compare') section.current?.scrollIntoView?.({ block: 'start' })
+  }, [hash])
 
   const copies = useMemo(
     () => (collection.status === 'ready' ? collection.list.filter((p) => p.speciesId === speciesId) : []),
@@ -71,7 +78,7 @@ export function CompareCopies({
   const current = answer?.request === request ? answer : null
 
   return (
-    <section id="compare" className="mt-10 scroll-mt-24">
+    <section ref={section} id="compare" className="mt-10 scroll-mt-24">
       <h2 className="mb-1 flex items-center gap-3 font-display text-2xl">
         <span className="h-7 w-1.5 rounded bg-gradient-to-b from-creamer to-brand" aria-hidden="true" />
         Which One to Build
@@ -133,16 +140,19 @@ function Comparison({
   return (
     <div className="card p-5 sm:p-6">
       {first && second && (
-        <p className="mb-4 text-ink">
-          {tied ? (
-            <>Your top copies win the same battles. Power up whichever costs less dust.</>
-          ) : (
-            <>
-              <span className="font-bold text-brand">{labels[first.index]}</span> wins {first.wins - second.wins} more{' '}
-              {first.wins - second.wins === 1 ? 'battle' : 'battles'} than {labels[second.index]}. Build that one.
-            </>
-          )}
-        </p>
+        <>
+          <HeadToHead first={first} second={second} labels={labels} tied={tied} />
+          <p className="mb-4 text-ink">
+            {tied ? (
+              <>Your top copies win the same battles. Power up whichever costs less dust.</>
+            ) : (
+              <>
+                <span className="font-bold text-brand">{labels[first.index]}</span> wins {first.wins - second.wins} more{' '}
+                {first.wins - second.wins === 1 ? 'battle' : 'battles'} than {labels[second.index]}. Build that one.
+              </>
+            )}
+          </p>
+        </>
       )}
 
       <ol className="grid gap-2">
@@ -205,6 +215,65 @@ function Comparison({
       <p className="mt-4 text-xs text-subtle">
         Against {result.metaSize} meta Pokémon (PvPoke, {result.metaDate}). Each copy keeps the moves you saved it with.
       </p>
+    </div>
+  )
+}
+
+/**
+ * The top two copies side by side (#118): each one's meta win rate, and the better one's bold "Build This One" badge
+ * with how many percentage points more of the meta it beats.
+ */
+function HeadToHead({
+  first,
+  second,
+  labels,
+  tied,
+}: {
+  first: IvComparisonResult['pokemon'][number]
+  second: IvComparisonResult['pokemon'][number]
+  labels: string[]
+  tied: boolean
+}) {
+  const edge = winRateEdge(first, second)
+  return (
+    <div
+      role="group"
+      aria-label={tied ? 'Your top two copies' : 'Build This One'}
+      className="relative mb-5 grid grid-cols-2 gap-3 sm:gap-4"
+    >
+      {[first, second].map((p, i) => {
+        const winner = i === 0 && !tied
+        return (
+          <article
+            key={p.index}
+            aria-label={labels[p.index]}
+            className={`animate-rise flex flex-col items-center rounded-2xl px-3 py-4 text-center ring-1 sm:px-5 ${
+              winner ? 'bg-brand/12 ring-2 ring-brand/70' : 'bg-raised/50 ring-line'
+            }`}
+            style={{ animationDelay: `${i * 90}ms` }}
+          >
+            <p className="text-base font-bold tabular-nums text-ink sm:text-lg">{labels[p.index]}</p>
+            <p className="text-xs tabular-nums text-subtle">
+              Lv {formatLevel(p.level)} · {p.cp.toLocaleString()} CP
+            </p>
+            <p className={`mt-2 font-display text-3xl sm:text-4xl ${winner ? 'text-brand' : 'text-ink-soft'}`}>
+              {winRate(p).toFixed(1)}%
+            </p>
+            <p className="text-xs text-subtle">meta win rate</p>
+            {winner && (
+              <span className="mt-3 rounded-full bg-brand px-3 py-1 text-xs font-black tracking-wide text-on-brand uppercase shadow">
+                Build This One: +{edge.toFixed(1)}% Meta Win Rate
+              </span>
+            )}
+          </article>
+        )
+      })}
+      <span
+        aria-hidden="true"
+        className="absolute top-1/2 left-1/2 grid h-9 w-9 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-canvas text-xs font-black text-subtle ring-1 ring-line"
+      >
+        VS
+      </span>
     </div>
   )
 }

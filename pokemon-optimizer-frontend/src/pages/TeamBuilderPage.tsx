@@ -10,6 +10,7 @@ import { IvTriple } from '../components/IvTriple'
 import { formatLevel } from '../lib/species'
 import { startingMoves } from '../lib/moves'
 import { PageHeader } from '../components/PageHeader'
+import { BuildCallout } from '../components/BuildCallout'
 import { Brewing } from '../components/Brewing'
 import { OddsRing } from '../components/OddsRing'
 import { usePageTitle } from '../lib/page-title'
@@ -244,6 +245,8 @@ export function TeamBuilderPage() {
       <PageHeader eyebrow="Team Builder" title="Brew Your Best Three">
         Battles full 3v3s from your Pokémon against teams drawn from the current meta, then tells you how often each team wins.
       </PageHeader>
+
+      <BuildCallout league={league} />
 
       <section className="card grid gap-px overflow-hidden bg-line lg:grid-cols-[1.4fr_1fr_auto]">
         <Step n={1} title="Your Pokémon">
