@@ -6,6 +6,7 @@ import { MemoryRouter, Route, Routes } from 'react-router'
 import { CritiqueCards, ScoreHero } from './MatchReview'
 import { sampleResult } from './match-fixture'
 import { MatchPage } from '../pages/MatchPage'
+import { CollectionContext, type CollectionState } from '../collection/collection-context'
 import { fakeServer, json } from './test-helpers'
 import type { MatchReport } from '../types'
 
@@ -132,6 +133,52 @@ describe('MatchPage', () => {
     expect(await screen.findByLabelText('Score: 73 out of 100')).toBeTruthy()
     expect(section('Fatal Flaws')).toBeTruthy()
     expect(screen.getByRole('img', { name: 'Your HP' })).toBeTruthy()
+  })
+
+  // Issue #124: a logged-out player who finishes a battle is told what logging in gets them, under the review; a
+  // logged-in one isn't.
+  it('asks a logged-out player to log in for their analytics', async () => {
+    const page = (storage: 'browser' | 'account') =>
+      render(
+        <CollectionContext.Provider value={{ status: 'ready', storage } as CollectionState}>
+          <MemoryRouter initialEntries={['/match/m1']}>
+            <Routes>
+              <Route path="/match/:jobId" element={<MatchPage />} />
+            </Routes>
+          </MemoryRouter>
+        </CollectionContext.Provider>,
+      )
+    fakeServer({ '/api/v1/analyze/m1/result': () => json(sampleResult()) })
+    const guest = page('browser')
+    await screen.findByLabelText('Score: 73 out of 100')
+    expect(screen.getByRole('heading', { name: 'Login to receive catered battle analytics' })).toBeTruthy()
+    expect(screen.getByRole('link', { name: /continue with google/i })).toBeTruthy()
+    guest.unmount()
+
+    page('account')
+    await screen.findByLabelText('Score: 73 out of 100')
+    expect(screen.queryByRole('heading', { name: 'Login to receive catered battle analytics' })).toBeNull()
+  })
+
+  // Issue #124: a battle the analysis service has forgotten, opened in a browser that never cached it (the history
+  // on /analytics, another device), comes from the player's saved history instead.
+  it('opens a forgotten battle from the saved history', async () => {
+    const JOB = '0123456789ab4def8123456789abcd01'
+    const fetchMock = fakeServer({
+      [`/api/v1/analyze/${JOB}/result`]: () => json({ detail: 'This analysis has expired.' }, 404),
+      '/api/v1/analytics/battles/01234567-89ab-4def-8123-456789abcd01': () => json(sampleResult()),
+    })
+    render(
+      <MemoryRouter initialEntries={[`/match/${JOB}`]}>
+        <Routes>
+          <Route path="/match/:jobId" element={<MatchPage />} />
+        </Routes>
+      </MemoryRouter>,
+    )
+    expect(await screen.findByLabelText('Score: 73 out of 100')).toBeTruthy()
+    expect(fetchMock.mock.calls.map(([url]) => url)).toContain(
+      '/api/v1/analytics/battles/01234567-89ab-4def-8123-456789abcd01',
+    )
   })
 
   // The server keeps results for a day; the browser keeps the ones it has opened, so a past match still opens after

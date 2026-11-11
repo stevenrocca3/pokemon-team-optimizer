@@ -42,6 +42,7 @@
   --color-tier-veteran: #c9b2ff; /* lavender */
   --color-tier-ace: #82c8f2; /* sky */
   --color-tier-critical: #ff7a7a; /* alarm red (text-safe, unlike --color-danger) */
+  --color-trend-up: #7fd18b; /* improving trend: a text-safe green on the dark roast */
 
   --color-field: #f3e9dc; /* search input */
   --color-on-field: #1f1814;
@@ -429,5 +430,23 @@ button {
   .shine-star {
     animation: none;
     display: none;
+  }
+}
+
+/* the trend card's arrow draws itself in (#124); shown whole at once with reduced motion */
+.trend-draw {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: trend-draw 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) 0.15s forwards;
+}
+@keyframes trend-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .trend-draw {
+    animation: none;
+    stroke-dashoffset: 0;
   }
 }

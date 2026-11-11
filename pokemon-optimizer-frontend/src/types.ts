@@ -377,3 +377,64 @@ export interface AnalysisResult {
     report : MatchReport;
     turn_log : TurnLog;
 }
+
+// GET /api/v1/analytics/summary (#121-#123): a guest gets only the flag; a logged-in player their analytics
+export interface BattleRow {
+    matchId : string;           // the analysis job id as a UUID (with dashes)
+    createdAt : string;
+    userTeam : string[];
+    oppTeam : string[];
+    score : number;
+    tier : string;
+    outcome : 'WIN' | 'LOSS' | null;
+    turnsLost : number | null;
+    shieldEfficiencyPct : number | null;
+    timingAccuracyPct : number | null;
+}
+
+export interface AnalyticsRank {
+    locked : boolean;
+    battles : number;
+    required : number;
+    remaining? : number;        // locked only
+    score? : number;            // unlocked only: the server never sends a locked score
+    tier? : { key : 'legend' | 'veteran' | 'ace' | 'critical'; name : string };
+}
+
+export type TrendDirection = 'IMPROVING' | 'STABLE' | 'DECLINING' | 'NOT_ENOUGH_DATA';
+
+export interface AnalyticsTrend {
+    direction : TrendDirection;
+    velocity : number | null;
+    recentAverage : number | null;
+    earlierAverage : number | null;
+    rolling : { last5 : number | null; last10 : number | null; last25 : number | null };
+    focus : 'timing' | 'shield' | 'switch' | 'charge' | null;
+    summary : string;
+}
+
+export interface TeamRanking {
+    team : string[];
+    battles : number;
+    wins : number;
+    losses : number;
+    averageScore : number;
+    winRatePct : number;
+    rankScore : number;
+}
+
+export interface PlayerAnalytics {
+    access : 'full';
+    battles : number;
+    history : BattleRow[];
+    rank : AnalyticsRank;
+    trend : AnalyticsTrend;
+    topTeams : TeamRanking[];
+}
+
+export interface GuestAnalytics {
+    access : 'guest';
+    loginUrl : string;
+}
+
+export type AnalyticsSummary = PlayerAnalytics | GuestAnalytics;

@@ -37,7 +37,11 @@ export function AnalyzePage() {
     <div className="mx-auto max-w-3xl px-4 pb-24">
       <PageHeader eyebrow="Battle analysis" title="Grade your GO Battle League set">
         Upload a screen recording of one battle. DexPresso rebuilds it turn by turn and scores your fast move timing,
-        shields, switches and charged moves.
+        shields, switches and charged moves.{' '}
+        <Link to="/analytics" className="text-brand underline-offset-2 hover:underline">
+          See your trends and top teams
+        </Link>
+        .
       </PageHeader>
 
       {/* once a video is sent, the scan takes the drop zone's place until the player starts another */}
