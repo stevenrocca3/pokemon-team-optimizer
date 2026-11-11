@@ -24,7 +24,7 @@ import com.pokemonoptimizer.pokemon_optimizer_backend.teambuilder.League;
 import com.pokemonoptimizer.pokemon_optimizer_backend.teambuilder.MetaLookup;
 
 @WebMvcTest(CupController.class)
-@Import(SecurityConfig.class)
+@Import({ SecurityConfig.class, SpeciesLookup.class })
 public class CupControllerTest
 {
     private static final SpeciesLookup SPECIES = new SpeciesLookup();
@@ -61,6 +61,20 @@ public class CupControllerTest
             .hasPathSatisfying("$.length()", n -> assertThat(n).asNumber().isEqualTo(5))
             .hasPathSatisfying("$[1].speciesId", id -> assertThat(id).asString().isEqualTo("annihilape"))
             .hasPathSatisfying("$[1].shadow", s -> assertThat(s).asBoolean().isTrue());
+    }
+
+    // #117: the checklist's Cups tab shows each Pokémon's types, like the League grids do
+    @Test
+    public void aCupsMetaComesWithEachPokemonsTypes()
+    {   // the Great League meta's first five: Altaria, Shadow Annihilape, Araquanid, Azumarill, ...
+        when(cups.find("fantasy-1500")).thenReturn(Optional.of(FANTASY));
+
+        assertThat(mvc.get().uri("/api/meta/cup/fantasy-1500"))
+            .hasStatusOk()
+            .bodyJson()
+            .hasPathSatisfying("$[0].types", t -> assertThat(t).asArray().containsExactly("dragon", "flying"))
+            .hasPathSatisfying("$[1].types", t -> assertThat(t).asArray().containsExactly("fighting", "ghost"))
+            .hasPathSatisfying("$[3].types", t -> assertThat(t).asArray().containsExactly("water", "fairy"));
     }
 
     @Test

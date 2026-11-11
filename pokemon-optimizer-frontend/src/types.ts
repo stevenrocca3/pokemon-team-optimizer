@@ -6,6 +6,14 @@ export interface SpeciesOption
     shadowEligible : boolean;
 }
 
+/** One of a League's top-ranked Pokémon, for the checklist's quick-select grid (#116). */
+export interface MetaPick
+{
+    speciesId : string;
+    shadow : boolean;
+    types : string[];     // "water", "fairy"…
+}
+
 /** A species ticked on the Collection checklist: owned, exact IVs unknown. */
 export interface OwnedSpecies
 {

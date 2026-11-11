@@ -5,3 +5,6 @@ tools/pvpoke-oracle). MIT-licensed like gamemaster.json; see ../LICENSE.txt. Ref
 - `movesets.json`: species ID → [fast, charged, charged] from `src/data/rankings/all/overall/rankings-{1500,2500,10000}.json`,
   the moveset of the League where the species scores highest (regular entry preferred over its `_shadow` one).
   Pickers and imports start on these.
+- `top-{great,ultra,master}.json`: the first 150 (Great, Ultra) or 50 (Master) species IDs of
+  `src/data/rankings/all/overall/rankings-{1500,2500,10000}.json`, in rank order. The Collection checklist's
+  quick-select grid (#116).
