@@ -21,7 +21,7 @@ export function AnalysisWidget() {
   return (
     <section
       aria-label="Battle analysis"
-      className="card animate-rise fixed right-4 bottom-4 left-4 z-40 p-4 sm:right-auto sm:left-5 sm:w-80"
+      className="card animate-rise fixed right-4 bottom-4 left-4 z-40 p-4 sm:right-auto sm:left-5 sm:w-96"
     >
       <div className="flex items-center gap-3">
         <span aria-hidden className="relative flex size-2.5 shrink-0">
@@ -30,7 +30,7 @@ export function AnalysisWidget() {
             className={`relative inline-flex size-2.5 rounded-full ${job.status === 'failed' ? 'bg-danger' : 'bg-brand'}`}
           />
         </span>
-        <p className="min-w-0 flex-1 truncate text-sm font-semibold text-ink">{headline}</p>
+        <p className="min-w-0 flex-1 text-sm font-semibold text-ink">{headline}</p>
         <button
           type="button"
           onClick={() => setOpen(!open)}
