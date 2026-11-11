@@ -203,4 +203,16 @@ describe('AnalysisJobProvider and the floating widget', () => {
     expect(screen.queryByRole('region', { name: /battle analysis/i })).toBeNull()
     expect(FakeEventSource.all).toHaveLength(0)
   })
+
+  // On the finished job's own breakdown page the widget would only cover it, so it stays away there (it still shows
+  // on other pages until dismissed).
+  it('stays off the finished job’s own match page', async () => {
+    fakeServer()
+    renderApp()
+    const user = await uploadVideo()
+    FakeEventSource.latest().emit(status('complete', 100, { score: 72 }))
+    await user.click(within(widget()).getByRole('link', { name: 'View breakdown' }))
+    expect(screen.getByTestId('where').textContent).toBe(`/match/${JOB}`)
+    expect(screen.queryByRole('region', { name: /battle analysis/i })).toBeNull()
+  })
 })

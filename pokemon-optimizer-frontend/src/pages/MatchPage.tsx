@@ -4,6 +4,7 @@ import { getAnalysisResult } from '../api'
 import { PageHeader } from '../components/PageHeader'
 import { usePageTitle } from '../lib/page-title'
 import type { AnalysisResult } from '../types'
+import { MatchTimeline } from '../analysis/MatchTimeline'
 
 type Load = { status: 'loading' } | { status: 'error'; message: string } | { status: 'ready'; result: AnalysisResult }
 
@@ -42,9 +43,12 @@ export function MatchPage() {
         </div>
       )}
       {load.status === 'ready' && (
-        <PageHeader eyebrow="Match breakdown" title={`${load.result.report.score}/100`}>
-          {load.result.report.tier.name}
-        </PageHeader>
+        <>
+          <PageHeader eyebrow="Match breakdown" title={`${load.result.report.score}/100`}>
+            {load.result.report.tier.name}
+          </PageHeader>
+          <MatchTimeline result={load.result} />
+        </>
       )}
     </div>
   )

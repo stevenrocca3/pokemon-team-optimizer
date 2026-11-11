@@ -9,9 +9,9 @@ import { useAnalysisJob } from './analysis-job'
 export function AnalysisWidget() {
   const { job, clear } = useAnalysisJob()
   const [open, setOpen] = useState(true)
-  // /analyze shows the full scan instead
-  const onAnalyze = useLocation().pathname === '/analyze'
-  if (!job || onAnalyze) return null
+  const { pathname } = useLocation()
+  // /analyze shows the full scan, and the finished job's own breakdown page needs no reminder of it
+  if (!job || pathname === '/analyze' || pathname === `/match/${job.jobId}`) return null
 
   const running = job.status !== 'complete' && job.status !== 'failed'
   const headline = running
