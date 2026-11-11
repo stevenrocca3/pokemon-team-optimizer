@@ -150,6 +150,15 @@ export interface CupSummary
     updated : string;           // yyyy-mm-dd of PvPoke's data
 }
 
+// POST /api/collection/meta-preset: "Add to Box" on a suggestion; the server saves the meta build (#114)
+export interface MetaPresetRequest
+{
+    speciesId : string;
+    shadow : boolean;
+    league : TeamBuilderLeague;
+    cup : string | null;
+}
+
 // A sampled win rate with its Wilson 95% interval, all as fractions 0–1
 export interface WinRate
 {

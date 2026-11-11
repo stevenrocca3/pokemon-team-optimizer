@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react'
-import { addAllToCollection, addToCollection, getChecklist, getCollection, NotLoggedInError, removeFromCollection, saveChecklist } from '../api'
-import type { CaughtPokemon, CaughtPokemonRequest, OwnedSpecies } from '../types'
+import { addAllToCollection, addMetaPreset, addToCollection, getChecklist, getCollection, NotLoggedInError, removeFromCollection, saveChecklist } from '../api'
+import type { CaughtPokemon, CaughtPokemonRequest, OwnedSpecies, Suggestion, TeamBuilderLeague } from '../types'
+import { suggestionBuild } from '../lib/suggestion'
 import { CollectionContext, type AddAllResult, type ChecklistSave, type CollectionState, type Storage } from './collection-context'
 import { loadGuestChecklist, loadGuestCollection, saveGuestChecklist, saveGuestCollection } from './guest-storage'
 import { latestSaver, mergeOwned } from './checklist'
@@ -87,6 +88,36 @@ export function CollectionProvider({ children }: { children: ReactNode }) {
     [list, storage, addAll, setList],
   )
 
+  const addSuggestion = useCallback(
+    async (suggestion: Suggestion, league: TeamBuilderLeague, cup: string | null) => {
+      if (!list) throw new Error('Collection is still loading')
+      if (storage === 'browser') {
+        // a guest's browser keeps the suggestion's own build: the same one the server would save
+        const request = suggestionBuild(suggestion)
+        let nextId = list.reduce((max, p) => Math.max(max, p.id), 0)
+        const merged = mergeInto(list, [request], () => ++nextId)
+        if (!saveGuestCollection(merged.list)) throw new Error("This browser won't store data (private window or storage blocked)")
+        setList(merged.list)
+        const pokemon = merged.list.find((p) => sameness(p) === sameness(request))!
+        return { pokemon, added: merged.added === 1 }
+      }
+      // optimistic (#115): it shows in the box at once, as a placeholder until the account confirms it
+      const placeholder: CaughtPokemon = { ...suggestionBuild(suggestion), id: Number.MAX_SAFE_INTEGER }
+      if (!list.some((p) => sameness(p) === sameness(placeholder))) setList([placeholder, ...list])
+      const swapPlaceholder = (to: CaughtPokemon[]) =>
+        setLoaded((current) => (current.status === 'ready' ? { ...current, list: newestFirst(current.list.flatMap((p) => (p.id === placeholder.id ? to : [p]))) } : current))
+      try {
+        const saved = await addMetaPreset({ speciesId: suggestion.speciesId, shadow: suggestion.shadow, league, cup })
+        swapPlaceholder([saved.pokemon])
+        return saved
+      } catch (error) {
+        swapPlaceholder([])
+        throw error
+      }
+    },
+    [list, storage, setList],
+  )
+
   const remove = useCallback(
     async (id: number) => {
       if (!list) return
@@ -117,8 +148,8 @@ export function CollectionProvider({ children }: { children: ReactNode }) {
   )
 
   const value = useMemo<CollectionState>(
-    () => (loaded.status === 'ready' ? { ...loaded, add, addAll, remove, setChecklist, checklistSave } : loaded),
-    [loaded, add, addAll, remove, setChecklist, checklistSave],
+    () => (loaded.status === 'ready' ? { ...loaded, add, addAll, addSuggestion, remove, setChecklist, checklistSave } : loaded),
+    [loaded, add, addAll, addSuggestion, remove, setChecklist, checklistSave],
   )
 
   return <CollectionContext.Provider value={value}>{children}</CollectionContext.Provider>

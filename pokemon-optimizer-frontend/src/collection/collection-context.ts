@@ -1,5 +1,5 @@
 import { createContext, useContext } from 'react'
-import type { CaughtPokemon, CaughtPokemonRequest, OwnedSpecies } from '../types'
+import type { CaughtPokemon, CaughtPokemonRequest, OwnedSpecies, Suggestion, TeamBuilderLeague } from '../types'
 
 /**
  * Where a player's Pokémon live: their account when logged in, this browser when not.
@@ -29,6 +29,12 @@ export type CollectionState =
       /** resolves to false when it was already in the Collection */
       add: (pokemon: CaughtPokemonRequest) => Promise<boolean>
       addAll: (pokemon: CaughtPokemonRequest[]) => Promise<AddAllResult>
+      /** a Team Builder suggestion into the box with its meta build; added is false when it was already there */
+      addSuggestion: (
+        suggestion: Suggestion,
+        league: TeamBuilderLeague,
+        cup: string | null,
+      ) => Promise<{ pokemon: CaughtPokemon; added: boolean }>
       remove: (id: number) => Promise<void>
       /** species ticked as owned without exact IVs; the Team Builder assumes good IVs for them */
       checklist: OwnedSpecies[]

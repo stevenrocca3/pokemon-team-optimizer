@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router'
 import { buildTeams, getCups, LOGIN_URL, previewImport } from '../api'
 import { useCollection } from '../collection/collection-context'
-import type { CaughtPokemonRequest, CupSummary, MatchupRef, OwnedSpecies, PowerUpImpact, TeamBuilderLeague, TeamBuilderResult, TeamMember, TeamResult } from '../types'
+import type { CaughtPokemon, CaughtPokemonRequest, CupSummary, MatchupRef, OwnedSpecies, PowerUpImpact, Suggestion, TeamBuilderLeague, TeamBuilderResult, TeamMember, TeamResult } from '../types'
 import { useSpecies } from '../species/species-context'
 import { useMoves } from '../moves/moves-context'
 import { PokemonArt } from '../components/PokemonArt'
@@ -19,6 +19,9 @@ import { bestAffordable, teamCost } from '../lib/budget'
 import { cupsFor, formatName } from '../lib/cups'
 import type { BattleTeam } from '../analysis/team-nudge'
 import { SwapSuggestions } from '../components/SwapSuggestions'
+import { suggestionBuild } from '../lib/suggestion'
+import { UndoToast, UNDO_MS } from '../components/UndoToast'
+import { sameness } from '../collection/merge'
 
 const STARDUST_KEY = 'dexpresso.stardust'
 
@@ -96,6 +99,14 @@ type Run =
   | { status: 'error'; message: string }
   | { status: 'done'; result: TeamBuilderResult; source: Source; name: string }
 
+/** What an Undo puts back (#115): the build shown before the add, the file or battle source, and the add itself. */
+type Undo = {
+  message: string
+  before: Extract<Run, { status: 'done' }>
+  fileBefore: Source | null
+  adding: Promise<{ pokemon: CaughtPokemon; added: boolean }>
+}
+
 export function TeamBuilderPage() {
   usePageTitle('Team Builder')
   const saved = useCollection()
@@ -130,21 +141,86 @@ export function TeamBuilderPage() {
   const leagueCups = cups.status === 'ready' ? cupsFor(cups.list, league) : []
   const cup = leagueCups.find((c) => c.key === cupKey) ?? null
 
-  async function build() {
-    if (!source || sizeOf(source) === 0) return
+  async function build(from: Source | null = source) {
+    if (!from || sizeOf(from) === 0) return
     abort.current?.abort()
     const controller = new AbortController()
     abort.current = controller
     setRun({ status: 'running', startedAt: Date.now() })
     try {
       const result = await buildTeams(
-        { league, pokemon: source.pokemon, species: source.species, cup: cup?.key ?? null },
+        { league, pokemon: from.pokemon, species: from.species, cup: cup?.key ?? null },
         controller.signal,
       )
-      setRun({ status: 'done', result, source, name: formatName(league, cup) })
+      setRun({ status: 'done', result, source: from, name: formatName(league, cup) })
     } catch (error: unknown) {
       if (controller.signal.aborted) return
       setRun({ status: 'error', message: error instanceof Error ? error.message : String(error) })
+    }
+  }
+
+  const [addError, setAddError] = useState<string | null>(null)
+  const speciesNames = useSpecies()
+  // the Collection as it is now, for an undo that runs after later renders
+  const latestCollection = useRef(saved)
+  useEffect(() => {
+    latestCollection.current = saved
+  })
+
+  const [undo, setUndo] = useState<Undo | null>(null)
+
+  useEffect(() => {
+    if (!undo) return
+    const timer = setTimeout(() => setUndo(null), UNDO_MS)
+    return () => clearTimeout(timer)
+  }, [undo])
+
+  /**
+   * "Add to Box & Re-Analyze" (#114), optimistic (#115): the box, the toast and the rebuild don't wait for the
+   * account to confirm the save; the suggestion's build is what the server saves too. If the save fails, it's undone.
+   */
+  function addSuggestion(suggestion: Suggestion) {
+    if (run.status !== 'done' || saved.status !== 'ready') return
+    setAddError(null)
+    const before = run
+    const fileBefore = fileSource
+    const request = suggestionBuild(suggestion)
+    const from = run.source
+    const next = from.pokemon.some((p) => sameness(p) === sameness(request)) ? from : { ...from, pokemon: [...from.pokemon, request] }
+    // a battle team or a file isn't the Collection: it keeps the new one too, for the next build
+    if (from.kind !== 'collection') setFileSource(next)
+
+    const adding = saved.addSuggestion(suggestion, league, cup?.key ?? null)
+    const name = (speciesNames.status === 'ready' ? speciesNames.byId.get(suggestion.speciesId)?.name : undefined) ?? suggestion.speciesId
+    const entry: Undo = { message: `Added ${suggestion.shadow ? 'Shadow ' : ''}${name} to your box`, before, fileBefore, adding }
+    setUndo(entry)
+    adding.catch((error: unknown) => {
+      restore(entry)
+      setAddError(error instanceof Error ? error.message : String(error))
+    })
+    void build(next)
+  }
+
+  /** Back to the scores and sources from before the add, without building again. */
+  function restore(entry: Undo) {
+    abort.current?.abort()
+    setUndo((current) => (current === entry ? null : current))
+    setRun(entry.before)
+    if (entry.before.source.kind !== 'collection') setFileSource(entry.fileBefore)
+  }
+
+  /** Undo (#115): the scores come back at once; the Pokémon leaves the box once its save has landed. */
+  async function undoAdd() {
+    if (!undo) return
+    const entry = undo
+    restore(entry)
+    try {
+      const { pokemon, added } = await entry.adding
+      const collection = latestCollection.current
+      // already in the box before? then it stays: Undo only takes back what this add put there
+      if (added && collection.status === 'ready') await collection.remove(pokemon.id)
+    } catch {
+      // the save failed, so there's nothing to take back
     }
   }
 
@@ -205,7 +281,7 @@ export function TeamBuilderPage() {
         </Step>
 
         <Step n={3} title="Brew">
-          <button onClick={build} disabled={tooFew || run.status === 'running'} className="btn btn-primary btn-lg w-full">
+          <button onClick={() => build()} disabled={tooFew || run.status === 'running'} className="btn btn-primary btn-lg w-full">
             {run.status === 'running' ? 'Brewing…' : 'Build teams'}
           </button>
           <p className="mt-3 text-xs text-subtle">
@@ -223,7 +299,22 @@ export function TeamBuilderPage() {
         </div>
       )}
 
-      {run.status === 'done' && <Results result={run.result} source={run.source} name={run.name} />}
+      {undo && <UndoToast key={undo.message} message={undo.message} onUndo={undoAdd} />}
+
+      {addError && (
+        <p role="alert" className="mt-6 text-sm text-red-400">
+          Couldn't add it to your box: {addError}
+        </p>
+      )}
+
+      {run.status === 'done' && (
+        <Results
+          result={run.result}
+          source={run.source}
+          name={run.name}
+          onAdd={saved.status === 'ready' ? addSuggestion : undefined}
+        />
+      )}
 
       <HowItWorks />
     </div>
@@ -442,7 +533,17 @@ function Step({ n, title, children }: { n: number; title: string; children: Reac
   )
 }
 
-function Results({ result, source, name }: { result: TeamBuilderResult; source: Source; name: string }) {
+function Results({
+  result,
+  source,
+  name,
+  onAdd,
+}: {
+  result: TeamBuilderResult
+  source: Source
+  name: string
+  onAdd?: (suggestion: Suggestion) => void
+}) {
   const species = useSpecies()
   const nameOf = (id: string) => (species.status === 'ready' ? species.byId.get(id)?.name : undefined) ?? id
   const [stardustText, setStardust] = useStardustBudget()
@@ -509,6 +610,7 @@ function Results({ result, source, name }: { result: TeamBuilderResult; source: 
                 delayMs={i * 140}
                 budget={budget}
                 bestForBudget={affordable === i && i > 0}
+                onAdd={onAdd}
               />
             ))}
           </ol>
@@ -544,12 +646,14 @@ function TeamCard({
   delayMs,
   budget,
   bestForBudget,
+  onAdd,
 }: {
   rank: number
   team: TeamResult
   delayMs: number
   budget: number | null
   bestForBudget: boolean
+  onAdd?: (suggestion: Suggestion) => void
 }) {
   const metaName = useMetaName()
   const species = useSpecies()
@@ -644,7 +748,7 @@ function TeamCard({
               ))}
             </p>
           )}
-          <SwapSuggestions suggestions={team.suggestions ?? []} members={team.members} />
+          <SwapSuggestions suggestions={team.suggestions ?? []} members={team.members} onAdd={onAdd} />
         </div>
       </div>
     </li>
