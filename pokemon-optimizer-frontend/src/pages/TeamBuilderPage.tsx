@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router'
 import { buildTeams, getCups, LOGIN_URL, previewImport } from '../api'
 import { useCollection } from '../collection/collection-context'
-import type { CaughtPokemonRequest, CupSummary, MatchupRef, OwnedSpecies, PowerUpImpact, TeamBuilderLeague, TeamBuilderResult, TeamMember, TeamResult } from '../types'
+import type { CaughtPokemonRequest, CupSummary, MatchupRef, OwnedSpecies, PowerUpImpact, Suggestion, TeamBuilderLeague, TeamBuilderResult, TeamMember, TeamResult } from '../types'
 import { useSpecies } from '../species/species-context'
 import { useMoves } from '../moves/moves-context'
 import { PokemonArt } from '../components/PokemonArt'
@@ -19,6 +19,8 @@ import { bestAffordable, teamCost } from '../lib/budget'
 import { cupsFor, formatName } from '../lib/cups'
 import type { BattleTeam } from '../analysis/team-nudge'
 import { SwapSuggestions } from '../components/SwapSuggestions'
+import { asRequest } from '../lib/suggestion'
+import { sameness } from '../collection/merge'
 
 const STARDUST_KEY = 'dexpresso.stardust'
 
@@ -130,21 +132,40 @@ export function TeamBuilderPage() {
   const leagueCups = cups.status === 'ready' ? cupsFor(cups.list, league) : []
   const cup = leagueCups.find((c) => c.key === cupKey) ?? null
 
-  async function build() {
-    if (!source || sizeOf(source) === 0) return
+  async function build(from: Source | null = source) {
+    if (!from || sizeOf(from) === 0) return
     abort.current?.abort()
     const controller = new AbortController()
     abort.current = controller
     setRun({ status: 'running', startedAt: Date.now() })
     try {
       const result = await buildTeams(
-        { league, pokemon: source.pokemon, species: source.species, cup: cup?.key ?? null },
+        { league, pokemon: from.pokemon, species: from.species, cup: cup?.key ?? null },
         controller.signal,
       )
-      setRun({ status: 'done', result, source, name: formatName(league, cup) })
+      setRun({ status: 'done', result, source: from, name: formatName(league, cup) })
     } catch (error: unknown) {
       if (controller.signal.aborted) return
       setRun({ status: 'error', message: error instanceof Error ? error.message : String(error) })
+    }
+  }
+
+  const [addError, setAddError] = useState<string | null>(null)
+
+  /** "Add to Box & Re-Analyze" (#114): the suggestion goes into the box, then the same build runs again with it in */
+  async function addSuggestion(suggestion: Suggestion) {
+    if (run.status !== 'done' || saved.status !== 'ready') return
+    setAddError(null)
+    try {
+      const { pokemon } = await saved.addSuggestion(suggestion, league, cup?.key ?? null)
+      const request = asRequest(pokemon)
+      const from = run.source
+      const next = from.pokemon.some((p) => sameness(p) === sameness(request)) ? from : { ...from, pokemon: [...from.pokemon, request] }
+      // a battle team or a file isn't the Collection: it keeps the new one too, for the next build
+      if (from.kind !== 'collection') setFileSource(next)
+      await build(next)
+    } catch (error: unknown) {
+      setAddError(error instanceof Error ? error.message : String(error))
     }
   }
 
@@ -205,7 +226,7 @@ export function TeamBuilderPage() {
         </Step>
 
         <Step n={3} title="Brew">
-          <button onClick={build} disabled={tooFew || run.status === 'running'} className="btn btn-primary btn-lg w-full">
+          <button onClick={() => build()} disabled={tooFew || run.status === 'running'} className="btn btn-primary btn-lg w-full">
             {run.status === 'running' ? 'Brewing…' : 'Build teams'}
           </button>
           <p className="mt-3 text-xs text-subtle">
@@ -223,7 +244,20 @@ export function TeamBuilderPage() {
         </div>
       )}
 
-      {run.status === 'done' && <Results result={run.result} source={run.source} name={run.name} />}
+      {addError && (
+        <p role="alert" className="mt-6 text-sm text-red-400">
+          Couldn't add it to your box: {addError}
+        </p>
+      )}
+
+      {run.status === 'done' && (
+        <Results
+          result={run.result}
+          source={run.source}
+          name={run.name}
+          onAdd={saved.status === 'ready' ? addSuggestion : undefined}
+        />
+      )}
 
       <HowItWorks />
     </div>
@@ -442,7 +476,17 @@ function Step({ n, title, children }: { n: number; title: string; children: Reac
   )
 }
 
-function Results({ result, source, name }: { result: TeamBuilderResult; source: Source; name: string }) {
+function Results({
+  result,
+  source,
+  name,
+  onAdd,
+}: {
+  result: TeamBuilderResult
+  source: Source
+  name: string
+  onAdd?: (suggestion: Suggestion) => void
+}) {
   const species = useSpecies()
   const nameOf = (id: string) => (species.status === 'ready' ? species.byId.get(id)?.name : undefined) ?? id
   const [stardustText, setStardust] = useStardustBudget()
@@ -509,6 +553,7 @@ function Results({ result, source, name }: { result: TeamBuilderResult; source: 
                 delayMs={i * 140}
                 budget={budget}
                 bestForBudget={affordable === i && i > 0}
+                onAdd={onAdd}
               />
             ))}
           </ol>
@@ -544,12 +589,14 @@ function TeamCard({
   delayMs,
   budget,
   bestForBudget,
+  onAdd,
 }: {
   rank: number
   team: TeamResult
   delayMs: number
   budget: number | null
   bestForBudget: boolean
+  onAdd?: (suggestion: Suggestion) => void
 }) {
   const metaName = useMetaName()
   const species = useSpecies()
@@ -644,7 +691,7 @@ function TeamCard({
               ))}
             </p>
           )}
-          <SwapSuggestions suggestions={team.suggestions ?? []} members={team.members} />
+          <SwapSuggestions suggestions={team.suggestions ?? []} members={team.members} onAdd={onAdd} />
         </div>
       </div>
     </li>

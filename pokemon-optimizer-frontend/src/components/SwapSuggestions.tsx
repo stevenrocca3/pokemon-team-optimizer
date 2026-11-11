@@ -14,7 +14,16 @@ const ROLE: Record<SuggestionRole, { label: string; hint: string }> = {
  * The Team Builder's swaps for a team winning under half its battles (#112): 5 meta Pokémon, best first, each with
  * the GBL role it plays best and the member it replaces. Nothing at all for a team without them.
  */
-export function SwapSuggestions({ suggestions, members }: { suggestions: Suggestion[]; members: TeamMember[] }) {
+export function SwapSuggestions({
+  suggestions,
+  members,
+  onAdd,
+}: {
+  suggestions: Suggestion[]
+  members: TeamMember[]
+  /** "Add to Box & Re-Analyze" (#114); without it the swaps are just shown (the match review) */
+  onAdd?: (suggestion: Suggestion) => void
+}) {
   const species = useSpecies()
   const metaName = useMetaName()
   if (suggestions.length === 0) return null
@@ -42,7 +51,7 @@ export function SwapSuggestions({ suggestions, members }: { suggestions: Suggest
               >
                 <PokemonArt dex={option?.dex} alt="" className="h-full w-full" />
               </Link>
-              <div className="min-w-0 text-xs">
+              <div className="flex min-w-0 flex-1 flex-col text-xs">
                 <div className="flex flex-wrap items-center gap-1">
                   <span className="truncate text-sm font-semibold text-ink">{option?.name ?? s.speciesId}</span>
                   {s.shadow && (
@@ -54,7 +63,7 @@ export function SwapSuggestions({ suggestions, members }: { suggestions: Suggest
                 <span
                   data-role={s.role}
                   title={ROLE[s.role].hint}
-                  className="mt-1 inline-block rounded bg-brand/15 px-1.5 py-0.5 text-[10px] font-bold uppercase text-brand ring-1 ring-brand/40"
+                  className="mt-1 self-start rounded bg-brand/15 px-1.5 py-0.5 text-[10px] font-bold uppercase text-brand ring-1 ring-brand/40"
                 >
                   {ROLE[s.role].label}
                 </span>
@@ -64,6 +73,17 @@ export function SwapSuggestions({ suggestions, members }: { suggestions: Suggest
                 </p>
                 {s.covers.length > 0 && (
                   <p className="mt-0.5 text-subtle">Helps against {s.covers.map(metaName).join(', ')}</p>
+                )}
+                {onAdd && <span aria-hidden className="h-2 shrink-0" />}
+                {onAdd && (
+                  <button
+                    type="button"
+                    onClick={() => onAdd(s)}
+                    aria-label={`Add ${option?.name ?? s.speciesId} to Box & Re-Analyze`}
+                    className="btn btn-secondary mt-auto h-auto min-h-8 w-full px-1.5 py-1.5 text-[11px] leading-tight"
+                  >
+                    + Add to Box & Re-Analyze
+                  </button>
                 )}
               </div>
             </li>

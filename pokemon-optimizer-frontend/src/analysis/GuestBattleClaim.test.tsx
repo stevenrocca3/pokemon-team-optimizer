@@ -15,6 +15,9 @@ function ready(storage: 'account' | 'browser'): CollectionState {
     list: [],
     add: async () => true,
     addAll: async () => ({ added: 0, raised: 0, skipped: 0 }),
+    addSuggestion: async () => {
+      throw new Error('not used')
+    },
     remove: async () => {},
     checklist: [],
     setChecklist: () => {},

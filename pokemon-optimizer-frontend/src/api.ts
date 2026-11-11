@@ -1,4 +1,4 @@
-import type { SpeciesOption, RankRequest, RankedIvResult, SpeciesDetail, Move, CaughtPokemon, CaughtPokemonRequest, BreakpointReport, CupSummary, ImportPreview, IvComparisonResult, OwnedSpecies, SiteStats, AnalysisStatus, AnalysisUpload, AnalysisResult, TeamBuilderLeague, TeamBuilderRequest, TeamBuilderResult, AnalyticsSummary} from './types'
+import type { SpeciesOption, RankRequest, RankedIvResult, SpeciesDetail, Move, CaughtPokemon, CaughtPokemonRequest, BreakpointReport, CupSummary, ImportPreview, IvComparisonResult, OwnedSpecies, SiteStats, AnalysisStatus, AnalysisUpload, AnalysisResult, TeamBuilderLeague, TeamBuilderRequest, TeamBuilderResult, AnalyticsSummary, MetaPresetRequest} from './types'
 import { apiFetch } from './lib/http'
 
 export { NotLoggedInError } from './lib/http'
@@ -101,6 +101,18 @@ export async function previewImport(file: File): Promise<ImportPreview>
     // no Content-Type: the browser sets multipart/form-data with its boundary
     const response = await apiFetch('/api/import/preview', { method: 'POST', headers: csrfHeader(), body, timeoutMs: 60_000 });
     return await response.json();
+}
+
+/** "Add to Box" on a Team Builder suggestion: the server saves the meta build. added is false when it was already there. */
+export async function addMetaPreset(request: MetaPresetRequest): Promise<{ pokemon: CaughtPokemon; added: boolean }>
+{
+    const response = await apiFetch('/api/collection/meta-preset',
+    {
+        method: 'POST',
+        headers: { 'Content-Type' : 'application/json', ...csrfHeader() },
+        body: JSON.stringify(request)
+    });
+    return { pokemon: await response.json(), added: response.status === 201 };
 }
 
 export async function addAllToCollection(pokemon: CaughtPokemonRequest[]): Promise<CaughtPokemon[]>

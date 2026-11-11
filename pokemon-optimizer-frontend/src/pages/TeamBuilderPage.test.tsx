@@ -7,6 +7,8 @@ import { MemoryRouter, Route, Routes } from 'react-router'
 import { TeamBuilderPage } from './TeamBuilderPage'
 import { fakeServer, json } from '../analysis/test-helpers'
 import type { TeamMember, TeamResult } from '../types'
+import { CollectionProvider } from '../collection/CollectionProvider'
+import { suggestion } from '../components/suggestion-fixture'
 
 function member(index: number, speciesId: string): TeamMember {
   return {
@@ -107,5 +109,118 @@ describe('Team Builder results', () => {
     expect(items[0].textContent).toContain('312')
     expect(items[0].textContent).toContain('swampert')
     expect(items[3].textContent).toContain('Shadow annihilape')
+  })
+})
+
+// ---- #114: "Add to Box & Re-Analyze" on a suggestion ----
+
+const MIMIKYU = suggestion('mimikyu', 'CLOSER', {
+  replaces: 2,
+  replacesSpeciesId: 'clodsire',
+  level: 25,
+  atkIv: 4,
+  defIv: 14,
+  staIv: 15,
+  fastMove: 'SHADOW_CLAW',
+  chargedMoves: ['SHADOW_SNEAK', 'PLAY_ROUGH'],
+})
+const MIMIKYU_BUILD = {
+  speciesId: 'mimikyu',
+  atkIv: 4,
+  defIv: 14,
+  staIv: 15,
+  level: 25,
+  fastMove: 'SHADOW_CLAW',
+  chargedMoves: ['SHADOW_SNEAK', 'PLAY_ROUGH'],
+  shadow: false,
+}
+
+/** The Team Builder: a 42% team with Mimikyu suggested, then (once Mimikyu is in) a 61% team */
+function teamBuilderAnswers() {
+  let calls = 0
+  return () => {
+    calls++
+    const first = calls === 1
+    const result = { ...team(0), winRate: { rate: first ? 0.42 : 0.61, low: 0.4, high: 0.65, battles: 400 } }
+    return json({
+      league: 'GREAT',
+      metaSize: 44,
+      metaDate: '2026-11-09',
+      eligible: first ? 3 : 4,
+      skipped: [],
+      cup: null,
+      teams: [{ ...result, suggestions: first ? [MIMIKYU] : [] }],
+    })
+  }
+}
+
+function renderWithCollection(state?: unknown) {
+  return render(
+    <MemoryRouter initialEntries={[{ pathname: '/team-builder', state }]}>
+      <CollectionProvider>
+        <Routes>
+          <Route path="/team-builder" element={<TeamBuilderPage />} />
+        </Routes>
+      </CollectionProvider>
+    </MemoryRouter>,
+  )
+}
+
+const requestsTo = (fetchMock: ReturnType<typeof fakeServer>, url: string) =>
+  fetchMock.mock.calls.filter(([u]) => u === url).map(([, init]) => JSON.parse(String(init?.body)))
+
+const BATTLE_TEAM = {
+  battleTeam: {
+    names: ['Swampert', 'Cradily', 'Clodsire'],
+    league: 'GREAT',
+    species: ['swampert', 'cradily', 'clodsire'].map((speciesId) => ({ speciesId, shadow: false })),
+  },
+}
+
+describe('Add to Box & Re-Analyze', () => {
+  // A guest: the suggestion goes into this browser's box with its meta build, and the teams are rebuilt with it in,
+  // straight away, showing the new score
+  it('adds to a guest’s box and rebuilds', async () => {
+    const fetchMock = fakeServer({
+      '/api/collection': () => json({ detail: 'log in' }, 401),
+      '/api/checklist': () => json({ detail: 'log in' }, 401),
+      '/api/team-builder': teamBuilderAnswers(),
+    })
+    const user = userEvent.setup()
+    renderWithCollection(BATTLE_TEAM)
+    await user.click(await screen.findByRole('button', { name: 'Build teams' }))
+    await user.click(await screen.findByRole('button', { name: 'Add mimikyu to Box & Re-Analyze' }))
+
+    await expect.poll(() => requestsTo(fetchMock, '/api/team-builder').length).toBe(2)
+    const rebuilt = requestsTo(fetchMock, '/api/team-builder')[1]
+    expect(rebuilt.pokemon).toEqual([MIMIKYU_BUILD])
+    expect(rebuilt.species.map((s: { speciesId: string }) => s.speciesId)).toEqual(['swampert', 'cradily', 'clodsire'])
+    const box = JSON.parse(localStorage.getItem('dexpresso.guestCollection.v1') ?? '[]')
+    expect(box.map((p: { speciesId: string }) => p.speciesId)).toEqual(['mimikyu'])
+    await expect.poll(() => cards()[0]?.textContent ?? '').toContain('61%')
+  })
+
+  // Logged in: the account's box gets it through the meta-preset endpoint (the server works out the build), then
+  // the teams are rebuilt from the Collection with it in
+  it('adds to the account’s box and rebuilds', async () => {
+    const saved = { id: 7, ...MIMIKYU_BUILD }
+    const fetchMock = fakeServer({
+      '/api/collection': () => json([]),
+      '/api/checklist': () =>
+        json(['swampert', 'cradily', 'clodsire'].map((speciesId) => ({ speciesId, shadow: false }))),
+      '/api/collection/meta-preset': () => json(saved, 201),
+      '/api/team-builder': teamBuilderAnswers(),
+    })
+    const user = userEvent.setup()
+    renderWithCollection()
+    await user.click(await screen.findByRole('button', { name: 'Build teams' }))
+    await user.click(await screen.findByRole('button', { name: 'Add mimikyu to Box & Re-Analyze' }))
+
+    await expect.poll(() => requestsTo(fetchMock, '/api/team-builder').length).toBe(2)
+    expect(requestsTo(fetchMock, '/api/collection/meta-preset')).toEqual([
+      { speciesId: 'mimikyu', shadow: false, league: 'GREAT', cup: null },
+    ])
+    expect(requestsTo(fetchMock, '/api/team-builder')[1].pokemon).toEqual([MIMIKYU_BUILD])
+    await expect.poll(() => cards()[0]?.textContent ?? '').toContain('61%')
   })
 })
