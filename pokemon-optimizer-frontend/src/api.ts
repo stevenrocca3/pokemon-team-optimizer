@@ -1,4 +1,4 @@
-import type {SpeciesOption, RankRequest, RankedIvResult, SpeciesDetail, Move, CaughtPokemon, CaughtPokemonRequest, BreakpointReport, CupSummary, ImportPreview, IvComparisonResult, OwnedSpecies, SiteStats, AnalysisStatus, AnalysisUpload, AnalysisResult, TeamBuilderLeague, TeamBuilderRequest, TeamBuilderResult} from './types'
+import type { SpeciesOption, RankRequest, RankedIvResult, SpeciesDetail, Move, CaughtPokemon, CaughtPokemonRequest, BreakpointReport, CupSummary, ImportPreview, IvComparisonResult, OwnedSpecies, SiteStats, AnalysisStatus, AnalysisUpload, AnalysisResult, TeamBuilderLeague, TeamBuilderRequest, TeamBuilderResult, AnalyticsSummary} from './types'
 import { apiFetch } from './lib/http'
 
 export { NotLoggedInError } from './lib/http'
@@ -259,4 +259,23 @@ export async function claimGuestBattles(guestToken: string): Promise<number>
 export function analysisEventsUrl(jobId: string): string
 {
     return `${ANALYZE}/${encodeURIComponent(jobId)}/events`;
+}
+
+/** The player's battle analytics, or just the guest flag when logged out (#121). */
+export async function getAnalyticsSummary(): Promise<AnalyticsSummary>
+{
+    const response = await apiFetch('/api/v1/analytics/summary');
+    return await response.json();
+}
+
+/**
+ * A battle from the logged-in player's saved history, once the analysis service has forgotten it (after a day).
+ * Null when it isn't theirs, or they're logged out.
+ */
+export async function getStoredBattle(matchId: string): Promise<AnalysisResult | null>
+{
+    const response = await fetch(`/api/v1/analytics/battles/${encodeURIComponent(matchId)}`);
+    if (response.status === 404) return null;
+    if (!response.ok) throw new Error(`stored battle ${response.status}`);
+    return await response.json();
 }

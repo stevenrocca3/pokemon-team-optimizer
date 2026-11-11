@@ -1,18 +1,23 @@
 import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router'
-import { getAnalysisResult } from '../api'
+import { getAnalysisResult, getStoredBattle } from '../api'
 import { usePageTitle } from '../lib/page-title'
 import type { AnalysisResult } from '../types'
 import { MatchTimeline } from '../analysis/MatchTimeline'
 import { CritiqueCards, ScoreHero } from '../analysis/MatchReview'
 import { TeamNudge } from '../analysis/TeamNudge'
 import { loadResult, saveResult } from '../analysis/job-storage'
+import { LoginCta } from '../analysis/LoginCta'
+import { matchIdFor } from '../analysis/analytics'
+import { useCollection } from '../collection/collection-context'
 
 type Load = { status: 'loading' } | { status: 'error'; message: string } | { status: 'ready'; result: AnalysisResult }
 
 /** /match/:jobId: one analysed battle, reviewed. Results don't change, so one this browser has opened loads from it. */
 export function MatchPage() {
   usePageTitle('Match Breakdown')
+  const collection = useCollection()
+  const guest = collection.status === 'ready' && collection.storage === 'browser'
   const { jobId = '' } = useParams()
   const [load, setLoad] = useState<Load>(() => {
     const cached = loadResult(jobId)
@@ -23,6 +28,13 @@ export function MatchPage() {
     if (loadResult(jobId)) return
     let live = true
     getAnalysisResult(jobId)
+      // forgotten by the analysis service (after a day): a logged-in player's saved history still has it
+      .catch(async (e: unknown) => {
+        const matchId = matchIdFor(jobId)
+        const stored = matchId ? await getStoredBattle(matchId).catch(() => null) : null
+        if (!stored) throw e
+        return stored
+      })
       .then((result) => {
         saveResult(jobId, result)
         if (live) setLoad({ status: 'ready', result })
@@ -57,6 +69,7 @@ export function MatchPage() {
           <CritiqueCards report={load.result.report} />
           <MatchTimeline result={load.result} />
           <TeamNudge result={load.result} />
+          {guest && <LoginCta compact />}
         </div>
       )}
     </div>

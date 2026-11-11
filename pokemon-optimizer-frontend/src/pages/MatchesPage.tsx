@@ -13,9 +13,14 @@ export function MatchesPage() {
         eyebrow="Battle analysis"
         title="Past matches"
         actions={
-          <Link to="/analyze" className="btn btn-primary">
-            Analyze a battle
-          </Link>
+          <>
+            <Link to="/analytics" className="btn btn-secondary">
+              Your analytics
+            </Link>
+            <Link to="/analyze" className="btn btn-primary">
+              Analyze a battle
+            </Link>
+          </>
         }
       >
         Every battle you’ve had graded on this device.

@@ -36,6 +36,8 @@ export interface AnalysisJobState {
   /** the job whose completion toast is showing */
   toast: { jobId: string; score: number } | null
   closeToast: () => void
+  /** goes up each time a finished battle is saved to the player's history (#125: the dashboard refetches) */
+  savedBattles: number
 }
 
 export const AnalysisJobContext = createContext<AnalysisJobState>({
@@ -45,6 +47,7 @@ export const AnalysisJobContext = createContext<AnalysisJobState>({
   pastMatches: [],
   toast: null,
   closeToast: () => {},
+  savedBattles: 0,
 })
 
 export function useAnalysisJob(): AnalysisJobState {

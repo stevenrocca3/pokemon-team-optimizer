@@ -17,6 +17,7 @@ import { AnalysisWidget } from './analysis/AnalysisWidget'
 import { AnalysisToast } from './analysis/AnalysisToast'
 import { AnalyzePage } from './pages/AnalyzePage'
 import { MatchesPage } from './pages/MatchesPage'
+import { AnalyticsPage } from './pages/AnalyticsPage'
 import { MatchPage } from './pages/MatchPage'
 
 function App() {
@@ -73,6 +74,7 @@ function App() {
               <Route path="/analyze" element={<AnalyzePage />} />
               <Route path="/matches" element={<MatchesPage />} />
               <Route path="/match/:jobId" element={<MatchPage />} />
+              <Route path="/analytics" element={<AnalyticsPage />} />
               <Route path="/privacy" element={<PrivacyPage />} />
               <Route path="/terms" element={<TermsPage />} />
               <Route path="*" element={<NotFoundPage />} />
