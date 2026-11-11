@@ -16,6 +16,10 @@ import java.util.Set;
 public class SpeciesLookup
 {
     private final HashMap<String, SpeciesTraits> traitsById = new HashMap<>();
+    /** Every non-shadow form's evolution family, unreleased ones included, so a line can be walked through them. */
+    private final HashMap<String, Family> familyById = new HashMap<>();
+    /** PvPoke's legacyMoves: the elite moves that were once in the regular pool. */
+    private final HashMap<String, Set<String>> legacyById = new HashMap<>();
     private final HashMap<String, SpeciesType> speciesById;
     private final HashMap<String, SpeciesType> unreleasedById = new HashMap<>();
     private HashMap<String, SpeciesType> loadSpecies() 
@@ -37,6 +41,10 @@ public class SpeciesLookup
                         continue;
                     }
                     
+                    if (pokemon.family() != null)
+                    {
+                        familyById.put(pokemon.speciesId(), pokemon.family());
+                    }
                     int dex = pokemon.dex();
                     String speciesName = pokemon.speciesName();
                     String speciesId = pokemon.speciesId();
@@ -48,6 +56,7 @@ public class SpeciesLookup
                     eliteMoves.addAll(pokemon.legacyMoves());
                     eliteMoves.addAll(pokemon.eliteMoves());
                     Set<String> finalEliteMoves = Set.copyOf(eliteMoves);
+                    legacyById.put(pokemon.speciesId(), Set.copyOf(pokemon.legacyMoves()));
                     Learnset learnset = new Learnset(pokemon.fastMoves(), pokemon.chargedMoves(), finalEliteMoves);
                     boolean shadowEligible = pokemon.tags().contains("shadoweligible");
                     SpeciesType species = new SpeciesType(dex, speciesName, speciesId, baseSta, baseAtk, baseDef, learnset, pokemon.types(), shadowEligible);
@@ -92,6 +101,18 @@ public class SpeciesLookup
     public Optional<SpeciesTraits> traits(String id)
     {
         return Optional.ofNullable(traitsById.get(id));
+    }
+
+    /** The evolution family of any non-shadow form, unreleased ones included; empty when it has none. */
+    public Optional<Family> family(String id)
+    {
+        return Optional.ofNullable(familyById.get(id));
+    }
+
+    /** The moves this form can only get with an Elite TM because they left the regular pool (PvPoke's legacyMoves). */
+    public Set<String> legacyMoves(String id)
+    {
+        return legacyById.getOrDefault(id, Set.of());
     }
 
     /** PvPoke's Pokemon.getEvolutionStage. */
