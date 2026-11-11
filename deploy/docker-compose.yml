@@ -77,7 +77,8 @@ services:
     build:
       context: ..
       dockerfile: battle-analysis/Dockerfile
-    image: dexpresso-analysis
+    # no image: name here: two services building one tag in parallel fail with "already exists". This builds
+    # under its own name from the API's cached layers, so it costs no extra time or disk.
     restart: unless-stopped
     depends_on:
       redis:
@@ -100,7 +101,9 @@ services:
       - "443:443"
       - "443:443/udp"   # HTTP/3
     volumes:
-      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      # the folder, not the file: git pull replaces the Caddyfile, and a single-file mount keeps showing the old
+      # one. Caddy still only reads it at start, so a deploy recreates this container (docs/DEPLOY.md).
+      - ./caddy:/etc/caddy:ro
       - caddy_data:/data   # the HTTPS certificates; keep this volume or Caddy re-requests them
       - caddy_config:/config
 
