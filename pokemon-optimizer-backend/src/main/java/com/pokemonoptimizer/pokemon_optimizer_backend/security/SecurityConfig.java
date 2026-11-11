@@ -31,7 +31,7 @@ public class SecurityConfig
                 .logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler(HttpStatus.NO_CONTENT)))
             // These are pure calculations (POST only to carry a body or a file): nothing for a forged request to
             // change, and a fresh visitor's first call can go out before the XSRF-TOKEN cookie exists
-            .csrf(csrf -> csrf.spa().ignoringRequestMatchers("/api/rank", "/api/team-builder", "/api/compare", "/api/breakpoints", "/api/import/**"))
+            .csrf(csrf -> csrf.spa().ignoringRequestMatchers("/api/rank", "/api/team-builder", "/api/compare", "/api/breakpoints", "/api/evolutions", "/api/import/**"))
             .addFilterAfter((request, response, chain) -> {
                 ((CsrfToken) request.getAttribute(CsrfToken.class.getName())).getToken();
                 chain.doFilter(request, response);

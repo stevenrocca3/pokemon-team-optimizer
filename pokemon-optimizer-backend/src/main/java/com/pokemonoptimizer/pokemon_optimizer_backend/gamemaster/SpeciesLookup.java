@@ -16,6 +16,8 @@ import java.util.Set;
 public class SpeciesLookup
 {
     private final HashMap<String, SpeciesTraits> traitsById = new HashMap<>();
+    /** Every non-shadow form's evolution family, unreleased ones included, so a line can be walked through them. */
+    private final HashMap<String, Family> familyById = new HashMap<>();
     private final HashMap<String, SpeciesType> speciesById;
     private final HashMap<String, SpeciesType> unreleasedById = new HashMap<>();
     private HashMap<String, SpeciesType> loadSpecies() 
@@ -37,6 +39,10 @@ public class SpeciesLookup
                         continue;
                     }
                     
+                    if (pokemon.family() != null)
+                    {
+                        familyById.put(pokemon.speciesId(), pokemon.family());
+                    }
                     int dex = pokemon.dex();
                     String speciesName = pokemon.speciesName();
                     String speciesId = pokemon.speciesId();
@@ -92,6 +98,12 @@ public class SpeciesLookup
     public Optional<SpeciesTraits> traits(String id)
     {
         return Optional.ofNullable(traitsById.get(id));
+    }
+
+    /** The evolution family of any non-shadow form, unreleased ones included; empty when it has none. */
+    public Optional<Family> family(String id)
+    {
+        return Optional.ofNullable(familyById.get(id));
     }
 
     /** PvPoke's Pokemon.getEvolutionStage. */

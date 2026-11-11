@@ -28,6 +28,12 @@ public enum League
         this.cpCap = cpCap;
     }
 
+    /** The League's CP cap, 0 for none. */
+    public int cap()
+    {
+        return cpCap;
+    }
+
     /** The CP cap battles are run at: PvPoke's 10000 when there's none. */
     public int battleCp()
     {
@@ -50,7 +56,7 @@ public enum League
      * The level this Pokémon battles at once built for the League: the highest level whose CP fits the Cap
      * (at most 50), but never below its current level. Empty if it is already over the Cap.
      */
-    OptionalDouble buildLevel(SpeciesType species, int atkIv, int defIv, int staIv, double currentLevel)
+    public OptionalDouble buildLevel(SpeciesType species, int atkIv, int defIv, int staIv, double currentLevel)
     {
         if (cpCap != 0 && cp(species, atkIv, defIv, staIv, currentLevel) > cpCap)
         {
