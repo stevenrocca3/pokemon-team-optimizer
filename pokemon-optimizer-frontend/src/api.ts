@@ -1,4 +1,4 @@
-import type {SpeciesOption, RankRequest, RankedIvResult, SpeciesDetail, Move, CaughtPokemon, CaughtPokemonRequest, BreakpointReport, CupSummary, ImportPreview, IvComparisonResult, OwnedSpecies, SiteStats, TeamBuilderLeague, TeamBuilderRequest, TeamBuilderResult} from './types'
+import type {SpeciesOption, RankRequest, RankedIvResult, SpeciesDetail, Move, CaughtPokemon, CaughtPokemonRequest, BreakpointReport, CupSummary, ImportPreview, IvComparisonResult, OwnedSpecies, SiteStats, AnalysisStatus, AnalysisUpload, AnalysisResult, TeamBuilderLeague, TeamBuilderRequest, TeamBuilderResult} from './types'
 import { apiFetch } from './lib/http'
 
 export { NotLoggedInError } from './lib/http'
@@ -203,4 +203,40 @@ export async function getSiteStats(): Promise<SiteStats>
 {
     const response = await apiFetch('/api/stats');
     return await response.json();
+}
+
+// Battle analysis: the Python service (Caddy routes /api/v1/analyze* to it). Videos can be large and phones upload
+// slowly, so the upload gets ten minutes.
+const ANALYZE = '/api/v1/analyze'
+
+export async function uploadBattleVideo(file: File): Promise<AnalysisUpload>
+{
+    const body = new FormData();
+    body.append('file', file);
+    const response = await apiFetch(ANALYZE, { method: 'POST', body, timeoutMs: 600_000 });
+    return await response.json();
+}
+
+/**
+ * The job's status, or null when the server doesn't know it (results are kept for a day). Used to check on a job
+ * whose event stream dropped, so any other failure just throws and the stream's own retry carries on.
+ */
+export async function findAnalysisStatus(jobId: string): Promise<AnalysisStatus | null>
+{
+    const response = await fetch(`${ANALYZE}/${encodeURIComponent(jobId)}`);
+    if (response.status === 404) return null;
+    if (!response.ok) throw new Error(`analysis status ${response.status}`);
+    return await response.json();
+}
+
+export async function getAnalysisResult(jobId: string): Promise<AnalysisResult>
+{
+    const response = await apiFetch(`${ANALYZE}/${encodeURIComponent(jobId)}/result`);
+    return await response.json();
+}
+
+/** Server-Sent Events: an `status` event with an AnalysisStatus on every change, until complete or failed. */
+export function analysisEventsUrl(jobId: string): string
+{
+    return `${ANALYZE}/${encodeURIComponent(jobId)}/events`;
 }

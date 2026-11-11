@@ -35,6 +35,9 @@ export function Header() {
           <NavLink to="/import" className={(state) => `hidden sm:inline ${navClass(state)}`}>
             Import
           </NavLink>
+          <NavLink to="/analyze" className={(state) => `hidden sm:inline ${navClass(state)}`}>
+            Analyze
+          </NavLink>
           <NavLink to="/collection" className={navClass}>
             Collection
           </NavLink>

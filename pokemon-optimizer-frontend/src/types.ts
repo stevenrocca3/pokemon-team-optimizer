@@ -294,3 +294,86 @@ export interface SiteStats {
     trainers : number;                      // accounts; guests never show up here
     ratings : RatingSummary;
 }
+
+// Battle analysis (the Python service behind /api/v1/analyze). Field names are the service's own snake_case.
+export type AnalysisStage = 'queued' | 'processing_cv' | 'reconstructing' | 'auditing_turns' | 'complete' | 'failed'
+
+export interface AnalysisStatus {
+    job_id : string;
+    status : AnalysisStage;
+    progress : number;                      // 0-100
+    message : string;                       // the stage as a status line ("Detecting Pokémon alignments...")
+    error : string | null;                  // set when failed, a sentence for the player
+    score : number | null;                  // set when complete
+    tier : string | null;
+    created_at : number;                    // epoch seconds
+    updated_at : number;
+}
+
+export interface AnalysisUpload {
+    job_id : string;
+    status : 'queued';
+}
+
+export type AnalysisAction = 'FAINT' | 'OPP_FAINT' | 'SWITCH' | 'OPP_SWITCH' | 'FORCED_SWITCH' | 'OPP_FORCED_SWITCH'
+    | 'CHARGE_MOVE_THROWN' | 'OPP_CHARGE_MOVE_THROWN' | 'FAST_MOVE_HIT' | 'OPP_FAST_MOVE_HIT' | 'NONE'
+
+export interface TurnLogEntry {
+    turn : number;
+    timestamp_ms : number;
+    user_active : string | null;
+    opp_active : string | null;
+    user_hp_pct : number | null;
+    opp_hp_pct : number | null;
+    user_energy : number | null;
+    opp_energy : number | null;             // the opponent's energy isn't on screen
+    action_detected : AnalysisAction;
+    actor : 'user' | 'opponent' | null;
+    move_name : string | null;
+    move_id : string | null;
+    shield_used : boolean;
+    opp_shield_used : boolean;
+    user_shields : number | null;
+    opp_shields : number | null;
+    user_remaining : number | null;
+    opp_remaining : number | null;
+    switch_clock_s : number | null;
+    hud_visible : boolean;
+    events : AnalysisAction[];
+}
+
+export interface TurnLog {
+    match_id : string;
+    user_team : string[];
+    opponent_team : string[];
+    cp : Record<string, number>;            // "user:Swampert" -> CP
+    turn_log : TurnLogEntry[];
+    video? : { fps : number; duration_ms : number; turns_read : number; turns_dropped : number };
+}
+
+export type FindingCategory = 'timing' | 'shield' | 'switch' | 'charge'
+
+export interface Finding {
+    turn : number;
+    timestamp_ms : number;
+    category : FindingCategory;
+    deduction : number;
+    message : string;
+    confidence : 'high' | 'low';
+}
+
+export interface MatchReport {
+    match_id : string;
+    score : number;
+    tier : { key : 'legend' | 'veteran' | 'ace' | 'critical'; name : string; min : number };
+    counts : { timing_errors : number; mismanaged_shields : number; suboptimal_switches : number; suboptimal_charges : number };
+    deductions : Record<string, number>;
+    findings : Finding[];
+    summary : { fatal_flaws : string[]; shield_audit : string; turn_efficiency : string };
+    metrics : Record<string, number>;
+}
+
+export interface AnalysisResult {
+    report : MatchReport;
+    turn_log : TurnLog;
+}
