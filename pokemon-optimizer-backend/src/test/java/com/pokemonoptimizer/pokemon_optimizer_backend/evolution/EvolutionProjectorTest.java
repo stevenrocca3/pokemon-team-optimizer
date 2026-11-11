@@ -16,7 +16,9 @@ import com.pokemonoptimizer.pokemon_optimizer_backend.teambuilder.League;
 public class EvolutionProjectorTest
 {
     private static final SpeciesLookup species = new SpeciesLookup();
-    private static final EvolutionProjector projector = new EvolutionProjector(species, new EvolutionTree(species));
+    private static final EvolutionProjector projector = new EvolutionProjector(species, new EvolutionTree(species),
+        new EvolutionMoves(species, new com.pokemonoptimizer.pokemon_optimizer_backend.gamemaster.MoveLookup(),
+            new com.pokemonoptimizer.pokemon_optimizer_backend.gamemaster.SuggestedMovesets(species)));
 
     private static FormProjection form(EvolutionProjection p, String id)
     {

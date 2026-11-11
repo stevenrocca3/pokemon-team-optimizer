@@ -30,13 +30,15 @@ public class EvolutionProjector
 
     private final SpeciesLookup species;
     private final EvolutionTree tree;
+    private final EvolutionMoves moves;
     /** Each form's 4,096 ranked spreads per League, worked out once. */
     private final Map<String, RankedIvResult[]> rankings = new ConcurrentHashMap<>();
 
-    public EvolutionProjector(SpeciesLookup species, EvolutionTree tree)
+    public EvolutionProjector(SpeciesLookup species, EvolutionTree tree, EvolutionMoves moves)
     {
         this.species = species;
         this.tree = tree;
+        this.moves = moves;
     }
 
     /** Empty for an unknown species. {@code level} is null when it isn't known; it's then projected from level 1. */
@@ -54,7 +56,7 @@ public class EvolutionProjector
                     leagues.add(project(evolved, league, atkIv, defIv, staIv, current));
                 }
                 forms.add(new FormProjection(evolved.speciesId(), evolved.speciesName(), evolved.dex(), form.stage(), form.path(),
-                    List.copyOf(leagues)));
+                    List.copyOf(leagues), moves.forForm(evolved.speciesId()).orElseThrow()));
             }
             return new EvolutionProjection(base.speciesId(), base.speciesName(), shadow, List.copyOf(forms));
         });
