@@ -5,6 +5,7 @@ import { usePageTitle } from '../lib/page-title'
 import type { AnalysisResult } from '../types'
 import { MatchTimeline } from '../analysis/MatchTimeline'
 import { CritiqueCards, ScoreHero } from '../analysis/MatchReview'
+import { TeamNudge } from '../analysis/TeamNudge'
 import { loadResult, saveResult } from '../analysis/job-storage'
 
 type Load = { status: 'loading' } | { status: 'error'; message: string } | { status: 'ready'; result: AnalysisResult }
@@ -55,6 +56,7 @@ export function MatchPage() {
           <ScoreHero report={load.result.report} />
           <CritiqueCards report={load.result.report} />
           <MatchTimeline result={load.result} />
+          <TeamNudge result={load.result} />
         </div>
       )}
     </div>

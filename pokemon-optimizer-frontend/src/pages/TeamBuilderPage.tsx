@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { Link } from 'react-router'
+import { Link, useLocation } from 'react-router'
 import { buildTeams, getCups, LOGIN_URL, previewImport } from '../api'
 import { useCollection } from '../collection/collection-context'
 import type { CaughtPokemonRequest, CupSummary, MatchupRef, OwnedSpecies, PowerUpImpact, TeamBuilderLeague, TeamBuilderResult, TeamMember, TeamResult } from '../types'
@@ -17,6 +17,7 @@ import { useMetaName } from '../species/meta-name'
 import { groupByOpponent, shieldsList } from '../lib/matchups'
 import { bestAffordable, teamCost } from '../lib/budget'
 import { cupsFor, formatName } from '../lib/cups'
+import type { BattleTeam } from '../analysis/team-nudge'
 
 const STARDUST_KEY = 'dexpresso.stardust'
 
@@ -72,9 +73,10 @@ const LEAGUES: { key: TeamBuilderLeague; label: string; cpLabel: string }[] = [
   { key: 'MASTER', label: 'Master', cpLabel: 'No cap' },
 ]
 
-// Where the Pokémon come from: the saved Collection (exact Pokémon plus checklist ticks), or a Poké Genie / Calcy IV
-// file read in the browser session only
+// Where the Pokémon come from: the saved Collection (exact Pokémon plus checklist ticks), a Poké Genie / Calcy IV
+// file read in the browser session only, or the team seen in an analysed battle (its review's import button)
 type Source =
+  | { kind: 'battle'; names: string[]; pokemon: CaughtPokemonRequest[]; species: OwnedSpecies[]; withoutMoves: number }
   | { kind: 'collection'; pokemon: CaughtPokemonRequest[]; species: OwnedSpecies[]; withoutMoves: number }
   | { kind: 'file'; fileName: string; pokemon: CaughtPokemonRequest[]; species: OwnedSpecies[]; withoutMoves: number }
 
@@ -109,9 +111,12 @@ export function TeamBuilderPage() {
       source: { kind: 'collection', pokemon, species: saved.checklist, withoutMoves: saved.list.length - withMoves.length },
     }
   }, [saved])
-  const [fileSource, setFileSource] = useState<Source | null>(null)
-  const [useFile, setUseFile] = useState(false)
-  const [league, setLeague] = useState<TeamBuilderLeague>('GREAT')
+  // a battle review's "Import Team" arrives with its team and league
+  const battle = (useLocation().state as { battleTeam?: BattleTeam } | null)?.battleTeam
+  const [fileSource, setFileSource] = useState<Source | null>(() =>
+    battle ? { kind: 'battle', names: battle.names, pokemon: [], species: battle.species, withoutMoves: 0 } : null)
+  const [useFile, setUseFile] = useState(Boolean(battle))
+  const [league, setLeague] = useState<TeamBuilderLeague>(battle?.league ?? 'GREAT')
   const [cupKey, setCupKey] = useState('')
   const cups = useCups()
   const [run, setRun] = useState<Run>({ status: 'idle' })
@@ -319,7 +324,7 @@ function SourcePicker({
 
   const fileInput = (
     <label className={`btn btn-secondary cursor-pointer ${reading ? 'pointer-events-none opacity-60' : ''}`}>
-      {reading ? 'Reading…' : fileSource ? 'Choose another file' : 'Choose a Poké Genie or Calcy IV file'}
+      {reading ? 'Reading…' : fileSource?.kind === 'file' ? 'Choose another file' : 'Choose a Poké Genie or Calcy IV file'}
       <input
         type="file"
         accept=".csv,text/csv"
@@ -343,7 +348,7 @@ function SourcePicker({
             My Collection <span className={useFile ? 'text-subtle' : 'text-brand'}>({sizeOf(collection.source).toLocaleString()})</span>
           </Choice>
           <Choice active={useFile} onClick={() => onUseFile(true)}>
-            An export file
+            {fileSource?.kind === 'battle' ? 'Your battle team' : 'An export file'}
           </Choice>
         </div>
       )}
@@ -355,6 +360,11 @@ function SourcePicker({
       {(useFile || collection.status === 'error') && (
         <div className="mt-3 flex flex-wrap items-center gap-3">
           {fileInput}
+          {fileSource?.kind === 'battle' && (
+            <span className="text-sm text-ink-soft">
+              From your analysed battle: <span className="text-ink">{fileSource.names.join(', ')}</span>
+            </span>
+          )}
           {fileSource?.kind === 'file' && (
             <span className="text-sm text-ink-soft">
               {fileSource.pokemon.length.toLocaleString()} Pokémon from <span className="text-ink">{fileSource.fileName}</span>
@@ -390,7 +400,7 @@ function SourcePicker({
           to keep them everywhere.
         </p>
       )}
-      {useFile && <p className="mt-2 text-xs text-subtle">Nothing from the file is saved.</p>}
+      {useFile && fileSource?.kind !== 'battle' && <p className="mt-2 text-xs text-subtle">Nothing from the file is saved.</p>}
     </div>
   )
 }
