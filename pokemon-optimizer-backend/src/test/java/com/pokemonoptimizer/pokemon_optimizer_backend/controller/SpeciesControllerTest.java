@@ -13,6 +13,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.pokemonoptimizer.pokemon_optimizer_backend.dto.SpeciesDetail;
 import com.pokemonoptimizer.pokemon_optimizer_backend.dto.SpeciesOption;
+import com.pokemonoptimizer.pokemon_optimizer_backend.evolution.EvolutionTree;
 import com.pokemonoptimizer.pokemon_optimizer_backend.gamemaster.SpeciesLookup;
 import com.pokemonoptimizer.pokemon_optimizer_backend.gamemaster.SpeciesType;
 import com.pokemonoptimizer.pokemon_optimizer_backend.gamemaster.SuggestedMoves;
@@ -20,7 +21,7 @@ import com.pokemonoptimizer.pokemon_optimizer_backend.gamemaster.SuggestedMovese
 
 public class SpeciesControllerTest {
     private static final SpeciesLookup sl = new SpeciesLookup();
-    private static final SpeciesController sc = new SpeciesController(sl, new SuggestedMovesets(sl));
+    private static final SpeciesController sc = new SpeciesController(sl, new SuggestedMovesets(sl), new EvolutionTree(sl));
 
     @Test
     public void testCheckUniqueIds()
@@ -118,4 +119,18 @@ public class SpeciesControllerTest {
         assertEquals(false, medicham.shadowEligible());
         assertEquals(true, registeel.shadowEligible());
     }
+
+    // #140: the Collection shows an evolution line only for Pokémon that have somewhere to go
+    @Test
+    public void speciesSayWhetherTheyEvolve()
+    {
+        java.util.Map<String, Boolean> evolves = new java.util.HashMap<>();
+        sc.speciesOption().forEach(o -> evolves.put(o.id(), o.evolves()));
+
+        assertEquals(true, evolves.get("mudkip"));
+        assertEquals(true, evolves.get("marshtomp"));
+        assertEquals(false, evolves.get("swampert"));
+        assertEquals(true, evolves.get("scatterbug"));   // through unreleased Spewpa to Vivillon
+    }
 }
+

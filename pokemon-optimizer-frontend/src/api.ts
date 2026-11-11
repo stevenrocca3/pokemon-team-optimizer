@@ -1,4 +1,4 @@
-import type { SpeciesOption, RankRequest, RankedIvResult, SpeciesDetail, Move, CaughtPokemon, CaughtPokemonRequest, BreakpointReport, CupSummary, ImportPreview, IvComparisonResult, OwnedSpecies, SiteStats, AnalysisStatus, AnalysisUpload, AnalysisResult, TeamBuilderLeague, TeamBuilderRequest, TeamBuilderResult, AnalyticsSummary, MetaPick, MetaPresetRequest} from './types'
+import type { SpeciesOption, RankRequest, RankedIvResult, SpeciesDetail, Move, CaughtPokemon, CaughtPokemonRequest, BreakpointReport, CupSummary, ImportPreview, IvComparisonResult, OwnedSpecies, SiteStats, AnalysisStatus, AnalysisUpload, AnalysisResult, TeamBuilderLeague, TeamBuilderRequest, TeamBuilderResult, AnalyticsSummary, MetaPick, MetaPresetRequest, EvolutionRequest, EvolutionProjection} from './types'
 import { apiFetch } from './lib/http'
 
 export { NotLoggedInError } from './lib/http'
@@ -17,6 +17,18 @@ export async function getSpecies(): Promise<SpeciesOption[]>
 export async function getRank(request: RankRequest): Promise<RankedIvResult[]>
 {
     const response = await apiFetch('/api/rank',
+    {
+        method: 'POST',
+        headers: { 'Content-Type' : 'application/json', ...csrfHeader() },
+        body: JSON.stringify(request)
+    });
+    return await response.json();
+}
+
+/** Each form this Pokémon can evolve into, built for every League (#136). Public and stateless, like /api/rank. */
+export async function getEvolutions(request: EvolutionRequest): Promise<EvolutionProjection>
+{
+    const response = await apiFetch('/api/evolutions',
     {
         method: 'POST',
         headers: { 'Content-Type' : 'application/json', ...csrfHeader() },

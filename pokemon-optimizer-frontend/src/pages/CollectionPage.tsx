@@ -13,6 +13,7 @@ import { loadGuestCollection, saveGuestCollection } from '../collection/guest-st
 import { PageHeader } from '../components/PageHeader'
 import { usePageTitle } from '../lib/page-title'
 import { Checklist } from '../components/Checklist'
+import { EvolutionLine } from '../components/EvolutionLine'
 
 export function CollectionPage() {
   usePageTitle('Your Collection')
@@ -116,7 +117,7 @@ export function CollectionPage() {
           {collection.list.length === 0 ? (
             <EmptyShelf />
           ) : (
-            <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <ul className="mt-8 grid items-start gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {collection.list.map((pokemon, i) => (
                 <CaughtCard key={pokemon.id} pokemon={pokemon} delayMs={Math.min(i, 12) * 40} onRemove={() => collection.remove(pokemon.id)} />
               ))}
@@ -230,7 +231,7 @@ function CaughtCard({ pokemon, delayMs, onRemove }: { pokemon: CaughtPokemon; de
   }
 
   return (
-    <li className="card group flex animate-rise gap-4 p-4 transition hover:-translate-y-0.5 hover:ring-line-strong" style={{ animationDelay: `${delayMs}ms` }}>
+    <li className="card group flex animate-rise flex-wrap gap-x-4 p-4 transition hover:-translate-y-0.5 hover:ring-line-strong" style={{ animationDelay: `${delayMs}ms` }}>
       <Link to={`/species/${pokemon.speciesId}`} className="shrink-0" aria-label={option?.name ?? pokemon.speciesId}>
         <div className="h-24 w-24 rounded-xl bg-gradient-to-b from-raised to-canvas/40 p-2">
           <PokemonArt dex={option?.dex} alt="" className="h-full w-full transition group-hover:scale-110" />
@@ -278,6 +279,12 @@ function CaughtCard({ pokemon, delayMs, onRemove }: { pokemon: CaughtPokemon; de
           {error && <span className="text-xs text-red-400">Couldn't remove ({error})</span>}
         </div>
       </div>
+      {/* full card width: the stage toggles and League rows need it */}
+      {option?.evolves && (
+        <div className="w-full">
+          <EvolutionLine pokemon={pokemon} name={option.name} />
+        </div>
+      )}
     </li>
   )
 }
