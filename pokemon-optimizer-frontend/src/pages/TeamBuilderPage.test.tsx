@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 // Issue #113: each of the Team Builder's 5 teams shows its meta coverage and the threats it struggles with.
-import { afterEach, beforeEach, describe, expect, it } from 'vitest'
-import { cleanup, render, screen, within } from '@testing-library/react'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { act, cleanup, render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter, Route, Routes } from 'react-router'
 import { TeamBuilderPage } from './TeamBuilderPage'
@@ -222,5 +222,103 @@ describe('Add to Box & Re-Analyze', () => {
     ])
     expect(requestsTo(fetchMock, '/api/team-builder')[1].pokemon).toEqual([MIMIKYU_BUILD])
     await expect.poll(() => cards()[0]?.textContent ?? '').toContain('61%')
+  })
+})
+
+// ---- #115: the add shows at once, with 8 seconds to undo it ----
+
+const toast = () => screen.queryByRole('status', { name: 'Added to your box' })
+const shownRate = () => cards()[0]?.querySelector('.tabular-nums')?.textContent ?? ''
+
+function guestServer() {
+  return fakeServer({
+    '/api/collection': () => json({ detail: 'log in' }, 401),
+    '/api/checklist': () => json({ detail: 'log in' }, 401),
+    '/api/team-builder': teamBuilderAnswers(),
+  })
+}
+
+describe('Undo an add', () => {
+  afterEach(() => vi.useRealTimers())
+
+  // Optimistic: the toast and the rebuild don't wait for the account to confirm the save
+  it('shows the add before the server answers', async () => {
+    const fetchMock = fakeServer({
+      '/api/collection': () => json([]),
+      '/api/checklist': () =>
+        json(['swampert', 'cradily', 'clodsire'].map((speciesId) => ({ speciesId, shadow: false }))),
+      '/api/collection/meta-preset': () => new Promise<Response>(() => {}) as unknown as Response, // never answers
+      '/api/team-builder': teamBuilderAnswers(),
+    })
+    const user = userEvent.setup()
+    renderWithCollection()
+    await user.click(await screen.findByRole('button', { name: 'Build teams' }))
+    await user.click(await screen.findByRole('button', { name: 'Add mimikyu to Box & Re-Analyze' }))
+
+    await expect.poll(() => toast()?.textContent ?? '').toContain('Added mimikyu to your box')
+    await expect.poll(() => requestsTo(fetchMock, '/api/team-builder').length).toBe(2)
+  })
+
+  // Undo puts the box back as it was and brings back the scores from before, without building again
+  it('undo restores the box and the earlier scores', async () => {
+    const fetchMock = guestServer()
+    const user = userEvent.setup()
+    renderWithCollection(BATTLE_TEAM)
+    await user.click(await screen.findByRole('button', { name: 'Build teams' }))
+    await user.click(await screen.findByRole('button', { name: 'Add mimikyu to Box & Re-Analyze' }))
+    await expect.poll(shownRate).toBe('61%')
+
+    const undo = toast() && within(toast()!).queryByRole('button', { name: 'Undo' })
+    expect(undo).toBeTruthy()
+    await user.click(undo!)
+
+    await expect.poll(shownRate).toBe('42%')
+    expect(JSON.parse(localStorage.getItem('dexpresso.guestCollection.v1') ?? '[]')).toEqual([])
+    expect(requestsTo(fetchMock, '/api/team-builder')).toHaveLength(2)
+    expect(toast()).toBeNull()
+    expect(screen.getByText('3 Pokémon ready')).toBeTruthy()
+  })
+
+  // Logged in, undo deletes the saved Pokémon from the account
+  it('undo deletes it from the account', async () => {
+    const fetchMock = fakeServer({
+      '/api/collection': () => json([]),
+      '/api/checklist': () =>
+        json(['swampert', 'cradily', 'clodsire'].map((speciesId) => ({ speciesId, shadow: false }))),
+      '/api/collection/meta-preset': () => json({ id: 7, ...MIMIKYU_BUILD }, 201),
+      '/api/collection/7': () => new Response(null, { status: 204 }),
+      '/api/team-builder': teamBuilderAnswers(),
+    })
+    const user = userEvent.setup()
+    renderWithCollection()
+    await user.click(await screen.findByRole('button', { name: 'Build teams' }))
+    await user.click(await screen.findByRole('button', { name: 'Add mimikyu to Box & Re-Analyze' }))
+    await expect.poll(() => toast()?.textContent ?? '').toContain('Added mimikyu')
+
+    await user.click(within(toast()!).getByRole('button', { name: 'Undo' }))
+
+    await expect
+      .poll(
+        () => fetchMock.mock.calls.filter(([u, init]) => u === '/api/collection/7' && init?.method === 'DELETE').length,
+      )
+      .toBe(1)
+  })
+
+  // The toast stays 8 seconds, then goes, and the add stays
+  it('the undo lasts 8 seconds', async () => {
+    vi.useFakeTimers({ shouldAdvanceTime: true, toFake: ['setTimeout', 'clearTimeout'] })
+    guestServer()
+    const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime })
+    renderWithCollection(BATTLE_TEAM)
+    await user.click(await screen.findByRole('button', { name: 'Build teams' }))
+    await user.click(await screen.findByRole('button', { name: 'Add mimikyu to Box & Re-Analyze' }))
+    await expect.poll(() => toast()).not.toBeNull()
+
+    act(() => vi.advanceTimersByTime(7_500))
+    expect(toast()).not.toBeNull()
+    act(() => vi.advanceTimersByTime(600))
+    expect(toast()).toBeNull()
+    const box = JSON.parse(localStorage.getItem('dexpresso.guestCollection.v1') ?? '[]')
+    expect(box.map((p: { speciesId: string }) => p.speciesId)).toEqual(['mimikyu'])
   })
 })

@@ -101,9 +101,19 @@ export function CollectionProvider({ children }: { children: ReactNode }) {
         const pokemon = merged.list.find((p) => sameness(p) === sameness(request))!
         return { pokemon, added: merged.added === 1 }
       }
-      const saved = await addMetaPreset({ speciesId: suggestion.speciesId, shadow: suggestion.shadow, league, cup })
-      if (saved.added) setList([saved.pokemon, ...list])
-      return saved
+      // optimistic (#115): it shows in the box at once, as a placeholder until the account confirms it
+      const placeholder: CaughtPokemon = { ...suggestionBuild(suggestion), id: Number.MAX_SAFE_INTEGER }
+      if (!list.some((p) => sameness(p) === sameness(placeholder))) setList([placeholder, ...list])
+      const swapPlaceholder = (to: CaughtPokemon[]) =>
+        setLoaded((current) => (current.status === 'ready' ? { ...current, list: newestFirst(current.list.flatMap((p) => (p.id === placeholder.id ? to : [p]))) } : current))
+      try {
+        const saved = await addMetaPreset({ speciesId: suggestion.speciesId, shadow: suggestion.shadow, league, cup })
+        swapPlaceholder([saved.pokemon])
+        return saved
+      } catch (error) {
+        swapPlaceholder([])
+        throw error
+      }
     },
     [list, storage, setList],
   )

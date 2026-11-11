@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router'
 import { buildTeams, getCups, LOGIN_URL, previewImport } from '../api'
 import { useCollection } from '../collection/collection-context'
-import type { CaughtPokemonRequest, CupSummary, MatchupRef, OwnedSpecies, PowerUpImpact, Suggestion, TeamBuilderLeague, TeamBuilderResult, TeamMember, TeamResult } from '../types'
+import type { CaughtPokemon, CaughtPokemonRequest, CupSummary, MatchupRef, OwnedSpecies, PowerUpImpact, Suggestion, TeamBuilderLeague, TeamBuilderResult, TeamMember, TeamResult } from '../types'
 import { useSpecies } from '../species/species-context'
 import { useMoves } from '../moves/moves-context'
 import { PokemonArt } from '../components/PokemonArt'
@@ -19,7 +19,8 @@ import { bestAffordable, teamCost } from '../lib/budget'
 import { cupsFor, formatName } from '../lib/cups'
 import type { BattleTeam } from '../analysis/team-nudge'
 import { SwapSuggestions } from '../components/SwapSuggestions'
-import { asRequest } from '../lib/suggestion'
+import { suggestionBuild } from '../lib/suggestion'
+import { UndoToast, UNDO_MS } from '../components/UndoToast'
 import { sameness } from '../collection/merge'
 
 const STARDUST_KEY = 'dexpresso.stardust'
@@ -98,6 +99,14 @@ type Run =
   | { status: 'error'; message: string }
   | { status: 'done'; result: TeamBuilderResult; source: Source; name: string }
 
+/** What an Undo puts back (#115): the build shown before the add, the file or battle source, and the add itself. */
+type Undo = {
+  message: string
+  before: Extract<Run, { status: 'done' }>
+  fileBefore: Source | null
+  adding: Promise<{ pokemon: CaughtPokemon; added: boolean }>
+}
+
 export function TeamBuilderPage() {
   usePageTitle('Team Builder')
   const saved = useCollection()
@@ -151,21 +160,67 @@ export function TeamBuilderPage() {
   }
 
   const [addError, setAddError] = useState<string | null>(null)
+  const speciesNames = useSpecies()
+  // the Collection as it is now, for an undo that runs after later renders
+  const latestCollection = useRef(saved)
+  useEffect(() => {
+    latestCollection.current = saved
+  })
 
-  /** "Add to Box & Re-Analyze" (#114): the suggestion goes into the box, then the same build runs again with it in */
-  async function addSuggestion(suggestion: Suggestion) {
+  const [undo, setUndo] = useState<Undo | null>(null)
+
+  useEffect(() => {
+    if (!undo) return
+    const timer = setTimeout(() => setUndo(null), UNDO_MS)
+    return () => clearTimeout(timer)
+  }, [undo])
+
+  /**
+   * "Add to Box & Re-Analyze" (#114), optimistic (#115): the box, the toast and the rebuild don't wait for the
+   * account to confirm the save; the suggestion's build is what the server saves too. If the save fails, it's undone.
+   */
+  function addSuggestion(suggestion: Suggestion) {
     if (run.status !== 'done' || saved.status !== 'ready') return
     setAddError(null)
-    try {
-      const { pokemon } = await saved.addSuggestion(suggestion, league, cup?.key ?? null)
-      const request = asRequest(pokemon)
-      const from = run.source
-      const next = from.pokemon.some((p) => sameness(p) === sameness(request)) ? from : { ...from, pokemon: [...from.pokemon, request] }
-      // a battle team or a file isn't the Collection: it keeps the new one too, for the next build
-      if (from.kind !== 'collection') setFileSource(next)
-      await build(next)
-    } catch (error: unknown) {
+    const before = run
+    const fileBefore = fileSource
+    const request = suggestionBuild(suggestion)
+    const from = run.source
+    const next = from.pokemon.some((p) => sameness(p) === sameness(request)) ? from : { ...from, pokemon: [...from.pokemon, request] }
+    // a battle team or a file isn't the Collection: it keeps the new one too, for the next build
+    if (from.kind !== 'collection') setFileSource(next)
+
+    const adding = saved.addSuggestion(suggestion, league, cup?.key ?? null)
+    const name = (speciesNames.status === 'ready' ? speciesNames.byId.get(suggestion.speciesId)?.name : undefined) ?? suggestion.speciesId
+    const entry: Undo = { message: `Added ${suggestion.shadow ? 'Shadow ' : ''}${name} to your box`, before, fileBefore, adding }
+    setUndo(entry)
+    adding.catch((error: unknown) => {
+      restore(entry)
       setAddError(error instanceof Error ? error.message : String(error))
+    })
+    void build(next)
+  }
+
+  /** Back to the scores and sources from before the add, without building again. */
+  function restore(entry: Undo) {
+    abort.current?.abort()
+    setUndo((current) => (current === entry ? null : current))
+    setRun(entry.before)
+    if (entry.before.source.kind !== 'collection') setFileSource(entry.fileBefore)
+  }
+
+  /** Undo (#115): the scores come back at once; the Pokémon leaves the box once its save has landed. */
+  async function undoAdd() {
+    if (!undo) return
+    const entry = undo
+    restore(entry)
+    try {
+      const { pokemon, added } = await entry.adding
+      const collection = latestCollection.current
+      // already in the box before? then it stays: Undo only takes back what this add put there
+      if (added && collection.status === 'ready') await collection.remove(pokemon.id)
+    } catch {
+      // the save failed, so there's nothing to take back
     }
   }
 
@@ -243,6 +298,8 @@ export function TeamBuilderPage() {
           <p className="mt-1 text-sm text-red-200">{run.message}</p>
         </div>
       )}
+
+      {undo && <UndoToast key={undo.message} message={undo.message} onUndo={undoAdd} />}
 
       {addError && (
         <p role="alert" className="mt-6 text-sm text-red-400">
