@@ -22,7 +22,12 @@ export function PageHeader({
         <CreamerRule align="left" className="mt-3" />
         {children && <div className="mt-3 text-base text-ink-soft sm:text-lg">{children}</div>}
       </div>
-      {actions && <div className="flex flex-wrap items-center gap-3">{actions}</div>}
+      {/* on phones the actions share the full width, so they don't sit lopsided on the left */}
+      {actions && (
+        <div className="flex w-full flex-wrap items-center gap-3 sm:w-auto [&>*]:flex-1 sm:[&>*]:flex-none">
+          {actions}
+        </div>
+      )}
     </header>
   )
 }
