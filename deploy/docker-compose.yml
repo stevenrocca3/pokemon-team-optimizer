@@ -1,4 +1,5 @@
-# DexPresso on one server (Oracle Cloud Always Free, ARM): the app, its Postgres, and Caddy for HTTPS.
+# DexPresso on one server (Oracle Cloud Always Free, ARM): the app, its Postgres, Caddy for HTTPS, and the battle
+# analysis service (its API, a worker, and Redis between them).
 # On the server:  cd deploy && docker compose up -d --build
 # Secrets live in deploy/.env (copy .env.example), which git ignores.
 
@@ -38,11 +39,60 @@ services:
       APP_CLIENT_IP_HEADER: X-Real-IP
     # no ports: Caddy is the only way in
 
+  # the job queue and job status for battle analysis; append-only, so queued jobs survive a restart
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes", "--maxmemory", "256mb", "--maxmemory-policy", "noeviction"]
+    volumes:
+      - redisdata:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  # uploads, status and the progress stream; Caddy sends /api/v1/analyze* here
+  analysis-api:
+    build:
+      context: ..
+      dockerfile: battle-analysis/Dockerfile
+    image: dexpresso-analysis
+    restart: unless-stopped
+    depends_on:
+      redis:
+        condition: service_healthy
+    environment:
+      REDIS_URL: redis://redis:6379/0
+      UPLOAD_DIR: /uploads
+      MAX_UPLOAD_MB: ${ANALYSIS_MAX_UPLOAD_MB:-400}
+      UPLOADS_PER_HOUR: ${ANALYSIS_UPLOADS_PER_HOUR:-6}
+    volumes:
+      - uploads:/uploads   # shared with the worker, which deletes each video once it's read
+
+  # reads the videos: one at a time (CV is CPU-heavy), so a busy hour queues instead of starving the app
+  analysis-worker:
+    build:
+      context: ..
+      dockerfile: battle-analysis/Dockerfile
+    image: dexpresso-analysis
+    restart: unless-stopped
+    depends_on:
+      redis:
+        condition: service_healthy
+    command: ["celery", "-A", "battle_analysis.service.tasks", "worker", "--concurrency", "1", "--loglevel", "INFO"]
+    environment:
+      REDIS_URL: redis://redis:6379/0
+      UPLOAD_DIR: /uploads
+    volumes:
+      - uploads:/uploads
+
   caddy:
     image: caddy:2-alpine
     restart: unless-stopped
     depends_on:
       - app
+      - analysis-api
     ports:
       - "80:80"
       - "443:443"
@@ -56,3 +106,5 @@ volumes:
   pgdata:
   caddy_data:
   caddy_config:
+  redisdata:
+  uploads:

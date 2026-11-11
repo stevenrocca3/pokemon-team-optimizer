@@ -6,3 +6,9 @@
 .git
 tools
 docs
+# the battle analysis image takes only its package and the gamemaster; never ship recordings or local envs
+**/Screenrecordings
+**/Screenshots
+**/.venv
+**/__pycache__
+**/.pytest_cache

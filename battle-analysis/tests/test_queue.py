@@ -138,3 +138,18 @@ def test_celery_task_runs_the_job(env, monkeypatch):
         assert env['store'].get(job_id)['status'] == 'complete'
     finally:
         tasks.celery_app.conf.task_always_eager = False
+
+
+# If the queue can't take the job (Redis down), the upload answers 503 with a sentence instead of a bare 500, the
+# job is marked failed rather than left queued forever, and the saved video is deleted.
+def test_queue_outage_fails_cleanly(env, monkeypatch):
+    def broken(job_id, path):
+        raise ConnectionError('redis down')
+
+    monkeypatch.setattr(api, 'enqueue', broken)
+    r = env['client'].post('/api/v1/analyze', files={'file': ('battle.mp4', MP4_BYTES, 'video/mp4')})
+    assert r.status_code == 503
+    assert 'try again' in r.json()['detail'].lower()
+    assert list(env['dir'].iterdir()) == []
+    [key] = env['redis'].keys('analysis:job:*')
+    assert json.loads(env['redis'].get(key))['status'] == 'failed'

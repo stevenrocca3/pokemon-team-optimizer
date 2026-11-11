@@ -8,6 +8,7 @@ GET  /api/v1/analyze/{job_id}/result the turn_log and report, once complete
 Errors are {"detail": "<a sentence a player can act on>"}, which the frontend's apiFetch shows as is.
 """
 import json
+import logging
 import shutil
 import time
 import uuid
@@ -21,6 +22,7 @@ from battle_analysis.service import tasks
 from battle_analysis.service.config import settings
 from battle_analysis.service.store import FINAL, JobStore
 
+log = logging.getLogger(__name__)
 app = FastAPI(title='DexPresso battle analysis', docs_url=None, redoc_url=None)
 
 VIDEO_SUFFIXES = {'.mp4', '.mov', '.m4v'}
@@ -76,7 +78,13 @@ async def upload(request: Request, file: UploadFile):
     job_id = store.create()
     final = path.with_name(f'{job_id}{path.suffix}')
     shutil.move(path, final)
-    enqueue(job_id, str(final))
+    try:
+        enqueue(job_id, str(final))
+    except Exception:
+        log.exception('could not queue analysis job %s', job_id)
+        final.unlink(missing_ok=True)
+        store.fail(job_id, 'The analysis queue is down.')
+        raise HTTPException(503, 'Battle analysis is busy or restarting. Try again in a few minutes.')
     base = f'/api/v1/analyze/{job_id}'
     return {'job_id': job_id, 'status': 'queued', 'status_url': base, 'events_url': f'{base}/events',
             'result_url': f'{base}/result'}
