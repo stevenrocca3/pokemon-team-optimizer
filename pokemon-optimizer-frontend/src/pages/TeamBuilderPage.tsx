@@ -1,8 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router'
 import { buildTeams, getCups, LOGIN_URL, previewImport } from '../api'
+import { BuildCostDrawer } from '../components/BuildCostDrawer'
 import { useCollection } from '../collection/collection-context'
-import type { CaughtPokemon, CaughtPokemonRequest, CupSummary, MatchupRef, OwnedSpecies, PowerUpImpact, Suggestion, TeamBuilderLeague, TeamBuilderResult, TeamMember, TeamResult } from '../types'
+import type { CaughtPokemon, CaughtPokemonRequest, CupSummary, Evolution, MatchupRef, OwnedSpecies, PowerUpImpact, Suggestion, TeamBuilderLeague, TeamBuilderResult, TeamMember, TeamResult } from '../types'
 import { useSpecies } from '../species/species-context'
 import { useMoves } from '../moves/moves-context'
 import { PokemonArt } from '../components/PokemonArt'
@@ -131,6 +132,7 @@ export function TeamBuilderPage() {
   const [useFile, setUseFile] = useState(Boolean(battle))
   const [league, setLeague] = useState<TeamBuilderLeague>(battle?.league ?? 'GREAT')
   const [cupKey, setCupKey] = useState('')
+  const [includeEvolvable, setIncludeEvolvable] = useState(false)
   const cups = useCups()
   const [run, setRun] = useState<Run>({ status: 'idle' })
   const abort = useRef<AbortController | null>(null)
@@ -150,7 +152,7 @@ export function TeamBuilderPage() {
     setRun({ status: 'running', startedAt: Date.now() })
     try {
       const result = await buildTeams(
-        { league, pokemon: from.pokemon, species: from.species, cup: cup?.key ?? null },
+        { league, pokemon: from.pokemon, species: from.species, cup: cup?.key ?? null, includeEvolvable },
         controller.signal,
       )
       setRun({ status: 'done', result, source: from, name: formatName(league, cup) })
@@ -261,6 +263,22 @@ export function TeamBuilderPage() {
               setRun({ status: 'idle' })
             }}
           />
+          {source && source.pokemon.length > 0 && (
+            <label className="mt-4 flex cursor-pointer items-start gap-2.5 rounded-lg bg-raised/60 p-3 text-sm ring-1 ring-line">
+              <input
+                type="checkbox"
+                checked={includeEvolvable}
+                onChange={(e) => setIncludeEvolvable(e.target.checked)}
+                className="mt-0.5 size-4 shrink-0 accent-brand"
+              />
+              <span>
+                <span className="font-semibold text-ink">Include Pokémon you could evolve</span>
+                <span className="mt-0.5 block text-xs text-subtle">
+                  Tries your unevolved Pokémon as what they'd evolve into, with the same IVs and its best moves.
+                </span>
+              </span>
+            </label>
+          )}
         </Step>
 
         <Step n={2} title="League or Cup">
@@ -798,7 +816,13 @@ function MemberCard({ member, role }: { member: TeamMember; role: number }) {
               Assumed IVs
             </span>
           )}
+          {member.evolution && (
+            <span className="rounded bg-emerald-500/20 px-1.5 py-0.5 text-[10px] font-bold uppercase text-emerald-300 ring-1 ring-emerald-500/40">
+              Evolvable
+            </span>
+          )}
         </div>
+        {member.evolution && <EvolveNote evolution={member.evolution} into={option?.name ?? member.speciesId} />}
         <div className="mt-0.5 text-xs text-subtle">
           Lv <span className="tabular-nums text-ink-soft">{formatLevel(member.level)}</span> ·{' '}
           <span className="tabular-nums text-ink-soft">{member.cp.toLocaleString()}</span> CP
@@ -823,8 +847,32 @@ function MemberCard({ member, role }: { member: TeamMember; role: number }) {
           <p className="mt-2 text-xs text-subtle">Already at its best level.</p>
         ))}
         {member.powerUp && <PowerUp impact={member.powerUp} toLevel={member.level} />}
+        {member.evolution && (
+          <BuildCostDrawer
+            member={member}
+            name={(id) => (species.status === 'ready' ? species.byId.get(id)?.name : undefined) ?? id}
+          />
+        )}
       </div>
     </li>
+  )
+}
+
+/** An evolved member (#138): which of your Pokémon to evolve, and any exclusive move its best moveset needs. */
+function EvolveNote({ evolution, into }: { evolution: Evolution; into: string }) {
+  const species = useSpecies()
+  const from = (species.status === 'ready' ? species.byId.get(evolution.fromSpeciesId)?.name : undefined) ?? evolution.fromSpeciesId
+  return (
+    <div className="mt-1 text-xs">
+      <p className="text-emerald-300">
+        Evolve your {from} <span aria-hidden>→</span> {into}
+      </p>
+      {evolution.moveWarnings.map((warning) => (
+        <p key={warning} className="mt-1 leading-relaxed text-amber-300">
+          {warning}
+        </p>
+      ))}
+    </div>
   )
 }
 

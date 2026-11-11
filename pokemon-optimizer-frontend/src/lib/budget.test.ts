@@ -4,7 +4,7 @@ import { bestAffordable, teamCost } from './budget'
 
 const member = (cost: TeamMember['cost']): TeamMember => ({
   index: 0, speciesId: 'medicham', shadow: false, level: 50, cp: 1439, atkIv: 0, defIv: 15, staIv: 15,
-  fastMove: 'COUNTER', chargedMoves: ['ICE_PUNCH'], metaRating: 500, assumed: cost === null, powerUp: null, cost,
+  fastMove: 'COUNTER', chargedMoves: ['ICE_PUNCH'], metaRating: 500, assumed: cost === null, powerUp: null, cost, evolution: null,
 })
 const team = (...costs: TeamMember['cost'][]): TeamResult => ({
   members: costs.map(member), winRate: { rate: 0.5, low: 0.45, high: 0.55, battles: 400 }, toughest: [], suggestions: [], coverage: { rating: 500, answered: 0, metaSize: 44 }, threats: [],

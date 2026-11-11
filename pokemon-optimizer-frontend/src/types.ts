@@ -144,6 +144,7 @@ export interface TeamBuilderRequest
     pokemon : CaughtPokemonRequest[];
     species : OwnedSpecies[];   // checklist ticks; result indexes past pokemon point here
     cup? : string | null;       // a live Cup's key ("fantasy-1500"); absent for the open League
+    includeEvolvable? : boolean; // also try each exact Pokémon as the forms it can evolve into (#138)
 }
 
 // GET /api/cups: a live Cup from PvPoke's data, refreshed nightly
@@ -193,6 +194,37 @@ export interface TeamMember
     assumed : boolean;      // a checklist tick battling with assumed good IVs
     powerUp : PowerUpImpact | null;   // only when its current level is known and below the built one
     cost : PowerUpCost | null;        // current level to built level; null when the current level isn't known
+    evolution : Evolution | null;     // set when it's one of your Pokémon evolved (#138)
+}
+
+/** A Team member that's one of your Pokémon as a form it can evolve into (#138) */
+export interface Evolution
+{
+    fromSpeciesId : string;     // what you have now
+    moveWarnings : string[];    // its best moveset needs a Community Day or event move
+    cost : BuildCost;           // Candy, items and second move it takes (#139)
+}
+
+/** One evolution in Pokémon GO (#139): item and lure are null when it needs none */
+export interface EvolutionStep
+{
+    from : string;
+    into : string;
+    candy : number;
+    item : string | null;       // "Sinnoh Stone"
+    itemCount : number;         // 999 for Gimmighoul Coins
+    lure : string | null;       // "Mossy Lure Module"
+    conditions : string[];      // "Walk 10 km as your buddy"
+}
+
+/** What evolving one of your Pokémon takes beyond powering it up (#139) */
+export interface BuildCost
+{
+    family : string | null;     // its Candy family, "FAMILY_MUDKIP"
+    steps : EvolutionStep[];
+    complete : boolean;         // false when the game data lacks one step's cost
+    evolveCandy : number;
+    secondMove : PowerUpCost | null;   // unlocking its second Charged Move; null when not needed or unknown
 }
 
 export interface MatchupRef
