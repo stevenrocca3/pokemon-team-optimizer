@@ -183,6 +183,28 @@ public class AnalyticsServiceTest
         assertThat(trend.rolling().last10()).isEqualByComparingTo("75.0");
     }
 
+    // Issue #123: the summary carries the player's top teams, ranked over their whole history (not just the newest 50
+    // listed): Ash's 3-battle Swampert team from early on still counts; Misty's battles don't.
+    @Test
+    public void theSummaryCarriesThePlayersTopTeams()
+    {
+        battles(ash, 3, 80);
+        battles(misty, 3, 99);
+        for (int i = 0; i < 50; i++)
+        {
+            entityManager.persist(new MatchHistory(entityManager.persist(new BattleLog(UUID.randomUUID(),
+                START.plus(played, ChronoUnit.MINUTES), List.of("Medicham", "Lickitung"), List.of("Azumarill"),
+                BigDecimal.valueOf(50), "ace", null, 0, null, null, 0, 0, 0, 0, "{}")), ash, null,
+                START.plus(played++, ChronoUnit.MINUTES)));
+        }
+
+        List<TeamRanking> top = summaryOf(ash).topTeams();
+
+        assertThat(top).isNotNull();
+        assertThat(top).extracting(TeamRanking::team).containsExactly(List.of("Swampert", "Cradily", "Clodsire"));
+        assertThat(top.get(0).battles()).isEqualTo(3);
+    }
+
     // A stored battle's full result goes to its owner only: another player gets nothing.
     @Test
     public void aBattlesResultIsOnlyForItsOwner()
