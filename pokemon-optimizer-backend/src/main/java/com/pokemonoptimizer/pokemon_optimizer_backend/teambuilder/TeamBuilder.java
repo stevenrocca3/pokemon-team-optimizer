@@ -14,6 +14,8 @@ import java.util.Set;
 import java.util.stream.IntStream;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 import com.pokemonoptimizer.pokemon_optimizer_backend.battle.Battle;
@@ -48,13 +50,14 @@ public class TeamBuilder
     record Settings(int screenPool, int shortlistSpecies, int teamsToSimulate, int selectionSamples, int estimateSamples,
                     int results, long seed)
     {
-        static final Settings DEFAULT = new Settings(30, 10, 5, 100, 400, 3, 2026);
+        static final Settings DEFAULT = new Settings(30, 10, 8, 100, 400, 5, 2026);
     }
 
     private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(TeamBuilder.class);
     private static final int SCREEN_SHIELDS = 1;
     private static final int[] SHIELDS = { 0, 1, 2 };
     private static final int TOUGHEST_SHOWN = 3;
+    private static final int THREATS_SHOWN = 5;
 
     /** An eligible Pokémon from the request, built for the League. Shared with IvComparison. */
     record Candidate(int index, CaughtPokemonRequest request, boolean assumed, SpeciesType species, Combatant combatant, Moveset moveset, int cp) {}
@@ -96,6 +99,8 @@ public class TeamBuilder
     private final MetaLookup metaLookup;
     private final GoodIvs goodIvs;
     private final Settings settings;
+    /** Each meta against itself, for suggesting replacements without simulating (#112). */
+    private final MetaMatrices matrices = new MetaMatrices();
 
     @Autowired   // the other constructor is for tests' narrower Settings
     public TeamBuilder(SpeciesLookup speciesLookup, MoveLookup moveLookup, MetaLookup metaLookup, GoodIvs goodIvs)
@@ -263,6 +268,7 @@ public class TeamBuilder
         // Stage 4: odds for the chosen Teams on fresh opponents, so picking the luckiest estimate doesn't inflate them
         List<Opponents> estimate = sampleOpponents(meta, settings.estimateSamples(), settings.seed() + 1);
         List<TeamResult> teams = new ArrayList<>();
+        String matrixKey = cup == null ? league.name() : cup.key() + "@" + cup.updated();
         Map<Integer, PowerUpImpact> powerUps = new HashMap<>();   // a Pokémon on several Teams is battled once
         for (int[] order : chosen)
         {
@@ -273,10 +279,34 @@ public class TeamBuilder
                 PowerUpImpact powerUp = powerUps.computeIfAbsent(c, k -> powerUp(eligible.get(k), meta, battleCp).orElse(null));
                 members.add(member(eligible.get(c), metaRating[c], powerUp));
             }
-            teams.add(new TeamResult(members, odds, toughest(order, ratings, meta)));
+            List<Suggestion> suggestions = List.of();
+            if (Replacements.needed(odds))
+            {
+                List<Replacements.Member> team = new ArrayList<>();
+                for (int c : order)
+                {
+                    Candidate candidate = eligible.get(c);
+                    team.add(new Replacements.Member(candidate.index(), candidate.request().speciesId(), candidate.species().dex(), ratings[c]));
+                }
+                suggestions = Replacements.suggest(matrices.get(matrixKey, meta, battleCp), team);
+            }
+            teams.add(new TeamResult(members, odds, toughest(order, ratings, meta), suggestions, teamCoverage(order, ratings, meta.size()),
+                threats(order, ratings, meta, eligible)));
         }
         teams.sort(Comparator.comparingDouble((TeamResult team) -> -team.winRate().rate()));
         return new TeamBuilderResult(league, meta.size(), metaDate, eligible.size(), teams, skipped, cup == null ? null : cup.key());
+    }
+
+    /** Works out the open Leagues' meta matrices in the background at startup, so no search waits on them. */
+    @EventListener(ApplicationReadyEvent.class)
+    public void warmMetaMatrices()
+    {
+        Thread.ofVirtual().name("meta-matrices").start(() -> {
+            for (League league : League.values())
+            {
+                matrices.get(league.name(), metaLookup.meta(league), league.battleCp());
+            }
+        });
     }
 
     // ---- eligibility ----
@@ -415,10 +445,39 @@ public class TeamBuilder
 
     private static List<String> toughest(int[] members, double[][] ratings, List<MetaPokemon> meta)
     {
-        return IntStream.range(0, meta.size()).boxed()
-            .sorted(Comparator.comparingDouble((Integer m) -> bestAgainst(members, ratings, m)))
-            .limit(TOUGHEST_SHOWN)
-            .map(m -> meta.get(m).id())
+        return worstFirst(members, ratings, meta.size()).limit(TOUGHEST_SHOWN).map(m -> meta.get(m).id()).toList();
+    }
+
+    /** Meta indexes, the one the Team's best answer does worst against first; ties in meta order. */
+    private static java.util.stream.Stream<Integer> worstFirst(int[] members, double[][] ratings, int metaSize)
+    {
+        return IntStream.range(0, metaSize).boxed().sorted(Comparator.comparingDouble((Integer m) -> bestAgainst(members, ratings, m)));
+    }
+
+    /** The meta coverage the shortlist ranks on, and how many meta Pokémon some member beats (#113). */
+    private static TeamCoverage teamCoverage(int[] members, double[][] ratings, int metaSize)
+    {
+        int answered = 0;
+        for (int m = 0; m < metaSize; m++)
+        {
+            answered += bestAgainst(members, ratings, m) > 500 ? 1 : 0;
+        }
+        return new TeamCoverage(Math.round(coverage(members, ratings, metaSize) * 10) / 10.0, answered, metaSize);
+    }
+
+    /** The 5 meta Pokémon the Team does worst against, with its best rating against each and who gets it (#113). */
+    private static List<Threat> threats(int[] members, double[][] ratings, List<MetaPokemon> meta, List<Candidate> eligible)
+    {
+        return worstFirst(members, ratings, meta.size()).limit(THREATS_SHOWN)
+            .map(m -> {
+                int answer = members[0];
+                for (int c : members)
+                {
+                    if (ratings[c][m] > ratings[answer][m]) answer = c;
+                }
+                return new Threat(meta.get(m).id(), Math.round(ratings[answer][m] * 10) / 10.0,
+                    eligible.get(answer).request().speciesId());
+            })
             .toList();
     }
 
