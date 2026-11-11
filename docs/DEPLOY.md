@@ -157,7 +157,12 @@ docker compose exec -T db sh -c 'dropdb -U "$POSTGRES_USER" restore_check'
 `https://dexpresso.app/actuator/health`, every 5 minutes. It returns `{"status":"UP"}` only when the app
 and the database are both fine.
 
-**Shipping a new version.** On the VM: `cd ~/pokemon-team-optimizer/deploy && git pull && docker compose up -d --build`.
+**Shipping a new version.** On the VM:
+```
+cd ~/pokemon-team-optimizer/deploy && git pull && docker compose up -d --build && docker compose up -d --force-recreate caddy
+```
+The last step reloads `caddy/Caddyfile`: Caddy reads it only when it starts, and Compose doesn't restart it when
+only that file changed. Skip it and a new route (like `/api/v1/analyze*`) never reaches the live site.
 
 **Reading feedback and ratings.**
 ```
