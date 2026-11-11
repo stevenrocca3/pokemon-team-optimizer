@@ -3,6 +3,7 @@ import { Header } from './components/Header'
 import { SpeciesProvider } from './species/SpeciesProvider'
 import { MovesProvider } from './moves/MovesProvider'
 import { CollectionProvider } from './collection/CollectionProvider'
+import { GuestBattleClaim } from './analysis/GuestBattleClaim'
 import { HomePage } from './pages/HomePage'
 import { SpeciesPage } from './pages/SpeciesPage'
 import { CollectionPage } from './pages/CollectionPage'
@@ -23,6 +24,8 @@ function App() {
   return (
     <SpeciesProvider>
       <CollectionProvider>
+        {/* battles analysed while logged out move into the account once the player logs in */}
+        <GuestBattleClaim />
         <div className="flex min-h-screen flex-col">
           {/* the first Tab stop: keyboard users jump past the header and nav straight to the page */}
           <a

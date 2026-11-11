@@ -21,7 +21,7 @@ public class SecurityConfig
     {
         http
             .authorizeHttpRequests(auth -> auth
-            .requestMatchers("/api/collection/**", "/api/checklist", "/api/me").authenticated()
+            .requestMatchers("/api/collection/**", "/api/checklist", "/api/me", "/api/v1/battles/claim").authenticated()
             .anyRequest().permitAll())
             .exceptionHandling(e -> e.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
             .oauth2Login(oauth -> oauth.defaultSuccessUrl(afterLoginUrl, true))

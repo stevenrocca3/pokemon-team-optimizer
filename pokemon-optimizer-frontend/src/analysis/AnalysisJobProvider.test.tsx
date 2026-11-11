@@ -176,6 +176,34 @@ describe('AnalysisJobProvider and the floating widget', () => {
     expect(within(row).getByText('72/100')).toBeTruthy()
   })
 
+  // Issue #120: when the job completes the browser reports it to battle history, once: POST /api/v1/battles with the
+  // job id, carrying this browser's guest token (so a logged-out player's battle has an owner) and the CSRF header
+  // path the other saves use. A repeated completion event doesn't report it again.
+  it('reports the finished battle to battle history once', async () => {
+    const fetchMock = fakeServer({ '/api/v1/battles': () => new Response(null, { status: 201 }) })
+    renderApp()
+    await uploadVideo()
+    FakeEventSource.latest().emit(status('complete', 100, { score: 72 }))
+    FakeEventSource.latest().emit(status('complete', 100, { score: 72 }))
+    await expect.poll(() => fetchMock.mock.calls.filter(([url]) => url === '/api/v1/battles').length).toBe(1)
+    const [, init] = fetchMock.mock.calls.find(([url]) => url === '/api/v1/battles')!
+    expect(init?.method).toBe('POST')
+    expect(JSON.parse(String(init?.body))).toEqual({ jobId: JOB })
+    const token = localStorage.getItem('dexpresso.guestToken')
+    expect(token).toBeTruthy()
+    expect(new Headers(init?.headers).get('X-Guest-Token')).toBe(token)
+  })
+
+  // A failed job isn't a battle: nothing is reported.
+  it('doesn’t report a failed job', async () => {
+    const fetchMock = fakeServer()
+    renderApp()
+    await uploadVideo()
+    FakeEventSource.latest().emit(status('failed', 0, { error: 'No battle HUD found in this video.' }))
+    await new Promise((r) => setTimeout(r, 20))
+    expect(fetchMock.mock.calls.filter(([url]) => url === '/api/v1/battles')).toHaveLength(0)
+  })
+
   // A failed job shows the reader's own reason in the widget, until dismissed.
   it('shows why a job failed', async () => {
     fakeServer()

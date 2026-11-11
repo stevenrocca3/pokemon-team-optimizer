@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
-import { analysisEventsUrl, findAnalysisStatus, uploadBattleVideo } from '../api'
+import { analysisEventsUrl, findAnalysisStatus, recordBattle, uploadBattleVideo } from '../api'
 import type { AnalysisStatus } from '../types'
 import { AnalysisJobContext, isFinal, type ActiveJob, type AnalysisJobState, type PastMatch } from './analysis-job'
+import { guestToken } from './guest-token'
 import { loadJob, loadMatches, saveJob, saveMatches, withMatch } from './job-storage'
 
 /** the log with this status line added, unless it's the line already showing (progress within one stage) */
@@ -18,6 +19,8 @@ export function AnalysisJobProvider({ children }: { children: ReactNode }) {
   const [job, setJob] = useState<ActiveJob | null>(loadJob)
   const [pastMatches, setPastMatches] = useState<PastMatch[]>(loadMatches)
   const [toast, setToast] = useState<AnalysisJobState['toast']>(null)
+  // jobs already reported to battle history this page load (a completion can arrive twice: event + status check)
+  const recorded = useRef(new Set<string>())
 
   const jobRef = useRef(job)
   useEffect(() => {
@@ -55,6 +58,12 @@ export function AnalysisJobProvider({ children }: { children: ReactNode }) {
         finishedAt: Date.now(),
       }
       setPastMatches((prev) => withMatch(prev, match))
+      // battle history (#120): the account's when logged in, else under this browser's guest token. The server
+      // fetches the result itself; reporting twice is harmless, a failure is retried on the next completion seen.
+      if (!recorded.current.has(status.job_id)) {
+        recorded.current.add(status.job_id)
+        recordBattle(status.job_id, guestToken()).catch(() => recorded.current.delete(status.job_id))
+      }
     }
     if (announce) setToast({ jobId: status.job_id, score: status.score! })
   }, [])

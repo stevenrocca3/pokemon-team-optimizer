@@ -7,6 +7,7 @@ floored at 0. Suboptimal switches are switch lag plus missed catches. The same t
 """
 from collections.abc import Callable
 
+from battle_analysis.analysis.history import battle_outcome, history_metrics
 from battle_analysis.analysis.alignment import audit_alignment
 from battle_analysis.analysis.bait import audit_move_choice
 from battle_analysis.analysis.tactics import audit_catches, audit_shields, audit_switch_lag
@@ -103,6 +104,8 @@ def analyze_match(log: dict, progress: Callable[[str], None] | None = None) -> d
 
     return {
         'match_id': log.get('match_id'),
+        'outcome': battle_outcome(log),
+        'history': history_metrics(alignment, shields, lag),
         'score': score,
         'tier': tier_for(score),
         'counts': counts,
