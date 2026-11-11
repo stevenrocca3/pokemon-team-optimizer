@@ -23,12 +23,16 @@ import org.springframework.test.web.servlet.request.RequestPostProcessor;
 
 import com.pokemonoptimizer.pokemon_optimizer_backend.cups.Cup;
 import com.pokemonoptimizer.pokemon_optimizer_backend.cups.CupCatalog;
+import com.pokemonoptimizer.pokemon_optimizer_backend.evolution.EvolvableCandidates;
 import com.pokemonoptimizer.pokemon_optimizer_backend.cups.CupRules;
 import com.pokemonoptimizer.pokemon_optimizer_backend.dto.OwnedSpecies;
 import com.pokemonoptimizer.pokemon_optimizer_backend.persistence.TeamBuildRepository;
 import com.pokemonoptimizer.pokemon_optimizer_backend.security.SecurityConfig;
 import com.pokemonoptimizer.pokemon_optimizer_backend.teambuilder.League;
 import com.pokemonoptimizer.pokemon_optimizer_backend.teambuilder.TeamBuilder;
+import com.pokemonoptimizer.pokemon_optimizer_backend.dto.CaughtPokemonRequest;
+import com.pokemonoptimizer.pokemon_optimizer_backend.teambuilder.Evolution;
+import com.pokemonoptimizer.pokemon_optimizer_backend.teambuilder.EvolvedPokemon;
 import com.pokemonoptimizer.pokemon_optimizer_backend.teambuilder.TeamBuilderResult;
 import com.pokemonoptimizer.pokemon_optimizer_backend.teambuilder.TeamBuilderGate;
 
@@ -41,6 +45,9 @@ public class TeamBuilderControllerTest
 
     @MockitoBean
     private TeamBuilder teamBuilder;
+
+    @MockitoBean
+    private EvolvableCandidates evolvable;
 
     @MockitoBean
     private CupCatalog cups;   // the search itself is TeamBuilderTest's job
@@ -57,7 +64,7 @@ public class TeamBuilderControllerTest
     @Test
     public void guestsCanBuildTeamsWithoutLoggingIn()
     {   // no oidcLogin() and no csrf(): a fresh visitor may not have the XSRF-TOKEN cookie yet, like /api/rank
-        when(teamBuilder.build(eq(League.ULTRA), any(), any())).thenReturn(new TeamBuilderResult(League.ULTRA, 45, "2026-10-04", 1, List.of(), List.of(), null));
+        when(teamBuilder.build(eq(League.ULTRA), any(), any(), any())).thenReturn(new TeamBuilderResult(League.ULTRA, 45, "2026-10-04", 1, List.of(), List.of(), null));
 
         assertThat(mvc.post().uri("/api/team-builder").contentType(MediaType.APPLICATION_JSON).content(BODY))
             .hasStatusOk()
@@ -76,7 +83,7 @@ public class TeamBuilderControllerTest
     @Test
     public void tickedSpeciesAloneAreEnough()
     {   // a checklist-only Trainer sends no exact Pokémon
-        when(teamBuilder.build(League.GREAT, List.of(), List.of(new OwnedSpecies("medicham", false), new OwnedSpecies("registeel", true))))
+        when(teamBuilder.build(League.GREAT, List.of(), List.of(new OwnedSpecies("medicham", false), new OwnedSpecies("registeel", true)), List.of()))
             .thenReturn(new TeamBuilderResult(League.GREAT, 44, "2026-10-04", 2, List.of(), List.of(), null));
 
         assertThat(mvc.post().uri("/api/team-builder").contentType(MediaType.APPLICATION_JSON).content("""
@@ -102,7 +109,7 @@ public class TeamBuilderControllerTest
     public void aCupBuildsForThatCup()
     {
         when(cups.find("fantasy-1500")).thenReturn(Optional.of(FANTASY));
-        when(teamBuilder.build(eq(FANTASY), any(), any()))
+        when(teamBuilder.build(eq(FANTASY), any(), any(), any()))
             .thenReturn(new TeamBuilderResult(League.GREAT, 30, "2026-11-03", 2, List.of(), List.of(), "fantasy-1500"));
 
         assertThat(mvc.post().uri("/api/team-builder").contentType(MediaType.APPLICATION_JSON).content("""
@@ -138,7 +145,7 @@ public class TeamBuilderControllerTest
     @Test
     public void aFinishedBuildIsCounted()
     {
-        when(teamBuilder.build(eq(League.ULTRA), any(), any())).thenReturn(new TeamBuilderResult(League.ULTRA, 45, "2026-10-04", 1, List.of(), List.of(), null));
+        when(teamBuilder.build(eq(League.ULTRA), any(), any(), any())).thenReturn(new TeamBuilderResult(League.ULTRA, 45, "2026-10-04", 1, List.of(), List.of(), null));
 
         assertThat(mvc.post().uri("/api/team-builder").with(fromIp("10.0.0.1")).contentType(MediaType.APPLICATION_JSON).content(BODY))
             .hasStatusOk();
@@ -162,4 +169,35 @@ public class TeamBuilderControllerTest
     {
         return request -> { request.setRemoteAddr(ip); return request; };
     }
+
+    // #138: "Include Evolvable Pokémon" sends the request's Pokémon through EvolvableCandidates into the search
+    @Test
+    public void includeEvolvableAddsTheEvolvedForms()
+    {
+        EvolvedPokemon swampert = new EvolvedPokemon(0, new CaughtPokemonRequest("swampert", 0, 15, 15, 20.0, "MUD_SHOT",
+            List.of("HYDRO_CANNON"), false), new Evolution("mudkip", List.of()));
+        when(evolvable.expand(any())).thenReturn(List.of(swampert));
+        when(teamBuilder.build(eq(League.GREAT), any(), any(), eq(List.of(swampert))))
+            .thenReturn(new TeamBuilderResult(League.GREAT, 44, "2026-10-04", 2, List.of(), List.of(), null));
+
+        assertThat(mvc.post().uri("/api/team-builder").with(fromIp("10.0.0.3")).contentType(MediaType.APPLICATION_JSON).content("""
+                {"league":"GREAT","includeEvolvable":true,"pokemon":[
+                  {"speciesId":"mudkip","atkIv":0,"defIv":15,"staIv":15,"level":20,"fastMove":"TACKLE","chargedMoves":["DIG"]}
+                ]}
+                """))
+            .hasStatusOk()
+            .bodyJson().extractingPath("$.eligible").asNumber().isEqualTo(2);
+    }
+
+    @Test
+    public void evolvedFormsAreOnlyTriedWhenAskedFor()
+    {
+        when(teamBuilder.build(eq(League.ULTRA), any(), any(), any())).thenReturn(new TeamBuilderResult(League.ULTRA, 45, "2026-10-04", 1, List.of(), List.of(), null));
+
+        assertThat(mvc.post().uri("/api/team-builder").with(fromIp("10.0.0.4")).contentType(MediaType.APPLICATION_JSON).content(BODY))
+            .hasStatusOk();
+        verify(evolvable, never()).expand(any());
+        verify(teamBuilder).build(eq(League.ULTRA), any(), any(), eq(List.of()));
+    }
 }
+

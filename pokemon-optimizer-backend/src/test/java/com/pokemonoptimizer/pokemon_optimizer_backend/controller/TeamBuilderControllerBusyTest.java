@@ -16,6 +16,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.assertj.MockMvcTester;
 
 import com.pokemonoptimizer.pokemon_optimizer_backend.cups.CupCatalog;
+import com.pokemonoptimizer.pokemon_optimizer_backend.evolution.EvolvableCandidates;
 import com.pokemonoptimizer.pokemon_optimizer_backend.persistence.TeamBuildRepository;
 import com.pokemonoptimizer.pokemon_optimizer_backend.security.SecurityConfig;
 import com.pokemonoptimizer.pokemon_optimizer_backend.teambuilder.TeamBuilder;
@@ -35,6 +36,9 @@ public class TeamBuilderControllerBusyTest
 
     @MockitoBean
     private TeamBuilder teamBuilder;
+
+    @MockitoBean
+    private EvolvableCandidates evolvable;
 
     @MockitoBean
     private TeamBuildRepository teamBuilds;

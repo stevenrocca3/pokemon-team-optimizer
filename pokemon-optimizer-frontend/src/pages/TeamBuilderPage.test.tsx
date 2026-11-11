@@ -26,6 +26,7 @@ function member(index: number, speciesId: string): TeamMember {
     assumed: true,
     powerUp: null,
     cost: null,
+    evolution: null,
   }
 }
 
@@ -322,3 +323,72 @@ describe('Undo an add', () => {
     expect(box.map((p: { speciesId: string }) => p.speciesId)).toEqual(['mimikyu'])
   })
 })
+
+// ---- #138: "Include Pokémon you could evolve" ----
+
+const MUDKIP = { id: 3, speciesId: 'mudkip', atkIv: 0, defIv: 15, staIv: 15, level: null, fastMove: 'TACKLE', chargedMoves: ['DIG'], shadow: false }
+
+function evolvedTeam(): TeamResult {
+  const swampert: TeamMember = {
+    ...member(0, 'swampert'),
+    assumed: false,
+    cp: 1466,
+    evolution: {
+      fromSpeciesId: 'mudkip',
+      moveWarnings: ['Swampert needs Hydro Cannon: an Elite Charged TM, or evolving it during an event that has the move, like its Community Day.'],
+    },
+  }
+  return { ...team(0), members: [swampert, member(1, 'cradily'), member(2, 'clodsire')] }
+}
+
+describe('Include Pokémon you could evolve', () => {
+  function serve() {
+    return fakeServer({
+      '/api/collection': () => json([MUDKIP]),
+      '/api/checklist': () => json(['cradily', 'clodsire'].map((speciesId) => ({ speciesId, shadow: false }))),
+      '/api/team-builder': () =>
+        json({ league: 'GREAT', metaSize: 44, metaDate: '2026-11-09', eligible: 4, skipped: [], cup: null, teams: [evolvedTeam()] }),
+    })
+  }
+
+  // Off by default: the search uses the Pokémon as they are
+  it('is off until ticked', async () => {
+    const fetchMock = serve()
+    const user = userEvent.setup()
+    renderWithCollection()
+    const toggle = await screen.findByRole('checkbox', { name: /Include Pokémon you could evolve/ })
+    expect((toggle as HTMLInputElement).checked).toBe(false)
+    await user.click(screen.getByRole('button', { name: 'Build teams' }))
+
+    await expect.poll(() => requestsTo(fetchMock, '/api/team-builder').length).toBe(1)
+    expect(requestsTo(fetchMock, '/api/team-builder')[0].includeEvolvable).toBe(false)
+  })
+
+  it('asks the search to try evolved forms when ticked', async () => {
+    const fetchMock = serve()
+    const user = userEvent.setup()
+    renderWithCollection()
+    await user.click(await screen.findByRole('checkbox', { name: /Include Pokémon you could evolve/ }))
+    await user.click(screen.getByRole('button', { name: 'Build teams' }))
+
+    await expect.poll(() => requestsTo(fetchMock, '/api/team-builder').length).toBe(1)
+    expect(requestsTo(fetchMock, '/api/team-builder')[0].includeEvolvable).toBe(true)
+  })
+
+  // An evolved member says it's your Pokémon evolved, from what, and warns when its moves need an Elite TM
+  it('badges an evolved member with what to evolve and its move warning', async () => {
+    serve()
+    const user = userEvent.setup()
+    renderWithCollection()
+    await user.click(await screen.findByRole('checkbox', { name: /Include Pokémon you could evolve/ }))
+    await user.click(screen.getByRole('button', { name: 'Build teams' }))
+    await screen.findByRole('heading', { name: /Best Teams for/ })
+
+    const [swampert, cradily] = within(cards()[0]).getAllByRole('listitem')
+    expect(swampert.textContent).toContain('Evolvable')
+    expect(swampert.textContent).toContain('Evolve your mudkip')
+    expect(swampert.textContent).toContain('Swampert needs Hydro Cannon')
+    expect(cradily.textContent).not.toContain('Evolvable')
+  })
+})
+

@@ -144,6 +144,7 @@ export interface TeamBuilderRequest
     pokemon : CaughtPokemonRequest[];
     species : OwnedSpecies[];   // checklist ticks; result indexes past pokemon point here
     cup? : string | null;       // a live Cup's key ("fantasy-1500"); absent for the open League
+    includeEvolvable? : boolean; // also try each exact Pokémon as the forms it can evolve into (#138)
 }
 
 // GET /api/cups: a live Cup from PvPoke's data, refreshed nightly
@@ -193,6 +194,14 @@ export interface TeamMember
     assumed : boolean;      // a checklist tick battling with assumed good IVs
     powerUp : PowerUpImpact | null;   // only when its current level is known and below the built one
     cost : PowerUpCost | null;        // current level to built level; null when the current level isn't known
+    evolution : Evolution | null;     // set when it's one of your Pokémon evolved (#138)
+}
+
+/** A Team member that's one of your Pokémon as a form it can evolve into (#138) */
+export interface Evolution
+{
+    fromSpeciesId : string;     // what you have now
+    moveWarnings : string[];    // its best moveset needs a Community Day or event move
 }
 
 export interface MatchupRef

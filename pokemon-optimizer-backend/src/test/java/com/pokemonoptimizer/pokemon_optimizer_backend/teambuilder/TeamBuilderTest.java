@@ -19,6 +19,9 @@ import com.pokemonoptimizer.pokemon_optimizer_backend.cups.CupFilter;
 import com.pokemonoptimizer.pokemon_optimizer_backend.cups.CupRules;
 import com.pokemonoptimizer.pokemon_optimizer_backend.dto.CaughtPokemonRequest;
 import com.pokemonoptimizer.pokemon_optimizer_backend.dto.OwnedSpecies;
+import com.pokemonoptimizer.pokemon_optimizer_backend.evolution.EvolutionMoves;
+import com.pokemonoptimizer.pokemon_optimizer_backend.evolution.EvolutionTree;
+import com.pokemonoptimizer.pokemon_optimizer_backend.evolution.EvolvableCandidates;
 import com.pokemonoptimizer.pokemon_optimizer_backend.gamemaster.MoveLookup;
 import com.pokemonoptimizer.pokemon_optimizer_backend.gamemaster.SpeciesLookup;
 import com.pokemonoptimizer.pokemon_optimizer_backend.gamemaster.SuggestedMovesets;
@@ -433,5 +436,40 @@ public class TeamBuilderTest
 
         assertEquals(Math.round(total / meta.size() * 10) / 10.0, team.coverage().rating());
         assertEquals(answered, team.coverage().answered());
+    }
+
+    // #138: with "Include Evolvable Pokémon", the Trainer's unevolved Pokémon battle as what they'd evolve into
+    private static final EvolvableCandidates EVOLVABLE = new EvolvableCandidates(new EvolutionTree(SPECIES),
+        new EvolutionMoves(SPECIES, MOVES, new SuggestedMovesets(SPECIES)));
+
+    @Test
+    public void anUnevolvedPokemonCanJoinATeamAsItsEvolution()
+    {   // a Mudkip with no CP typed in can reach Swampert's best Great League level; the Mudkip itself wins nothing
+        List<CaughtPokemonRequest> box = List.of(
+            pokemon("medicham", 0, 15, 15, 20, "COUNTER", "ICE_PUNCH", "DYNAMIC_PUNCH"),
+            pokemon("magikarp", 15, 15, 15, 20, "SPLASH", "STRUGGLE"),
+            pokemon("registeel", 0, 14, 15, 20, "LOCK_ON", "FOCUS_BLAST", "FLASH_CANNON"),
+            new CaughtPokemonRequest("mudkip", 0, 15, 15, null, "TACKLE", List.of("DIG"), false),
+            pokemon("caterpie", 15, 15, 15, 20, "BUG_BITE", "STRUGGLE"));
+
+        TeamResult best = BUILDER.build(League.GREAT, box, List.of(), EVOLVABLE.expand(box)).teams().get(0);
+
+        assertEquals(Set.of("medicham", "registeel", "swampert"), species(best));
+        TeamMember swampert = best.members().stream().filter(m -> m.speciesId().equals("swampert")).findFirst().orElseThrow();
+        assertEquals(3, swampert.index());
+        assertEquals("mudkip", swampert.evolution().fromSpeciesId());
+        assertEquals(List.of("HYDRO_CANNON", "EARTHQUAKE"), swampert.chargedMoves());
+        assertTrue(swampert.cp() <= 1500 && swampert.cp() > 1400, "built to " + swampert.cp() + " CP");
+        assertTrue(best.members().stream().filter(m -> !m.speciesId().equals("swampert")).allMatch(m -> m.evolution() == null));
+    }
+
+    @Test
+    public void aTeamNeverHoldsOnePokemonTwice()
+    {   // Mudkip, Marshtomp and Swampert are three Pokédex numbers but one Pokémon: with Medicham that's two, not a Team
+        List<CaughtPokemonRequest> box = List.of(
+            pokemon("medicham", 0, 15, 15, 20, "COUNTER", "ICE_PUNCH", "DYNAMIC_PUNCH"),
+            new CaughtPokemonRequest("mudkip", 0, 15, 15, null, "MUD_SLAP", List.of("DIG"), false));
+
+        assertEquals(List.of(), BUILDER.build(League.GREAT, box, List.of(), EVOLVABLE.expand(box)).teams());
     }
 }

@@ -10,8 +10,9 @@ import com.pokemonoptimizer.pokemon_optimizer_backend.calculator.PowerUpCost;
  * against the meta (500 = even), the screening score. {@code assumed} is a ticked checklist species battling with
  * {@link GoodIvs}, not a Pokémon the Trainer entered. {@code powerUp} is null unless its current level is known and
  * below the one it's built at. {@code cost} is the Stardust and Candy from its current level to the built one, null
- * when the current level isn't known.
+ * when the current level isn't known. {@code evolution} is set when it's one of the Trainer's Pokémon evolved (#138).
  */
 public record TeamMember(int index, String speciesId, boolean shadow, double level, int cp, int atkIv, int defIv, int staIv,
                          String fastMove, List<String> chargedMoves, double metaRating, boolean assumed,
-                         PowerUpImpact powerUp, PowerUpCost.Cost cost) {}
+                         PowerUpImpact powerUp, PowerUpCost.Cost cost,
+                         Evolution evolution) {}

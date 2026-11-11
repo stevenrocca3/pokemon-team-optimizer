@@ -59,8 +59,12 @@ public class TeamBuilder
     private static final int TOUGHEST_SHOWN = 3;
     private static final int THREATS_SHOWN = 5;
 
-    /** An eligible Pokémon from the request, built for the League. Shared with IvComparison. */
-    record Candidate(int index, CaughtPokemonRequest request, boolean assumed, SpeciesType species, Combatant combatant, Moveset moveset, int cp) {}
+    /**
+     * An eligible Pokémon from the request, built for the League. Shared with IvComparison. {@code evolution} is set
+     * when it's one of the request's Pokémon tried as a form it can evolve into, null otherwise.
+     */
+    record Candidate(int index, CaughtPokemonRequest request, boolean assumed, SpeciesType species, Combatant combatant, Moveset moveset, int cp,
+                     Evolution evolution) {}
 
     /** A Team being considered: three shortlist positions, and its 1v1 coverage of the meta. */
     private record Trio(int[] members, double coverage) {}
@@ -125,7 +129,13 @@ public class TeamBuilder
     /** Teams for a Cup: its meta, and only the Pokémon its rules let in. */
     public TeamBuilderResult build(Cup cup, List<CaughtPokemonRequest> pokemon, List<OwnedSpecies> species)
     {
-        return search(cup.league(), cup.meta(), cup.updated(), cup, pokemon, species);
+        return build(cup, pokemon, species, List.of());
+    }
+
+    /** As {@link #build(Cup, List, List)}, also trying {@code evolved}: the Trainer's Pokémon as forms they evolve into. */
+    public TeamBuilderResult build(Cup cup, List<CaughtPokemonRequest> pokemon, List<OwnedSpecies> species, List<EvolvedPokemon> evolved)
+    {
+        return search(cup.league(), cup.meta(), cup.updated(), cup, pokemon, species, evolved);
     }
 
     /**
@@ -134,22 +144,31 @@ public class TeamBuilder
      */
     public TeamBuilderResult build(League league, List<CaughtPokemonRequest> pokemon, List<OwnedSpecies> species)
     {
-        return search(league, metaLookup.meta(league), metaLookup.snapshotDate(), null, pokemon, species);
+        return build(league, pokemon, species, List.of());
+    }
+
+    /**
+     * As {@link #build(League, List, List)}, also trying {@code evolved}: the Trainer's Pokémon as forms they evolve
+     * into (#138). An evolved form keeps its original's index, and a Team never holds two forms of one Pokémon.
+     */
+    public TeamBuilderResult build(League league, List<CaughtPokemonRequest> pokemon, List<OwnedSpecies> species, List<EvolvedPokemon> evolved)
+    {
+        return search(league, metaLookup.meta(league), metaLookup.snapshotDate(), null, pokemon, species, evolved);
     }
 
     /** {@code cup} is null for the open League. */
     private TeamBuilderResult search(League league, List<MetaPokemon> meta, String metaDate, Cup cup,
-                                     List<CaughtPokemonRequest> pokemon, List<OwnedSpecies> species)
+                                     List<CaughtPokemonRequest> pokemon, List<OwnedSpecies> species, List<EvolvedPokemon> evolved)
     {
         long started = System.nanoTime();
-        TeamBuilderResult result = searchTeams(league, meta, metaDate, cup, pokemon, species);
+        TeamBuilderResult result = searchTeams(league, meta, metaDate, cup, pokemon, species, evolved);
         log.info("Team Builder: {} Pokémon, {} eligible, {} vs {} meta: {} ms", pokemon.size() + species.size(), result.eligible(),
             cup == null ? league : cup.key(), meta.size(), (System.nanoTime() - started) / 1_000_000);
         return result;
     }
 
     private TeamBuilderResult searchTeams(League league, List<MetaPokemon> meta, String metaDate, Cup cup,
-                                          List<CaughtPokemonRequest> pokemon, List<OwnedSpecies> species)
+                                          List<CaughtPokemonRequest> pokemon, List<OwnedSpecies> species, List<EvolvedPokemon> evolved)
     {
         List<SkippedPokemon> skipped = new ArrayList<>();
         List<Candidate> eligible = new ArrayList<>();
@@ -177,6 +196,15 @@ public class TeamBuilder
             else
             {
                 consider(index, assumed.get(), true, league, cup, eligible, skipped);
+            }
+        }
+
+        // the Trainer's Pokémon as what they'd evolve into (#138); a form that can't battle here just isn't tried
+        for (EvolvedPokemon form : evolved)
+        {
+            if (problemWith(form.pokemon(), league, cup) == null)
+            {
+                eligible.add(candidate(form.index(), form.pokemon(), false, league, form.evolution()));
             }
         }
 
@@ -224,6 +252,10 @@ public class TeamBuilder
                 for (int c = b + 1; c < shortlist.length; c++)
                 {
                     int[] members = { shortlist[a], shortlist[b], shortlist[c] };
+                    if (onePokemonTwice(members, eligible))
+                    {
+                        continue;   // a Pokémon and its own evolution (#138)
+                    }
                     trios.add(new Trio(members, coverage(members, ratings, meta.size())));
                 }
             }
@@ -295,6 +327,20 @@ public class TeamBuilder
         }
         teams.sort(Comparator.comparingDouble((TeamResult team) -> -team.winRate().rate()));
         return new TeamBuilderResult(league, meta.size(), metaDate, eligible.size(), teams, skipped, cup == null ? null : cup.key());
+    }
+
+    /** Whether two of these candidates are the same Pokémon from the request, as different forms it can evolve into. */
+    private static boolean onePokemonTwice(int[] members, List<Candidate> eligible)
+    {
+        Set<Integer> indexes = new HashSet<>();
+        for (int c : members)
+        {
+            if (!indexes.add(eligible.get(c).index()))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     /** Works out the open Leagues' meta matrices in the background at startup, so no search waits on them. */
@@ -377,13 +423,18 @@ public class TeamBuilder
 
     Candidate candidate(int index, CaughtPokemonRequest request, boolean assumed, League league)
     {
+        return candidate(index, request, assumed, league, null);
+    }
+
+    private Candidate candidate(int index, CaughtPokemonRequest request, boolean assumed, League league, Evolution evolution)
+    {
         SpeciesType species = speciesLookup.findById(request.speciesId()).orElseThrow();
         OptionalDouble level = league.buildLevel(species, request.atkIv(), request.defIv(), request.staIv(), currentLevel(request));
         Combatant combatant = new Combatant(species, request.atkIv(), request.defIv(), request.staIv(), level.orElseThrow(), request.shadow());
         List<Move> charged = request.chargedMoves().stream().map(id -> moveLookup.findById(id).orElseThrow()).toList();
         Moveset moveset = new Moveset(moveLookup.findById(request.fastMove()).orElseThrow(), charged);
         int cp = League.cp(species, request.atkIv(), request.defIv(), request.staIv(), level.orElseThrow());
-        return new Candidate(index, request, assumed, species, combatant, moveset, cp);
+        return new Candidate(index, request, assumed, species, combatant, moveset, cp, evolution);
     }
 
     // ---- 1v1 screening ----
@@ -585,7 +636,7 @@ public class TeamBuilder
         CaughtPokemonRequest request = candidate.request();
         return new TeamMember(candidate.index(), request.speciesId(), request.shadow(), candidate.combatant().level(), candidate.cp(),
             request.atkIv(), request.defIv(), request.staIv(), request.fastMove(), request.chargedMoves(),
-            Math.round(metaRating * 10) / 10.0, candidate.assumed(), powerUp, cost(candidate));
+            Math.round(metaRating * 10) / 10.0, candidate.assumed(), powerUp, cost(candidate), candidate.evolution());
     }
 
     /**
