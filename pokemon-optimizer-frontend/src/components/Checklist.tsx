@@ -1,11 +1,12 @@
 import { useEffect, useId, useMemo, useState } from 'react'
-import { getMeta } from '../api'
+import { getTopMeta } from '../api'
 import { useCollection } from '../collection/collection-context'
 import { ownedKey, toggleOwned } from '../collection/checklist'
 import { useSpecies } from '../species/species-context'
 import { searchSpecies } from '../lib/species'
-import type { OwnedSpecies, SpeciesOption, TeamBuilderLeague } from '../types'
+import type { MetaPick, OwnedSpecies, SpeciesOption, TeamBuilderLeague } from '../types'
 import { PokemonArt } from './PokemonArt'
+import { TypeBadge } from './TypeBadge'
 
 const LEAGUES: { key: TeamBuilderLeague; label: string }[] = [
   { key: 'GREAT', label: 'Great' },
@@ -13,14 +14,17 @@ const LEAGUES: { key: TeamBuilderLeague; label: string }[] = [
   { key: 'MASTER', label: 'Master' },
 ]
 
-type Meta = { status: 'loading' } | { status: 'error'; message: string } | { status: 'ready'; list: OwnedSpecies[] }
+type Meta = { status: 'loading' } | { status: 'error'; message: string } | { status: 'ready'; list: MetaPick[] }
 
-// the meta only changes on a deploy: fetch each League once per visit
-const metaCache = new Map<TeamBuilderLeague, Promise<OwnedSpecies[]>>()
-function loadMeta(league: TeamBuilderLeague): Promise<OwnedSpecies[]> {
+/** How many top-ranked Pokémon each League's quick-select grid holds (#116). */
+const TOP_SIZE: Record<TeamBuilderLeague, number> = { GREAT: 150, ULTRA: 150, MASTER: 50 }
+
+// the rankings only change on a deploy: fetch each League once per visit
+const metaCache = new Map<TeamBuilderLeague, Promise<MetaPick[]>>()
+function loadMeta(league: TeamBuilderLeague): Promise<MetaPick[]> {
   let pending = metaCache.get(league)
   if (!pending) {
-    pending = getMeta(league)
+    pending = getTopMeta(league)
     pending.catch(() => metaCache.delete(league)) // let a retry fetch again
     metaCache.set(league, pending)
   }
@@ -28,8 +32,9 @@ function loadMeta(league: TeamBuilderLeague): Promise<OwnedSpecies[]> {
 }
 
 /**
- * The Collection as a checklist: each League's meta with a tick box per Pokémon, plus a search for anything
- * else. A tick says "I have one"; the Team Builder assumes good IVs for it.
+ * The Collection as a checklist: a quick-select grid of each League's top-ranked Pokémon (PvPoke's top 150 for Great
+ * and Ultra, 50 for Master) with a one-tap toggle each, plus a search for anything else. A tick says "I have one";
+ * the Team Builder assumes good IVs for it.
  */
 export function Checklist() {
   const collection = useCollection()
@@ -61,12 +66,8 @@ export function Checklist() {
     () => new Set(collection.status === 'ready' ? collection.checklist.map(ownedKey) : []),
     [collection],
   )
-  const metaList = meta.status === 'ready' ? meta.list : null
-  const metaSorted = useMemo(() => {
-    if (!metaList) return []
-    const name = (o: OwnedSpecies) => byId?.get(o.speciesId)?.name ?? o.speciesId
-    return [...metaList].sort((a, b) => name(a).localeCompare(name(b)) || Number(a.shadow) - Number(b.shadow))
-  }, [metaList, byId])
+  // in rank order: the best are the ones most worth ticking first
+  const metaSorted = meta.status === 'ready' ? meta.list : []
 
   if (collection.status !== 'ready') return null
   const { checklist, setChecklist, checklistSave } = collection
@@ -143,7 +144,9 @@ export function Checklist() {
       ) : (
         <div className="mt-6">
           <div className="flex flex-wrap items-baseline justify-between gap-2">
-            <h2 className="eyebrow">{leagueLabel} League meta</h2>
+            <h2 className="eyebrow">
+              {leagueLabel} League top {TOP_SIZE[league]}
+            </h2>
             {meta.status === 'ready' && (
               <p className="text-sm tabular-nums text-subtle">
                 {tickedInMeta} of {metaSorted.length} ticked
@@ -152,9 +155,9 @@ export function Checklist() {
           </div>
 
           {meta.status === 'loading' && (
-            <ul className="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-3" aria-hidden="true">
-              {Array.from({ length: 9 }, (_, i) => (
-                <li key={i} className="h-16 animate-pulse rounded-xl bg-surface ring-1 ring-line" />
+            <ul className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5" aria-hidden="true">
+              {Array.from({ length: 15 }, (_, i) => (
+                <li key={i} className="h-[4.5rem] animate-pulse rounded-xl bg-surface ring-1 ring-line" />
               ))}
             </ul>
           )}
@@ -167,13 +170,17 @@ export function Checklist() {
             </div>
           )}
           {meta.status === 'ready' && (
-            <ul className="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
-              {metaSorted.map((owned) => (
-                <CheckItem
-                  key={ownedKey(owned)}
-                  owned={owned}
-                  option={byId?.get(owned.speciesId)}
-                  checked={ticked.has(ownedKey(owned))}
+            <ul
+              aria-label={`${leagueLabel} League quick select`}
+              className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5"
+            >
+              {metaSorted.map((pick, i) => (
+                <QuickCard
+                  key={ownedKey(pick)}
+                  pick={pick}
+                  rank={i + 1}
+                  option={byId?.get(pick.speciesId)}
+                  checked={ticked.has(ownedKey(pick))}
                   onToggle={toggle}
                 />
               ))}
@@ -184,7 +191,9 @@ export function Checklist() {
 
       {elsewhere.length > 0 && (
         <div className="mt-8">
-          <h2 className="eyebrow">Also ticked{query.trim() === '' ? `, not in the ${leagueLabel} League meta` : ''}</h2>
+          <h2 className="eyebrow">
+            Also ticked{query.trim() === '' ? `, not in the ${leagueLabel} League top ${TOP_SIZE[league]}` : ''}
+          </h2>
           <ul className="mt-3 flex flex-wrap gap-2">
             {elsewhere.map((owned) => {
               const name = byId?.get(owned.speciesId)?.name ?? owned.speciesId
@@ -210,6 +219,77 @@ export function Checklist() {
         </div>
       )}
     </section>
+  )
+}
+
+/**
+ * One of the top-ranked Pokémon (#116), dense enough for 150 on a page: rank, icon, name, type badges, and a round
+ * quick-add toggle. The whole card is the checkbox's label, so a tap anywhere ticks it.
+ */
+function QuickCard({
+  pick,
+  rank,
+  option,
+  checked,
+  onToggle,
+}: {
+  pick: MetaPick
+  rank: number
+  option: SpeciesOption | undefined
+  checked: boolean
+  onToggle: (owned: OwnedSpecies) => void
+}) {
+  const name = option?.name ?? pick.speciesId
+  const owned = { speciesId: pick.speciesId, shadow: pick.shadow }
+  return (
+    <li>
+      <label
+        className={`relative flex h-[4.5rem] cursor-pointer items-center gap-2 rounded-xl py-2 pr-9 pl-2 ring-1 transition has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-brand ${
+          checked ? 'bg-brand/12 ring-brand/70' : 'bg-surface ring-line hover:bg-raised hover:ring-line-strong'
+        }`}
+      >
+        <input
+          type="checkbox"
+          checked={checked}
+          onChange={() => onToggle(owned)}
+          aria-label={pick.shadow ? `Shadow ${name}` : name}
+          className="peer sr-only"
+        />
+        <PokemonArt
+          icon
+          dex={option?.dex}
+          alt=""
+          className={`h-11 w-11 shrink-0 transition-[opacity,filter] duration-200 ${checked ? '' : 'opacity-50 grayscale'}`}
+        />
+        <span className="min-w-0 flex-1">
+          <span className="flex items-baseline gap-1">
+            <span className="text-[10px] tabular-nums text-subtle">#{rank}</span>
+            <span className={`truncate text-sm font-semibold transition-colors duration-200 ${checked ? 'text-ink' : 'text-ink-soft'}`}>
+              {name}
+            </span>
+          </span>
+          <span className="mt-1 flex flex-wrap items-center gap-1">
+            {pick.shadow && (
+              <span className="rounded bg-violet-500/25 px-1 py-px text-[10px] leading-tight font-bold uppercase text-violet-200">
+                Shadow
+              </span>
+            )}
+            {pick.types.map((type) => (
+              <TypeBadge key={type} type={type} />
+            ))}
+          </span>
+        </span>
+        {/* the quick-add toggle: + to add, ✓ once ticked */}
+        <span
+          aria-hidden="true"
+          className={`absolute top-1/2 right-2 grid h-6 w-6 -translate-y-1/2 place-items-center rounded-full text-sm font-black transition ${
+            checked ? 'scale-100 bg-brand text-on-brand' : 'bg-raised text-subtle ring-1 ring-line-strong'
+          }`}
+        >
+          {checked ? '✓' : '+'}
+        </span>
+      </label>
+    </li>
   )
 }
 

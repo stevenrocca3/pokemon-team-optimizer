@@ -1,4 +1,4 @@
-import type { SpeciesOption, RankRequest, RankedIvResult, SpeciesDetail, Move, CaughtPokemon, CaughtPokemonRequest, BreakpointReport, CupSummary, ImportPreview, IvComparisonResult, OwnedSpecies, SiteStats, AnalysisStatus, AnalysisUpload, AnalysisResult, TeamBuilderLeague, TeamBuilderRequest, TeamBuilderResult, AnalyticsSummary, MetaPresetRequest} from './types'
+import type { SpeciesOption, RankRequest, RankedIvResult, SpeciesDetail, Move, CaughtPokemon, CaughtPokemonRequest, BreakpointReport, CupSummary, ImportPreview, IvComparisonResult, OwnedSpecies, SiteStats, AnalysisStatus, AnalysisUpload, AnalysisResult, TeamBuilderLeague, TeamBuilderRequest, TeamBuilderResult, AnalyticsSummary, MetaPick, MetaPresetRequest} from './types'
 import { apiFetch } from './lib/http'
 
 export { NotLoggedInError } from './lib/http'
@@ -79,6 +79,13 @@ export async function saveChecklist(species: OwnedSpecies[]): Promise<OwnedSpeci
 }
 
 /** The League's meta, the checklist's default list. */
+/** The checklist's quick-select grid (#116): PvPoke's top 150 (Great, Ultra) or 50 (Master), best first. */
+export async function getTopMeta(league: TeamBuilderLeague): Promise<MetaPick[]>
+{
+    const response = await apiFetch(`/api/meta/${league}/top`);
+    return await response.json();
+}
+
 export async function getMeta(league: TeamBuilderLeague): Promise<OwnedSpecies[]>
 {
     const response = await apiFetch(`/api/meta/${league}`);

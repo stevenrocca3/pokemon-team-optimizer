@@ -13,9 +13,10 @@ import com.pokemonoptimizer.pokemon_optimizer_backend.gamemaster.MoveLookup;
 import com.pokemonoptimizer.pokemon_optimizer_backend.gamemaster.SpeciesLookup;
 import com.pokemonoptimizer.pokemon_optimizer_backend.security.SecurityConfig;
 import com.pokemonoptimizer.pokemon_optimizer_backend.teambuilder.MetaLookup;
+import com.pokemonoptimizer.pokemon_optimizer_backend.teambuilder.MetaRankings;
 
 @WebMvcTest(MetaController.class)
-@Import({SecurityConfig.class, SpeciesLookup.class, MoveLookup.class, MetaLookup.class})
+@Import({SecurityConfig.class, SpeciesLookup.class, MoveLookup.class, MetaLookup.class, MetaRankings.class})
 public class MetaControllerTest
 {
     @Autowired private MockMvcTester mvc;
@@ -43,5 +44,18 @@ public class MetaControllerTest
     public void anUnknownLeagueIs400()
     {
         assertThat(mvc.get().uri("/api/meta/LITTLE")).hasStatus(HttpStatus.BAD_REQUEST);
+    }
+
+    // #116: the quick-select grid's list, ranked, with types; open to guests and cached like the meta
+    @Test
+    public void theTopListIsRankedWithTypes()
+    {
+        assertThat(mvc.get().uri("/api/meta/ULTRA/top"))
+            .hasStatusOk()
+            .hasHeader("Cache-Control", "public, max-age=3600")
+            .bodyJson()
+            .hasPathSatisfying("$.length()", n -> assertThat(n).asNumber().isEqualTo(150))
+            .hasPathSatisfying("$[0].speciesId", id -> assertThat(id).asString().isEqualTo("tinkaton"))
+            .hasPathSatisfying("$[0].types", t -> assertThat(t).asArray().containsExactly("fairy", "steel"));
     }
 }
