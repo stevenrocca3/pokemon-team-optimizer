@@ -7,7 +7,7 @@ const member = (cost: TeamMember['cost']): TeamMember => ({
   fastMove: 'COUNTER', chargedMoves: ['ICE_PUNCH'], metaRating: 500, assumed: cost === null, powerUp: null, cost,
 })
 const team = (...costs: TeamMember['cost'][]): TeamResult => ({
-  members: costs.map(member), winRate: { rate: 0.5, low: 0.45, high: 0.55, battles: 400 }, toughest: [],
+  members: costs.map(member), winRate: { rate: 0.5, low: 0.45, high: 0.55, battles: 400 }, toughest: [], suggestions: [],
 })
 
 describe('teamCost', () => {

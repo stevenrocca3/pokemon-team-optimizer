@@ -14,6 +14,8 @@ import java.util.Set;
 import java.util.stream.IntStream;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 import com.pokemonoptimizer.pokemon_optimizer_backend.battle.Battle;
@@ -96,6 +98,8 @@ public class TeamBuilder
     private final MetaLookup metaLookup;
     private final GoodIvs goodIvs;
     private final Settings settings;
+    /** Each meta against itself, for suggesting replacements without simulating (#112). */
+    private final MetaMatrices matrices = new MetaMatrices();
 
     @Autowired   // the other constructor is for tests' narrower Settings
     public TeamBuilder(SpeciesLookup speciesLookup, MoveLookup moveLookup, MetaLookup metaLookup, GoodIvs goodIvs)
@@ -263,6 +267,7 @@ public class TeamBuilder
         // Stage 4: odds for the chosen Teams on fresh opponents, so picking the luckiest estimate doesn't inflate them
         List<Opponents> estimate = sampleOpponents(meta, settings.estimateSamples(), settings.seed() + 1);
         List<TeamResult> teams = new ArrayList<>();
+        String matrixKey = cup == null ? league.name() : cup.key() + "@" + cup.updated();
         Map<Integer, PowerUpImpact> powerUps = new HashMap<>();   // a Pokémon on several Teams is battled once
         for (int[] order : chosen)
         {
@@ -273,10 +278,33 @@ public class TeamBuilder
                 PowerUpImpact powerUp = powerUps.computeIfAbsent(c, k -> powerUp(eligible.get(k), meta, battleCp).orElse(null));
                 members.add(member(eligible.get(c), metaRating[c], powerUp));
             }
-            teams.add(new TeamResult(members, odds, toughest(order, ratings, meta)));
+            List<Suggestion> suggestions = List.of();
+            if (Replacements.needed(odds))
+            {
+                List<Replacements.Member> team = new ArrayList<>();
+                for (int c : order)
+                {
+                    Candidate candidate = eligible.get(c);
+                    team.add(new Replacements.Member(candidate.index(), candidate.request().speciesId(), candidate.species().dex(), ratings[c]));
+                }
+                suggestions = Replacements.suggest(matrices.get(matrixKey, meta, battleCp), team);
+            }
+            teams.add(new TeamResult(members, odds, toughest(order, ratings, meta), suggestions));
         }
         teams.sort(Comparator.comparingDouble((TeamResult team) -> -team.winRate().rate()));
         return new TeamBuilderResult(league, meta.size(), metaDate, eligible.size(), teams, skipped, cup == null ? null : cup.key());
+    }
+
+    /** Works out the open Leagues' meta matrices in the background at startup, so no search waits on them. */
+    @EventListener(ApplicationReadyEvent.class)
+    public void warmMetaMatrices()
+    {
+        Thread.ofVirtual().name("meta-matrices").start(() -> {
+            for (League league : League.values())
+            {
+                matrices.get(league.name(), metaLookup.meta(league), league.battleCp());
+            }
+        });
     }
 
     // ---- eligibility ----

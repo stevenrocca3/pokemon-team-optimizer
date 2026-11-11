@@ -320,4 +320,36 @@ public class TeamBuilderTest
         assertEquals(6, survivors.size());
         assertEquals(ranked.get(6), survivors.get(5));
     }
+
+    // #112: a Team winning under half its battles gets 5 role-labelled swaps from the meta
+    @Test
+    public void aWeakTeamGetsFiveSuggestions()
+    {
+        List<CaughtPokemonRequest> weak = List.of(BOX.get(0), BOX.get(2), BOX.get(4));   // Magikarp, Caterpie, Pidgey
+
+        TeamResult team = BUILDER.build(League.GREAT, weak).teams().get(0);
+
+        assertTrue(team.winRate().rate() < 0.5);
+        assertEquals(5, team.suggestions().size());
+        Set<Integer> onTeam = Set.of(0, 1, 2);
+        for (Suggestion s : team.suggestions())
+        {
+            assertTrue(onTeam.contains(s.replaces()), s.speciesId() + " replaces index " + s.replaces());
+        }
+    }
+
+    // #112: in one build, the Team at 50% or better gets none and the one under gets 5
+    @Test
+    public void onlyTheTeamUnderHalfGetsSuggestions()
+    {   // the first 12 Great League meta species: the best Team wins 58.8% here, the second 46.3%
+        List<OwnedSpecies> species = new MetaLookup(SPECIES, MOVES).meta(League.GREAT).stream().limit(12)
+            .map(p -> new OwnedSpecies(p.combatant().species().speciesId(), p.combatant().shadow())).toList();
+
+        List<TeamResult> teams = BUILDER.build(League.GREAT, List.of(), species).teams();
+
+        assertTrue(teams.get(0).winRate().rate() >= 0.5, "best wins " + teams.get(0).winRate().rate());
+        assertTrue(teams.get(0).suggestions().isEmpty());
+        assertTrue(teams.get(1).winRate().rate() < 0.5, "second wins " + teams.get(1).winRate().rate());
+        assertEquals(5, teams.get(1).suggestions().size());
+    }
 }

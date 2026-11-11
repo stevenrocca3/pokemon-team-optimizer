@@ -18,6 +18,7 @@ import { groupByOpponent, shieldsList } from '../lib/matchups'
 import { bestAffordable, teamCost } from '../lib/budget'
 import { cupsFor, formatName } from '../lib/cups'
 import type { BattleTeam } from '../analysis/team-nudge'
+import { SwapSuggestions } from '../components/SwapSuggestions'
 
 const STARDUST_KEY = 'dexpresso.stardust'
 
@@ -610,6 +611,7 @@ function TeamCard({
               </span>
             ))}
           </p>
+          <SwapSuggestions suggestions={team.suggestions ?? []} members={team.members} />
         </div>
       </div>
     </li>

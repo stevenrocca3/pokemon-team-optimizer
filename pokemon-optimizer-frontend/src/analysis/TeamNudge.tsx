@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router'
 import { buildTeams } from '../api'
-import type { AnalysisResult } from '../types'
+import { SwapSuggestions } from '../components/SwapSuggestions'
+import type { AnalysisResult, TeamResult } from '../types'
 import { battleTeam, LEAGUE_NAME } from './team-nudge'
 
 const WEAK = 0.5 // a team winning under half its meta battles gets the warning
@@ -15,7 +16,7 @@ export function TeamNudge({ result }: { result: AnalysisResult }) {
   const team = useMemo(() => battleTeam(result.turn_log), [result])
   const navigate = useNavigate()
   const full = team.species.length === 3
-  const [rate, setRate] = useState<number | null>(null)
+  const [scored, setScored] = useState<TeamResult | null>(null)
 
   useEffect(() => {
     if (!full) return
@@ -23,7 +24,7 @@ export function TeamNudge({ result }: { result: AnalysisResult }) {
     buildTeams({ league: team.league, pokemon: [], species: team.species, cup: null }, controller.signal)
       .then((built) => {
         const best = built.teams[0]
-        if (best) setRate(best.winRate.rate)
+        if (best) setScored(best)
       })
       .catch(() => {}) // no score, no card
     return () => controller.abort()
@@ -55,30 +56,31 @@ export function TeamNudge({ result }: { result: AnalysisResult }) {
     )
   }
 
-  if (rate === null || rate >= WEAK) return null
+  if (scored === null || scored.winRate.rate >= WEAK) return null
+  const rate = scored.winRate.rate
   return (
-    <section
-      aria-labelledby="team-nudge"
-      className="card animate-rise flex flex-wrap items-center justify-between gap-4 p-5 ring-2 ring-tier-critical/60"
-    >
-      <div className="flex max-w-xl gap-3">
-        <span aria-hidden className="text-2xl leading-none">
-          ⚠️
-        </span>
-        <div>
-          <h2 id="team-nudge" className="font-display text-lg text-tier-critical">
-            Critical Team Vulnerability Detected
-          </h2>
-          <p className="mt-1 text-sm text-ink-soft">
-            Your execution was impacted by team synergy. Your team ({team.names.join(', ')}){' '}
-            <span className="font-semibold text-ink">
-              won {Math.round(rate * 100)}% of its battles against the current {LEAGUE_NAME[team.league]} meta
-            </span>
-            . Import it and the Team Builder shows which swap fixes it.
-          </p>
+    <section aria-labelledby="team-nudge" className="card animate-rise p-5 ring-2 ring-tier-critical/60">
+      <div className="flex flex-wrap items-center justify-between gap-4">
+        <div className="flex max-w-xl gap-3">
+          <span aria-hidden className="text-2xl leading-none">
+            ⚠️
+          </span>
+          <div>
+            <h2 id="team-nudge" className="font-display text-lg text-tier-critical">
+              Critical Team Vulnerability Detected
+            </h2>
+            <p className="mt-1 text-sm text-ink-soft">
+              Your execution was impacted by team synergy. Your team ({team.names.join(', ')}){' '}
+              <span className="font-semibold text-ink">
+                won {Math.round(rate * 100)}% of its battles against the current {LEAGUE_NAME[team.league]} meta
+              </span>
+              . These swaps from the meta fix the most, or import it and the Team Builder works from your own Pokémon.
+            </p>
+          </div>
         </div>
+        {button}
       </div>
-      {button}
+      <SwapSuggestions suggestions={scored.suggestions ?? []} members={scored.members} />
     </section>
   )
 }

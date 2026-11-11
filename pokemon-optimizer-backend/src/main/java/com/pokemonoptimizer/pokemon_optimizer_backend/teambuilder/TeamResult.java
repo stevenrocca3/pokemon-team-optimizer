@@ -5,6 +5,7 @@ import java.util.List;
 /**
  * A recommended Team. {@code members} are in battle order: the lead first. {@code winRate} comes from 3v3 battles
  * against freshly sampled meta Teams. {@code toughest} are the meta Pokémon (PvPoke IDs) the Team's best 1v1 answer
- * does worst against.
+ * does worst against. {@code suggestions} are 5 meta Pokémon to swap in when it wins under half its battles (#112),
+ * best first; empty otherwise.
  */
-public record TeamResult(List<TeamMember> members, WinRate winRate, List<String> toughest) {}
+public record TeamResult(List<TeamMember> members, WinRate winRate, List<String> toughest, List<Suggestion> suggestions) {}

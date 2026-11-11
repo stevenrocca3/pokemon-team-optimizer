@@ -9,7 +9,8 @@ import { leagueFor, speciesIdFor } from './team-nudge'
 import { sampleResult } from './match-fixture'
 import { fakeServer, json } from './test-helpers'
 import { TeamBuilderPage } from '../pages/TeamBuilderPage'
-import type { AnalysisResult } from '../types'
+import type { AnalysisResult, Suggestion } from '../types'
+import { suggestion } from '../components/suggestion-fixture'
 
 /** The sample battle, with all three of your Pokémon seen: Swampert, Cradily and Clodsire in Great League. */
 function fullTeam(): AnalysisResult {
@@ -20,7 +21,7 @@ function fullTeam(): AnalysisResult {
 }
 
 /** what the Team Builder answers: one team (the three species), winning `rate` of its battles */
-function teamResult(rate: number) {
+function teamResult(rate: number, suggestions: Suggestion[] = []) {
   return () =>
     json({
       league: 'GREAT',
@@ -29,7 +30,7 @@ function teamResult(rate: number) {
       eligible: 3,
       skipped: [],
       cup: null,
-      teams: [{ members: [], winRate: { rate, low: rate - 0.05, high: rate + 0.05 }, toughest: [] }],
+      teams: [{ members: [], winRate: { rate, low: rate - 0.05, high: rate + 0.05 }, toughest: [], suggestions }],
     })
 }
 
@@ -133,5 +134,16 @@ describe('TeamNudge', () => {
     expect(within(card()!).getByRole('button', { name: 'Import Team to Dexpresso Team Builder' })).toBeTruthy()
     expect(screen.queryByText('Critical Team Vulnerability Detected')).toBeNull()
     expect(teamRequests(fetchMock)).toEqual([])
+  })
+
+  // #112: the warning card also lists the Team Builder's 5 swaps for the team, so the fix is right there
+  it('lists the swaps for a team under 50%', async () => {
+    const swaps = ['medicham', 'registeel', 'furret', 'altaria', 'carbink'].map((id) => suggestion(id, 'LEAD'))
+    fakeServer({ '/api/team-builder': teamResult(0.42, swaps) })
+    renderReview(fullTeam())
+    const warning = await screen.findByRole('region', { name: /Critical/ })
+    const lists = within(warning).queryAllByRole('list', { name: 'Swaps for this team' })
+    expect(lists).toHaveLength(1)
+    expect(within(lists[0]).getAllByRole('listitem')).toHaveLength(5)
   })
 })
