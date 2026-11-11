@@ -41,8 +41,12 @@ export function Header() {
             Analyze
           </NavLink>
           {/* #118: always in the nav; the count is how many species you have two or more copies of */}
-          <NavLink to="/build" className={(state) => `hidden items-center gap-1.5 lg:inline-flex ${navClass(state)}`}>
-            Which to Build
+          <NavLink
+            to="/build"
+            aria-label={toBuild > 0 ? `Which One to Build: ${toBuild} to decide` : 'Which One to Build'}
+            className={(state) => `hidden items-center gap-1.5 sm:inline-flex ${navClass(state)}`}
+          >
+            Build
             {toBuild > 0 && (
               <span className="grid h-5 min-w-5 place-items-center rounded-full bg-brand px-1.5 text-[11px] font-black tabular-nums text-on-brand">
                 {toBuild}

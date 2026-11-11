@@ -327,7 +327,7 @@ function QuickCard({
   return (
     <li>
       <label
-        className={`relative flex h-[4.5rem] cursor-pointer items-center gap-2 rounded-xl py-2 pr-9 pl-2 ring-1 transition has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-brand ${
+        className={`relative flex h-[4.5rem] cursor-pointer items-center gap-1.5 rounded-xl py-2 pr-7 pl-1.5 ring-1 sm:gap-2 sm:pr-9 sm:pl-2 transition has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-brand ${
           checked ? 'bg-brand/12 ring-brand/70' : 'bg-surface ring-line hover:bg-raised hover:ring-line-strong'
         }`}
       >
@@ -342,11 +342,16 @@ function QuickCard({
           icon
           dex={option?.dex}
           alt=""
-          className={`h-11 w-11 shrink-0 transition-[opacity,filter] duration-200 ${checked ? '' : 'opacity-50 grayscale'}`}
+          className={`h-9 w-9 shrink-0 transition-[opacity,filter] duration-200 sm:h-11 sm:w-11 ${checked ? '' : 'opacity-50 grayscale'}`}
         />
         <span className="min-w-0 flex-1">
           <span className="flex items-baseline gap-1">
-            {rank !== undefined && <span className="text-[10px] tabular-nums text-subtle">#{rank}</span>}
+            {/* on phones the rank tucks into the corner so the name gets the room */}
+            {rank !== undefined && (
+              <span className="absolute top-1 left-1.5 text-[9px] tabular-nums text-subtle sm:static sm:text-[10px]">
+                #{rank}
+              </span>
+            )}
             <span className={`truncate text-sm font-semibold transition-colors duration-200 ${checked ? 'text-ink' : 'text-ink-soft'}`}>
               {name}
             </span>
@@ -365,7 +370,7 @@ function QuickCard({
         {/* the quick-add toggle: + to add, ✓ once ticked */}
         <span
           aria-hidden="true"
-          className={`absolute top-1/2 right-2 grid h-6 w-6 -translate-y-1/2 place-items-center rounded-full text-sm font-black transition ${
+          className={`absolute top-1/2 right-1.5 grid h-5 w-5 -translate-y-1/2 place-items-center rounded-full text-xs font-black transition sm:right-2 sm:h-6 sm:w-6 sm:text-sm ${
             checked ? 'scale-100 bg-brand text-on-brand' : 'bg-raised text-subtle ring-1 ring-line-strong'
           }`}
         >

@@ -80,7 +80,7 @@ export function CollectionPage() {
       )}
 
       {collection.status === 'ready' && (
-        <div role="tablist" aria-label="Collection view" className="mb-6 inline-grid grid-cols-2 gap-1 rounded-xl bg-raised p-1 ring-1 ring-line">
+        <div role="tablist" aria-label="Collection view" className="mb-6 grid w-full grid-cols-2 gap-1 rounded-xl bg-raised p-1 ring-1 ring-line sm:inline-grid sm:w-auto">
           {(
             [
               ['checklist', 'Checklist', ticked],

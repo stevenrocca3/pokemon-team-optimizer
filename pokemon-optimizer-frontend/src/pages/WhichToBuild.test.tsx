@@ -78,8 +78,8 @@ describe('Which One to Build placement', () => {
     serve()
     box(BOX)
     renderWith(<Header />)
-    await expect.poll(() => screen.queryByRole('link', { name: /Which to Build/ })?.getAttribute('href')).toBe('/build')
-    await expect.poll(() => screen.getByRole('link', { name: /Which to Build/ }).textContent).toContain('1')
+    await expect.poll(() => screen.queryByRole('link', { name: /Which One to Build/ })?.getAttribute('href')).toBe('/build')
+    await expect.poll(() => screen.getByRole('link', { name: /Which One to Build/ }).textContent).toContain('1')
   })
 
   // Its page lists each species you have 2+ copies of, linking to that species' comparison for the League picked
