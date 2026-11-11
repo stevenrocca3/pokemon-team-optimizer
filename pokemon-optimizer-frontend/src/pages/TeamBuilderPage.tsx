@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router'
 import { buildTeams, getCups, LOGIN_URL, previewImport } from '../api'
 import { BuildCostDrawer } from '../components/BuildCostDrawer'
+import { withSimulation, type Simulation } from '../lib/simulate'
 import { useCollection } from '../collection/collection-context'
 import type { CaughtPokemon, CaughtPokemonRequest, CupSummary, Evolution, MatchupRef, OwnedSpecies, PowerUpImpact, Suggestion, TeamBuilderLeague, TeamBuilderResult, TeamMember, TeamResult } from '../types'
 import { useSpecies } from '../species/species-context'
@@ -125,22 +126,36 @@ export function TeamBuilderPage() {
       source: { kind: 'collection', pokemon, species: saved.checklist, withoutMoves: saved.list.length - withMoves.length },
     }
   }, [saved])
-  // a battle review's "Import Team" arrives with its team and league
-  const battle = (useLocation().state as { battleTeam?: BattleTeam } | null)?.battleTeam
+  // a battle review's "Import Team" arrives with its team and league; a Collection card's "Simulate" with one
+  // Pokémon to try as its evolved form (#140)
+  const arrived = useLocation().state as { battleTeam?: BattleTeam; simulate?: Simulation } | null
+  const battle = arrived?.battleTeam
+  const [simulation, setSimulation] = useState<Simulation | null>(arrived?.simulate ?? null)
   const [fileSource, setFileSource] = useState<Source | null>(() =>
     battle ? { kind: 'battle', names: battle.names, pokemon: [], species: battle.species, withoutMoves: 0 } : null)
   const [useFile, setUseFile] = useState(Boolean(battle))
-  const [league, setLeague] = useState<TeamBuilderLeague>(battle?.league ?? 'GREAT')
+  const [league, setLeague] = useState<TeamBuilderLeague>(battle?.league ?? arrived?.simulate?.league ?? 'GREAT')
   const [cupKey, setCupKey] = useState('')
   const [includeEvolvable, setIncludeEvolvable] = useState(false)
   const cups = useCups()
   const [run, setRun] = useState<Run>({ status: 'idle' })
   const abort = useRef<AbortController | null>(null)
 
-  useEffect(() => () => abort.current?.abort(), [])
+  // the simulation's automatic build has run once; unmounting aborts it, so a remount (StrictMode does one) builds again
+  const simulated = useRef(false)
+  useEffect(
+    () => () => {
+      abort.current?.abort()
+      simulated.current = false
+    },
+    [],
+  )
 
-  const source: Source | null =
-    useFile || collection.status !== 'ready' ? fileSource : collection.source
+  const source: Source | null = useMemo(() => {
+    if (useFile || collection.status !== 'ready') return fileSource
+    if (!simulation) return collection.source
+    return { ...collection.source, pokemon: withSimulation(collection.source.pokemon, simulation) }
+  }, [useFile, collection, fileSource, simulation])
   const leagueCups = cups.status === 'ready' ? cupsFor(cups.list, league) : []
   const cup = leagueCups.find((c) => c.key === cupKey) ?? null
 
@@ -240,6 +255,14 @@ export function TeamBuilderPage() {
     setRun({ status: 'idle' })
   }
 
+  // "Simulate in Team Builder" is one click: it builds as soon as the Collection is in
+  useEffect(() => {
+    if (!simulation || simulated.current || !source || source.kind !== 'collection' || sizeOf(source) < 3) return
+    simulated.current = true
+    void build(source)
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- once, on arrival; build reads the current League
+  }, [simulation, source])
+
   const tooFew = !source || sizeOf(source) < 3
 
   return (
@@ -310,6 +333,30 @@ export function TeamBuilderPage() {
           </p>
         </Step>
       </section>
+
+      {simulation && !useFile && (
+        <div
+          role="status"
+          aria-label="Simulation"
+          className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-2 rounded-xl bg-emerald-500/10 px-4 py-3 text-sm ring-1 ring-emerald-500/40"
+        >
+          <span className="rounded bg-emerald-500/20 px-1.5 py-0.5 text-[10px] font-bold uppercase text-emerald-300">Simulating</span>
+          <span className="text-ink">
+            Your {simulation.fromName} as {simulation.asName}
+          </span>
+          <span className="text-subtle">The rest of your Collection is as it is.</span>
+          <button
+            type="button"
+            onClick={() => {
+              setSimulation(null)
+              setRun({ status: 'idle' })
+            }}
+            className="ml-auto text-xs text-ink-soft underline underline-offset-2 hover:text-ink"
+          >
+            Stop simulating
+          </button>
+        </div>
+      )}
 
       {run.status === 'running' && <Brewing startedAt={run.startedAt} />}
 

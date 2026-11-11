@@ -1,13 +1,15 @@
 // @vitest-environment jsdom
 // Issue #113: each of the Team Builder's 5 teams shows its meta coverage and the threats it struggles with.
+import { StrictMode } from 'react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { act, cleanup, render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { MemoryRouter, Route, Routes } from 'react-router'
+import { MemoryRouter, Route, Routes, useNavigate } from 'react-router'
 import { TeamBuilderPage } from './TeamBuilderPage'
 import { fakeServer, json } from '../analysis/test-helpers'
 import type { TeamMember, TeamResult } from '../types'
 import { CollectionProvider } from '../collection/CollectionProvider'
+import { useCollection } from '../collection/collection-context'
 import { suggestion } from '../components/suggestion-fixture'
 
 function member(index: number, speciesId: string): TeamMember {
@@ -424,6 +426,71 @@ describe('Include Pokémon you could evolve', () => {
     expect(drawer.textContent).toContain('Insufficient Candy XL: short 15')
     // remembered for the family, in this browser
     expect(JSON.parse(localStorage.getItem('dexpresso.inventory.v1') ?? '{}').families.FAMILY_MUDKIP.xlCandy).toBe(5)
+  })
+})
+
+// ---- #140: "Simulate in Team Builder" from a Collection card ----
+
+describe('Simulate in Team Builder', () => {
+  const SWAMPERT_BUILD = { ...MUDKIP_REQUEST(), speciesId: 'swampert', fastMove: 'MUD_SHOT', chargedMoves: ['HYDRO_CANNON', 'EARTHQUAKE'] }
+  function MUDKIP_REQUEST() {
+    const { speciesId, atkIv, defIv, staIv, level, fastMove, chargedMoves, shadow } = MUDKIP
+    return { speciesId, atkIv, defIv, staIv, level, fastMove, chargedMoves, shadow }
+  }
+  const simulate = { league: 'ULTRA', from: MUDKIP_REQUEST(), as: SWAMPERT_BUILD, fromName: 'Mudkip', asName: 'Swampert' }
+
+  // It arrives in the League picked, builds straight away, and your Mudkip battles as Swampert
+  it('builds in that League with your Pokémon evolved', async () => {
+    const fetchMock = fakeServer({
+      '/api/collection': () => json([MUDKIP]),
+      '/api/checklist': () => json(['cradily', 'clodsire'].map((speciesId) => ({ speciesId, shadow: false }))),
+      '/api/team-builder': () =>
+        json({ league: 'ULTRA', metaSize: 44, metaDate: '2026-11-09', eligible: 3, skipped: [], cup: null, teams: [team(0)] }),
+    })
+    renderWithCollection({ simulate })
+
+    expect((await screen.findByRole('status', { name: 'Simulation' })).textContent).toContain('Your Mudkip as Swampert')
+    await expect.poll(() => requestsTo(fetchMock, '/api/team-builder').length).toBe(1)
+    const sent = requestsTo(fetchMock, '/api/team-builder')[0]
+    expect(sent.league).toBe('ULTRA')
+    expect(sent.pokemon).toEqual([SWAMPERT_BUILD])
+    expect(screen.getByRole('tab', { name: /Ultra/ }).getAttribute('aria-selected')).toBe('true')
+  })
+
+  // Arriving from the Collection page, the Collection is already loaded when the Team Builder mounts, so it builds
+  // at once. React's StrictMode then unmounts (aborting that build) and mounts again in development: it still builds
+  it('still builds when the page is mounted twice', async () => {
+    fakeServer({
+      '/api/collection': () => json([MUDKIP]),
+      '/api/checklist': () => json(['cradily', 'clodsire'].map((speciesId) => ({ speciesId, shadow: false }))),
+      '/api/team-builder': () =>
+        json({ league: 'ULTRA', metaSize: 44, metaDate: '2026-11-09', eligible: 3, skipped: [], cup: null, teams: [team(0)] }),
+    })
+    // like a browser: an aborted request never answers
+    const server = globalThis.fetch
+    vi.stubGlobal('fetch', async (url: string, init?: RequestInit) => {
+      await new Promise((resolve) => setTimeout(resolve, 5))
+      if (init?.signal?.aborted) throw new DOMException('Aborted', 'AbortError')
+      return server(url, init)
+    })
+    function FromCollection() {
+      const collection = useCollection()
+      const navigate = useNavigate()
+      if (collection.status !== 'ready') return null
+      return <button onClick={() => navigate('/team-builder', { state: { simulate } })}>Simulate</button>
+    }
+    render(
+      <MemoryRouter initialEntries={['/collection']}>
+        <CollectionProvider>
+          <Routes>
+            <Route path="/collection" element={<FromCollection />} />
+            <Route path="/team-builder" element={<StrictMode><TeamBuilderPage /></StrictMode>} />
+          </Routes>
+        </CollectionProvider>
+      </MemoryRouter>,
+    )
+    await userEvent.setup().click(await screen.findByRole('button', { name: 'Simulate' }))
+    expect(await screen.findByRole('heading', { name: /Best Teams for/ })).toBeTruthy()
   })
 })
 

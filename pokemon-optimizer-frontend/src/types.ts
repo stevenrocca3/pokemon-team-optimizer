@@ -4,6 +4,54 @@ export interface SpeciesOption
     name : string;
     dex : number;
     shadowEligible : boolean;
+    evolves? : boolean;     // has a released form to evolve into (#140)
+}
+
+/** POST /api/evolutions: one of your Pokémon, projected to each form it can evolve into (#136) */
+export interface EvolutionRequest
+{
+    speciesId : string;
+    atkIv : number;
+    defIv : number;
+    staIv : number;
+    level : number | null;      // null: projects from level 1
+    shadow : boolean;
+}
+
+export interface LeagueProjection
+{
+    league : TeamBuilderLeague;
+    eligible : boolean;         // false: already over the cap at its level
+    level : number | null;
+    cp : number | null;
+    statProduct : number | null;
+    statProductRank : number | null;
+    percentOfBest : number | null;
+    needsXlCandy : boolean;
+    bestBuddyCp : number | null;   // Master League only
+}
+
+export interface FormProjection
+{
+    speciesId : string;
+    name : string;
+    dex : number;
+    stage : number;             // 1 for the next form, 2 after that
+    path : string[];            // the line to it, from your Pokémon
+    leagues : LeagueProjection[];
+    moves : {
+        optimalFastMove : string | null;
+        optimalChargedMoves : string[];
+        warnings : { moveId : string; name : string; fast : boolean; message : string }[];
+    };
+}
+
+export interface EvolutionProjection
+{
+    speciesId : string;
+    name : string;
+    shadow : boolean;
+    forms : FormProjection[];
 }
 
 /** One of a League's top-ranked Pokémon, for the checklist's quick-select grid (#116). */

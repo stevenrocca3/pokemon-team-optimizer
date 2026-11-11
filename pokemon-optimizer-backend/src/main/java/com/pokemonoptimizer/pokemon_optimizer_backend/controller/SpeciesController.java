@@ -11,6 +11,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.pokemonoptimizer.pokemon_optimizer_backend.dto.SpeciesDetail;
 import com.pokemonoptimizer.pokemon_optimizer_backend.dto.SpeciesOption;
+import com.pokemonoptimizer.pokemon_optimizer_backend.evolution.EvolutionTree;
 import com.pokemonoptimizer.pokemon_optimizer_backend.gamemaster.SpeciesLookup;
 import com.pokemonoptimizer.pokemon_optimizer_backend.gamemaster.SpeciesType;
 import com.pokemonoptimizer.pokemon_optimizer_backend.gamemaster.SuggestedMovesets;
@@ -22,11 +23,13 @@ public class SpeciesController
 {
     private final SpeciesLookup speciesLookup;
     private final SuggestedMovesets suggestedMovesets;
+    private final EvolutionTree evolutionTree;
 
-    public SpeciesController(SpeciesLookup sl, SuggestedMovesets sm)
+    public SpeciesController(SpeciesLookup sl, SuggestedMovesets sm, EvolutionTree et)
     {
        speciesLookup = sl;
        suggestedMovesets = sm;
+       evolutionTree = et;
     }
 
     @GetMapping("/species")
@@ -34,7 +37,8 @@ public class SpeciesController
         ArrayList<SpeciesOption> speciesOptionList = new ArrayList<>();
         for (SpeciesType species : speciesLookup.findAll())
         {
-            SpeciesOption speciesOption = new SpeciesOption(species.speciesId(), species.speciesName(), species.dex(), species.shadowEligible());
+            SpeciesOption speciesOption = new SpeciesOption(species.speciesId(), species.speciesName(), species.dex(), species.shadowEligible(),
+                !evolutionTree.evolutionsOf(species.speciesId()).isEmpty());
             speciesOptionList.add(speciesOption);
             
         }
