@@ -37,6 +37,12 @@
   --color-danger: #c4282d; /* destructive buttons only: white text 5.7:1, edge vs surface 3.1:1 */
   --color-on-danger: #ffffff;
 
+  /* battle analysis tier badges, all >= 7:1 on surface */
+  --color-tier-legend: #f2c14e; /* gold */
+  --color-tier-veteran: #c9b2ff; /* lavender */
+  --color-tier-ace: #82c8f2; /* sky */
+  --color-tier-critical: #ff7a7a; /* alarm red (text-safe, unlike --color-danger) */
+
   --color-field: #f3e9dc; /* search input */
   --color-on-field: #1f1814;
 

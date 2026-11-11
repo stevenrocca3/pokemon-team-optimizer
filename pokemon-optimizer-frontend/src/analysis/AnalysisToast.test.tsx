@@ -9,31 +9,18 @@ import { AnalysisToast } from './AnalysisToast'
 import { AnalyzePage } from '../pages/AnalyzePage'
 import { MatchPage } from '../pages/MatchPage'
 import { FakeEventSource, JOB, fakeServer, json, status } from './test-helpers'
+import { sampleResult } from './match-fixture'
 
 function Where() {
   return <p data-testid="where">{useLocation().pathname}</p>
 }
 
-const RESULT = {
-  report: {
-    match_id: JOB,
-    score: 72,
-    tier: { key: 'ace', name: 'Ace / Mid-Ladder Execution', min: 50 },
-    findings: [],
-    summary: {
-      fatal_flaws: [],
-      shield_audit: 'No shields used.',
-      turn_efficiency: '',
-    },
-  },
-  turn_log: {
-    match_id: JOB,
-    user_team: ['Swampert'],
-    opponent_team: ['Togekiss'],
-    cp: {},
-    turn_log: [],
-  },
-}
+/** the job's result: the sample battle, scored 72 */
+const RESULT = (() => {
+  const result = sampleResult()
+  result.report.score = 72
+  return result
+})()
 
 function renderApp(path = '/analyze') {
   return render(
@@ -94,7 +81,7 @@ describe('the completion toast', () => {
     complete()
     await user.click(within(toast()!).getByRole('link', { name: 'Click to View Breakdown' }))
     expect(toast()).toBeNull()
-    expect(await screen.findByText('72/100')).toBeTruthy()
+    expect(await screen.findByLabelText('Score: 72 out of 100')).toBeTruthy()
     expect(screen.getByText('Ace / Mid-Ladder Execution')).toBeTruthy()
   })
 
