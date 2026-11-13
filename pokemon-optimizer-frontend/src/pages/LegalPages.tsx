@@ -96,10 +96,6 @@ export function PrivacyPage() {
           <li>
             <strong>Google</strong>, only when you choose to log in. Google's own privacy policy applies there.
           </li>
-          <li>
-            <strong>GitHub</strong> (raw.githubusercontent.com), which hosts the Pokémon artwork from PokéAPI. Like any
-            website, it sees your IP address when your browser loads an image.
-          </li>
           {ANALYTICS_ENABLED && (
             <li>
               <strong>GoatCounter</strong>, a privacy-friendly visitor counter. It counts page views without cookies and

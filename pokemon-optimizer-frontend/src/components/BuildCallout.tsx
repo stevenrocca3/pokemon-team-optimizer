@@ -47,7 +47,7 @@ export function BuildCallout({ league }: { league: TeamBuilderLeague }) {
                 to={compareHref(c.speciesId, league)}
                 className="flex h-9 items-center gap-1.5 rounded-full bg-raised pr-3 pl-1 text-sm font-semibold text-ink ring-1 ring-line-strong transition hover:bg-raised-strong hover:ring-brand/60"
               >
-                <PokemonArt icon dex={dexOf(c.speciesId)} alt="" className="h-7 w-7" />
+                <PokemonArt dex={dexOf(c.speciesId)} alt="" className="h-7 w-7" />
                 {nameOf(c.speciesId)}
                 <span className="text-xs tabular-nums text-subtle">×{c.copies}</span>
               </Link>

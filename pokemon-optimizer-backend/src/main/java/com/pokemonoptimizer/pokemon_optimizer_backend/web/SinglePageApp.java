@@ -29,6 +29,11 @@ public class SinglePageApp implements WebMvcConfigurer
             .addResourceLocations("classpath:/static/assets/")
             .setCacheControl(CacheControl.maxAge(Duration.ofDays(365)).cachePublic().immutable());
 
+        // the Pokémon sprites (public/sprites, from PokéAPI): fixed names, so not immutable, but they hardly ever change
+        registry.addResourceHandler("/sprites/**")
+            .addResourceLocations("classpath:/static/sprites/")
+            .setCacheControl(CacheControl.maxAge(Duration.ofDays(30)).cachePublic());
+
         // index.html and the other unhashed files: always revalidated, so a deploy shows up on the next load
         registry.addResourceHandler("/**")
             .addResourceLocations("classpath:/static/")

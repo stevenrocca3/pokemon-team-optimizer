@@ -289,7 +289,7 @@ export function Checklist() {
                     aria-label={`Untick ${label}`}
                     className="flex h-9 items-center gap-2 rounded-full bg-raised pr-3 pl-1 text-sm text-ink ring-1 ring-line-strong hover:bg-raised-strong"
                   >
-                    <PokemonArt icon dex={byId?.get(owned.speciesId)?.dex} alt="" className="h-7 w-7" />
+                    <PokemonArt dex={byId?.get(owned.speciesId)?.dex} alt="" className="h-7 w-7" />
                     {label}
                     <span aria-hidden="true" className="text-subtle">
                       ×
@@ -339,7 +339,6 @@ function QuickCard({
           className="peer sr-only"
         />
         <PokemonArt
-          icon
           dex={option?.dex}
           alt=""
           className={`h-9 w-9 shrink-0 transition-[opacity,filter] duration-200 sm:h-11 sm:w-11 ${checked ? '' : 'opacity-50 grayscale'}`}
@@ -403,7 +402,6 @@ function CheckItem({
         <input type="checkbox" checked={checked} onChange={() => onToggle(owned)} className="h-5 w-5 shrink-0 accent-brand" />
         {/* unticked ones are greyed out, so what you own stands out */}
         <PokemonArt
-          icon
           dex={option?.dex}
           alt=""
           className={`h-12 w-12 shrink-0 transition-[opacity,filter] duration-200 ${checked ? '' : 'opacity-45 grayscale'}`}
