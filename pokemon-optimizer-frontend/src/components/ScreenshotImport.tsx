@@ -295,7 +295,7 @@ function ShotCard({
         {isRead(o) && (
           <>
             <div className="mt-1 flex items-center gap-2">
-              <PokemonArt dex={option?.dex} alt="" icon className="h-9 w-9 shrink-0" />
+              <PokemonArt dex={option?.dex} alt="" className="h-9 w-9 shrink-0" />
               <span className="truncate font-semibold">{option?.name ?? 'Which Pokémon?'}</span>
               <span className="ml-auto shrink-0">
                 {ok ? (

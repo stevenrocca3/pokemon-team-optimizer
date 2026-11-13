@@ -1,5 +1,5 @@
 import { useState, type CSSProperties } from 'react'
-import { artworkUrl, iconUrl } from '../lib/species'
+import { iconUrl } from '../lib/species'
 import { fitTransform, opaqueBounds } from '../lib/sprite-fit'
 
 /** Each sprite's fill-the-box transform, measured once per page load. */
@@ -19,7 +19,7 @@ function measure(img: HTMLImageElement): CSSProperties {
     const { scale, x, y } = fitTransform(bounds, size)
     return { transformOrigin: 'top left', transform: `translate(${x}%, ${y}%) scale(${scale})` }
   } catch {
-    return {}   // a tainted canvas (no CORS): show the sprite as drawn
+    return {}   // a canvas that can't be read: show the sprite as drawn
   }
 }
 
@@ -30,16 +30,11 @@ interface Props {
   className?: string
   /** The page's main image (its LCP element): load it right away at high priority instead of lazily. */
   priority?: boolean
-  /** The pixel game sprite, fitted to its box. The default everywhere, so every Pokémon on the site matches;
-   *  false shows the smooth official artwork instead. */
-  icon?: boolean
 }
 
-export function PokemonArt({ dex, alt, className = '', priority = false, icon = true }: Props) {
+/** A Pokémon's pixel game sprite, fitted to its box so every Pokémon on the site matches; a placeholder if it's missing. */
+export function PokemonArt({ dex, alt, className = '', priority = false }: Props) {
   const [failedDex, setFailedDex] = useState<number | null>(null)
-  // if a sprite is ever missing, fall back to the artwork before giving up
-  const [spriteFailedDex, setSpriteFailedDex] = useState<number | null>(null)
-  const useSprite = icon && spriteFailedDex !== dex
   const [, setMeasured] = useState(0)
 
   if (dex === undefined || failedDex === dex) {
@@ -56,22 +51,21 @@ export function PokemonArt({ dex, alt, className = '', priority = false, icon = 
 
   return (
     <img
-      src={useSprite ? iconUrl(dex) : artworkUrl(dex)}
+      src={iconUrl(dex)}
       alt={alt}
       loading={priority ? 'eager' : 'lazy'}
       fetchPriority={priority ? 'high' : 'auto'}
       decoding="async"
       // sprites are measured so every Pokémon fills its box the same, whatever its in-game size
-      crossOrigin={useSprite ? 'anonymous' : undefined}
-      style={useSprite ? fits.get(dex) : undefined}
+      style={fits.get(dex)}
       onLoad={(e) => {
-        if (!useSprite || fits.has(dex)) return
+        if (fits.has(dex)) return
         fits.set(dex, measure(e.currentTarget))
         setMeasured((n) => n + 1)
       }}
-      onError={() => (useSprite ? setSpriteFailedDex(dex) : setFailedDex(dex))}
+      onError={() => setFailedDex(dex)}
       // sprites are pixel art: keep the pixels crisp when scaled
-      className={`object-contain ${useSprite ? '[image-rendering:pixelated]' : ''} ${className}`}
+      className={`object-contain [image-rendering:pixelated] ${className}`}
     />
   )
 }

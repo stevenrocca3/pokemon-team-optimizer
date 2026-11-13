@@ -1,13 +1,11 @@
 import type { SpeciesOption } from '../types'
 
-/** Official artwork by Pokédex number. Forms reuse their base species' art. */
-export function artworkUrl(dex: number): string {
-  return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${dex}.png`
-}
-
-/** The 96px game sprite: about 1 KB against the artwork's 100–200 KB, for images shown at icon size. */
+/**
+ * The 96px game sprite by Pokédex number (forms reuse their base species'), about 1 KB each. PokéAPI's sprites,
+ * served by the site itself from public/sprites (tools/sprites/fetch.py) and cached for a month.
+ */
 export function iconUrl(dex: number): string {
-  return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${dex}.png`
+  return `/sprites/${dex}.png`
 }
 
 export function formatLevel(level: number): string {

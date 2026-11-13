@@ -108,7 +108,6 @@ export function HomePage() {
                   aria-label={option?.name ?? id}
                 >
                   <PokemonArt
-                    icon
                     dex={option?.dex}
                     alt=""
                     className="h-full w-full"

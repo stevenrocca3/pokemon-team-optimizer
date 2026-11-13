@@ -70,4 +70,19 @@ public class SinglePageAppTest
         assertThat(mvc.get().uri("/team-builder")).hasStatusOk()
             .headers().hasValue("Cache-Control", "no-cache");
     }
+
+    @Test
+    public void spritesAreCachedForAMonth()
+    {   // the site's own Pokémon sprites: fixed names, so not immutable, but they hardly ever change
+        assertThat(mvc.get().uri("/sprites/308.png"))
+            .hasStatusOk()
+            .hasHeader("Cache-Control", "max-age=2592000, public");
+    }
+
+    @Test
+    public void aMissingSpriteIsA404()
+    {   // PokemonArt shows its placeholder for a 404; an HTML page in its place would be a broken image
+        assertThat(mvc.get().uri("/sprites/9999.png")).hasStatus(HttpStatus.NOT_FOUND);
+    }
 }
+
